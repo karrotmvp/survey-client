@@ -1,6 +1,6 @@
 import { css } from '@emotion/css';
 
-import theme from './theme.d'
+import theme from './theme.d';
 
 const flexSpaceBetween = css`
   display: flex;
