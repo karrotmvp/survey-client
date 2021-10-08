@@ -1,6 +1,9 @@
-import './App.css';
+import { ThemeProvider } from '@emotion/react';
 import Mini from '@karrotmarket/mini';
 
+import '@karrotframe/navigator/index.css';
+import Router from './component/Router';
+import theme from './config/style/theme';
 
 function App() {
   const mini = new Mini();
@@ -16,7 +19,11 @@ function App() {
     },
   });
 
-  return <div className="App"></div>;
+  return (
+    <ThemeProvider theme={theme}>
+      <Router />
+    </ThemeProvider>
+  );
 }
 
 export default App;
