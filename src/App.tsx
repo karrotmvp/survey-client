@@ -1,26 +1,22 @@
-import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import Mini from '@karrotmarket/mini';
+
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+  const mini = new Mini();
+  mini.startPreset({
+    preset: process.env.REACT_APP_PRESET!,
+    params: {
+      appId: process.env.REACT_APP_APP_ID!,
+    },
+    async onSuccess(result) {
+      if (result && result.code) {
+        console.log(result);
+      }
+    },
+  });
+
+  return <div className="App"></div>;
 }
 
 export default App;
