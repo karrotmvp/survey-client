@@ -1,5 +1,4 @@
 import styled from '@emotion/styled';
-import { ScreenHelmet } from '@karrotframe/navigator';
 
 import { ReactComponent as ArrowIcon } from '@config/icon/arrow_back.svg';
 import { ReactComponent as ClearIcon } from '@config/icon/clear.svg';
@@ -8,17 +7,21 @@ const NavBarStyle = styled.div`
   width: 100%;
   height: 3.5rem;
   display: flex;
-  background-color: aqua;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
 `;
 
-export default function NavBar(): JSX.Element {
+type NavBarType = {
+  type: 'CLOSE' | 'BACK';
+  appendRight?: React.ReactNode;
+};
+
+export default function NavBar({ type, appendRight }: NavBarType): JSX.Element {
   return (
-    <>
-      <NavBarStyle>
-        <ArrowIcon />
-        <ClearIcon />
-      </NavBarStyle>
-      <ScreenHelmet />
-    </>
+    <NavBarStyle>
+      {type === 'CLOSE' ? <ClearIcon /> : <ArrowIcon />}
+      {appendRight}
+    </NavBarStyle>
   );
 }
