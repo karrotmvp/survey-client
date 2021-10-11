@@ -1,6 +1,6 @@
 import { css } from '@emotion/css';
 
-import themeType from './theme.d';
+import { Theme } from './emotion.d';
 
 const flexSpaceBetween = css`
   display: flex;
@@ -29,7 +29,7 @@ const skeletonStyles = css`
   border-radius: 0.4rem;
 `;
 
-const theme: themeType = {
+const theme: Theme = {
   fontFamily: 'Noto Sans KR',
   fontWeight: {
     normal: '400',
@@ -71,7 +71,5 @@ const theme: themeType = {
     skeletonStyles: `${skeletonStyles}`,
   },
 };
-
-export { theme };
 
 export default theme;
