@@ -9,6 +9,9 @@ const global = css`
     width: 100%;
     height: 100vh;
   }
+  button {
+    border: none;
+  }
 `;
 
 export default global;
