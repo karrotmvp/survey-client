@@ -20,6 +20,10 @@ const StyledIconButton = styled.button<StyleButtonType>`
     buttonColor === 'PRIMARY'
       ? theme.color.primaryOrange
       : theme.color.darkWhite};
+  ${({ buttonSize }) =>
+    buttonSize === 'LARGE'
+      ? 'box-shadow: 2px 6px 10px rgba(0, 0, 0, 0.25); position: absolute; bottom : 24px; left: 50%; transform: translate(-50%, -50%);'
+      : ''};
 `;
 
 const ButtonText = styled.span<StyleButtonType>`
