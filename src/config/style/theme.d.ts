@@ -6,13 +6,15 @@ declare type DefaultTheme = {
     bold2: string;
   };
   color: {
+    primaryOrange: string;
+    whiteOrange: string;
+    secondaryGreen: string;
+    whiteGreen: string;
     darkGray: string;
     gray: string;
+    whiteGray: string;
+    darkWhite: string;
     white: string;
-    green: string;
-    mint: string;
-    whiteMint: string;
-    purple: string;
   };
   fontSize: {
     XXL: string;

@@ -37,13 +37,15 @@ const theme: themeType = {
     bold2: '900',
   },
   color: {
-    darkGray: '#14142B',
-    gray: '#F9F9F9',
-    white: '#fff',
-    green: '#71EFA3',
-    mint: '#B5EAEA',
-    whiteMint: '#EDF6E5',
-    purple: '#C6B4CE',
+    primaryOrange: '#FE7E35',
+    whiteOrange: '#FFF2EB',
+    secondaryGreen: '#259E6B',
+    whiteGreen: '#EBF9F4',
+    darkGray: '#2C3049',
+    gray: '#707070',
+    whiteGray: 'CACBD1',
+    darkWhite: '#F4F3F8',
+    white: '#F4F5F6',
   },
   fontSize: {
     XXL: '2rem', // 32px
