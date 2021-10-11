@@ -64,26 +64,7 @@
   },
   "settings": {
     "import/resolver": {
-      "alias": {
-        "map": [
-          [
-            "@api",
-            "./src/api"
-          ],
-          [
-            "@component",
-            "./src/component"
-          ],
-          [
-            "@config",
-            "./src/config"
-          ],
-          [
-            "@page",
-            "./src/page"
-          ],
-        ]
-      },
+      "typescript": {},
       "node": {
         "extensions": [
           ".js",
