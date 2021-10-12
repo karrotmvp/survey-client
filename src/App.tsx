@@ -1,5 +1,6 @@
 import { ThemeProvider, Global } from '@emotion/react';
 import Mini from '@karrotmarket/mini';
+import { RecoilRoot } from 'recoil';
 
 import Router from '@component/Router';
 
@@ -24,8 +25,10 @@ function App(): JSX.Element {
 
   return (
     <ThemeProvider theme={theme}>
-      <Global styles={global} />
-      <Router />
+      <RecoilRoot>
+        <Global styles={global} />
+        <Router />
+      </RecoilRoot>
     </ThemeProvider>
   );
 }

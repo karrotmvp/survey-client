@@ -13,6 +13,9 @@
             ],
             "@page/*": [
                 "src/page/*"
+            ],
+            "@atom/*": [
+                "src/atom/*"
             ]
         }
     }
