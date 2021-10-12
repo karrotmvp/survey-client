@@ -12,12 +12,8 @@ export default function Router(): JSX.Element {
       <Screen path="/create">
         <CreatePage />
       </Screen>
-      <Screen path="/create/short-answer">
-        <CreatePage />
-      </Screen>
-      <Screen path="/create/choice-answer">
-        <CreatePage />
-      </Screen>
+      <Screen path="/create/short-answer"></Screen>
+      <Screen path="/create/choice-answer"></Screen>
     </Navigator>
   );
 }
