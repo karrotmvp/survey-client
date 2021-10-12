@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import { useNavigator } from '@karrotframe/navigator';
 
 import { ReactComponent as TrashIcon } from '@config/icon/trash_can.svg';
 
@@ -81,8 +82,13 @@ export default function QuestionCard({
       </>
     ));
 
+  const { push } = useNavigator();
+  const handleNav = () => {
+    push(`question/${type}`);
+  };
+
   return (
-    <StyledQuestionCard>
+    <StyledQuestionCard onClick={handleNav}>
       <QuestionCardTop>
         <QuestionCardTitle>{lineEnter(title)}</QuestionCardTitle>
 

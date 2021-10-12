@@ -22,7 +22,7 @@ const StyledSection = styled.section`
 export default function HomePage(): JSX.Element {
   const { push } = useNavigator();
   const handleClick = () => {
-    push('/create');
+    push('/question');
   };
 
   return (
