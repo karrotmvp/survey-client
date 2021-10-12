@@ -4,9 +4,7 @@ import { Theme } from './emotion.d';
 
 const flexSpaceBetween = css`
   display: flex;
-  width: 100%;
   justify-content: space-between;
-  align-items: center;
 `;
 
 const flexAlignItemsCenter = css`

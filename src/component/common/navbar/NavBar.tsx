@@ -1,26 +1,64 @@
 import styled from '@emotion/styled';
+import { useNavigator } from '@karrotframe/navigator';
 
 import { ReactComponent as ArrowIcon } from '@config/icon/arrow_back.svg';
 import { ReactComponent as ClearIcon } from '@config/icon/clear.svg';
 
-const NavBarStyle = styled.div`
+type NavBarType = {
+  type: 'CLOSE' | 'BACK';
+  appendRight?: React.ReactNode;
+  navColor: 'GRAY' | 'WHITE';
+  title?: string;
+};
+
+type StyleNavBarType = Pick<NavBarType, 'navColor'>;
+
+const NavBarStyle = styled.div<StyleNavBarType>`
+  display: flex;
   width: 100%;
   height: 3.5rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0 20px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: ${({ navColor, theme }) =>
+    navColor === 'GRAY' ? '#e5e5e5' : '#ffff'};
 `;
 
-type NavBarType = {
-  type: 'CLOSE' | 'BACK';
-  appendRight?: React.ReactNode;
-};
+const NavTitle = styled.span`
+  margin-left: 36px;
+  color: #8e8f95;
+  font-size: 1rem;
+  font-weight: 700;
+`;
 
-export default function NavBar({ type, appendRight }: NavBarType): JSX.Element {
+const AppendLeft = styled.div`
+  display: flex;
+  height: 100%;
+  align-items: center;
+`;
+
+export default function NavBar({
+  type,
+  appendRight,
+  navColor,
+  title,
+}: NavBarType): JSX.Element {
+  const { pop } = useNavigator();
+
+  const goBack = () => {
+    pop();
+  };
+
   return (
-    <NavBarStyle>
-      {type === 'CLOSE' ? <ClearIcon /> : <ArrowIcon />}
+    <NavBarStyle {...{ navColor }}>
+      <AppendLeft>
+        {type === 'CLOSE' ? <ClearIcon /> : <ArrowIcon onClick={goBack} />}
+        {title && <NavTitle>{title}</NavTitle>}
+      </AppendLeft>
       {appendRight}
     </NavBarStyle>
   );

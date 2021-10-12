@@ -10,5 +10,6 @@ module.exports = override(
     '@component': path.resolve(__dirname, 'src/component'),
     '@config': path.resolve(__dirname, 'src/config'),
     '@page': path.resolve(__dirname, 'src/page'),
+    '@atom': path.resolve(__dirname, 'src/atom'),
   }),
 );

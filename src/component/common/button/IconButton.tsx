@@ -1,3 +1,5 @@
+import { MouseEvent } from 'react';
+
 import styled from '@emotion/styled';
 
 type IconButtonType = {
@@ -5,6 +7,7 @@ type IconButtonType = {
   icon: React.ReactNode;
   text: string;
   buttonColor: 'PRIMARY' | 'WHITE';
+  onClick?: (e: MouseEvent) => void;
 };
 
 type StyleButtonType = Pick<IconButtonType, 'buttonSize' | 'buttonColor'>;
@@ -39,9 +42,10 @@ export default function IconButton({
   icon,
   text,
   buttonColor,
+  onClick,
 }: IconButtonType): JSX.Element {
   return (
-    <StyledIconButton {...{ buttonColor, buttonSize }}>
+    <StyledIconButton onClick={onClick} {...{ buttonColor, buttonSize }}>
       {icon}
       <ButtonText {...{ buttonSize, buttonColor }}>{text}</ButtonText>
     </StyledIconButton>
