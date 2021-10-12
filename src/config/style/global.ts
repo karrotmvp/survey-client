@@ -13,7 +13,11 @@ const global = css`
     border: none;
   }
 
-  h1 {
+  h1,
+  h2,
+  h3,
+  h4,
+  h6 {
     margin: 0;
   }
 

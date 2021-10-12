@@ -1,5 +1,3 @@
-import { MouseEvent } from 'react';
-
 import styled from '@emotion/styled';
 import { useNavigator } from '@karrotframe/navigator';
 
@@ -14,6 +12,7 @@ const StyledHomePage = styled.section`
   width: 100%;
   padding-top: 3.5rem;
   padding-bottom: 10px;
+  min-height: 100vh;
 `;
 
 const StyledSection = styled.section`
@@ -22,7 +21,7 @@ const StyledSection = styled.section`
 
 export default function HomePage(): JSX.Element {
   const { push } = useNavigator();
-  const handleClick = (e: MouseEvent) => {
+  const handleClick = () => {
     push('/create');
   };
 
