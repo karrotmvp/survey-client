@@ -1,4 +1,7 @@
+import { MouseEvent } from 'react';
+
 import styled from '@emotion/styled';
+import { useNavigator } from '@karrotframe/navigator';
 
 import IconButton from '@component/common/button/IconButton';
 import NavBar from '@component/common/navbar/NavBar';
@@ -9,6 +12,7 @@ import { ReactComponent as PlusIcon } from '@config/icon/plus.svg';
 const StyledHomePage = styled.section`
   background-color: #e5e5e5;
   width: 100%;
+  padding-top: 3.5rem;
   padding-bottom: 10px;
 `;
 
@@ -17,19 +21,27 @@ const StyledSection = styled.section`
 `;
 
 export default function HomePage(): JSX.Element {
+  const { push } = useNavigator();
+  const handleClick = (e: MouseEvent) => {
+    push('/create');
+  };
+
   return (
-    <StyledHomePage>
-      <NavBar type="CLOSE" />
-      <StyledSection>
-        <HomeBanner storeName="찰리카페사진관" />
-        <HomeSurveyList />
-        <IconButton
-          text="설문 만들기"
-          buttonColor="PRIMARY"
-          buttonSize="LARGE"
-          icon={<PlusIcon />}
-        />
-      </StyledSection>
-    </StyledHomePage>
+    <>
+      <NavBar type="CLOSE" navColor="GRAY" />
+      <StyledHomePage>
+        <StyledSection>
+          <HomeBanner storeName="찰리카페사진관" />
+          <HomeSurveyList />
+          <IconButton
+            text="설문 만들기"
+            buttonColor="PRIMARY"
+            buttonSize="LARGE"
+            icon={<PlusIcon />}
+            onClick={handleClick}
+          />
+        </StyledSection>
+      </StyledHomePage>
+    </>
   );
 }
