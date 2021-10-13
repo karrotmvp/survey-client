@@ -8,7 +8,7 @@ import HomeSurveyList from '@component/home/HomeSurveyList';
 import { ReactComponent as PlusIcon } from '@config/icon/plus.svg';
 
 const StyledHomePage = styled.section`
-  background-color: #e5e5e5;
+  background: linear-gradient(180deg, #f9f9fb 0%, #f2f2f2 100%);
   width: 100%;
   padding-top: 3.5rem;
   padding-bottom: 10px;

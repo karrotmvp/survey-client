@@ -1,12 +1,15 @@
+import { useState } from 'react';
+
 import styled from '@emotion/styled';
 
 import IconButton from '@component/common/button/IconButton';
+import UpDownModal from '@component/common/modal/UpDownModal';
 import NavBar from '@component/common/navbar/NavBar';
 import QuestionCardList from '@component/question/QuestionCardList';
 import { ReactComponent as PlusIcon } from '@config/icon/plus.svg';
 
 const StyledCreatePage = styled.section`
-  background-color: #e5e5e5;
+  background: linear-gradient(180deg, #f9f9fb 0%, #f2f2f2 100%);
   width: 100%;
   padding: 3.5rem 1rem 10px 1rem;
   min-height: 100vh;
@@ -22,6 +25,10 @@ const StyledInput = styled.input`
 `;
 
 export default function QuestionPage(): JSX.Element {
+  const [isPopup, setPopup] = useState(false);
+  const handleClick = () => {
+    setPopup(true);
+  };
   return (
     <>
       <NavBar type="BACK" navColor="GRAY" title="설문 1" />
@@ -33,7 +40,13 @@ export default function QuestionPage(): JSX.Element {
           buttonColor="PRIMARY"
           buttonSize="LARGE"
           icon={<PlusIcon />}
+          onClick={handleClick}
         />
+        {isPopup && (
+          <UpDownModal setPopup={setPopup}>
+            <div>ddd</div>
+          </UpDownModal>
+        )}
       </StyledCreatePage>
     </>
   );
