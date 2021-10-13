@@ -1,6 +1,5 @@
 import styled from '@emotion/styled';
 
-import TextButton from '@component/common/button/TextButton';
 import QuestionSubtitleInput from '@component/common/input/QuestionSubtitleInput';
 import QuestionTitleInput from '@component/common/input/QuestionTitleInput';
 import NavBar from '@component/common/navbar/NavBar';
@@ -17,10 +16,6 @@ export default function QuestionIntroducePage(): JSX.Element {
   `;
 
   const QuestionIntroduceTop = styled.section``;
-  const QuestionIntroduceBottom = styled.section`
-    opacity: 0.2;
-    text-align: center;
-  `;
 
   const QuestionIntroduceTitle = styled.h3`
     color: ${({ theme }) => theme.color.secondaryGreen};
@@ -30,14 +25,6 @@ export default function QuestionIntroducePage(): JSX.Element {
     margin-left: 8px;
   `;
 
-  const QuestionShare = styled.span`
-    display: inline-block;
-    font-size: 16px;
-    font-weight: 400;
-    text-decoration-line: underline;
-    color: #858585;
-    margin: 28px 0;
-  `;
   const handleChange = () => {
     console.log('e');
   };
@@ -52,14 +39,6 @@ export default function QuestionIntroducePage(): JSX.Element {
           <QuestionTitleInput onChange={handleChange} value="" />
           <QuestionSubtitleInput onChange={handleChange} value="" />
         </QuestionIntroduceTop>
-        <QuestionIntroduceBottom>
-          <TextButton
-            text="참여하기"
-            buttonColor="PRIMARY"
-            buttonSize="LARGE"
-          />
-          <QuestionShare>공유하기</QuestionShare>
-        </QuestionIntroduceBottom>
       </StyledQuestionIntroducePage>
     </>
   );

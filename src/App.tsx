@@ -11,6 +11,7 @@ import theme from './config/style/theme';
 
 function App(): JSX.Element {
   const mini = new Mini();
+
   mini.startPreset({
     preset: process.env.REACT_APP_PRESET!,
     params: {

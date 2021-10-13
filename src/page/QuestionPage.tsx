@@ -6,6 +6,7 @@ import IconButton from '@component/common/button/IconButton';
 import UpDownModal from '@component/common/modal/UpDownModal';
 import NavBar from '@component/common/navbar/NavBar';
 import QuestionCardList from '@component/question/QuestionCardList';
+import QuestionModal from '@component/question/QuestionModal';
 import { ReactComponent as PlusIcon } from '@config/icon/plus.svg';
 
 const StyledCreatePage = styled.section`
@@ -44,7 +45,7 @@ export default function QuestionPage(): JSX.Element {
         />
         {isPopup && (
           <UpDownModal setPopup={setPopup}>
-            <div>ddd</div>
+            <QuestionModal />
           </UpDownModal>
         )}
       </StyledCreatePage>

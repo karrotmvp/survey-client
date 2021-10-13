@@ -1,11 +1,10 @@
 import styled from '@emotion/styled';
 import { useLocation } from 'react-router-dom';
 
-import TextButton from '@component/common/button/TextButton';
 import QuestionSubtitleInput from '@component/common/input/QuestionSubtitleInput';
 import QuestionTitleInput from '@component/common/input/QuestionTitleInput';
 import NavBar from '@component/common/navbar/NavBar';
-import QuestionDetailHeader from '@component/question/QuestionDetailHeader';
+import QuestionDetailHeader from '@component/questionDetail/QuestionDetailHeader';
 
 export default function QuestionDetailPage(): JSX.Element {
   const location = useLocation();
@@ -27,11 +26,6 @@ export default function QuestionDetailPage(): JSX.Element {
   const QuestionDetailBottom = styled.section`
     margin-top: 52px;
     opacity: 0.2;
-  `;
-  const QuestionDetailButtons = styled.div`
-    display: flex;
-    justify-content: space-between;
-    margin-top: 28px;
   `;
 
   const QuestionDetailInput = styled.div`
@@ -58,10 +52,6 @@ export default function QuestionDetailPage(): JSX.Element {
         </QuestionDetailTop>
         <QuestionDetailBottom>
           <QuestionDetailInput>답변을 적어주세요</QuestionDetailInput>
-          <QuestionDetailButtons>
-            <TextButton text="이전" buttonColor="WHITE" buttonSize="SMALL" />
-            <TextButton text="다음" buttonColor="PRIMARY" buttonSize="SMALL" />
-          </QuestionDetailButtons>
         </QuestionDetailBottom>
       </StyledQuestionDetailPage>
     </>
