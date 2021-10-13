@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import { useNavigator } from '@karrotframe/navigator';
+import Mini from '@karrotmarket/mini';
 
 import { ReactComponent as ArrowIcon } from '@config/icon/arrow_back.svg';
 import { ReactComponent as ClearIcon } from '@config/icon/clear.svg';
@@ -25,7 +26,7 @@ const NavBarStyle = styled.div<StyleNavBarType>`
   top: 0;
   left: 0;
   background-color: ${({ navColor, theme }) =>
-    navColor === 'GRAY' ? '#e5e5e5' : '#ffff'};
+    navColor === 'GRAY' ? '#f9f9fb' : '#ffff'};
 `;
 
 const NavTitle = styled.span`
@@ -53,10 +54,18 @@ export default function NavBar({
     pop();
   };
 
+  const close = () => {
+    new Mini().close();
+  };
+
   return (
     <NavBarStyle {...{ navColor }}>
       <AppendLeft>
-        {type === 'CLOSE' ? <ClearIcon /> : <ArrowIcon onClick={goBack} />}
+        {type === 'CLOSE' ? (
+          <ClearIcon onClick={close} />
+        ) : (
+          <ArrowIcon onClick={goBack} />
+        )}
         {title && <NavTitle>{title}</NavTitle>}
       </AppendLeft>
       {appendRight}
