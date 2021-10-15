@@ -2,8 +2,7 @@ import { Navigator, Screen } from '@karrotframe/navigator';
 
 import HomePage from '@page/HomePage';
 import QuestionDetailPage from '@page/QuestionDetailPage';
-import QuestionIntroducePage from '@page/QuestionIntroducePage';
-import CreatePage from '@page/QuestionPage';
+import QuestionPage from '@page/QuestionPage';
 
 export default function Router(): JSX.Element {
   return (
@@ -12,10 +11,7 @@ export default function Router(): JSX.Element {
         <HomePage />
       </Screen>
       <Screen path="/question">
-        <CreatePage />
-      </Screen>
-      <Screen path="/question/INTRODUCE">
-        <QuestionIntroducePage />
+        <QuestionPage />
       </Screen>
       <Screen path="/question/:id">
         <QuestionDetailPage />
