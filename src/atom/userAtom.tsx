@@ -1,4 +1,4 @@
-import { atom } from 'recoil';
+import { atom, selector } from 'recoil';
 
 type userAtomType = {
   nickName: string;
@@ -13,4 +13,12 @@ const userAtom = atom<userAtomType>({
   },
 });
 
-export default userAtom;
+const userSelector = selector({
+  key: 'userSelector',
+  get: ({ get }) => {
+    const { nickName, storeName } = get(userAtom);
+    return `${storeName}의 ${nickName} 사장님`;
+  },
+});
+
+export { userSelector, userAtom };
