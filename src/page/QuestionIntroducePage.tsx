@@ -1,10 +1,15 @@
 import styled from '@emotion/styled';
+import { useRecoilValue } from 'recoil';
 
+import { userSelector } from '@atom/userAtom';
 import QuestionSubtitleInput from '@component/common/input/QuestionSubtitleInput';
 import QuestionTitleInput from '@component/common/input/QuestionTitleInput';
 import NavBar from '@component/common/navbar/NavBar';
+import StyledBasicPage from '@config/style/styledCompoent';
 
 export default function QuestionIntroducePage(): JSX.Element {
+  const introduceTitle = useRecoilValue(userSelector);
+
   const StyledQuestionIntroducePage = styled.section`
     background-color: #ffff;
     width: 100%;
@@ -28,18 +33,19 @@ export default function QuestionIntroducePage(): JSX.Element {
   const handleChange = () => {
     console.log('e');
   };
+
   return (
     <>
-      <NavBar type="BACK" title="소개 페이지" navColor="WHITE" />
-      <StyledQuestionIntroducePage>
-        <QuestionIntroduceTop>
-          <QuestionIntroduceTitle>
-            찰리 사진관 카페의 CHALee 사장님
-          </QuestionIntroduceTitle>
-          <QuestionTitleInput onChange={handleChange} value="" />
-          <QuestionSubtitleInput onChange={handleChange} value="" />
-        </QuestionIntroduceTop>
-      </StyledQuestionIntroducePage>
+      <StyledBasicPage>
+        <NavBar type="BACK" title="설문 소개 작성" />
+        <StyledQuestionIntroducePage>
+          <QuestionIntroduceTop>
+            <QuestionIntroduceTitle>{introduceTitle}</QuestionIntroduceTitle>
+            <QuestionTitleInput onChange={handleChange} value="" />
+            <QuestionSubtitleInput onChange={handleChange} value="" />
+          </QuestionIntroduceTop>
+        </StyledQuestionIntroducePage>
+      </StyledBasicPage>
     </>
   );
 }
