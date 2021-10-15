@@ -12,7 +12,12 @@ const global = css`
   button {
     border: none;
   }
-
+  li,
+  ol {
+    list-style: none;
+    margin: 0;
+    padding: 0ß;
+  }
   h1,
   h2,
   h3,
