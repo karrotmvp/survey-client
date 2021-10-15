@@ -1,21 +1,17 @@
 import styled from '@emotion/styled';
 import { useNavigator } from '@karrotframe/navigator';
 
-import { ReactComponent as TrashIcon } from '@config/icon/trash_can.svg';
-
-import IconButton from '../button/IconButton';
-
 type QuestionCardType = {
   title: string;
-  description: string;
-  type: 'INTRODUCE' | 'Q1' | 'Q2' | 'Q3';
-  QuestionType?: 'CHOICE' | 'TEXT';
+  description?: string;
+  questionType: 1 | 2 | 3;
+  questionIndex: number;
 };
 
 const QuestionCardTitle = styled.h3`
   font-weight: 700;
   font-size: 1rem;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
   line-height: 140%;
 `;
 
@@ -23,47 +19,37 @@ const QuestionCardDescription = styled.span`
   font-weight: 400;
   font-size: 14px;
   opacity: 0.6;
-`;
-
-const QuestionCardTop = styled.div`
-  padding: 16px;
-`;
-
-const QuestionCardBottom = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 16px 25px;
-  border-top: 1px solid #dfe1e3;
+  display: inline-block;
 `;
 
 const StyledQuestionCard = styled.li`
   width: 100%;
-  height: 200px;
-  border-radius: 20px;
   background-color: #ffff;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  padding: 16px;
+  border-bottom: 1px solid #c9c9c9;
 `;
 
 const QuestionCardText = styled.span`
   font-weight: 700;
   font-size: 1rem;
   color: ${({ theme }) => theme.color.secondaryGreen};
+  margin-right: 8px;
 `;
 
 const QuestionLeft = styled.div`
   height: 100%;
   display: flex;
   align-items: center;
+  margin-bottom: 14px;
 `;
 
 const QuestionTypeTag = styled.div`
   padding: 5px 8px;
   background-color: ${({ theme }) => theme.color.whiteGreen};
   color: ${({ theme }) => theme.color.secondaryGreen};
-  margin-left: 8px;
+  margin-right: 8px;
   font-weight: 400;
   font-size: 14px;
 `;
@@ -71,48 +57,30 @@ const QuestionTypeTag = styled.div`
 export default function QuestionCard({
   title,
   description,
-  type,
-  QuestionType,
+  questionType,
+  questionIndex,
 }: QuestionCardType): JSX.Element {
-  const lineEnter = (text: string) =>
-    text.split('\n').map(line => (
-      <>
-        {line}
-        <br />
-      </>
-    ));
-
   const { push } = useNavigator();
   const handleNav = () => {
-    push(`question/${type}`);
+    push(`question/${questionIndex}`);
   };
 
   return (
     <StyledQuestionCard onClick={handleNav}>
-      <QuestionCardTop>
-        <QuestionCardTitle>{lineEnter(title)}</QuestionCardTitle>
+      <QuestionLeft>
+        <>
+          <QuestionCardText>{`질문 ${questionIndex}`}</QuestionCardText>
 
+          <QuestionTypeTag>
+            {questionType === 2 ? '주관식' : '객관식'}
+          </QuestionTypeTag>
+        </>
+      </QuestionLeft>
+
+      <QuestionCardTitle>{title}</QuestionCardTitle>
+      {description && (
         <QuestionCardDescription>{description}</QuestionCardDescription>
-      </QuestionCardTop>
-
-      <QuestionCardBottom>
-        <QuestionLeft>
-          <QuestionCardText>
-            {type === 'INTRODUCE' ? '소개 페이지' : type}
-          </QuestionCardText>
-          {QuestionType && (
-            <QuestionTypeTag>
-              {QuestionType === 'CHOICE' ? '객관식' : '주관식'}
-            </QuestionTypeTag>
-          )}
-        </QuestionLeft>
-        <IconButton
-          text="삭제"
-          buttonColor="WHITE"
-          buttonSize="SMALL"
-          icon={<TrashIcon />}
-        />
-      </QuestionCardBottom>
+      )}
     </StyledQuestionCard>
   );
 }

@@ -27,7 +27,7 @@ const ModalWrapper = styled.div`
 const ModalCover = styled.div<{ isOpen: boolean }>`
   @keyframes modalUp {
     from {
-      transform: translateY(+375px);
+      transform: translateY(+100%);
       opacity: 1;
     }
     to {
@@ -41,7 +41,7 @@ const ModalCover = styled.div<{ isOpen: boolean }>`
       opacity: 0;
     }
     to {
-      transform: translateY(+375px);
+      transform: translateY(+100%);
       opacity: 1;
     }
   }
@@ -50,7 +50,7 @@ const ModalCover = styled.div<{ isOpen: boolean }>`
   position: absolute;
   bottom: 0;
   animation: ${({ isOpen }) =>
-    isOpen ? `modalUp 0.3s ease-in-out` : `modalDown 0.6s ease-in-out`};
+    isOpen ? `modalUp 0.3s ease-in-out` : `modalDown 0.8s ease-in-out`};
   border-top-right-radius: 15px;
   border-top-left-radius: 15px;
   background-color: white;
