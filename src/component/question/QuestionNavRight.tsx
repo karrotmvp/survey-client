@@ -20,7 +20,7 @@ export default function QuestionNavRight({
   return (
     <NavRight>
       <TextButton
-        text="작성완료"
+        text="설문 작성완료"
         buttonColor="#FE7E35"
         buttonSize="SMALL"
         buttonBgColor="#ffff"

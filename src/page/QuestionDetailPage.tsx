@@ -1,8 +1,9 @@
-import { MouseEvent, ChangeEvent, useState } from 'react';
+import { MouseEvent, ChangeEvent, useState, useEffect } from 'react';
 
 import styled from '@emotion/styled';
+import { useNavigator } from '@karrotframe/navigator';
 import { useLocation } from 'react-router-dom';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilState, useResetRecoilState } from 'recoil';
 
 import { questionAtom, questionListAtom } from '@atom/questionAtom';
 import AddButton from '@component/common/button/QAddButton';
@@ -25,21 +26,19 @@ const NavIcon = styled(MoreIcon)`
 `;
 export default function QuestionDetailPage(): JSX.Element {
   const location = useLocation();
+  const { push } = useNavigator();
+  const resetQuestionState = useResetRecoilState(questionAtom);
   const type =
     +location.pathname.split('/')[2] > 0 ? +location.pathname.split('/')[2] : 1;
 
   const [questionState, setQuestion] = useRecoilState(questionAtom);
-  const questionListState = useRecoilValue(questionListAtom);
-  const [isEnd, setEnd] = useState(true);
-  console.log(isEnd);
+  const [questionListState, setQuestionListState] =
+    useRecoilState(questionListAtom);
+  // const [isEnd, setEnd] = useState(true);
+  // console.log(isEnd);
 
   const [isQuestionOpen, setQuestionToggle] = useState(false);
   const [isOpen, setToggle] = useState(false);
-
-  if (questionListState[type - 1]) {
-    setQuestion(questionListState[type - 1]);
-    setEnd(false);
-  }
 
   const { questionType, text } = questionState;
 
@@ -49,13 +48,31 @@ export default function QuestionDetailPage(): JSX.Element {
 
   const handleClick = (e: MouseEvent) => {
     setToggle(!isOpen);
-    e.stopPropagation();
-  };
-
-  const handleReset = () => {
-    setToggle(false);
     setQuestionToggle(false);
   };
+
+  const handleReset = (e: MouseEvent) => {
+    if (isOpen) {
+      setToggle(false);
+    }
+    if (isQuestionOpen) {
+      setQuestionToggle(false);
+    }
+  };
+
+  const handleRouter = () => {
+    setQuestionListState([...questionListState, questionState]);
+    resetQuestionState();
+    if (type === 3) push('/question');
+    else push(`/question/${type + 1}`);
+  };
+  useEffect(() => {
+    if (questionListState[type - 1]) {
+      setQuestion(questionListState[type - 1]);
+      // setEnd(false);
+    }
+  }, [setQuestion, type]);
+
   return (
     <StyledBasicPage onClick={handleReset}>
       <NavBar
@@ -92,7 +109,11 @@ export default function QuestionDetailPage(): JSX.Element {
 
         <QuestionDetailBottom>
           {questionType === 3 && <QuestionChoiceList />}
-          <AddButton text="질문 추가" />
+          {type === 3 ? (
+            <AddButton text="설문 목록 보기" onClick={handleRouter} />
+          ) : (
+            <AddButton text="질문 추가" onClick={handleRouter} />
+          )}
         </QuestionDetailBottom>
       </PageModal>
     </StyledBasicPage>

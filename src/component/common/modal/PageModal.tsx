@@ -3,11 +3,11 @@ import styled from '@emotion/styled';
 const StyledPageModal = styled.section<StyledPageModalType>`
   background-color: #ffff;
   width: 100%;
-  min-height: 100vh;
+  min-height: calc(100vh - 3.5rem);
   background-color: #ffff;
-  top: 3.5rem;
-  position: absolute;
-  border-radius: 19px;
+  top: 0rem;
+  position: relative;
+  border-radius: 19px 19px 0 0;
   z-index: 10;
   padding: ${({ rowPaddingNone }) => (rowPaddingNone ? '24px 0' : '24px 16px')};
 `;

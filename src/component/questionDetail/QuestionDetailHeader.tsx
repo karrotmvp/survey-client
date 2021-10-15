@@ -41,7 +41,6 @@ export default function QuestionDetailHeader({
 
   const toggleHandler = (e: MouseEvent) => {
     setToggle(!isOpen);
-    e.stopPropagation();
   };
   let text: string;
   switch (questionType) {

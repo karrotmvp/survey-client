@@ -1,4 +1,4 @@
-import { ChangeEvent } from 'react';
+import { ChangeEvent, MouseEvent } from 'react';
 
 import styled from '@emotion/styled';
 import { useRecoilState } from 'recoil';
@@ -28,7 +28,7 @@ export default function QuestionChoiceList(): JSX.Element {
         choices: [
           ...choices.slice(0, +index),
           { value: target.value },
-          ...choices.slice(+index + 1, -1),
+          ...choices.slice(+index + 1),
         ],
       });
     }
@@ -41,11 +41,28 @@ export default function QuestionChoiceList(): JSX.Element {
     });
   };
 
+  const onDelete = (e: MouseEvent) => {
+    const target = e.currentTarget as HTMLButtonElement;
+    const index = target.dataset.list;
+
+    console.log(target);
+    if (index !== undefined) {
+      console.log(index);
+      setQuestionState({
+        ...questionState,
+        choices: [...choices.filter((v, idx) => idx !== +index)],
+      });
+    }
+  };
+
   return (
     <StyledQuestionChoiceList>
       {choices &&
         choices.map(({ value }, index) => (
-          <QuestionChoice key={index} {...{ value, onChange, index }} />
+          <QuestionChoice
+            key={index}
+            {...{ value, onDelete, onChange, index }}
+          />
         ))}
       <IconButton
         onClick={handleClick}

@@ -1,3 +1,5 @@
+import { MouseEvent } from 'react';
+
 import styled from '@emotion/styled';
 
 import { InputType } from '@component/common/input/QuestionTitleInput';
@@ -30,18 +32,22 @@ const StyledChoiceInput = styled.textarea`
 
 export default function QuestionChoice({
   value,
+  onDelete,
   onChange,
   index,
-}: InputType & { index: number }): JSX.Element {
+}: InputType & {
+  index: number;
+  onDelete: (e: MouseEvent) => void;
+}): JSX.Element {
   return (
-    <StyledQuestionChoice>
+    <StyledQuestionChoice data-list={index}>
       <StyledChoiceInput
         value={value}
         onChange={onChange}
         placeholder={`객관식 답변 ${index + 1}`}
         data-list={index}
       />
-      {index !== 0 && <DeleteIcon />}
+      {index !== 0 && <DeleteIcon onClick={onDelete} data-list={index} />}
     </StyledQuestionChoice>
   );
 }

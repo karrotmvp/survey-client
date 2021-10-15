@@ -1,3 +1,5 @@
+import { MouseEvent } from 'react';
+
 import styled from '@emotion/styled';
 
 const StyledAddButton = styled.button`
@@ -14,8 +16,12 @@ const StyledAddButton = styled.button`
 
 type AddButtonType = {
   text: string;
+  onClick: (e: MouseEvent) => void;
 };
 
-export default function AddButton({ text }: AddButtonType): JSX.Element {
-  return <StyledAddButton>{text}</StyledAddButton>;
+export default function AddButton({
+  text,
+  onClick,
+}: AddButtonType): JSX.Element {
+  return <StyledAddButton {...{ onClick }}>{text}</StyledAddButton>;
 }

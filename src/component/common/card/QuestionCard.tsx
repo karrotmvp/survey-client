@@ -62,14 +62,14 @@ export default function QuestionCard({
 }: QuestionCardType): JSX.Element {
   const { push } = useNavigator();
   const handleNav = () => {
-    push(`question/${questionIndex}`);
+    push(`question/${questionIndex + 1}`);
   };
 
   return (
     <StyledQuestionCard onClick={handleNav}>
       <QuestionLeft>
         <>
-          <QuestionCardText>{`질문 ${questionIndex}`}</QuestionCardText>
+          <QuestionCardText>{`질문 ${questionIndex + 1}`}</QuestionCardText>
 
           <QuestionTypeTag>
             {questionType === 2 ? '주관식' : '객관식'}

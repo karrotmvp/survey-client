@@ -7,14 +7,14 @@ import QuestionCard from '@component/common/card/QuestionCard';
 const StyledQuestionCardList = styled.ul`
   display: grid;
   grid-template-columns: auto;
-  grid-gap: 16px;
 `;
 
 export default function QuestionCardList(): JSX.Element {
-  const questionState = useRecoilValue(questionListAtom);
+  const questionListState = useRecoilValue(questionListAtom);
+  console.log(questionListState);
   return (
     <StyledQuestionCardList>
-      {questionState.map(
+      {questionListState.map(
         ({ questionType, text, description }, questionIndex) => (
           <QuestionCard
             key={questionIndex}
