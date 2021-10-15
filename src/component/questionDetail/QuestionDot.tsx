@@ -1,6 +1,9 @@
 import styled from '@emotion/styled';
 
-import { QuestionType } from './QuestionDetailHeader';
+type QuestionType = {
+  title: number;
+  questionType: 1 | 2 | 3;
+};
 
 const StyledQuestionDot = styled.div`
   height: 100%;
@@ -20,7 +23,7 @@ const Dot = styled.div<{ active?: boolean }>`
 
 export default function QuestionDot({ title }: QuestionType): JSX.Element {
   switch (title) {
-    case 'Q1':
+    case 1:
       return (
         <StyledQuestionDot>
           <Dot active />
@@ -28,7 +31,7 @@ export default function QuestionDot({ title }: QuestionType): JSX.Element {
           <Dot />
         </StyledQuestionDot>
       );
-    case 'Q2':
+    case 2:
       return (
         <StyledQuestionDot>
           <Dot active />
@@ -36,7 +39,7 @@ export default function QuestionDot({ title }: QuestionType): JSX.Element {
           <Dot />
         </StyledQuestionDot>
       );
-    case 'Q3':
+    case 3:
       return (
         <StyledQuestionDot>
           <Dot active />

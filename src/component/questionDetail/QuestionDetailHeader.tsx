@@ -1,12 +1,14 @@
+import { MouseEvent } from 'react';
+
 import styled from '@emotion/styled';
+import { useRecoilState } from 'recoil';
 
+import { questionAtom } from '@atom/questionAtom';
 import ToggleButton from '@component/common/button/ToggleButton';
-
-import QuestionDot from './QuestionDot';
+import NavToggle from '@component/common/navbar/NavToggle';
 
 const StyledQuestionDetailHeader = styled.section`
   display: flex;
-  justify-content: space-between;
   width: 100%;
 `;
 
@@ -23,24 +25,67 @@ const QuestionDetailLeft = styled.div`
 `;
 
 export type QuestionType = {
-  title: string;
+  title: number;
+  isOpen: boolean;
+  questionType: 1 | 2 | 3;
+  setToggle: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export default function QuestionDetailHeader({
   title,
+  questionType,
+  isOpen,
+  setToggle,
 }: QuestionType): JSX.Element {
+  const [questionState, setQuestion] = useRecoilState(questionAtom);
+
+  const toggleHandler = (e: MouseEvent) => {
+    setToggle(!isOpen);
+    e.stopPropagation();
+  };
+  let text: string;
+  switch (questionType) {
+    case 2:
+      text = '주관식';
+      break;
+    case 3:
+      text = '객관식';
+      break;
+    default:
+      text = '주관식';
+      break;
+  }
+
+  const handleToggleList = (e: MouseEvent<HTMLLIElement>) => {
+    const target = e.target as HTMLLIElement;
+    const checkTargetNum = (targetNum: number): 2 | 3 => {
+      if (targetNum === 2 || targetNum === 3) {
+        return targetNum;
+      }
+      return 3;
+    };
+
+    if (target.dataset.list) {
+      setQuestion({
+        ...questionState,
+        questionType: checkTargetNum(+target.dataset.list + 2),
+      });
+    }
+  };
+
   return (
     <StyledQuestionDetailHeader>
       <QuestionDetailLeft>
-        <StyledQuestionDetailTitle>{title}</StyledQuestionDetailTitle>
-        <QuestionDot title={title} />
+        <StyledQuestionDetailTitle>질문 {title}</StyledQuestionDetailTitle>
       </QuestionDetailLeft>
-      <ToggleButton
-        onClick={() => {
-          console.log('ha');
-        }}
-        text="주관식"
-      />
+      <ToggleButton onClick={toggleHandler} text={text} />
+      {isOpen && (
+        <NavToggle
+          navList={['주관식', '객관식']}
+          position={{ top: '44px', left: '16px' }}
+          onClick={handleToggleList}
+        />
+      )}
     </StyledQuestionDetailHeader>
   );
 }

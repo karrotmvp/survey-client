@@ -1,59 +1,100 @@
+import { MouseEvent, ChangeEvent, useState } from 'react';
+
 import styled from '@emotion/styled';
 import { useLocation } from 'react-router-dom';
+import { useRecoilState, useRecoilValue } from 'recoil';
 
-import QuestionSubtitleInput from '@component/common/input/QuestionSubtitleInput';
+import { questionAtom, questionListAtom } from '@atom/questionAtom';
+import AddButton from '@component/common/button/QAddButton';
 import QuestionTitleInput from '@component/common/input/QuestionTitleInput';
+import PageModal from '@component/common/modal/PageModal';
 import NavBar from '@component/common/navbar/NavBar';
+import NavToggle from '@component/common/navbar/NavToggle';
+import QuestionNavRight from '@component/question/QuestionNavRight';
+import QuestionChoiceList from '@component/questionDetail/QuestionChoiceList';
 import QuestionDetailHeader from '@component/questionDetail/QuestionDetailHeader';
+import contents from '@config/const/const';
+import { ReactComponent as MoreIcon } from '@config/icon/more_w.svg';
+import StyledBasicPage from '@config/style/styledCompoent';
 
+const QuestionDetailBottom = styled.section`
+  margin-top: 52px;
+`;
+const NavIcon = styled(MoreIcon)`
+  margin-left: 8px;
+`;
 export default function QuestionDetailPage(): JSX.Element {
   const location = useLocation();
-  const type = location.pathname.split('/')[2];
+  const type =
+    +location.pathname.split('/')[2] > 0 ? +location.pathname.split('/')[2] : 1;
 
-  const StyledQuestionDetailPage = styled.section`
-    background-color: #ffff;
-    width: 100%;
-    padding: 3.5rem 1rem 10px 1rem;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-  `;
+  const [questionState, setQuestion] = useRecoilState(questionAtom);
+  const questionListState = useRecoilValue(questionListAtom);
+  const [isEnd, setEnd] = useState(true);
+  console.log(isEnd);
 
-  const QuestionDetailTop = styled.section`
-    padding-top: 24px;
-  `;
+  const [isQuestionOpen, setQuestionToggle] = useState(false);
+  const [isOpen, setToggle] = useState(false);
 
-  const QuestionDetailBottom = styled.section`
-    margin-top: 52px;
-    opacity: 0.2;
-  `;
+  if (questionListState[type - 1]) {
+    setQuestion(questionListState[type - 1]);
+    setEnd(false);
+  }
 
-  const QuestionDetailInput = styled.div`
-    width: 100%;
-    border-bottom: 1.5px solid #2c3049;
-    font-size: 20px;
-    font-weight: 700;
-    line-height: 120%;
-    color: #cacbd1;
-    padding: 8px;
-  `;
+  const { questionType, text } = questionState;
 
-  const handleChange = () => {
-    console.log('d');
+  const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    setQuestion({ ...questionState, text: e.target.value });
+  };
+
+  const handleClick = (e: MouseEvent) => {
+    setToggle(!isOpen);
+    e.stopPropagation();
+  };
+
+  const handleReset = () => {
+    setToggle(false);
+    setQuestionToggle(false);
   };
   return (
-    <>
-      <NavBar type="BACK" title={type} navColor="WHITE" />
-      <StyledQuestionDetailPage>
-        <QuestionDetailTop>
-          <QuestionDetailHeader title={type} />
-          <QuestionTitleInput onChange={handleChange} value="" />
-          <QuestionSubtitleInput onChange={handleChange} value="" />
-        </QuestionDetailTop>
+    <StyledBasicPage onClick={handleReset}>
+      <NavBar
+        type="BACK"
+        title="질문 작성"
+        appendRight={
+          <QuestionNavRight
+            rightIcon={
+              <>
+                <NavIcon onClick={handleClick} />
+                {isOpen && (
+                  <NavToggle
+                    navList={['목록 보기', '삭제']}
+                    position={{ top: '-18px', right: '0' }}
+                  />
+                )}
+              </>
+            }
+          />
+        }
+      />
+      <PageModal>
+        <QuestionDetailHeader
+          isOpen={isQuestionOpen}
+          setToggle={setQuestionToggle}
+          title={type}
+          questionType={questionType}
+        />
+        <QuestionTitleInput
+          onChange={handleChange}
+          placeholder={contents.placeholder.TEXT}
+          value={text}
+        />
+
         <QuestionDetailBottom>
-          <QuestionDetailInput>답변을 적어주세요</QuestionDetailInput>
+          {questionType === 3 && <QuestionChoiceList />}
+          <AddButton text="질문 추가" />
         </QuestionDetailBottom>
-      </StyledQuestionDetailPage>
-    </>
+      </PageModal>
+    </StyledBasicPage>
   );
 }
