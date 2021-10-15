@@ -14,14 +14,14 @@ const StyledToggleButton = styled.button`
   align-items: center;
   padding: 8px 16px;
   border-radius: 20px;
-  background-color: #ebf9f4;
+  background-color: transparent;
 `;
 
 const ButtonText = styled.span`
   font-size: 14px;
   font-weight: 400;
   margin-right: 8px;
-  color: ${({ theme }) => theme.color.secondaryGreen};
+  color: #8e8f95;
 `;
 
 export default function ToggleButton({

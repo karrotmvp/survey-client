@@ -3,32 +3,35 @@ import styled from '@emotion/styled';
 type TextButtonType = {
   text: string;
   buttonSize: 'LARGE' | 'SMALL';
-  buttonColor: 'PRIMARY' | 'WHITE';
+  buttonColor: string;
+  buttonBgColor: string;
 };
 
-type StyledType = Pick<TextButtonType, 'buttonSize' | 'buttonColor'>;
+type StyledType = Pick<
+  TextButtonType,
+  'buttonSize' | 'buttonColor' | 'buttonBgColor'
+>;
 
 const StyledTextButton = styled.button<StyledType>`
   padding: ${({ buttonSize }) =>
-    buttonSize === 'SMALL' ? '15px 63px' : '15px 0'};
+    buttonSize === 'SMALL' ? '8px 16px' : '15px 0'};
   ${({ buttonSize }) => (buttonSize === 'SMALL' ? '' : 'width: 100%')};
-  border-radius: 33px;
-  font-size: 18px;
+  border-radius: 8px;
+  font-size: 14px;
   font-weight: 700;
-  background-color: ${({ buttonColor, theme }) =>
-    buttonColor === 'PRIMARY'
-      ? theme.color.primaryOrange
-      : theme.color.darkWhite};
-  color: ${({ buttonColor, theme }) =>
-    buttonColor === 'PRIMARY' ? theme.color.white : theme.color.gray};
+  background-color: ${({ buttonBgColor }) => buttonBgColor};
+  color: ${({ buttonColor }) => buttonColor};
 `;
 
 export default function TextButton({
   text,
   buttonSize,
   buttonColor,
+  buttonBgColor,
 }: TextButtonType): JSX.Element {
   return (
-    <StyledTextButton {...{ buttonSize, buttonColor }}>{text}</StyledTextButton>
+    <StyledTextButton {...{ buttonSize, buttonColor, buttonBgColor }}>
+      {text}
+    </StyledTextButton>
   );
 }
