@@ -9,13 +9,13 @@ const global = css`
   }
   @font-face {
     font-family: 'SpoqaHanSansNeo';
-    font-weight: 700;
+    font-weight: 900;
     src: url('./font/SpoqaHanSansNeo/SpoqaHanSansNeo-Bold.ttf')
       format('truetype');
   }
   @font-face {
     font-family: 'SpoqaHanSansNeo';
-    font-weight: 400;
+    font-weight: 600;
     src: url('./font/SpoqaHanSansNeo/SpoqaHanSansNeo-Medium.ttf')
       format('truetype');
   }
