@@ -1,44 +1,61 @@
+import { useEffect } from 'react';
+
 import styled from '@emotion/styled';
 import { useNavigator } from '@karrotframe/navigator';
+import { useRecoilValueLoadable } from 'recoil';
 
-import IconButton from '@component/common/button/IconButton';
+// import mini from '@api/mini';
+import { authorizationSelector } from '@api/authorization';
 import NavBar from '@component/common/navbar/NavBar';
 import HomeBanner from '@component/home/HomeBanner';
-import HomeSurveyList from '@component/home/HomeSurveyList';
-import { ReactComponent as PlusIcon } from '@config/icon/plus.svg';
+
+import useAuth from '../hook/useAuth';
 
 const StyledHomePage = styled.section`
   background: linear-gradient(180deg, #f9f9fb 0%, #f2f2f2 100%);
   width: 100%;
-  padding-top: 3.5rem;
-  padding-bottom: 10px;
   min-height: 100vh;
+  padding-top: 3.5rem;
 `;
 
 const StyledSection = styled.section`
   padding: 0 18px;
 `;
 
+const CreateQuestionButton = styled.button`
+  width: 100%;
+  background-color: ${({ theme }) => theme.color.primaryOrange};
+  border-radius: 12px;
+  padding: 20px 100px;
+  font-size: 18px;
+  color: #ffff;
+  font-weight: 700;
+`;
+
 export default function HomePage(): JSX.Element {
   const { push } = useNavigator();
-  const handleClick = () => {
-    push('/question');
+  const [code, getCode] = useAuth();
+  const jwt = useRecoilValueLoadable(authorizationSelector);
+
+  const handleClick = async () => {
+    getCode();
   };
 
+  useEffect(() => {
+    if (jwt.state === 'hasValue') {
+      sessionStorage.setItem('jwt', jwt.contents.data);
+      push('/question/1');
+    }
+  }, [code, jwt.state]);
   return (
     <>
-      <NavBar type="CLOSE" navColor="GRAY" />
       <StyledHomePage>
+        <NavBar type="CLOSE" />
         <StyledSection>
-          <HomeBanner storeName="찰리카페사진관" />
-          <HomeSurveyList />
-          <IconButton
-            text="설문 만들기"
-            buttonColor="PRIMARY"
-            buttonSize="LARGE"
-            icon={<PlusIcon />}
-            onClick={handleClick}
-          />
+          <HomeBanner />
+          <CreateQuestionButton onClick={handleClick}>
+            설문 만들러가기
+          </CreateQuestionButton>
         </StyledSection>
       </StyledHomePage>
     </>

@@ -28,7 +28,9 @@
   "include": [
     "src",
     "tsconfig.paths.json",
-    "custom.d.ts"
+    "custom.d.ts",
+    "public/questionAtom.tsx",
+    "QR-generator.js"
   ],
   "files": [
     "custom.d.ts"

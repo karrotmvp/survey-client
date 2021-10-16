@@ -28,7 +28,10 @@ const skeletonStyles = css`
 `;
 
 const theme: Theme = {
-  fontFamily: 'Noto Sans KR',
+  fontFamily: {
+    title: 'Cafe24Surround',
+    normal: 'SpoqaHanSansNeo',
+  },
   fontWeight: {
     normal: '400',
     bold: '700',

@@ -4,27 +4,33 @@ import styled from '@emotion/styled';
 
 const StyledTitleInput = styled.textarea`
   margin-top: 24px;
+  border: none;
   resize: none;
   outline: none;
-  height: 63px;
   width: 100%;
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 700;
   line-height: 140%;
-  background-color: rgba(255, 255, 255, 0.5);
-  border: 1px dashed #9f9f9f;
+  background-color: #f4f5f6;
+  border-radius: 4px 4px 0px 0px;
+  border-bottom: 1px solid #c9c9c9;
   color: #141414;
-  padding: 1rem;
+  padding: 8px 6px;
+  ::placeholder {
+    opacity: 0.5;
+  }
 `;
 
 export type InputType = {
   value: string;
-  onChange: (e: ChangeEvent) => void;
+  onChange: (e: ChangeEvent<HTMLTextAreaElement>) => void;
+  placeholder?: string;
 };
 
 export default function QuestionTitleInput({
   value,
   onChange,
+  placeholder,
 }: InputType): JSX.Element {
   const inputChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     e.target.style.height = '16px';
@@ -36,6 +42,7 @@ export default function QuestionTitleInput({
       value={value}
       onInput={inputChange}
       onChange={onChange}
+      placeholder={placeholder}
     ></StyledTitleInput>
   );
 }

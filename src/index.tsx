@@ -1,10 +1,13 @@
 import React from 'react';
 
 import ReactDOM from 'react-dom';
+import ReactGA from 'react-ga';
 
-import './index.css';
+// import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+
+ReactGA.initialize(process.env.REACT_APP_TRACKING_ID!, { debug: true });
 
 ReactDOM.render(
   <React.StrictMode>

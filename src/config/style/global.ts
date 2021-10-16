@@ -1,8 +1,55 @@
 import { css } from '@emotion/react';
 
 const global = css`
+  @font-face {
+    font-family: 'SpoqaHanSansNeo';
+    font-weight: 300;
+    src: url('./font/SpoqaHanSansNeo/SpoqaHanSansNeo-Regular.ttf')
+      format('truetype');
+  }
+  @font-face {
+    font-family: 'SpoqaHanSansNeo';
+    font-weight: 700;
+    src: url('./font/SpoqaHanSansNeo/SpoqaHanSansNeo-Bold.ttf')
+      format('truetype');
+  }
+  @font-face {
+    font-family: 'SpoqaHanSansNeo';
+    font-weight: 400;
+    src: url('./font/SpoqaHanSansNeo/SpoqaHanSansNeo-Medium.ttf')
+      format('truetype');
+  }
+  @font-face {
+    font-family: 'SpoqaHanSansNeo';
+    font-weight: 200;
+    src: url('./font/SpoqaHanSansNeo/SpoqaHanSansNeo-Light.ttf')
+      format('truetype');
+  }
+  @font-face {
+    font-family: 'SpoqaHanSansNeo';
+    font-weight: 100;
+    src: url('./font/SpoqaHanSansNeo/SpoqaHanSansNeo-Thin.ttf')
+      format('truetype');
+  }
+  @font-face {
+    font-family: 'Cafe24Surround';
+    font-weight: 700;
+    src: url('./font/Cafe24Ssurround/Cafe24Ssurround.ttf') format('truetype');
+  }
+  @font-face {
+    font-family: 'Cafe24Surround';
+    font-weight: 400;
+    src: url('./font/Cafe24SsurroundAir/Cafe24SsurroundAir.ttf')
+      format('truetype');
+  }
+
   * {
     box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    font-family: SpoqaHanSansNeo;
   }
 
   #root {
@@ -12,7 +59,12 @@ const global = css`
   button {
     border: none;
   }
-
+  li,
+  ol {
+    list-style: none;
+    margin: 0;
+    padding: 0ß;
+  }
   h1,
   h2,
   h3,
@@ -26,57 +78,6 @@ const global = css`
   }
   ul {
     padding: 0;
-  }
-
-  @font-face {
-    font-family: 'S-Core Dream';
-    font-weight: 100;
-    src: url('./font/S-Core_Dream_OTF/SCDream1.otf') format('opentype');
-  }
-  @font-face {
-    font-family: 'S-Core Dream';
-    font-weight: 200;
-    src: url('./font/S-Core_Dream_OTF/SCDream2.otf') format('opentype');
-  }
-  @font-face {
-    font-family: 'S-Core Dream';
-    font-weight: 300;
-    src: url('./font/S-Core_Dream_OTF/SCDream3.otf') format('opentype');
-  }
-  @font-face {
-    font-family: 'S-Core Dream';
-    font-weight: 400;
-    src: url('./font/S-Core_Dream_OTF/SCDream4.otf') format('opentype');
-  }
-  @font-face {
-    font-family: 'S-Core Dream';
-    font-weight: 500;
-    src: url('./font/S-Core_Dream_OTF/SCDream5.otf') format('opentype');
-  }
-  @font-face {
-    font-family: 'S-Core Dream';
-    font-weight: 600;
-    src: url('./font/S-Core_Dream_OTF/SCDream6.otf') format('opentype');
-  }
-  @font-face {
-    font-family: 'S-Core Dream';
-    font-weight: 700;
-    src: url('./font/S-Core_Dream_OTF/SCDream7.otf') format('opentype');
-  }
-  @font-face {
-    font-family: 'S-Core Dream';
-    font-weight: 800;
-    src: url('./font/S-Core_Dream_OTF/SCDream8.otf') format('opentype');
-  }
-  @font-face {
-    font-family: 'S-Core Dream';
-    font-weight: 900;
-    src: url('./font/S-Core_Dream_OTF/SCDream9.otf') format('opentype');
-  }
-  @font-face {
-    font-family: 'S-Core Dream';
-    font-weight: 100;
-    src: url('./font/S-Core_Dream_OTF/SCDream1.otf') format('opentype');
   }
 `;
 

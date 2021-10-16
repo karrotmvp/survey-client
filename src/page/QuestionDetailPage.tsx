@@ -1,69 +1,121 @@
+import { MouseEvent, ChangeEvent, useState, useEffect } from 'react';
+
 import styled from '@emotion/styled';
+import { useNavigator } from '@karrotframe/navigator';
 import { useLocation } from 'react-router-dom';
+import { useRecoilState, useResetRecoilState } from 'recoil';
 
-import TextButton from '@component/common/button/TextButton';
-import QuestionSubtitleInput from '@component/common/input/QuestionSubtitleInput';
+import { questionAtom, questionListAtom } from '@atom/questionAtom';
+import AddButton from '@component/common/button/QAddButton';
 import QuestionTitleInput from '@component/common/input/QuestionTitleInput';
+import PageModal from '@component/common/modal/PageModal';
 import NavBar from '@component/common/navbar/NavBar';
-import QuestionDetailHeader from '@component/question/QuestionDetailHeader';
+import NavToggle from '@component/common/navbar/NavToggle';
+import QuestionNavRight from '@component/question/QuestionNavRight';
+import QuestionChoiceList from '@component/questionDetail/QuestionChoiceList';
+import QuestionDetailHeader from '@component/questionDetail/QuestionDetailHeader';
+import contents from '@config/const/const';
+import { ReactComponent as MoreIcon } from '@config/icon/more_w.svg';
+import StyledBasicPage from '@config/style/styledCompoent';
 
+const QuestionDetailBottom = styled.section`
+  margin-top: 52px;
+`;
+const NavIcon = styled(MoreIcon)`
+  margin-left: 8px;
+`;
 export default function QuestionDetailPage(): JSX.Element {
   const location = useLocation();
-  const type = location.pathname.split('/')[2];
+  const { push } = useNavigator();
+  const resetQuestionState = useResetRecoilState(questionAtom);
+  const type =
+    +location.pathname.split('/')[2] > 0 ? +location.pathname.split('/')[2] : 1;
 
-  const StyledQuestionDetailPage = styled.section`
-    background-color: #ffff;
-    width: 100%;
-    padding: 3.5rem 1rem 10px 1rem;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-  `;
+  const [questionState, setQuestion] = useRecoilState(questionAtom);
+  const [questionListState, setQuestionListState] =
+    useRecoilState(questionListAtom);
+  // const [isEnd, setEnd] = useState(true);
+  // console.log(isEnd);
 
-  const QuestionDetailTop = styled.section`
-    padding-top: 24px;
-  `;
+  const [isQuestionOpen, setQuestionToggle] = useState(false);
+  const [isOpen, setToggle] = useState(false);
 
-  const QuestionDetailBottom = styled.section`
-    margin-top: 52px;
-    opacity: 0.2;
-  `;
-  const QuestionDetailButtons = styled.div`
-    display: flex;
-    justify-content: space-between;
-    margin-top: 28px;
-  `;
+  const { questionType, text } = questionState;
 
-  const QuestionDetailInput = styled.div`
-    width: 100%;
-    border-bottom: 1.5px solid #2c3049;
-    font-size: 20px;
-    font-weight: 700;
-    line-height: 120%;
-    color: #cacbd1;
-    padding: 8px;
-  `;
-
-  const handleChange = () => {
-    console.log('d');
+  const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    setQuestion({ ...questionState, text: e.target.value });
   };
+
+  const handleClick = (e: MouseEvent) => {
+    setToggle(!isOpen);
+    setQuestionToggle(false);
+  };
+
+  const handleReset = (e: MouseEvent) => {
+    if (isOpen) {
+      setToggle(false);
+    }
+    if (isQuestionOpen) {
+      setQuestionToggle(false);
+    }
+  };
+
+  const handleRouter = () => {
+    setQuestionListState([...questionListState, questionState]);
+    resetQuestionState();
+    if (type === 3) push('/question');
+    else push(`/question/${type + 1}`);
+  };
+  useEffect(() => {
+    if (questionListState[type - 1]) {
+      setQuestion(questionListState[type - 1]);
+      // setEnd(false);
+    }
+  }, [setQuestion, type]);
+
   return (
-    <>
-      <NavBar type="BACK" title={type} navColor="WHITE" />
-      <StyledQuestionDetailPage>
-        <QuestionDetailTop>
-          <QuestionDetailHeader title={type} />
-          <QuestionTitleInput onChange={handleChange} value="" />
-          <QuestionSubtitleInput onChange={handleChange} value="" />
-        </QuestionDetailTop>
+    <StyledBasicPage onClick={handleReset}>
+      <NavBar
+        type="BACK"
+        title="질문 작성"
+        appendRight={
+          <QuestionNavRight
+            rightIcon={
+              <>
+                <NavIcon onClick={handleClick} />
+                {isOpen && (
+                  <NavToggle
+                    navList={['목록 보기', '삭제']}
+                    position={{ top: '-18px', right: '0' }}
+                  />
+                )}
+              </>
+            }
+          />
+        }
+      />
+      <PageModal>
+        <QuestionDetailHeader
+          isOpen={isQuestionOpen}
+          setToggle={setQuestionToggle}
+          title={type}
+          questionType={questionType}
+        />
+        <QuestionTitleInput
+          onChange={handleChange}
+          placeholder={contents.placeholder.TEXT}
+          value={text}
+        />
+
         <QuestionDetailBottom>
-          <QuestionDetailInput>답변을 적어주세요</QuestionDetailInput>
-          <QuestionDetailButtons>
-            <TextButton text="이전" buttonColor="WHITE" buttonSize="SMALL" />
-            <TextButton text="다음" buttonColor="PRIMARY" buttonSize="SMALL" />
-          </QuestionDetailButtons>
+          {questionType === 3 && <QuestionChoiceList />}
+          {type === 3 ? (
+            <AddButton text="설문 목록 보기" onClick={handleRouter} />
+          ) : (
+            <AddButton text="질문 추가" onClick={handleRouter} />
+          )}
         </QuestionDetailBottom>
-      </StyledQuestionDetailPage>
-    </>
+      </PageModal>
+    </StyledBasicPage>
   );
 }

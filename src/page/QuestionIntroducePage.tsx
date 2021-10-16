@@ -1,11 +1,15 @@
 import styled from '@emotion/styled';
+import { useRecoilValue } from 'recoil';
 
-import TextButton from '@component/common/button/TextButton';
+import { userSelector } from '@atom/userAtom';
 import QuestionSubtitleInput from '@component/common/input/QuestionSubtitleInput';
 import QuestionTitleInput from '@component/common/input/QuestionTitleInput';
 import NavBar from '@component/common/navbar/NavBar';
+import StyledBasicPage from '@config/style/styledCompoent';
 
 export default function QuestionIntroducePage(): JSX.Element {
+  const introduceTitle = useRecoilValue(userSelector);
+
   const StyledQuestionIntroducePage = styled.section`
     background-color: #ffff;
     width: 100%;
@@ -17,10 +21,6 @@ export default function QuestionIntroducePage(): JSX.Element {
   `;
 
   const QuestionIntroduceTop = styled.section``;
-  const QuestionIntroduceBottom = styled.section`
-    opacity: 0.2;
-    text-align: center;
-  `;
 
   const QuestionIntroduceTitle = styled.h3`
     color: ${({ theme }) => theme.color.secondaryGreen};
@@ -30,37 +30,22 @@ export default function QuestionIntroducePage(): JSX.Element {
     margin-left: 8px;
   `;
 
-  const QuestionShare = styled.span`
-    display: inline-block;
-    font-size: 16px;
-    font-weight: 400;
-    text-decoration-line: underline;
-    color: #858585;
-    margin: 28px 0;
-  `;
   const handleChange = () => {
     console.log('e');
   };
+
   return (
     <>
-      <NavBar type="BACK" title="소개 페이지" navColor="WHITE" />
-      <StyledQuestionIntroducePage>
-        <QuestionIntroduceTop>
-          <QuestionIntroduceTitle>
-            찰리 사진관 카페의 CHALee 사장님
-          </QuestionIntroduceTitle>
-          <QuestionTitleInput onChange={handleChange} value="" />
-          <QuestionSubtitleInput onChange={handleChange} value="" />
-        </QuestionIntroduceTop>
-        <QuestionIntroduceBottom>
-          <TextButton
-            text="참여하기"
-            buttonColor="PRIMARY"
-            buttonSize="LARGE"
-          />
-          <QuestionShare>공유하기</QuestionShare>
-        </QuestionIntroduceBottom>
-      </StyledQuestionIntroducePage>
+      <StyledBasicPage>
+        <NavBar type="BACK" title="설문 소개 작성" />
+        <StyledQuestionIntroducePage>
+          <QuestionIntroduceTop>
+            <QuestionIntroduceTitle>{introduceTitle}</QuestionIntroduceTitle>
+            <QuestionTitleInput onChange={handleChange} value="" />
+            <QuestionSubtitleInput onChange={handleChange} value="" />
+          </QuestionIntroduceTop>
+        </StyledQuestionIntroducePage>
+      </StyledBasicPage>
     </>
   );
 }
