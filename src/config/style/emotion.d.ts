@@ -2,7 +2,10 @@ import '@emotion/react';
 
 declare module '@emotion/react' {
   export interface Theme {
-    fontFamily: string;
+    fontFamily: {
+      title: string;
+      normal: string;
+    };
     fontWeight: {
       normal: string;
       bold: string;

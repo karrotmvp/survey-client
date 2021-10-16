@@ -1,9 +1,15 @@
+import { useEffect } from 'react';
+
 import styled from '@emotion/styled';
 import { useNavigator } from '@karrotframe/navigator';
+import { useRecoilValueLoadable } from 'recoil';
 
 // import mini from '@api/mini';
+import { authorizationSelector } from '@api/authorization';
 import NavBar from '@component/common/navbar/NavBar';
 import HomeBanner from '@component/home/HomeBanner';
+
+import useAuth from '../hook/useAuth';
 
 const StyledHomePage = styled.section`
   background: linear-gradient(180deg, #f9f9fb 0%, #f2f2f2 100%);
@@ -28,23 +34,19 @@ const CreateQuestionButton = styled.button`
 
 export default function HomePage(): JSX.Element {
   const { push } = useNavigator();
-  const handleClick = () => {
-    // mini.startPreset({
-    //   preset: process.env.REACT_APP_PRESET_BIZ!,
-    //   params: {
-    //     appId: process.env.REACT_APP_APP_ID!,
-    //   },
-    //   // eslint-disable-next-line object-shorthand
-    //   onSuccess: result => {
-    //     if (result && result.bizProfileId) {
-    //       console.log(result);
-    //       push('/question');
-    //     }
-    //   },
-    // });
-    push('/question/1');
+  const [code, getCode] = useAuth();
+  const jwt = useRecoilValueLoadable(authorizationSelector);
+
+  const handleClick = async () => {
+    getCode();
   };
 
+  useEffect(() => {
+    if (jwt.state === 'hasValue') {
+      sessionStorage.setItem('jwt', jwt.contents.data);
+      push('/question/1');
+    }
+  }, [code, jwt.state]);
   return (
     <>
       <StyledHomePage>
