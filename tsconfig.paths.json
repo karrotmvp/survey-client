@@ -16,6 +16,12 @@
             ],
             "@atom/*": [
                 "src/atom/*"
+            ],
+            "@router/*": [
+                "src/router/*"
+            ],
+            "@hook/*": [
+                "src/hook/*"
             ]
         }
     }

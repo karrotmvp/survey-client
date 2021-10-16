@@ -1,12 +1,11 @@
 import { ThemeProvider, Global } from '@emotion/react';
 import { RecoilRoot } from 'recoil';
 
-import Router from '@component/Router';
-
 import '@karrotframe/navigator/index.css';
 
 import global from './config/style/global';
 import theme from './config/style/theme';
+import Router from './router/Router';
 
 function App(): JSX.Element {
   return (
