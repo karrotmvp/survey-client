@@ -1,7 +1,7 @@
-import { atom } from 'recoil';
+import { atom, selector } from 'recoil';
 
 export type questionAtomType = {
-  questionType: 1 | 2 | 3;
+  questionType: 2 | 3;
   text: string;
   description?: string;
   choices: { value: string }[];
@@ -9,7 +9,13 @@ export type questionAtomType = {
 
 const questionListAtom = atom<questionAtomType[]>({
   key: 'questionListAtom',
-  default: [],
+  default: [
+    {
+      questionType: 2,
+      text: '',
+      choices: [{ value: '' }],
+    },
+  ],
 });
 
 const questionAtom = atom<questionAtomType>({
@@ -18,6 +24,19 @@ const questionAtom = atom<questionAtomType>({
     questionType: 2,
     text: '',
     choices: [{ value: '' }],
+  },
+});
+
+const questionListSelector = selector({
+  key: 'questionListSelector',
+  get: ({ get }) => {
+    const questionList = get(questionListAtom);
+    const len = questionList.length;
+    const check = questionList.every(({ text }) => text);
+    const choicesCheck = questionList.map(({ choices }) =>
+      choices.every(({ value }) => value),
+    );
+    return { len, check, choicesCheck };
   },
 });
 
@@ -31,4 +50,10 @@ const questionTarget = atom<number>({
   default: 1,
 });
 
-export { questionAtom, questionTitle, questionTarget, questionListAtom };
+export {
+  questionAtom,
+  questionTitle,
+  questionTarget,
+  questionListAtom,
+  questionListSelector,
+};

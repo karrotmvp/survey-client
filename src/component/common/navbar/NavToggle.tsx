@@ -7,7 +7,7 @@ const StyledNavToggle = styled.ul`
   border-radius: 16px;
   list-style: none;
   position: absolute;
-  z-index: 9999;
+  z-index: 99999999;
 `;
 const NavList = styled.li`
   width: 106px;
@@ -21,13 +21,15 @@ export default function NavToggle({
   navList,
   position,
   onClick,
+  toggleRef,
 }: {
   navList: string[];
   position?: React.CSSProperties;
   onClick?: (e: React.MouseEvent<HTMLLIElement>) => void;
+  toggleRef: React.RefObject<HTMLUListElement>;
 }): JSX.Element {
   return (
-    <StyledNavToggle style={position}>
+    <StyledNavToggle style={position} ref={toggleRef}>
       {navList.map((content, idx) => (
         <NavList key={idx} data-list={idx} onClick={onClick}>
           {content}

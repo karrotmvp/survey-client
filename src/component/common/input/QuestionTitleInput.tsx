@@ -3,7 +3,7 @@ import { ChangeEvent } from 'react';
 import styled from '@emotion/styled';
 
 const StyledTitleInput = styled.textarea`
-  margin-top: 24px;
+  margin-top: 16px;
   border: none;
   resize: none;
   outline: none;
@@ -19,6 +19,9 @@ const StyledTitleInput = styled.textarea`
   ::placeholder {
     opacity: 0.5;
   }
+  :focus {
+    border-bottom: 1px solid ${({ theme }) => theme.color.secondaryGreen};
+  }
 `;
 
 export type InputType = {
@@ -30,8 +33,9 @@ export type InputType = {
 export default function QuestionTitleInput({
   value,
   onChange,
+  questionIndex,
   placeholder,
-}: InputType): JSX.Element {
+}: InputType & { questionIndex: number }): JSX.Element {
   const inputChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     e.target.style.height = '16px';
     e.target.style.height = `${e.target.scrollHeight + 6}px`;
@@ -43,6 +47,7 @@ export default function QuestionTitleInput({
       onInput={inputChange}
       onChange={onChange}
       placeholder={placeholder}
+      data-list={questionIndex}
     ></StyledTitleInput>
   );
 }

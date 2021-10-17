@@ -1,92 +1,86 @@
-import { MouseEvent, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import styled from '@emotion/styled';
-// import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 
-// import { questionTitle } from '@atom/questionAtom';
-import PageModal from '@component/common/modal/PageModal';
-import UpDownModal from '@component/common/modal/UpDownModal';
+import AlertTostModal from '@component/common/modal/TostModal';
 import NavBar from '@component/common/navbar/NavBar';
-import NavToggle from '@component/common/navbar/NavToggle';
 import QuestionCardList from '@component/question/QuestionCardList';
-import QuestionModal from '@component/question/QuestionModal';
-import QuestionNavRight from '@component/question/QuestionNavRight';
-import { ReactComponent as MoreIcon } from '@config/icon/more_w.svg';
-import { ReactComponent as PlusIcon } from '@config/icon/plus.svg';
+import { ReactComponent as PlusIcon } from '@config/icon/Plus.svg';
 import StyledBasicPage from '@config/style/styledCompoent';
-// const StyledInput = styled.input`
-//   outline: none;
-//   font-size: 22px;
-//   font-weight: 400;
-//   background: #f4f5f6;
-//   border-radius: 4px 4px 0px 0px;
-//   color: #707070;
-//   width: 100%;
-//   padding: 8px 6px;
-//   border: none;
-//   border-bottom: 1px solid #c9c9c9;
-//   margin-bottom: 20px;
-//   margin-top: 24px;
-// `;
-const NavIcon = styled(MoreIcon)`
-  margin-left: 8px;
-`;
+import { questionListAtom, questionListSelector } from '@src/atom/questionAtom';
 
 const AddQuestionButton = styled.button`
   background-color: ${({ theme }) => theme.color.primaryOrange};
-  padding: 16px;
-  border-radius: 50%;
-  width: 60px;
-  height: 60px;
+  padding: 9px 26px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 700;
+  color: #ffff;
   display: flex;
-  align-items: center;
   justify-content: center;
-  position: fixed;
-  bottom: 50px;
-  right: 16px;
+  align-items: center;
+  svg {
+    margin-right: 8px;
+  }
+  :disabled {
+    opacity: 0.5;
+  }
+  margin-left: auto;
+`;
+
+const CompleteButton = styled.button`
+  background-color: transparent;
+  font-size: 1rem;
+  font-weight: 400;
+  color: ${({ theme }) => theme.color.primaryOrange};
+  padding: 0.5rem 1rem;
+`;
+
+const StyleQuestionPage = styled.section`
+  width: 100%;
+  min-height: calc(100vh - 5.5rem);
 `;
 
 export default function QuestionPage(): JSX.Element {
-  // const [questionTitleState, setQuestionTitle] =
-  //   useRecoilState<string>(questionTitle);
-  const [isOpen, setToggle] = useState(false);
-  const [isPopup, setPopup] = useState(false);
-
-  const handleClick = () => {
-    setPopup(true);
+  const [questionList, setQuestionList] = useRecoilState(questionListAtom);
+  const [isTostOpen, setTostOpen] = useState(true);
+  const listValueState = useRecoilValue(questionListSelector);
+  const handleAddQuestionButton = () => {
+    if (questionList.length < 3) {
+      setQuestionList([
+        ...questionList,
+        {
+          questionType: 2,
+          text: '',
+          choices: [{ value: '' }],
+        },
+      ]);
+    }
   };
-
-  const handleToggle = (e: MouseEvent) => {
-    setToggle(false);
+  const handleAlert = () => {
+    setTostOpen(false);
   };
-
+  useEffect(() => {
+    setTimeout(handleAlert, 5000);
+  }, []);
   return (
-    <StyledBasicPage onClick={handleToggle}>
+    <StyledBasicPage>
+      {isTostOpen && <AlertTostModal onClick={handleAlert} />}
       <NavBar
         type="BACK"
-        title="설문 작성하기"
-        appendRight={
-          <QuestionNavRight
-            rightIcon={
-              <>
-                <NavIcon onClick={() => setToggle(true)} />
-                {isOpen && <NavToggle navList={['개별 삭제', '전체 삭제']} />}
-              </>
-            }
-          />
-        }
+        title="질문 작성"
+        appendRight={<CompleteButton>완료</CompleteButton>}
       />
-      <PageModal rowPaddingNone={true}>
+      <StyleQuestionPage>
         <QuestionCardList />
-        <AddQuestionButton onClick={handleClick}>
-          <PlusIcon />
+        <AddQuestionButton
+          disabled={!listValueState.check || listValueState.len === 3}
+          onClick={handleAddQuestionButton}
+        >
+          <PlusIcon /> 질문 추가
         </AddQuestionButton>
-        {isPopup && (
-          <UpDownModal setPopup={setPopup}>
-            <QuestionModal />
-          </UpDownModal>
-        )}
-      </PageModal>
+      </StyleQuestionPage>
     </StyledBasicPage>
   );
 }

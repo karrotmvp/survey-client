@@ -20,15 +20,20 @@ const NavBarStyle = styled.div`
   position: absolute;
   top: 0;
   left: 0;
-  background-color: transparent;
+  background-color: #ffff;
   padding: 16px;
   top: 0;
   left: 0;
+
+  z-index: 99999;
+  :scroll {
+    filter: drop-shadow(0px 4px 8px rgba(0, 0, 0, 0.1));
+  }
 `;
 
 const NavTitle = styled.span`
   margin-left: 36px;
-  color: #ffff;
+  color: #141414;
   font-size: 1rem;
   font-weight: 700;
 `;
@@ -37,18 +42,6 @@ const AppendLeft = styled.div`
   display: flex;
   height: 100%;
   align-items: center;
-`;
-
-const WhiteArrowIcon = styled(ArrowIcon)`
-  path {
-    stroke: ${({ theme }) => theme.color.white};
-    fill: ${({ theme }) => theme.color.white};
-  }
-
-  svg {
-    stroke: ${({ theme }) => theme.color.white};
-    fill: ${({ theme }) => theme.color.white};
-  }
 `;
 
 export default function NavBar({
@@ -72,7 +65,7 @@ export default function NavBar({
         {type === 'CLOSE' ? (
           <ClearIcon onClick={close} />
         ) : (
-          <WhiteArrowIcon onClick={goBack} />
+          <ArrowIcon onClick={goBack} />
         )}
         {title && <NavTitle>{title}</NavTitle>}
       </AppendLeft>

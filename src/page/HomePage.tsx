@@ -2,10 +2,10 @@ import { useEffect } from 'react';
 
 import styled from '@emotion/styled';
 import { useNavigator } from '@karrotframe/navigator';
-import { useRecoilValueLoadable } from 'recoil';
+import { useRecoilState, useRecoilValueLoadable } from 'recoil';
 
 // import mini from '@api/mini';
-import { authorizationSelector } from '@api/authorization';
+import { authorizationSelector, codeAtom } from '@api/authorization';
 import NavBar from '@component/common/navbar/NavBar';
 import HomeBanner from '@component/home/HomeBanner';
 
@@ -33,18 +33,29 @@ const CreateQuestionButton = styled.button`
 `;
 
 export default function HomePage(): JSX.Element {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { push } = useNavigator();
-  const [code, getCode] = useAuth();
+
+  const [code, setCode] = useRecoilState(codeAtom);
+  const getCode = useAuth(
+    process.env.REACT_APP_PRESET_BIZ!,
+    process.env.REACT_APP_APP_ID!,
+    res => {
+      setCode(res);
+    },
+  );
   const jwt = useRecoilValueLoadable(authorizationSelector);
 
-  const handleClick = async () => {
+  const handleClick = () => {
     getCode();
   };
 
   useEffect(() => {
     if (jwt.state === 'hasValue') {
       sessionStorage.setItem('jwt', jwt.contents.data);
-      push('/question/1');
+    }
+    if (sessionStorage.getItem('jwt')) {
+      push('/question');
     }
   }, [code, jwt.state]);
   return (
