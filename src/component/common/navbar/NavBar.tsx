@@ -25,7 +25,7 @@ const NavBarStyle = styled.div`
   top: 0;
   left: 0;
   filter: drop-shadow(0px 4px 8px rgba(0, 0, 0, 0.1));
-  z-index: 90;
+  z-index: 99999;
 `;
 
 const NavTitle = styled.span`

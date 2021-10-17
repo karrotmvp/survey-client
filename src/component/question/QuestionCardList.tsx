@@ -9,20 +9,20 @@ import QuestionCard from '@component/common/card/QuestionCard';
 const StyledQuestionCardList = styled.ul`
   display: grid;
   grid-template-columns: auto;
+  padding-top: 42px;
 `;
 
 export default function QuestionCardList(): JSX.Element {
   const [questionList, setQuestionList] = useRecoilState(questionListAtom);
-  console.log(questionList);
 
   const handleChange = (e: ChangeEvent) => {
     const target = e.currentTarget as HTMLTextAreaElement;
     const idx = +target.dataset.list!;
-    console.log('d', idx);
+
     setQuestionList([
       ...questionList.slice(0, idx),
       { ...questionList[idx], text: target.value },
-      ...questionList.slice(idx + 1, -1),
+      ...questionList.slice(idx + 1),
     ]);
   };
   return (

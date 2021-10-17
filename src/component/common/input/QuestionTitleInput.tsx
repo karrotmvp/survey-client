@@ -3,7 +3,7 @@ import { ChangeEvent } from 'react';
 import styled from '@emotion/styled';
 
 const StyledTitleInput = styled.textarea`
-  margin-top: 24px;
+  margin-top: 16px;
   border: none;
   resize: none;
   outline: none;

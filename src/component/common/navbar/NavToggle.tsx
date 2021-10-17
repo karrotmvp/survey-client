@@ -7,7 +7,7 @@ const StyledNavToggle = styled.ul`
   border-radius: 16px;
   list-style: none;
   position: absolute;
-  z-index: 9999;
+  z-index: 99999999;
 `;
 const NavList = styled.li`
   width: 106px;

@@ -33,7 +33,7 @@ const CompleteButton = styled.button`
 
 const StyleQuestionPage = styled.section`
   width: 100%;
-  min-height: calc(100vh - 3.5rem);
+  min-height: calc(100vh - 5.5rem);
 `;
 
 export default function QuestionPage(): JSX.Element {
@@ -55,7 +55,7 @@ export default function QuestionPage(): JSX.Element {
     <StyledBasicPage>
       <NavBar
         type="BACK"
-        title="설문 작성하기"
+        title="질문 작성"
         appendRight={<CompleteButton>완료</CompleteButton>}
       />
       <StyleQuestionPage>

@@ -7,7 +7,6 @@ import { useRecoilState, useResetRecoilState } from 'recoil';
 import { questionAtom, questionListAtom } from '@atom/questionAtom';
 import AddButton from '@component/common/button/QAddButton';
 import NavBar from '@component/common/navbar/NavBar';
-import QuestionChoiceList from '@component/questionDetail/QuestionChoiceList';
 import QuestionDetailHeader from '@component/questionDetail/QuestionDetailHeader';
 import StyledBasicPage from '@config/style/styledCompoent';
 
@@ -59,7 +58,7 @@ export default function QuestionDetailPage(): JSX.Element {
 
   const StyleQuestionPage = styled.section`
     width: 100%;
-    min-height: calc(100vh - 3.5rem);
+    min-height: calc(100vh - 5.5rem);
   `;
 
   return (
@@ -72,7 +71,6 @@ export default function QuestionDetailPage(): JSX.Element {
       <StyleQuestionPage>
         <QuestionDetailHeader title={type} questionType={questionType} />
         <QuestionDetailBottom>
-          {questionType === 3 && <QuestionChoiceList />}
           {type === 3 ? (
             <AddButton text="설문 목록 보기" onClick={handleRouter} />
           ) : (

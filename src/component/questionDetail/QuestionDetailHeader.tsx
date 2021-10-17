@@ -3,7 +3,7 @@ import { MouseEvent, useRef, useState } from 'react';
 import styled from '@emotion/styled';
 import { useRecoilState } from 'recoil';
 
-import { questionAtom } from '@atom/questionAtom';
+import { questionListAtom } from '@atom/questionAtom';
 import ToggleButton from '@component/common/button/ToggleButton';
 import NavToggle from '@component/common/navbar/NavToggle';
 import useOutsideClick from '@src/hook/useOutSideClick';
@@ -35,7 +35,7 @@ export default function QuestionDetailHeader({
   title,
   questionType,
 }: QuestionType): JSX.Element {
-  const [questionState, setQuestion] = useRecoilState(questionAtom);
+  const [questionListState, setQuestionList] = useRecoilState(questionListAtom);
   const [isOpen, setToggle] = useState(false);
   const ref = useRef<HTMLUListElement>(null);
 
@@ -71,10 +71,14 @@ export default function QuestionDetailHeader({
     };
 
     if (target.dataset.list) {
-      setQuestion({
-        ...questionState,
-        questionType: checkTargetNum(+target.dataset.list + 2),
-      });
+      setQuestionList([
+        ...questionListState.slice(0, title),
+        {
+          ...questionListState[title],
+          questionType: checkTargetNum(+target.dataset.list + 2),
+        },
+        ...questionListState.slice(title + 1),
+      ]);
     }
     setToggle(false);
   };
@@ -82,10 +86,11 @@ export default function QuestionDetailHeader({
   const OutSide = styled.div`
     width: 100%;
     height: 100vh;
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     background-color: transparent;
+    z-index: 9999999;
   `;
   return (
     <StyledQuestionDetailHeader>
@@ -94,14 +99,15 @@ export default function QuestionDetailHeader({
       </QuestionDetailLeft>
       <ToggleButton onClick={toggleHandler} text={text} />
       {isOpen && (
-        <OutSide onClick={handleClick}>
+        <>
+          <OutSide onClick={handleClick} />
           <NavToggle
             toggleRef={ref}
             navList={['주관식', '객관식']}
-            position={{ top: '34px', left: '4px' }}
+            position={{ top: '46px', left: '4px' }}
             onClick={handleToggleList}
           />
-        </OutSide>
+        </>
       )}
     </StyledQuestionDetailHeader>
   );

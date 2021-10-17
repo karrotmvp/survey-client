@@ -5,6 +5,7 @@ import styled from '@emotion/styled';
 import QuestionTitleInput from '@component/common/input/QuestionTitleInput';
 import QuestionDetailHeader from '@component/questionDetail/QuestionDetailHeader';
 import contents from '@config/const/const';
+import QuestionChoiceList from '@src/component/questionDetail/QuestionChoiceList';
 
 type QuestionCardType = {
   title: string;
@@ -31,8 +32,10 @@ const StyledQuestionInput = styled.div`
   padding: 4px;
   border-bottom: 1px solid #707070;
   width: 100px;
-  margin-top: 20px;
   opacity: 0.5;
+`;
+const StyledQuestionChoiceOrText = styled.div`
+  padding-top: 16px;
 `;
 
 export default function QuestionCard({
@@ -50,7 +53,13 @@ export default function QuestionCard({
         placeholder={contents.placeholder.TEXT}
         value={title}
       />
-      <StyledQuestionInput>주관식 답변</StyledQuestionInput>
+      <StyledQuestionChoiceOrText>
+        {questionType === 2 ? (
+          <StyledQuestionInput>주관식 답변</StyledQuestionInput>
+        ) : (
+          <QuestionChoiceList questionIndex={questionIndex} />
+        )}
+      </StyledQuestionChoiceOrText>
     </StyledQuestionCard>
   );
 }
