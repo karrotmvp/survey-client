@@ -3,7 +3,6 @@ import { useRecoilValue } from 'recoil';
 
 import { userSelector } from '@atom/userAtom';
 import QuestionSubtitleInput from '@component/common/input/QuestionSubtitleInput';
-import QuestionTitleInput from '@component/common/input/QuestionTitleInput';
 import NavBar from '@component/common/navbar/NavBar';
 import StyledBasicPage from '@config/style/styledCompoent';
 
@@ -41,7 +40,7 @@ export default function QuestionIntroducePage(): JSX.Element {
         <StyledQuestionIntroducePage>
           <QuestionIntroduceTop>
             <QuestionIntroduceTitle>{introduceTitle}</QuestionIntroduceTitle>
-            <QuestionTitleInput onChange={handleChange} value="" />
+
             <QuestionSubtitleInput onChange={handleChange} value="" />
           </QuestionIntroduceTop>
         </StyledQuestionIntroducePage>

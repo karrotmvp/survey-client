@@ -1,4 +1,4 @@
-import { MouseEvent } from 'react';
+import { MouseEvent, useRef, useState } from 'react';
 
 import styled from '@emotion/styled';
 import { useRecoilState } from 'recoil';
@@ -6,6 +6,7 @@ import { useRecoilState } from 'recoil';
 import { questionAtom } from '@atom/questionAtom';
 import ToggleButton from '@component/common/button/ToggleButton';
 import NavToggle from '@component/common/navbar/NavToggle';
+import useOutsideClick from '@src/hook/useOutSideClick';
 
 const StyledQuestionDetailHeader = styled.section`
   display: flex;
@@ -18,6 +19,7 @@ const StyledQuestionDetailTitle = styled.h3`
   font-size: 24px;
   margin-left: 8px;
   margin-right: 5px;
+  font-family: ${({ theme }) => theme.fontFamily.title};
 `;
 
 const QuestionDetailLeft = styled.div`
@@ -26,22 +28,26 @@ const QuestionDetailLeft = styled.div`
 
 export type QuestionType = {
   title: number;
-  isOpen: boolean;
-  questionType: 1 | 2 | 3;
-  setToggle: React.Dispatch<React.SetStateAction<boolean>>;
+  questionType: 2 | 3;
 };
 
 export default function QuestionDetailHeader({
   title,
   questionType,
-  isOpen,
-  setToggle,
 }: QuestionType): JSX.Element {
   const [questionState, setQuestion] = useRecoilState(questionAtom);
+  const [isOpen, setToggle] = useState(false);
+  const ref = useRef<HTMLUListElement>(null);
 
+  const handleClick = useOutsideClick(ref, () => {
+    if (isOpen) {
+      setToggle(false);
+    }
+  });
   const toggleHandler = (e: MouseEvent) => {
     setToggle(!isOpen);
   };
+
   let text: string;
   switch (questionType) {
     case 2:
@@ -51,9 +57,9 @@ export default function QuestionDetailHeader({
       text = '객관식';
       break;
     default:
-      text = '주관식';
-      break;
+      throw new Error();
   }
+  // 단방향이다
 
   const handleToggleList = (e: MouseEvent<HTMLLIElement>) => {
     const target = e.target as HTMLLIElement;
@@ -70,20 +76,32 @@ export default function QuestionDetailHeader({
         questionType: checkTargetNum(+target.dataset.list + 2),
       });
     }
+    setToggle(false);
   };
 
+  const OutSide = styled.div`
+    width: 100%;
+    height: 100vh;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: transparent;
+  `;
   return (
     <StyledQuestionDetailHeader>
       <QuestionDetailLeft>
-        <StyledQuestionDetailTitle>질문 {title}</StyledQuestionDetailTitle>
+        <StyledQuestionDetailTitle>질문 {title + 1}</StyledQuestionDetailTitle>
       </QuestionDetailLeft>
       <ToggleButton onClick={toggleHandler} text={text} />
       {isOpen && (
-        <NavToggle
-          navList={['주관식', '객관식']}
-          position={{ top: '44px', left: '16px' }}
-          onClick={handleToggleList}
-        />
+        <OutSide onClick={handleClick}>
+          <NavToggle
+            toggleRef={ref}
+            navList={['주관식', '객관식']}
+            position={{ top: '34px', left: '4px' }}
+            onClick={handleToggleList}
+          />
+        </OutSide>
       )}
     </StyledQuestionDetailHeader>
   );

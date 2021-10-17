@@ -30,8 +30,9 @@ export type InputType = {
 export default function QuestionTitleInput({
   value,
   onChange,
+  questionIndex,
   placeholder,
-}: InputType): JSX.Element {
+}: InputType & { questionIndex: number }): JSX.Element {
   const inputChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     e.target.style.height = '16px';
     e.target.style.height = `${e.target.scrollHeight + 6}px`;
@@ -43,6 +44,7 @@ export default function QuestionTitleInput({
       onInput={inputChange}
       onChange={onChange}
       placeholder={placeholder}
+      data-list={questionIndex}
     ></StyledTitleInput>
   );
 }

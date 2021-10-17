@@ -21,13 +21,15 @@ export default function NavToggle({
   navList,
   position,
   onClick,
+  toggleRef,
 }: {
   navList: string[];
   position?: React.CSSProperties;
   onClick?: (e: React.MouseEvent<HTMLLIElement>) => void;
+  toggleRef: React.RefObject<HTMLUListElement>;
 }): JSX.Element {
   return (
-    <StyledNavToggle style={position}>
+    <StyledNavToggle style={position} ref={toggleRef}>
       {navList.map((content, idx) => (
         <NavList key={idx} data-list={idx} onClick={onClick}>
           {content}

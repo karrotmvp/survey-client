@@ -1,7 +1,7 @@
 import { atom } from 'recoil';
 
 export type questionAtomType = {
-  questionType: 1 | 2 | 3;
+  questionType: 2 | 3;
   text: string;
   description?: string;
   choices: { value: string }[];
@@ -9,7 +9,13 @@ export type questionAtomType = {
 
 const questionListAtom = atom<questionAtomType[]>({
   key: 'questionListAtom',
-  default: [],
+  default: [
+    {
+      questionType: 2,
+      text: '',
+      choices: [{ value: '' }],
+    },
+  ],
 });
 
 const questionAtom = atom<questionAtomType>({
