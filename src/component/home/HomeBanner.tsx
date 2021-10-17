@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 const StyledHomeBanner = styled.div`
   font-size: 22px;
   font-weight: 700;
-  font-family: 'S-Core Dream';
+  font-family: ${({ theme }) => theme.fontFamily.title};
   padding-top: 40px;
 `;
 

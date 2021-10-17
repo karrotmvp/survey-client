@@ -34,7 +34,7 @@ const StyledQuestionInput = styled.div`
   opacity: 0.5;
 `;
 const StyledQuestionChoiceOrText = styled.div`
-  padding-top: 16px;
+  padding-top: 2rem;
 `;
 
 const Divid = styled.div`

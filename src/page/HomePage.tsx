@@ -4,7 +4,6 @@ import styled from '@emotion/styled';
 import { useNavigator } from '@karrotframe/navigator';
 import { useRecoilState, useRecoilValueLoadable } from 'recoil';
 
-// import mini from '@api/mini';
 import { authorizationSelector, codeAtom } from '@api/authorization';
 import NavBar from '@component/common/navbar/NavBar';
 import HomeBanner from '@component/home/HomeBanner';
@@ -12,7 +11,7 @@ import HomeBanner from '@component/home/HomeBanner';
 import useAuth from '../hook/useAuth';
 
 const StyledHomePage = styled.section`
-  background: linear-gradient(180deg, #f9f9fb 0%, #f2f2f2 100%);
+  background: #ffff;
   width: 100%;
   min-height: 100vh;
   padding-top: 3.5rem;
