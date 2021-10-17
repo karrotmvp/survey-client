@@ -6,6 +6,7 @@ import { useRecoilState } from 'recoil';
 import { questionListAtom } from '@atom/questionAtom';
 import ToggleButton from '@component/common/button/ToggleButton';
 import NavToggle from '@component/common/navbar/NavToggle';
+import { ReactComponent as TrashIcon } from '@config/icon/trash.svg';
 import useOutsideClick from '@src/hook/useOutSideClick';
 
 const StyledQuestionDetailHeader = styled.section`
@@ -27,12 +28,12 @@ const QuestionDetailLeft = styled.div`
 `;
 
 export type QuestionType = {
-  title: number;
+  questionIndex: number;
   questionType: 2 | 3;
 };
 
 export default function QuestionDetailHeader({
-  title,
+  questionIndex,
   questionType,
 }: QuestionType): JSX.Element {
   const [questionListState, setQuestionList] = useRecoilState(questionListAtom);
@@ -72,12 +73,12 @@ export default function QuestionDetailHeader({
 
     if (target.dataset.list) {
       setQuestionList([
-        ...questionListState.slice(0, title),
+        ...questionListState.slice(0, questionIndex),
         {
-          ...questionListState[title],
+          ...questionListState[questionIndex],
           questionType: checkTargetNum(+target.dataset.list + 2),
         },
-        ...questionListState.slice(title + 1),
+        ...questionListState.slice(questionIndex + 1),
       ]);
     }
     setToggle(false);
@@ -92,10 +93,28 @@ export default function QuestionDetailHeader({
     background-color: transparent;
     z-index: 9999999;
   `;
+
+  const DeleteButton = styled.button`
+    border-radius: 50%;
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: transparent;
+  `;
+  const handleDeleteButton = () => {
+    setQuestionList([
+      ...questionListState.slice(0, questionIndex),
+
+      ...questionListState.slice(questionIndex + 1),
+    ]);
+  };
   return (
     <StyledQuestionDetailHeader>
       <QuestionDetailLeft>
-        <StyledQuestionDetailTitle>질문 {title + 1}</StyledQuestionDetailTitle>
+        <StyledQuestionDetailTitle>
+          질문 {questionIndex + 1}
+        </StyledQuestionDetailTitle>
       </QuestionDetailLeft>
       <ToggleButton onClick={toggleHandler} text={text} />
       {isOpen && (
@@ -108,6 +127,11 @@ export default function QuestionDetailHeader({
             onClick={handleToggleList}
           />
         </>
+      )}
+      {questionIndex !== 0 && (
+        <DeleteButton onClick={handleDeleteButton}>
+          <TrashIcon />
+        </DeleteButton>
       )}
     </StyledQuestionDetailHeader>
   );

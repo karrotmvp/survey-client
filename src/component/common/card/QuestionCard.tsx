@@ -20,7 +20,6 @@ const StyledQuestionCard = styled.li`
   display: flex;
   flex-direction: column;
   position: relative;
-  border-top: 1px solid #f4f4f4;
   padding-bottom: 24px;
   padding-top: 12px;
 `;
@@ -38,6 +37,12 @@ const StyledQuestionChoiceOrText = styled.div`
   padding-top: 16px;
 `;
 
+const Divid = styled.div`
+  width: 100%;
+  height: 1px;
+  background-color: #f4f4f4;
+`;
+
 export default function QuestionCard({
   title,
   questionIndex,
@@ -45,21 +50,24 @@ export default function QuestionCard({
   handleChange,
 }: QuestionCardType): JSX.Element {
   return (
-    <StyledQuestionCard>
-      <QuestionDetailHeader title={questionIndex} questionType={questionType} />
-      <QuestionTitleInput
-        questionIndex={questionIndex}
-        onChange={handleChange}
-        placeholder={contents.placeholder.TEXT}
-        value={title}
-      />
-      <StyledQuestionChoiceOrText>
-        {questionType === 2 ? (
-          <StyledQuestionInput>주관식 답변</StyledQuestionInput>
-        ) : (
-          <QuestionChoiceList questionIndex={questionIndex} />
-        )}
-      </StyledQuestionChoiceOrText>
-    </StyledQuestionCard>
+    <>
+      {questionIndex !== 0 && <Divid />}
+      <StyledQuestionCard>
+        <QuestionDetailHeader {...{ questionIndex, questionType }} />
+        <QuestionTitleInput
+          questionIndex={questionIndex}
+          onChange={handleChange}
+          placeholder={contents.placeholder.TEXT}
+          value={title}
+        />
+        <StyledQuestionChoiceOrText>
+          {questionType === 2 ? (
+            <StyledQuestionInput>주관식 답변</StyledQuestionInput>
+          ) : (
+            <QuestionChoiceList questionIndex={questionIndex} />
+          )}
+        </StyledQuestionChoiceOrText>
+      </StyledQuestionCard>
+    </>
   );
 }

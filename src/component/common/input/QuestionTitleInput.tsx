@@ -19,6 +19,9 @@ const StyledTitleInput = styled.textarea`
   ::placeholder {
     opacity: 0.5;
   }
+  :focus {
+    border-bottom: 1px solid ${({ theme }) => theme.color.secondaryGreen};
+  }
 `;
 
 export type InputType = {

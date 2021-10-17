@@ -1,11 +1,10 @@
 import { ChangeEvent, MouseEvent } from 'react';
 
 import styled from '@emotion/styled';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 
-import { questionListAtom } from '@atom/questionAtom';
-import IconButton from '@component/common/button/IconButton';
-import { ReactComponent as PluseIcon } from '@config/icon/plus_gray.svg';
+import { questionListAtom, questionListSelector } from '@atom/questionAtom';
+import { ReactComponent as PluseIcon } from '@config/icon/Plus.svg';
 
 import QuestionChoice from './QuestionChoice';
 
@@ -69,6 +68,24 @@ export default function QuestionChoiceList({
     }
   };
 
+  const StyledIconButton = styled.button`
+    width: fit-content;
+    display: flex;
+    align-items: center;
+    padding: 8px 16px;
+    background: rgba(255, 208, 183, 0.5);
+    border-radius: 8px;
+    color: ${({ theme }) => theme.color.primaryOrange};
+
+    svg {
+      margin-right: 8px;
+    }
+    :disabled {
+      opacity: 0.5;
+    }
+  `;
+  const { choicesCheck } = useRecoilValue(questionListSelector);
+
   return (
     <StyledQuestionChoiceList>
       {choices &&
@@ -78,13 +95,12 @@ export default function QuestionChoiceList({
             {...{ value, onDelete, onChange, index }}
           />
         ))}
-      <IconButton
+      <StyledIconButton
+        disabled={!choicesCheck[questionIndex]}
         onClick={handleClick}
-        text="선택지 추가"
-        icon={<PluseIcon />}
-        buttonColor="WHITE"
-        buttonSize="SMALL"
-      />
+      >
+        <PluseIcon /> 답변 추가
+      </StyledIconButton>
     </StyledQuestionChoiceList>
   );
 }

@@ -1,11 +1,11 @@
 import styled from '@emotion/styled';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 
 import NavBar from '@component/common/navbar/NavBar';
 import QuestionCardList from '@component/question/QuestionCardList';
 import { ReactComponent as PlusIcon } from '@config/icon/plus.svg';
 import StyledBasicPage from '@config/style/styledCompoent';
-import { questionListAtom } from '@src/atom/questionAtom';
+import { questionListAtom, questionListSelector } from '@src/atom/questionAtom';
 
 const AddQuestionButton = styled.button`
   background-color: ${({ theme }) => theme.color.primaryOrange};
@@ -19,6 +19,9 @@ const AddQuestionButton = styled.button`
   align-items: center;
   svg {
     margin-right: 8px;
+  }
+  :disabled {
+    opacity: 0.5;
   }
   margin-left: auto;
 `;
@@ -38,6 +41,7 @@ const StyleQuestionPage = styled.section`
 
 export default function QuestionPage(): JSX.Element {
   const [questionList, setQuestionList] = useRecoilState(questionListAtom);
+  const listValueState = useRecoilValue(questionListSelector);
   const handleAddQuestionButton = () => {
     if (questionList.length < 3) {
       setQuestionList([
@@ -60,7 +64,10 @@ export default function QuestionPage(): JSX.Element {
       />
       <StyleQuestionPage>
         <QuestionCardList />
-        <AddQuestionButton onClick={handleAddQuestionButton}>
+        <AddQuestionButton
+          disabled={!listValueState.check || listValueState.len === 3}
+          onClick={handleAddQuestionButton}
+        >
           <PlusIcon /> 질문 추가
         </AddQuestionButton>
       </StyleQuestionPage>

@@ -69,7 +69,10 @@ export default function QuestionDetailPage(): JSX.Element {
         appendRight={<CompleteButton>완료</CompleteButton>}
       />
       <StyleQuestionPage>
-        <QuestionDetailHeader title={type} questionType={questionType} />
+        <QuestionDetailHeader
+          questionIndex={type}
+          questionType={questionType}
+        />
         <QuestionDetailBottom>
           {type === 3 ? (
             <AddButton text="설문 목록 보기" onClick={handleRouter} />
