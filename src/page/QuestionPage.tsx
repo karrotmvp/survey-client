@@ -1,9 +1,12 @@
+import { useEffect, useState } from 'react';
+
 import styled from '@emotion/styled';
 import { useRecoilState, useRecoilValue } from 'recoil';
 
+import AlertTostModal from '@component/common/modal/TostModal';
 import NavBar from '@component/common/navbar/NavBar';
 import QuestionCardList from '@component/question/QuestionCardList';
-import { ReactComponent as PlusIcon } from '@config/icon/plus.svg';
+import { ReactComponent as PlusIcon } from '@config/icon/Plus.svg';
 import StyledBasicPage from '@config/style/styledCompoent';
 import { questionListAtom, questionListSelector } from '@src/atom/questionAtom';
 
@@ -41,6 +44,7 @@ const StyleQuestionPage = styled.section`
 
 export default function QuestionPage(): JSX.Element {
   const [questionList, setQuestionList] = useRecoilState(questionListAtom);
+  const [isTostOpen, setTostOpen] = useState(true);
   const listValueState = useRecoilValue(questionListSelector);
   const handleAddQuestionButton = () => {
     if (questionList.length < 3) {
@@ -54,9 +58,15 @@ export default function QuestionPage(): JSX.Element {
       ]);
     }
   };
-
+  const handleAlert = () => {
+    setTostOpen(false);
+  };
+  useEffect(() => {
+    setTimeout(handleAlert, 5000);
+  }, []);
   return (
     <StyledBasicPage>
+      {isTostOpen && <AlertTostModal onClick={handleAlert} />}
       <NavBar
         type="BACK"
         title="질문 작성"

@@ -1,7 +1,6 @@
 import { MouseEvent, useState, useEffect } from 'react';
 
 import styled from '@emotion/styled';
-// import { useNavigator } from '@karrotframe/navigator';
 import { useRecoilState, useResetRecoilState } from 'recoil';
 
 import { questionAtom, questionListAtom } from '@atom/questionAtom';
