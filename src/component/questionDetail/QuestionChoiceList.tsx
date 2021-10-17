@@ -4,7 +4,7 @@ import styled from '@emotion/styled';
 import { useRecoilState, useRecoilValue } from 'recoil';
 
 import { questionListAtom, questionListSelector } from '@atom/questionAtom';
-import { ReactComponent as PluseIcon } from '@config/icon/Plus.svg';
+import { ReactComponent as PluseIcon } from '@config/icon/plus.svg';
 
 import QuestionChoice from './QuestionChoice';
 

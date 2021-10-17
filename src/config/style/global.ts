@@ -58,6 +58,7 @@ const global = css`
   }
   button {
     border: none;
+    outline: none;
   }
   li,
   ol {

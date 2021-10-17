@@ -26,8 +26,6 @@ const StyledIconButton = styled.button<StyleButtonType>`
     buttonSize === 'LARGE'
       ? 'box-shadow: 2px 6px 10px rgba(0, 0, 0, 0.25); position: absolute; bottom : 24px; left: 50%; transform: translate(-50%, -50%);'
       : ''};
-
-  border: 1px solid rgba(112, 112, 112, 0.2);
 `;
 
 const ButtonText = styled.span<StyleButtonType>`
