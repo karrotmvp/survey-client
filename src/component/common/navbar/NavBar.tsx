@@ -24,8 +24,11 @@ const NavBarStyle = styled.div`
   padding: 16px;
   top: 0;
   left: 0;
-  filter: drop-shadow(0px 4px 8px rgba(0, 0, 0, 0.1));
+
   z-index: 99999;
+  :scroll {
+    filter: drop-shadow(0px 4px 8px rgba(0, 0, 0, 0.1));
+  }
 `;
 
 const NavTitle = styled.span`

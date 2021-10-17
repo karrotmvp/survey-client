@@ -119,7 +119,7 @@ export default function QuestionDetailHeader({
       <ToggleButton onClick={toggleHandler} text={text} />
       {isOpen && (
         <>
-          <OutSide onClick={handleClick} />
+          <OutSide onTouchStart={handleClick} />
           <NavToggle
             toggleRef={ref}
             navList={['주관식', '객관식']}
