@@ -10,7 +10,7 @@ const StyledSubtitleInput = styled.textarea`
   outline: none;
   height: 41px;
   width: 100%;
-  font-size: 16px;
+  font-size: 1rem;
   font-weight: 400;
   line-height: 20px;
   background-color: rgba(255, 255, 255, 0.1);
@@ -24,7 +24,7 @@ export default function QuestionSubtitleInput({
   onChange,
 }: InputType): JSX.Element {
   const inputChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    e.target.style.height = '16px';
+    e.target.style.height = '1rem';
     e.target.style.height = `${e.target.scrollHeight + 6}px`;
   };
 

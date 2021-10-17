@@ -10,7 +10,7 @@ type Action =
 interface OptionData {
   [key: string]: any;
 }
-const token = localStorage.getItem('jwt');
+const token = sessionStorage.getItem('jwt');
 axios.defaults.baseURL = process.env.REACT_APP_API_URL;
 const Authorization = 'Authorization';
 if (token) axios.defaults.headers.common[Authorization] = `Bearer ${token}`;

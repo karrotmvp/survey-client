@@ -36,7 +36,7 @@ const StyledTostModal = styled.div`
 `;
 
 const TostText = styled.h4`
-  font-size: 14px;
+  font-size: 0.8rem;
   font-weight: 400;
   margin: 0 8px;
 `;

@@ -6,7 +6,7 @@ import { InputType } from '@component/common/input/QuestionTitleInput';
 import { ReactComponent as DeleteIcon } from '@config/icon/delete.svg';
 
 const StyledQuestionChoice = styled.li`
-  padding: 12px 16px;
+  padding: 12px 1rem;
   width: 100%;
   background: #f4f5f6;
   border-radius: 25.5px;

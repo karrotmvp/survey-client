@@ -7,19 +7,23 @@ import { questionTarget } from '@atom/questionAtom';
 const StyledTargetItem = styled.button`
   background: #f4f3f8;
   border-radius: 12px;
-  padding: 12px 16px;
+  padding: 0.8rem 1rem;
+  display: flex;
+  flex-direction: column;
+  :focus {
+    background: #c9c9c9;
+  }
 `;
 
 const TargetTitle = styled.h2`
   font-weight: 700;
-  font-size: 16px;
   line-height: 160%;
   color: #141414;
   margin-bottom: 8px;
 `;
 const TargetSubtitle = styled.span`
   font-weight: 400;
-  font-size: 14px;
+  font-size: 0.8rem;
   color: #707070;
 `;
 

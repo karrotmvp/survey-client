@@ -25,7 +25,7 @@ const StyledQuestionCard = styled.li`
 `;
 
 const StyledQuestionInput = styled.div`
-  font-size: 14px;
+  font-size: 0.8rem;
   font-weight: 400;
   color: #707070;
   padding: 4px;

@@ -8,7 +8,7 @@ const StyledTargetPage = styled.section`
   background: #ffff;
   width: 100%;
   min-height: 100vh;
-  padding: 3.5rem 1rem 1rem 1rem;
+  padding: 5.5rem 1rem 1rem 1rem;
 `;
 
 const StyledTargetArticle = styled.article`
@@ -22,7 +22,7 @@ const StyledTargetArticle = styled.article`
 
 const TargetPageTitle = styled.h2`
   color: #fff;
-  font-size: 14px;
+  font-size: 0.8rem;
   font-weight: 700;
   position: absolute;
   top: 0;

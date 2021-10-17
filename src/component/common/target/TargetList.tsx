@@ -5,8 +5,8 @@ import TargetItem from './TargetItem';
 const StyledTargetList = styled.section`
   display: grid;
   grid-template-columns: auto;
-  grid-gap: 12px;
-  margin-top: 2rem;
+  grid-gap: 0.8rem;
+  margin-top: 1rem;
 `;
 
 const targetlist = [
@@ -22,7 +22,7 @@ export default function TargetList(): JSX.Element {
   return (
     <StyledTargetList>
       {targetlist.map(({ title, subtitle }, index) => (
-        <TargetItem {...{ title, subtitle, index }} />
+        <TargetItem key={index} {...{ title, subtitle, index }} />
       ))}
     </StyledTargetList>
   );

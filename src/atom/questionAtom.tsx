@@ -39,10 +39,17 @@ const questionListSelector = selector({
     return { len, check, choicesCheck };
   },
 });
+type questionFeedBackType = {
+  questionType: number;
+  text: string;
+};
 
-const questionTitle = atom<string>({
-  key: 'questionTitle',
-  default: '설문',
+const questionFeedBack = atom<questionFeedBackType>({
+  key: 'questionFeedBack',
+  default: {
+    questionType: 4,
+    text: '',
+  },
 });
 
 const questionTarget = atom<number>({
@@ -50,9 +57,28 @@ const questionTarget = atom<number>({
   default: 1,
 });
 
+const questionSelector = selector({
+  key: 'questionSeletor',
+  get: ({ get }) => {
+    const questions = get(questionListAtom);
+
+    const title = '';
+    const target = get(questionListAtom);
+    const feedback = get(questionFeedBack);
+    const questionList = questions.map(({ questionType, text, choices }) => {
+      if (questionType === 2) {
+        return { questionType, text };
+      }
+      return { questionType, text, choices };
+    });
+    return { title, target, questions: [...questionList, feedback] };
+  },
+});
+
 export {
+  questionSelector,
   questionAtom,
-  questionTitle,
+  questionFeedBack,
   questionTarget,
   questionListAtom,
   questionListSelector,

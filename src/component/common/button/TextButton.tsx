@@ -14,10 +14,10 @@ type StyledType = Pick<
 
 const StyledTextButton = styled.button<StyledType>`
   padding: ${({ buttonSize }) =>
-    buttonSize === 'SMALL' ? '8px 16px' : '15px 0'};
+    buttonSize === 'SMALL' ? '8px 1rem' : '15px 0'};
   ${({ buttonSize }) => (buttonSize === 'SMALL' ? '' : 'width: 100%')};
   border-radius: 8px;
-  font-size: 14px;
+  font-size: 0.8rem;
   font-weight: 700;
   background-color: ${({ buttonBgColor }) => buttonBgColor};
   color: ${({ buttonColor }) => buttonColor};

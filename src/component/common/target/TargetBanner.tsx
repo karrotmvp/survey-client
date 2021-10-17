@@ -7,7 +7,7 @@ const StyledTargetBanner = styled.div`
   font-weight: 700;
   font-family: ${({ theme }) => theme.fontFamily.title};
   color: ${({ theme }) => theme.color.primaryOrange};
-  padding-top: 24px;
+
   line-height: 30.8px;
   ${media.custom(360)} {
     font-size: 1rem;

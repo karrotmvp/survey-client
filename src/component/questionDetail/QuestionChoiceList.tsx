@@ -10,7 +10,7 @@ import QuestionChoice from './QuestionChoice';
 
 const StyledQuestionChoiceList = styled.ul`
   display: grid;
-  grid-gap: 16px;
+  grid-gap: 1rem;
   grid-template-columns: auto;
 `;
 export default function QuestionChoiceList({
@@ -72,7 +72,7 @@ export default function QuestionChoiceList({
     width: fit-content;
     display: flex;
     align-items: center;
-    padding: 8px 16px;
+    padding: 8px 1rem;
     background: rgba(255, 208, 183, 0.5);
     border-radius: 8px;
     color: ${({ theme }) => theme.color.primaryOrange};

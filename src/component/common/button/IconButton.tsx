@@ -17,7 +17,7 @@ const StyledIconButton = styled.button<StyleButtonType>`
   display: flex;
   align-items: center;
   padding: ${({ buttonSize }) =>
-    buttonSize === 'LARGE' ? '12.5px 30px' : '8px 16px'};
+    buttonSize === 'LARGE' ? '12.5px 30px' : '8px 1rem'};
   border-radius: ${({ buttonSize }) =>
     buttonSize === 'LARGE' ? '33px' : '20px'};
   background-color: ${({ buttonColor, theme }) =>
@@ -29,7 +29,8 @@ const StyledIconButton = styled.button<StyleButtonType>`
 `;
 
 const ButtonText = styled.span<StyleButtonType>`
-  font-size: ${({ buttonSize }) => (buttonSize === 'LARGE' ? '18px' : '14px')};
+  font-size: ${({ buttonSize }) =>
+    buttonSize === 'LARGE' ? '18px' : '0.8rem'};
   font-weight: ${({ buttonSize }) => (buttonSize === 'LARGE' ? '700' : '400')};
   color: ${({ buttonColor, theme }) =>
     buttonColor === 'PRIMARY' ? theme.color.white : theme.color.gray};

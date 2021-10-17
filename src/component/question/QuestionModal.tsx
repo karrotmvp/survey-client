@@ -34,7 +34,7 @@ const ModalButtonTitle = styled.h3`
 const ModalButtonSubtitle = styled.span`
   color: #707070;
   font-weight: 400;
-  font-size: 14px;
+  font-size: 0.8rem;
 `;
 
 function ModalButton({ type }: { type: 'TEXT' | 'CHOICE' }): JSX.Element {

@@ -54,7 +54,7 @@ export default function HomePage(): JSX.Element {
       sessionStorage.setItem('jwt', jwt.contents.data);
     }
     if (sessionStorage.getItem('jwt')) {
-      push('/question');
+      push('/target');
     }
   }, [code, jwt.state]);
   return (
