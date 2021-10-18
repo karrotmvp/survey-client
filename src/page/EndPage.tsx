@@ -38,6 +38,7 @@ const EndText = styled.h3`
   color: #141414;
   font-weight: 200;
   margin-bottom: 2rem;
+  line-height: 160%;
 `;
 
 export default function EndPage(): JSX.Element {

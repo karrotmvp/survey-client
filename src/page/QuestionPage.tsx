@@ -2,13 +2,19 @@ import { useEffect, useState } from 'react';
 
 import styled from '@emotion/styled';
 import { useNavigator } from '@karrotframe/navigator';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import {
+  useRecoilState,
+  useRecoilValue,
+  useRecoilValueLoadable,
+  useSetRecoilState,
+} from 'recoil';
 
 import AlertTostModal from '@component/common/modal/TostModal';
 import NavBar from '@component/common/navbar/NavBar';
 import QuestionCardList from '@component/question/QuestionCardList';
 import { ReactComponent as PlusIcon } from '@config/icon/plus.svg';
 import StyledBasicPage from '@config/style/styledCompoent';
+import { submitSurveySelector, submitTrigger } from '@src/api/submitSurvey';
 import { questionListAtom, questionListSelector } from '@src/atom/questionAtom';
 
 const AddQuestionButton = styled.button`
@@ -49,6 +55,8 @@ const StyleQuestionPage = styled.section`
 export default function QuestionPage(): JSX.Element {
   const [questionList, setQuestionList] = useRecoilState(questionListAtom);
   const [isTostOpen, setTostOpen] = useState(true);
+  const setTrigger = useSetRecoilState(submitTrigger);
+  const submitSurvey = useRecoilValueLoadable(submitSurveySelector);
   const listValueState = useRecoilValue(questionListSelector);
   const { push } = useNavigator();
   const handleAddQuestionButton = () => {
@@ -68,8 +76,14 @@ export default function QuestionPage(): JSX.Element {
   };
 
   const handleComplete = () => {
-    push('/feedback');
+    setTrigger(true);
   };
+
+  useEffect(() => {
+    if (submitSurvey.state === 'hasValue' && submitSurvey.contents) {
+      push('/complete');
+    }
+  }, [submitSurvey]);
 
   useEffect(() => {
     setTimeout(handleAlert, 5000);

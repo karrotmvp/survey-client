@@ -23,11 +23,14 @@ const StyledChoiceInput = styled.textarea`
   font-size: 18px;
   font-weight: 400;
   line-height: 20px;
-  border: 1px dashed #141414;
+  border: 1px dashed #b1b2b2;
   color: #141414;
   background-color: transparent;
   padding: 4px;
   margin-right: 12px;
+  :focus {
+    border: 1px dashed #141414;
+  }
 `;
 
 export default function QuestionChoice({

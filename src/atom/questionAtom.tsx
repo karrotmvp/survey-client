@@ -33,10 +33,20 @@ const questionListSelector = selector({
     const questionList = get(questionListAtom);
     const len = questionList.length;
     const check = questionList.every(({ text }) => text);
-    const choicesCheck = questionList.map(({ choices }) =>
-      choices.every(({ value }) => value),
+    const choicesCheck = questionList.map(({ questionType, choices }) =>
+      choices.every(({ value }) => {
+        if (questionType === 2) {
+          return true;
+        }
+        return value;
+      }),
     );
-    return { len, check, choicesCheck };
+
+    return {
+      len,
+      check: check && choicesCheck.every(value => value),
+      choicesCheck,
+    };
   },
 });
 type questionFeedBackType = {
@@ -61,17 +71,17 @@ const questionSelector = selector({
   key: 'questionSeletor',
   get: ({ get }) => {
     const questions = get(questionListAtom);
-
     const title = '';
-    const target = get(questionListAtom);
-    const feedback = get(questionFeedBack);
+    const target = get(questionTarget);
+
     const questionList = questions.map(({ questionType, text, choices }) => {
       if (questionType === 2) {
         return { questionType, text };
       }
       return { questionType, text, choices };
     });
-    return { title, target, questions: [...questionList, feedback] };
+
+    return { title, target, questions: [...questionList] };
   },
 });
 

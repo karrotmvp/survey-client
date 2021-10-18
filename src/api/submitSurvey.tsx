@@ -1,29 +1,37 @@
 import axios, { AxiosResponse } from 'axios';
-import { selector } from 'recoil';
+import { atom, selector } from 'recoil';
 
 import { questionSelector } from '../atom/questionAtom';
 
-const token = sessionStorage.getItem('jwt');
-axios.defaults.baseURL = process.env.REACT_APP_API_URL;
-const Authorization = 'Authorization';
-if (token) axios.defaults.headers.common[Authorization] = `Bearer ${token}`;
+const submitTrigger = atom({
+  key: 'submitTrigger',
+  default: false,
+});
 
 const submitSurveySelector = selector({
   key: 'submitSurveySelector',
   get: async ({ get }) => {
+    const token = sessionStorage.getItem('jwt');
+    axios.defaults.baseURL = process.env.REACT_APP_API_URL;
+
+    const Authorization = 'X-AUTH-TOKEN';
+    if (token) axios.defaults.headers.common[Authorization] = token;
     const bodyData = get(questionSelector);
+    const trigger = get(submitTrigger);
     console.log(bodyData);
-    try {
-      const res: AxiosResponse = await axios.post(`/surveys`, bodyData);
-      if (res.status !== 200) throw Error('로그인 확인 바랍니다');
-      const { data } = res;
-      console.log(data);
-      return data;
-    } catch (e) {
-      console.error(e);
+    if (trigger) {
+      try {
+        const res: AxiosResponse = await axios.post(`/surveys`, bodyData);
+        console.log(res);
+        if (res.status !== 201) throw Error('설문이 작성되지 않았습니다.');
+        return true;
+      } catch (e) {
+        console.error(e);
+        return false;
+      }
     }
-    return { code: '' };
+    return false;
   },
 });
 
-export default submitSurveySelector;
+export { submitSurveySelector, submitTrigger };

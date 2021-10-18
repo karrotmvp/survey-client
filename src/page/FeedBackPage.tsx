@@ -1,9 +1,8 @@
 import { ChangeEvent } from 'react';
 
 import styled from '@emotion/styled';
-import { useRecoilState, useRecoilValueLoadable } from 'recoil';
+import { useRecoilState } from 'recoil';
 
-import submitSurveySelector from '@src/api/submitSurvey';
 import { questionFeedBack } from '@src/atom/questionAtom';
 import NavBar from '@src/component/common/navbar/NavBar';
 import contents from '@src/config/const/const';
@@ -72,14 +71,13 @@ const StyledTitleInput = styled.textarea`
 
 export default function FeedBackPage(): JSX.Element {
   const [feedback, setFeedback] = useRecoilState(questionFeedBack);
-  const post = useRecoilValueLoadable(submitSurveySelector);
   const handleChange = (e: ChangeEvent) => {
     setFeedback({
       questionType: 4,
       text: (e.target as HTMLTextAreaElement).value,
     });
   };
-  console.log(post);
+
   return (
     <StyledFeedBackPage>
       <NavBar type="BACK" title="무따 서비스 피드백 남기기" />

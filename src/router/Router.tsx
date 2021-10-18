@@ -22,7 +22,7 @@ export default function Router(): JSX.Element {
       <Screen path="/feedback">
         <FeedBackPage />
       </Screen>
-      <Screen path="/end">
+      <Screen path="/complete">
         <EndPage />
       </Screen>
     </Navigator>
