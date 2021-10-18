@@ -1,4 +1,5 @@
 import { ThemeProvider, Global } from '@emotion/react';
+import { HashRouter } from 'react-router-dom';
 import { RecoilRoot } from 'recoil';
 
 import '@karrotframe/navigator/index.css';
@@ -12,7 +13,9 @@ function App(): JSX.Element {
     <ThemeProvider theme={theme}>
       <RecoilRoot>
         <Global styles={global} />
-        <Router />
+        <HashRouter>
+          <Router />
+        </HashRouter>
       </RecoilRoot>
     </ThemeProvider>
   );

@@ -8,6 +8,15 @@ const submitTrigger = atom({
   default: false,
 });
 
+type profileType = {
+  data: {
+    daangnId: string;
+    imageUrl: string;
+    name: string;
+    role: string;
+  };
+};
+
 const submitSurveySelector = selector({
   key: 'submitSurveySelector',
   get: async ({ get }) => {
@@ -18,10 +27,16 @@ const submitSurveySelector = selector({
     if (token) axios.defaults.headers.common[Authorization] = token;
     const bodyData = get(questionSelector);
     const trigger = get(submitTrigger);
-    console.log(bodyData);
     if (trigger) {
       try {
-        const res: AxiosResponse = await axios.post(`/surveys`, bodyData);
+        const { data }: AxiosResponse<profileType> =
+          await axios.get<profileType>(`/members/me`);
+        console.log({ ...bodyData, title: `${data.data.name} 님의 설문조사` });
+
+        const res: AxiosResponse = await axios.post(`/surveys`, {
+          ...bodyData,
+          title: `${data.data.name} 님의 설문조사`,
+        });
         console.log(res);
         if (res.status !== 201) throw Error('설문이 작성되지 않았습니다.');
         return true;

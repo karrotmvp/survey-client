@@ -8,7 +8,7 @@ import { authorizationSelector, codeAtom } from '@api/authorization';
 import NavBar from '@component/common/navbar/NavBar';
 import HomeBanner from '@component/home/HomeBanner';
 
-import useAuth from '../hook/useAuth';
+import useMiniAuth from '../hook/useAuth';
 
 const StyledHomePage = styled.section`
   background: #ffff;
@@ -36,17 +36,18 @@ export default function HomePage(): JSX.Element {
   const { push } = useNavigator();
 
   const [code, setCode] = useRecoilState(codeAtom);
-  const getCode = useAuth(
+  const getCode = useMiniAuth(
     process.env.REACT_APP_PRESET_BIZ!,
     process.env.REACT_APP_APP_ID!,
-    res => {
-      setCode(res);
-    },
   );
   const jwt = useRecoilValueLoadable(authorizationSelector);
 
-  const handleClick = () => {
-    getCode();
+  const handleClick = async () => {
+    const respCode = await getCode();
+    if (!respCode) {
+      return;
+    }
+    setCode(respCode);
   };
 
   useEffect(() => {
