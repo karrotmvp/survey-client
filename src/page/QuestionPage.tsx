@@ -83,7 +83,8 @@ export default function QuestionPage(): JSX.Element {
     if (submitSurvey.state === 'hasValue' && submitSurvey.contents) {
       push('/complete');
     }
-  }, [submitSurvey]);
+  }, [submitSurvey, push]);
+
 
   useEffect(() => {
     setTimeout(handleAlert, 5000);

@@ -31,16 +31,18 @@ const submitSurveySelector = selector({
       try {
         const { data }: AxiosResponse<profileType> =
           await axios.get<profileType>(`/members/me`);
-        console.log({ ...bodyData, title: `${data.data.name} 님의 설문조사` });
+
 
         const res: AxiosResponse = await axios.post(`/surveys`, {
           ...bodyData,
           title: `${data.data.name} 님의 설문조사`,
         });
-        console.log(res);
+
+
         if (res.status !== 201) throw Error('설문이 작성되지 않았습니다.');
         return true;
       } catch (e) {
+        // eslint-disable-next-line no-console
         console.error(e);
         return false;
       }

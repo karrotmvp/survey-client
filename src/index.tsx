@@ -7,7 +7,7 @@ import ReactGA from 'react-ga';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
-ReactGA.initialize(process.env.REACT_APP_TRACKING_ID!, { debug: true });
+ReactGA.initialize(process.env.REACT_APP_TRACKING_ID || '', { debug: true });
 
 ReactDOM.render(
   <React.StrictMode>

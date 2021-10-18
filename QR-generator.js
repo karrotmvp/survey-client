@@ -14,10 +14,12 @@ async function generateQR() {
     exec(
       `karrot-mini dev -p ${PORT} --appId ${APP_ID}`,
       (error, stdout, stderr) => {
+        // eslint-disable-next-line no-console
         console.log(stdout);
       },
     );
   } catch (e) {
+    // eslint-disable-next-line no-console
     console.log(e);
   }
 }

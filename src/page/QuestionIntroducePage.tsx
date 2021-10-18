@@ -30,6 +30,7 @@ export default function QuestionIntroducePage(): JSX.Element {
   `;
 
   const handleChange = () => {
+    // eslint-disable-next-line no-console
     console.log('e');
   };
 

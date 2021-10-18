@@ -9,12 +9,13 @@ const StyledTitleInput = styled.textarea`
   outline: none;
   width: 100%;
   font-size: 1rem;
-  font-weight: 700;
+  font-weight: 400;
   line-height: 140%;
   background-color: #f4f5f6;
   border-radius: 4px 4px 0px 0px;
   border-bottom: 1px solid #c9c9c9;
   color: #141414;
+  letter-spacing: 0.01em;
   padding: 8px 6px;
   ::placeholder {
     opacity: 0.5;

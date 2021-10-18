@@ -21,6 +21,8 @@ const authorizationSelector = selector({
         const { data } = res;
         return data;
       } catch (e) {
+
+        // eslint-disable-next-line no-console
         console.error(e);
       }
     }

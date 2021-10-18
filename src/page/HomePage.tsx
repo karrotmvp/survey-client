@@ -37,8 +37,8 @@ export default function HomePage(): JSX.Element {
 
   const [code, setCode] = useRecoilState(codeAtom);
   const getCode = useMiniAuth(
-    process.env.REACT_APP_PRESET_BIZ!,
-    process.env.REACT_APP_APP_ID!,
+    process.env.REACT_APP_PRESET_BIZ || '',
+    process.env.REACT_APP_APP_ID || '',
   );
   const jwt = useRecoilValueLoadable(authorizationSelector);
 
@@ -57,7 +57,7 @@ export default function HomePage(): JSX.Element {
     if (sessionStorage.getItem('jwt')) {
       push('/target');
     }
-  }, [code, jwt.state]);
+  }, [code, jwt.state, jwt.contents.data, push]);
   return (
     <>
       <StyledHomePage>
