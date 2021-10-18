@@ -2,33 +2,42 @@ import { useLocation } from 'react-router-dom';
 
 import mini from '@api/mini';
 
-export default function useAuth(
+export default function useMiniAuth(
   presetUrl: string,
   appId: string,
-  setCode: (code: string) => void,
-): () => void {
+): () => Promise<string> {
   const location = useLocation();
 
-  const getCode = () => {
+  const getCodeAsync = () => {
     const urlSearchParams = new URLSearchParams(location.search);
 
     if (urlSearchParams.has('code')) {
-      setCode(urlSearchParams.get('code')!);
-    } else {
+      return Promise.resolve<string>(urlSearchParams.get('code') || '');
+    }
+
+    return new Promise<string>((resolve, reject) => {
       mini.startPreset({
         preset: presetUrl,
         params: {
           appId,
         },
         // eslint-disable-next-line object-shorthand
-        async onSuccess(result) {
-          if (result && result.bizProfileId) {
-            setCode(result.bizProfileId);
+        onSuccess(result) {
+          if (!result && result.bizProfileId) {
+            resolve('');
           }
+
+          resolve(result.bizProfileId);
+        },
+        onFailure() {
+          reject(new Error('fail'));
+        },
+        onClose() {
+          resolve('');
         },
       });
-    }
+    });
   };
 
-  return getCode;
+  return getCodeAsync;
 }

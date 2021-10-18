@@ -4,7 +4,7 @@ const StyledNavToggle = styled.ul`
   padding: 8px 24px;
   background: #ffffff;
   box-shadow: 0px 0px 8px 1px rgba(0, 0, 0, 0.1);
-  border-radius: 16px;
+  border-radius: 1rem;
   list-style: none;
   position: absolute;
   z-index: 99999999;
@@ -12,7 +12,7 @@ const StyledNavToggle = styled.ul`
 const NavList = styled.li`
   width: 106px;
   padding: 8px;
-  font-size: 16px;
+  font-size: 1rem;
   text-align: center;
   color: 707070;
 `;

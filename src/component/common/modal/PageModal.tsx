@@ -9,7 +9,7 @@ const StyledPageModal = styled.section<StyledPageModalType>`
   position: relative;
   border-radius: 19px 19px 0 0;
   z-index: 10;
-  padding: ${({ rowPaddingNone }) => (rowPaddingNone ? '24px 0' : '24px 16px')};
+  padding: ${({ rowPaddingNone }) => (rowPaddingNone ? '24px 0' : '24px 1rem')};
 `;
 
 type PageModalType = {

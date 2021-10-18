@@ -12223,7 +12223,7 @@ workbox-broadcast-update@^5.1.4:
 workbox-build@^5.1.4:
   version "5.1.4"
   resolved "https://registry.npmjs.org/workbox-build/-/workbox-build-5.1.4.tgz"
-  integrity sha512-xUcZn6SYU8usjOlfLb9Y2/f86Gdo+fy1fXgH8tJHjxgpo53VVsqRX0lUDw8/JuyzNmXuo8vXX14pXX2oIm9Bow==
+  integrity sha512-xUcZn6SYU8usjOlfLb9Y2/f86Gdo+fy1fXgH8tJHjxgpo53VVsqRX0lUDw8/JuyzNmXuo8vXX0.8remX2oIm9Bow==
   dependencies:
     "@babel/core" "^7.8.4"
     "@babel/preset-env" "^7.8.4"

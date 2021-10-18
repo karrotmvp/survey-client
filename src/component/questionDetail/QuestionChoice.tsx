@@ -6,7 +6,7 @@ import { InputType } from '@component/common/input/QuestionTitleInput';
 import { ReactComponent as DeleteIcon } from '@config/icon/delete.svg';
 
 const StyledQuestionChoice = styled.li`
-  padding: 12px 16px;
+  padding: 12px 1rem;
   width: 100%;
   background: #f4f5f6;
   border-radius: 25.5px;
@@ -23,11 +23,14 @@ const StyledChoiceInput = styled.textarea`
   font-size: 18px;
   font-weight: 400;
   line-height: 20px;
-  border: 1px dashed #141414;
+  border: 1px dashed #b1b2b2;
   color: #141414;
   background-color: transparent;
   padding: 4px;
   margin-right: 12px;
+  :focus {
+    border: 1px dashed #141414;
+  }
 `;
 
 export default function QuestionChoice({

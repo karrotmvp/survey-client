@@ -5,7 +5,7 @@ import SurveyCard from '@component/common/card/SurveyCard';
 const StyledHomeSurveyList = styled.ul`
   display: grid;
   grid-template-columns: auto;
-  grid-gap: 16px;
+  grid-gap: 1rem;
 `;
 
 export default function HomeSurveyList(): JSX.Element {

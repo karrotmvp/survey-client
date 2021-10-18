@@ -17,7 +17,7 @@ const StyledSurveyCard = styled.li`
   height: 136px;
   background-color: #fff;
   border-radius: 20px;
-  padding: 16px;
+  padding: 1rem;
   justify-content: space-between;
 `;
 
@@ -26,7 +26,7 @@ const SurveyCardTitle = styled.span`
 `;
 
 const SurveyCardSubtitle = styled.span`
-  font-size: 14px;
+  font-size: 0.8rem;
   display: flex;
   align-items: center;
 `;

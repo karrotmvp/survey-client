@@ -1,20 +1,27 @@
 import { useEffect, useState } from 'react';
 
 import styled from '@emotion/styled';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useNavigator } from '@karrotframe/navigator';
+import {
+  useRecoilState,
+  useRecoilValue,
+  useRecoilValueLoadable,
+  useSetRecoilState,
+} from 'recoil';
 
 import AlertTostModal from '@component/common/modal/TostModal';
 import NavBar from '@component/common/navbar/NavBar';
 import QuestionCardList from '@component/question/QuestionCardList';
 import { ReactComponent as PlusIcon } from '@config/icon/plus.svg';
 import StyledBasicPage from '@config/style/styledCompoent';
+import { submitSurveySelector, submitTrigger } from '@src/api/submitSurvey';
 import { questionListAtom, questionListSelector } from '@src/atom/questionAtom';
 
 const AddQuestionButton = styled.button`
   background-color: ${({ theme }) => theme.color.primaryOrange};
   padding: 9px 26px;
   border-radius: 8px;
-  font-size: 14px;
+  font-size: 0.8rem;
   font-weight: 700;
   color: #ffff;
   display: flex;
@@ -35,6 +42,9 @@ const CompleteButton = styled.button`
   font-weight: 400;
   color: ${({ theme }) => theme.color.primaryOrange};
   padding: 0.5rem 1rem;
+  :disabled {
+    color: #c9c9c9;
+  }
 `;
 
 const StyleQuestionPage = styled.section`
@@ -45,7 +55,10 @@ const StyleQuestionPage = styled.section`
 export default function QuestionPage(): JSX.Element {
   const [questionList, setQuestionList] = useRecoilState(questionListAtom);
   const [isTostOpen, setTostOpen] = useState(true);
+  const setTrigger = useSetRecoilState(submitTrigger);
+  const submitSurvey = useRecoilValueLoadable(submitSurveySelector);
   const listValueState = useRecoilValue(questionListSelector);
+  const { push } = useNavigator();
   const handleAddQuestionButton = () => {
     if (questionList.length < 3) {
       setQuestionList([
@@ -61,16 +74,35 @@ export default function QuestionPage(): JSX.Element {
   const handleAlert = () => {
     setTostOpen(false);
   };
+
+  const handleComplete = () => {
+    setTrigger(true);
+  };
+
+  useEffect(() => {
+    if (submitSurvey.state === 'hasValue' && submitSurvey.contents) {
+      push('/complete');
+    }
+  }, [submitSurvey]);
+
   useEffect(() => {
     setTimeout(handleAlert, 5000);
   }, []);
+
   return (
     <StyledBasicPage>
       {isTostOpen && <AlertTostModal onClick={handleAlert} />}
       <NavBar
         type="BACK"
         title="질문 작성"
-        appendRight={<CompleteButton>완료</CompleteButton>}
+        appendRight={
+          <CompleteButton
+            disabled={!listValueState.check}
+            onClick={handleComplete}
+          >
+            완료
+          </CompleteButton>
+        }
       />
       <StyleQuestionPage>
         <QuestionCardList />

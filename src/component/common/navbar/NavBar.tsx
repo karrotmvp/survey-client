@@ -21,7 +21,7 @@ const NavBarStyle = styled.div`
   top: 0;
   left: 0;
   background-color: #ffff;
-  padding: 16px;
+  padding: 1rem;
   top: 0;
   left: 0;
 

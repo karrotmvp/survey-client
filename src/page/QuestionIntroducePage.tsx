@@ -24,7 +24,7 @@ export default function QuestionIntroducePage(): JSX.Element {
   const QuestionIntroduceTitle = styled.h3`
     color: ${({ theme }) => theme.color.secondaryGreen};
     font-weight: 600;
-    font-size: 14px;
+    font-size: 0.8rem;
     margin-top: 40px;
     margin-left: 8px;
   `;

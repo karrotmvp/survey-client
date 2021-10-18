@@ -52,7 +52,7 @@ const theme: Theme = {
     XXL: '2rem', // 32px
     XL: '1.5rem', //  24px
     L: '1.2rem', // 18px
-    M: '1rem', // 16px
+    M: '1rem', // 1rem
     S: '0.75rem', // 12px
   },
 
@@ -60,7 +60,7 @@ const theme: Theme = {
     radius: {
       XL: '2rem', // 30px
       L: '1.25rem', // 20px
-      M: '1rem', // 16px
+      M: '1rem', // 1rem
       S: '0.7rem', // 11px
     },
   },

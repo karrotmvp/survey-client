@@ -61,10 +61,12 @@ const global = css`
     outline: none;
   }
   li,
-  ol {
+  ol,
+  ul {
     list-style: none;
     margin: 0;
-    padding: 0ß;
+    padding: 0;
+    margin: 0;
   }
   h1,
   h2,
