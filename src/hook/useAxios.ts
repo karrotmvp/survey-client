@@ -89,6 +89,7 @@ export default function useAxios(
           dispatch({ type: 'FETCH_SUCCESS', payload: result.data }),
         );
       } catch (error) {
+        // eslint-disable-next-line no-console
         console.error(error);
         dispatch({ type: 'FETCH_FAILURE', payload: null });
       }

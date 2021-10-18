@@ -17,8 +17,9 @@ export default function QuestionCardList(): JSX.Element {
 
   const handleChange = (e: ChangeEvent) => {
     const target = e.currentTarget as HTMLTextAreaElement;
-    const idx = +target.dataset.list!;
-
+    const { list } = target.dataset;
+    if (!list) return;
+    const idx = +list;
     setQuestionList([
       ...questionList.slice(0, idx),
       { ...questionList[idx], text: target.value },
