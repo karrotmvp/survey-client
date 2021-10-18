@@ -32,10 +32,12 @@ const submitSurveySelector = selector({
         const { data }: AxiosResponse<profileType> =
           await axios.get<profileType>(`/members/me`);
 
+
         const res: AxiosResponse = await axios.post(`/surveys`, {
           ...bodyData,
           title: `${data.data.name} 님의 설문조사`,
         });
+
 
         if (res.status !== 201) throw Error('설문이 작성되지 않았습니다.');
         return true;

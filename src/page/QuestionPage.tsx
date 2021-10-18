@@ -85,6 +85,7 @@ export default function QuestionPage(): JSX.Element {
     }
   }, [submitSurvey, push]);
 
+
   useEffect(() => {
     setTimeout(handleAlert, 5000);
   }, []);
