@@ -37,11 +37,11 @@ jobs:
           echo REACT_APP_TRACKING_ID="$GA_KEY" >> .env
           cat .env
 
-      - name: Yarn install
-        run: yarn install
+      - name: NPM install
+        run: npm install
 
       - name: Build
-        run: yarn build
+        run: npm run build
 
       - name: Transfer to S3 for serving static
         uses: jakejarvis/s3-sync-action@master
