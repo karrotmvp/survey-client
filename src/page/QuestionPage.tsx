@@ -41,7 +41,7 @@ const CompleteButton = styled.button`
   font-size: 1rem;
   font-weight: 400;
   color: ${({ theme }) => theme.color.primaryOrange};
-  padding: 0.5rem 1rem;
+  padding: 1rem 0 1rem 0.5rem;
   :disabled {
     color: #c9c9c9;
   }
@@ -84,7 +84,6 @@ export default function QuestionPage(): JSX.Element {
       push('/complete');
     }
   }, [submitSurvey, push]);
-
 
   useEffect(() => {
     setTimeout(handleAlert, 5000);

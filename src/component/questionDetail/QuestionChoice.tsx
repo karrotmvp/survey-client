@@ -1,4 +1,4 @@
-import { MouseEvent } from 'react';
+import { ChangeEvent, MouseEvent } from 'react';
 
 import styled from '@emotion/styled';
 
@@ -20,9 +20,9 @@ const StyledChoiceInput = styled.textarea`
   outline: none;
   height: 30px;
   width: 100%;
-  font-size: 18px;
+  font-size: 1rem;
   font-weight: 400;
-  line-height: 20px;
+  line-height: 140%;
   border: 1px dashed #b1b2b2;
   color: #141414;
   background-color: transparent;
@@ -42,11 +42,16 @@ export default function QuestionChoice({
   index: number;
   onDelete: (e: MouseEvent) => void;
 }): JSX.Element {
+  const inputChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    onChange(e);
+    e.target.style.height = '1rem';
+    e.target.style.height = `${e.target.scrollHeight + 6}px`;
+  };
   return (
     <StyledQuestionChoice data-list={index}>
       <StyledChoiceInput
         value={value}
-        onChange={onChange}
+        onChange={inputChange}
         placeholder={`객관식 답변 ${index + 1}`}
         data-list={index}
       />

@@ -15,7 +15,6 @@ const StyledTitleInput = styled.textarea`
   border-radius: 4px 4px 0px 0px;
   border-bottom: 1px solid #c9c9c9;
   color: #141414;
-  letter-spacing: 0.01em;
   padding: 8px 6px;
   ::placeholder {
     opacity: 0.5;
