@@ -130,11 +130,11 @@ export default function HomePage(): JSX.Element {
 
     if (sessionStorage.getItem('jwt')) {
       userData().then(data => {
-        console.log(data === '' ? '' : data.data.name);
         setUser({ nickName: '', storeName: data === '' ? '' : data.data.name });
         push('/target');
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [code, jwt.state, jwt.contents.data]);
   return (
     <>

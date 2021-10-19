@@ -4,6 +4,7 @@ import axios, { AxiosResponse } from 'axios';
 
 export default function useGet<T>(
   initialUrl: string,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
 ): () => Promise<AxiosResponse<T, any> | ''> {
   const [url] = useState(initialUrl);
 
