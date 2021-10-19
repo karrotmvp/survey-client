@@ -1,5 +1,7 @@
 import { atom, selector } from 'recoil';
 
+import { userSelector } from './userAtom';
+
 export type questionAtomType = {
   questionType: 2 | 3;
   text: string;
@@ -50,15 +52,15 @@ const questionListSelector = selector({
   },
 });
 type questionFeedBackType = {
-  questionType: number;
-  text: string;
+  question: string;
+  answer: string;
 };
 
 const questionFeedBack = atom<questionFeedBackType>({
   key: 'questionFeedBack',
   default: {
-    questionType: 4,
-    text: '',
+    question: '',
+    answer: '',
   },
 });
 
@@ -71,7 +73,7 @@ const questionSelector = selector({
   key: 'questionSeletor',
   get: ({ get }) => {
     const questions = get(questionListAtom);
-    const title = '';
+    const title = get(userSelector);
     const target = get(questionTarget);
 
     const questionList = questions.map(({ questionType, text, choices }) => {

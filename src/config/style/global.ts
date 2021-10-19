@@ -47,6 +47,13 @@ const global = css`
     box-sizing: border-box;
   }
 
+  html,
+  body,
+  #root {
+    height: 100%;
+    width: 100%;
+  }
+
   body * {
     margin: 0;
     font-family: 'SpoqaHanSansNeo';

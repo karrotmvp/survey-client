@@ -8,16 +8,17 @@ type userAtomType = {
 const userAtom = atom<userAtomType>({
   key: 'userAtom',
   default: {
-    nickName: 'CHARLee',
-    storeName: '찰리 사진관 카페',
+    nickName: '',
+    storeName: '',
   },
 });
 
 const userSelector = selector({
   key: 'userSelector',
   get: ({ get }) => {
-    const { nickName, storeName } = get(userAtom);
-    return `${storeName}의 ${nickName} 사장님`;
+    const { storeName } = get(userAtom);
+    const data = `${storeName} 님의 설문조사`;
+    return data;
   },
 });
 
