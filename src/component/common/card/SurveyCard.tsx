@@ -1,7 +1,6 @@
 import styled from '@emotion/styled';
 
 import IconButton from '@component/common/button/IconButton';
-import { ReactComponent as DotIcon } from '@config/icon/dot.svg';
 import { ReactComponent as TrashIcon } from '@config/icon/trash_can.svg';
 
 type SurveyCardType = {
@@ -50,7 +49,7 @@ export default function SurveyCard({
       <SurveyCardTitle>{title}</SurveyCardTitle>
       <SurveyCardColumn>
         <SurveyCardSubtitle>
-          답변 {answer} <DotIcon /> {date}
+          답변 {answer} {date}
         </SurveyCardSubtitle>
         <IconButton
           text="삭제"

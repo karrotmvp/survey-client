@@ -60,6 +60,7 @@ export default function QuestionCard({
           placeholder={contents.placeholder.TEXT}
           value={title}
         />
+
         <StyledQuestionChoiceOrText>
           {questionType === 2 ? (
             <StyledQuestionInput>주관식 답변</StyledQuestionInput>

@@ -2,20 +2,19 @@ import { useEffect, useState } from 'react';
 
 import styled from '@emotion/styled';
 import { useNavigator } from '@karrotframe/navigator';
-import {
-  useRecoilState,
-  useRecoilValue,
-  useRecoilValueLoadable,
-  useSetRecoilState,
-} from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 
 import AlertTostModal from '@component/common/modal/TostModal';
 import NavBar from '@component/common/navbar/NavBar';
 import QuestionCardList from '@component/question/QuestionCardList';
 import { ReactComponent as PlusIcon } from '@config/icon/plus.svg';
 import StyledBasicPage from '@config/style/styledCompoent';
-import { submitSurveySelector, submitTrigger } from '@src/api/submitSurvey';
-import { questionListAtom, questionListSelector } from '@src/atom/questionAtom';
+import {
+  questionListAtom,
+  questionListSelector,
+  questionSelector,
+} from '@src/atom/questionAtom';
+import useSubmit from '@src/hook/useSubmit';
 
 const AddQuestionButton = styled.button`
   background-color: ${({ theme }) => theme.color.primaryOrange};
@@ -54,11 +53,12 @@ const StyleQuestionPage = styled.section`
 
 export default function QuestionPage(): JSX.Element {
   const [questionList, setQuestionList] = useRecoilState(questionListAtom);
-  const [isTostOpen, setTostOpen] = useState(true);
-  const setTrigger = useSetRecoilState(submitTrigger);
-  const submitSurvey = useRecoilValueLoadable(submitSurveySelector);
+  const [isTostOpen, setTostOpen] = useState(false);
+
   const listValueState = useRecoilValue(questionListSelector);
+  const submitData = useRecoilValue(questionSelector);
   const { push } = useNavigator();
+  const submit = useSubmit('/surveys');
   const handleAddQuestionButton = () => {
     if (questionList.length < 3) {
       setQuestionList([
@@ -71,23 +71,27 @@ export default function QuestionPage(): JSX.Element {
       ]);
     }
   };
+
   const handleAlert = () => {
-    setTostOpen(false);
+    setTimeout(() => {
+      setTostOpen(false);
+    }, 1600);
   };
 
   const handleComplete = () => {
-    setTrigger(true);
+    submit(submitData);
+    push('/complete');
   };
 
   useEffect(() => {
-    if (submitSurvey.state === 'hasValue' && submitSurvey.contents) {
-      push('/complete');
+    if (questionList.length === 3) {
+      setTostOpen(true);
     }
-  }, [submitSurvey, push]);
+  }, [questionList.length]);
 
   useEffect(() => {
-    setTimeout(handleAlert, 5000);
-  }, []);
+    if (isTostOpen) handleAlert();
+  }, [isTostOpen]);
 
   return (
     <StyledBasicPage>
