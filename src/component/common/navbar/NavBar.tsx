@@ -9,25 +9,23 @@ type NavBarType = {
   type: 'CLOSE' | 'BACK';
   appendRight?: React.ReactNode;
   title?: string;
+  shadow?: boolean;
 };
 
-const NavBarStyle = styled.div`
+const NavBarStyle = styled.div<{ shadow?: boolean }>`
   display: flex;
   width: 100%;
   height: 3.5rem;
   align-items: center;
   justify-content: space-between;
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   background-color: #ffff;
   padding: 1rem;
-  top: 0;
-  left: 0;
-
   z-index: 99999;
-  :scroll {
-    filter: drop-shadow(0px 4px 8px rgba(0, 0, 0, 0.1));
+   ${({ shadow }) =>
+     shadow ? 'filter: drop-shadow(0px 4px 8px rgba(0, 0, 0, 0.1));' : ''}
   }
 `;
 
@@ -48,6 +46,7 @@ export default function NavBar({
   type,
   appendRight,
   title,
+  shadow,
 }: NavBarType): JSX.Element {
   const { pop } = useNavigator();
 
@@ -60,7 +59,7 @@ export default function NavBar({
   };
 
   return (
-    <NavBarStyle>
+    <NavBarStyle shadow={shadow}>
       <AppendLeft>
         {type === 'CLOSE' ? (
           <ClearIcon onClick={close} />

@@ -85,7 +85,7 @@ export default function FeedBackPage(): JSX.Element {
   };
 
   return (
-    <StyledFeedBackPage>
+    <>
       <NavBar
         type="BACK"
         title="무따 서비스 피드백"
@@ -93,13 +93,15 @@ export default function FeedBackPage(): JSX.Element {
           <CompleteButton onClick={handleComplete}>완료</CompleteButton>
         }
       />
-      <FeedbackTitle>{contents.text.feedback.TITLE}</FeedbackTitle>
-      <FeedbackSubtitle>{contents.text.feedback.SUBTITLE}</FeedbackSubtitle>
-      <StyledTitleInput
-        value={feedback.answer}
-        onChange={handleChange}
-        placeholder={contents.placeholder.FEEDBACK}
-      />
-    </StyledFeedBackPage>
+      <StyledFeedBackPage>
+        <FeedbackTitle>{contents.text.feedback.TITLE}</FeedbackTitle>
+        <FeedbackSubtitle>{contents.text.feedback.SUBTITLE}</FeedbackSubtitle>
+        <StyledTitleInput
+          value={feedback.answer}
+          onChange={handleChange}
+          placeholder={contents.placeholder.FEEDBACK}
+        />
+      </StyledFeedBackPage>
+    </>
   );
 }

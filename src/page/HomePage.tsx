@@ -138,8 +138,8 @@ export default function HomePage(): JSX.Element {
   }, [code, jwt.state, jwt.contents.data]);
   return (
     <>
+      <NavBar type="CLOSE" />
       <StyledHomePage>
-        <NavBar type="CLOSE" />
         <StyledSection>
           <StyledColomn>
             <Logo /> <TitleLogo /> <BetaLogo />

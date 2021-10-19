@@ -7,7 +7,8 @@ const StyledTargetPage = styled.section`
   background: #ffff;
   width: 100%;
   min-height: 100vh;
-  padding: 5.5rem 1rem 1rem 1rem;
+  padding: 3.5rem 1rem 1rem 1rem;
+  overflow-y: scroll;
 `;
 
 const StyledTargetArticle = styled.article`
@@ -33,16 +34,17 @@ const TargetPageTitle = styled.h1`
 
 export default function TargetPage(): JSX.Element {
   return (
-    <StyledTargetPage>
+    <>
       <NavBar type="CLOSE" title="설문 고객 선택" />
-
-      <StyledTargetArticle>
-        <TargetPageTitle>
-          어떤 이웃에게
-          <br /> 보여줄 설문인가요?
-        </TargetPageTitle>
-      </StyledTargetArticle>
-      <TargetList />
-    </StyledTargetPage>
+      <StyledTargetPage>
+        <StyledTargetArticle>
+          <TargetPageTitle>
+            어떤 이웃에게
+            <br /> 보여줄 설문인가요?
+          </TargetPageTitle>
+        </StyledTargetArticle>
+        <TargetList />
+      </StyledTargetPage>
+    </>
   );
 }

@@ -48,7 +48,7 @@ const CompleteButton = styled.button`
 
 const StyleQuestionPage = styled.section`
   width: 100%;
-  min-height: calc(100vh - 5.5rem);
+  height: calc(100vh - 5.5rem);
 `;
 
 export default function QuestionPage(): JSX.Element {
@@ -94,11 +94,11 @@ export default function QuestionPage(): JSX.Element {
   }, [isTostOpen]);
 
   return (
-    <StyledBasicPage>
-      {isTostOpen && <AlertTostModal onClick={handleAlert} />}
+    <>
       <NavBar
         type="BACK"
         title="질문 작성"
+        shadow
         appendRight={
           <CompleteButton
             disabled={!listValueState.check}
@@ -108,15 +108,18 @@ export default function QuestionPage(): JSX.Element {
           </CompleteButton>
         }
       />
-      <StyleQuestionPage>
-        <QuestionCardList />
-        <AddQuestionButton
-          disabled={!listValueState.check || listValueState.len === 3}
-          onClick={handleAddQuestionButton}
-        >
-          <PlusIcon /> 질문 추가
-        </AddQuestionButton>
-      </StyleQuestionPage>
-    </StyledBasicPage>
+      <StyledBasicPage>
+        {isTostOpen && <AlertTostModal onClick={handleAlert} />}
+        <StyleQuestionPage>
+          <QuestionCardList />
+          <AddQuestionButton
+            disabled={!listValueState.check || listValueState.len === 3}
+            onClick={handleAddQuestionButton}
+          >
+            <PlusIcon /> 질문 추가
+          </AddQuestionButton>
+        </StyleQuestionPage>
+      </StyledBasicPage>
+    </>
   );
 }

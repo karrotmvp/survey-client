@@ -68,15 +68,34 @@ export default function QuestionChoiceList({
     }
   };
 
-  const StyledIconButton = styled.button`
-    width: fit-content;
-    display: flex;
-    align-items: center;
-    padding: 8px 1rem;
-    background: rgba(255, 208, 183, 0.5);
-    border-radius: 8px;
-    color: ${({ theme }) => theme.color.primaryOrange};
+  // const StyledIconButton = styled.button`
+  //   width: fit-content;
+  //   display: flex;
+  //   align-items: center;
+  //   padding: 8px 1rem;
+  //   background: rgba(255, 208, 183, 0.5);
+  //   border-radius: 8px;
+  //   color: ${({ theme }) => theme.color.primaryOrange};
 
+  //   svg {
+  //     margin-right: 8px;
+  //   }
+  //   :disabled {
+  //     opacity: 0.5;
+  //   }
+  // `;
+
+  const StyledChoiceButton = styled.button`
+    width: 100%;
+    height: 43px;
+    border-radius: 25.5px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding-left: 1.2rem;
+    background-color: #f4f5f6;
+    font-size: 1rem;
+    font-weight: 400;
     svg {
       margin-right: 8px;
     }
@@ -84,6 +103,7 @@ export default function QuestionChoiceList({
       opacity: 0.5;
     }
   `;
+
   const { choicesCheck } = useRecoilValue(questionListSelector);
 
   return (
@@ -95,12 +115,12 @@ export default function QuestionChoiceList({
             {...{ value, onDelete, onChange, index }}
           />
         ))}
-      <StyledIconButton
+      <StyledChoiceButton
         disabled={!choicesCheck[questionIndex]}
         onClick={handleClick}
       >
-        <PluseIcon /> 답변 추가
-      </StyledIconButton>
+        <PluseIcon /> 항목 추가
+      </StyledChoiceButton>
     </StyledQuestionChoiceList>
   );
 }
