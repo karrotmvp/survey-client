@@ -12,7 +12,7 @@ const StyledTargetPage = styled.section`
 `;
 
 const StyledTargetArticle = styled.article`
-  margin-top: 1.2rem;
+  margin-top: 2.2rem;
   width: 100%;
   height: 0;
   padding-top: calc(172 / 328 * 100%);
