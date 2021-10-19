@@ -7,6 +7,9 @@ import { useRecoilState, useRecoilValueLoadable } from 'recoil';
 import { authorizationSelector, codeAtom } from '@api/authorization';
 import NavBar from '@component/common/navbar/NavBar';
 import HomeBanner from '@component/home/HomeBanner';
+import { ReactComponent as BetaIcon } from '@config/icon/BETA.svg';
+import { ReactComponent as LogoIcon } from '@config/icon/logo.svg';
+import { ReactComponent as MuddIcon } from '@config/icon/mudda.svg';
 
 import useMiniAuth from '../hook/useAuth';
 
@@ -32,7 +35,6 @@ const CreateQuestionButton = styled.button`
 `;
 
 export default function HomePage(): JSX.Element {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { push } = useNavigator();
 
   const [code, setCode] = useRecoilState(codeAtom);
@@ -63,6 +65,7 @@ export default function HomePage(): JSX.Element {
       <StyledHomePage>
         <NavBar type="CLOSE" />
         <StyledSection>
+          <MuddIcon /> <LogoIcon /> <BetaIcon />
           <HomeBanner />
           <CreateQuestionButton onClick={handleClick}>
             설문 만들러가기

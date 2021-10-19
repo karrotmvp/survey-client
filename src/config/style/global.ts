@@ -47,9 +47,9 @@ const global = css`
     box-sizing: border-box;
   }
 
-  body {
+  body * {
     margin: 0;
-    font-family: SpoqaHanSansNeo;
+    font-family: 'SpoqaHanSansNeo';
   }
 
   #root {

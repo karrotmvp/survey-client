@@ -10,10 +10,7 @@ import EndPage from '@src/page/EndPage';
 import FeedBackPage from '@src/page/FeedBackPage';
 import TargetPage from '@src/page/TargetPage';
 
-
 ReactGA.initialize(process.env.REACT_APP_TRACKING_ID || '');
-
-
 
 export default function Router(): JSX.Element {
   const history = useHistory();
@@ -26,7 +23,7 @@ export default function Router(): JSX.Element {
   }, [history]);
 
   return (
-    <Navigator useCustomRouter>
+    <Navigator useCustomRouter theme="Cupertino">
       <Screen path="/">
         <HomePage />
       </Screen>
