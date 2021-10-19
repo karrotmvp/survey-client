@@ -1,7 +1,6 @@
 import styled from '@emotion/styled';
 
 import NavBar from '@src/component/common/navbar/NavBar';
-import media from '@src/config/utils/util';
 
 const StyledEndPage = styled.section`
   background-color: #ffff;
@@ -10,61 +9,69 @@ const StyledEndPage = styled.section`
   padding: 5.5rem 1rem 1rem 1rem;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
 `;
 
-const StyledEndPageBanner = styled.div`
-  font-size: 1.2rem;
+const EndTitle = styled.h1`
+  font-size: 1.5rem;
   font-weight: 700;
   font-family: ${({ theme }) => theme.fontFamily.title};
   color: ${({ theme }) => theme.color.primaryOrange};
 
-  line-height: 30.8px;
-  ${media.custom(360)} {
-    font-size: 1rem;
-  }
-  margin-bottom: 3rem;
+  line-height: 140%;
+  margin-bottom: 1rem;
 `;
 
-const StyledHighlight = styled.span`
-  color: ${({ theme }) => theme.color.primaryOrange};
-  font-weight: 700;
-`;
-const StyledText = styled.h1`
-  font-weight: 400;
-  margin-bottom: 8px;
-`;
-
-const EndText = styled.h3`
+const EndText = styled.span`
   color: #141414;
-  font-weight: 200;
+  font-weight: 400;
   margin-bottom: 2rem;
   line-height: 160%;
+`;
+
+const EndButton = styled.button`
+  width: 100%;
+  text-align: center;
+  font-weight: bold;
+  font-size: 16px;
+  line-height: 120%;
+  padding: 15px 0;
+  background-color: ${({ theme }) => theme.color.primaryOrange};
+  color: #fff;
+  border-radius: 8px;
+  margin-bottom: 24px;
+`;
+
+const FeedBackButton = styled.button`
+  width: 100%;
+  padding: 1rem;
+  font-size: 16px;
+  line-height: 120%;
+  text-align: center;
+  background-color: transparent;
+  text-decoration-line: underline;
+  color: #707070;
+  margin-left: auto;
+  border-radius: 8px;
+  margin-bottom: 50px;
 `;
 
 export default function EndPage(): JSX.Element {
   return (
     <StyledEndPage>
-      <NavBar type="CLOSE" />
-      <StyledEndPageBanner>
-        <StyledText>만드신 설문은 고객님께</StyledText>
-        <StyledText>
-          <StyledHighlight>실제 발행될 예정</StyledHighlight>이에요 🎉
-        </StyledText>
-      </StyledEndPageBanner>
-      <EndText>
-        무따는 사장님이 평소 고객님에게 궁금했던 점을 쉽게 물어볼 수 있는
-        서비스에요.
-      </EndText>
+      <section>
+        <NavBar type="CLOSE" />
+        <EndTitle>설문 제작 완료 🎉</EndTitle>
 
-      <EndText>
-        사장님께서 만드신 설문지를{' '}
-        <b>고객님께 가장 적절한 형태로 보내드리기 위해</b>
-        7~14일 후 고객님께 보내드리려고 해요.
-      </EndText>
-
-      <EndText>
-        사장님이 빨리 고객님의 답변을 받아보실 수 있도록 무따가 노력할게요!
-      </EndText>
+        <EndText>
+          만드신 설문은 고객님께 실제 발행될 예정이에요!답변이 충분히 모이면
+          알림을 보내드릴게요.
+        </EndText>
+      </section>
+      <section>
+        <EndButton>좋아요</EndButton>
+        <FeedBackButton>무따 서비스 피드백 남기기</FeedBackButton>
+      </section>
     </StyledEndPage>
   );
 }
