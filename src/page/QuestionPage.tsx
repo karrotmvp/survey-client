@@ -112,12 +112,14 @@ export default function QuestionPage(): JSX.Element {
         {isTostOpen && <AlertTostModal onClick={handleAlert} />}
         <StyleQuestionPage>
           <QuestionCardList />
-          <AddQuestionButton
-            disabled={!listValueState.check || listValueState.len === 3}
-            onClick={handleAddQuestionButton}
-          >
-            <PlusIcon /> 질문 추가
-          </AddQuestionButton>
+          {questionList.length < 3 && (
+            <AddQuestionButton
+              disabled={!listValueState.check || listValueState.len === 3}
+              onClick={handleAddQuestionButton}
+            >
+              <PlusIcon /> 질문 추가
+            </AddQuestionButton>
+          )}
         </StyleQuestionPage>
       </StyledBasicPage>
     </>
