@@ -5,7 +5,7 @@ import TargetItem from './TargetItem';
 const StyledTargetList = styled.section`
   display: grid;
   grid-template-columns: auto;
-  grid-gap: 0.8rem;
+  grid-gap: 1rem;
   margin-top: 1rem;
 `;
 

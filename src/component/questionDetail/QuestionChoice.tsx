@@ -1,4 +1,4 @@
-import { ChangeEvent, MouseEvent } from 'react';
+import { MouseEvent, useCallback, useEffect, useRef } from 'react';
 
 import styled from '@emotion/styled';
 
@@ -18,17 +18,18 @@ const StyledQuestionChoice = styled.li`
 const StyledChoiceInput = styled.textarea`
   resize: none;
   outline: none;
-  height: 30px;
   width: 100%;
   font-size: 1rem;
   font-weight: 400;
-  line-height: 140%;
+  line-height: 120%;
   border: 1px dashed #b1b2b2;
   color: #141414;
   background-color: transparent;
   padding: 4px;
   margin-right: 12px;
+  overflow-y: hidden;
   :focus {
+    background-color: transparent;
     border: 1px dashed #141414;
   }
 `;
@@ -42,16 +43,33 @@ export default function QuestionChoice({
   index: number;
   onDelete: (e: MouseEvent) => void;
 }): JSX.Element {
-  const inputChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    onChange(e);
-    e.target.style.height = '1rem';
-    e.target.style.height = `${e.target.scrollHeight + 6}px`;
-  };
+  const ref = useRef<HTMLTextAreaElement>(null);
+
+  useEffect(() => {
+    if (ref === null || ref.current === null) {
+      return;
+    }
+    ref.current.style.height = '2rem';
+    ref.current.style.height = `${ref.current.scrollHeight + 1}px`;
+  }, []);
+
+  const handleResizeHeight = useCallback(() => {
+    if (ref === null || ref.current === null) {
+      return;
+    }
+
+    ref.current.style.height = '2rem';
+    ref.current.style.height = `${ref.current.scrollHeight + 1}px`;
+  }, [ref]);
+
   return (
     <StyledQuestionChoice data-list={index}>
       <StyledChoiceInput
+        rows={1}
+        ref={ref}
         value={value}
-        onChange={inputChange}
+        onChange={onChange}
+        onInput={handleResizeHeight}
         placeholder={`객관식 답변 ${index + 1}`}
         data-list={index}
       />

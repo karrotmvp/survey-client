@@ -1,5 +1,7 @@
 import styled from '@emotion/styled';
+import { useNavigator } from '@karrotframe/navigator';
 
+import mini from '@src/api/mini';
 import NavBar from '@src/component/common/navbar/NavBar';
 
 const StyledEndPage = styled.section`
@@ -57,6 +59,15 @@ const FeedBackButton = styled.button`
 `;
 
 export default function EndPage(): JSX.Element {
+  const { push } = useNavigator();
+
+  const goFeedBack = () => {
+    push('/feedback');
+  };
+
+  const closeMini = () => {
+    mini.close();
+  };
   return (
     <StyledEndPage>
       <section>
@@ -69,8 +80,10 @@ export default function EndPage(): JSX.Element {
         </EndText>
       </section>
       <section>
-        <EndButton>좋아요</EndButton>
-        <FeedBackButton>무따 서비스 피드백 남기기</FeedBackButton>
+        <EndButton onClick={closeMini}>좋아요</EndButton>
+        <FeedBackButton onClick={goFeedBack}>
+          무따 서비스 피드백 남기기
+        </FeedBackButton>
       </section>
     </StyledEndPage>
   );

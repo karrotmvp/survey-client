@@ -3,15 +3,15 @@ import styled from '@emotion/styled';
 const StyledHomeBanner = styled.div`
   font-size: 22px;
   font-weight: 700;
-  font-family: ${({ theme }) => theme.fontFamily.title};
-  padding-top: 40px;
 `;
 
 const StyledHighlight = styled.span`
   color: ${({ theme }) => theme.color.primaryOrange};
+  font-family: ${({ theme }) => theme.fontFamily.title};
   font-weight: 700;
 `;
 const StyledText = styled.h1`
+  font-family: ${({ theme }) => theme.fontFamily.title};
   font-weight: 400;
   margin-bottom: 8px;
 `;

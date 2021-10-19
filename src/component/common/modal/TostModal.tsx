@@ -2,37 +2,43 @@ import { MouseEvent } from 'react';
 
 import styled from '@emotion/styled';
 
-import { ReactComponent as DeleteIcon } from '@config/icon/clear.svg';
-import { ReactComponent as InfoIcon } from '@config/icon/info.svg';
+import { ReactComponent as InfoIcon } from '@config/icon/InfoIcon.svg';
 
 const StyledTostModal = styled.div`
-  @keyframes modalUp {
-    from {
-      transform: translateY(+375px);
+  @keyframes modal {
+    0% {
+      transform: translate(-50%, 100%);
       opacity: 0;
     }
-    to {
-      transform: translateY(0);
+    20% {
+      transform: translate(-50%, 0);
       opacity: 1;
     }
-  }
 
+    70% {
+      transform: translate(-50%, 0);
+      opacity: 1;
+    }
+    100% {
+      transform: translate(-50%, 100%);
+      opacity: 0;
+    }
+  }
+  font-size: 1rem;
+  font-weight: 400;
   color: #fff;
-  padding: 8px 18px;
+  padding: 1rem 1.2rem;
   display: flex;
   align-items: center;
   width: fit-content;
   background-color: #272727;
-  animation: modalUp 0.3s ease-in-out;
-  position: fixed;
+  animation: modal 1.5s ease-in-out;
+  animation-fill-mode: forwards;
+  position: absolute;
   bottom: 3rem;
   left: 50%;
   transform: translate(-50%, 0);
-
-  path {
-    stroke: #fff;
-    fill: #fff;
-  }
+  z-index: 99;
 `;
 
 const TostText = styled.h4`
@@ -50,7 +56,6 @@ export default function TostModal({
     <StyledTostModal>
       <InfoIcon />
       <TostText>질문은 3개 이하까지 만들 수 있어요</TostText>
-      <DeleteIcon onClick={onClick} />
     </StyledTostModal>
   );
 }

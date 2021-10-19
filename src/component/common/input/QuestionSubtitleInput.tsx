@@ -1,4 +1,4 @@
-import { ChangeEvent } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 
 import styled from '@emotion/styled';
 
@@ -12,26 +12,42 @@ const StyledSubtitleInput = styled.textarea`
   width: 100%;
   font-size: 1rem;
   font-weight: 400;
-  line-height: 20px;
+  line-height: 120%;
   background-color: rgba(255, 255, 255, 0.1);
   border: 1px dashed #9f9f9f;
   color: #707070;
   padding: 0.5rem 1rem;
+  :focus {
+    border-color: #141414;
+  }
 `;
 
 export default function QuestionSubtitleInput({
   value,
   onChange,
 }: InputType): JSX.Element {
-  const inputChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    e.target.style.height = '1rem';
-    e.target.style.height = `${e.target.scrollHeight + 6}px`;
-  };
+  const ref = useRef<HTMLTextAreaElement>(null);
+
+  useEffect(() => {
+    if (ref === null || ref.current === null) {
+      return;
+    }
+    ref.current.style.height = `${ref.current.scrollHeight}px`;
+  }, []);
+
+  const handleResizeHeight = useCallback(() => {
+    if (ref === null || ref.current === null) {
+      return;
+    }
+
+    ref.current.style.height = `${ref.current.scrollHeight + 1}px`;
+  }, [ref]);
 
   return (
     <StyledSubtitleInput
+      ref={ref}
       value={value}
-      onInput={inputChange}
+      onInput={handleResizeHeight}
       onChange={onChange}
     ></StyledSubtitleInput>
   );

@@ -1,26 +1,29 @@
-import { ChangeEvent } from 'react';
+import { ChangeEvent, useCallback, useEffect, useRef } from 'react';
 
 import styled from '@emotion/styled';
 
 const StyledTitleInput = styled.textarea`
-  margin-top: 1rem;
-  border: none;
-  resize: none;
-  outline: none;
   width: 100%;
-  font-size: 1rem;
-  font-weight: 400;
-  line-height: 140%;
+  overflow: hidden;
+  border-width: 0 0 1px 0;
+  border-style: solid;
+  border-color: #c9c9c9;
   background-color: #f4f5f6;
   border-radius: 4px 4px 0px 0px;
-  border-bottom: 1px solid #c9c9c9;
-  color: #141414;
-  padding: 8px 6px;
-  ::placeholder {
-    opacity: 0.5;
+  color: #111111;
+  caret-color: ${({ theme }) => theme.color.secondaryGreen};
+  font-size: 16px;
+  line-height: 140%;
+  letter-spacing: -2%;
+  padding: 10px 0.5rem;
+  margin-top: 0.5rem;
+  resize: none;
+  &::placeholder {
+    color: #c6c9cc;
   }
-  :focus {
-    border-bottom: 1px solid ${({ theme }) => theme.color.secondaryGreen};
+  &:focus {
+    outline: none;
+    border-color: ${({ theme }) => theme.color.secondaryGreen};
   }
 `;
 
@@ -36,15 +39,28 @@ export default function QuestionTitleInput({
   questionIndex,
   placeholder,
 }: InputType & { questionIndex: number }): JSX.Element {
-  const inputChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    e.target.style.height = '1rem';
-    e.target.style.height = `${e.target.scrollHeight + 6}px`;
-  };
+  const ref = useRef<HTMLTextAreaElement>(null);
+
+  useEffect(() => {
+    if (ref === null || ref.current === null) {
+      return;
+    }
+    ref.current.style.height = `${ref.current.scrollHeight}px`;
+  }, []);
+
+  const handleResizeHeight = useCallback(() => {
+    if (ref === null || ref.current === null) {
+      return;
+    }
+
+    ref.current.style.height = `${ref.current.scrollHeight + 1}px`;
+  }, [ref]);
 
   return (
     <StyledTitleInput
+      ref={ref}
       value={value}
-      onInput={inputChange}
+      onInput={handleResizeHeight}
       onChange={onChange}
       placeholder={placeholder}
       data-list={questionIndex}
