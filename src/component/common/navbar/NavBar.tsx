@@ -24,8 +24,7 @@ const NavBarStyle = styled.div<{ shadow?: boolean }>`
   background-color: #ffff;
   padding: 1rem;
   z-index: 99999;
-   ${({ shadow }) =>
-     shadow ? 'filter: drop-shadow(0px 4px 8px rgba(0, 0, 0, 0.1));' : ''}
+   ${({ shadow }) => (shadow ? 'border-bottom : 1px solid #E5E5E5;' : '')}
   }
 `;
 

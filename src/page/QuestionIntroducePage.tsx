@@ -41,7 +41,6 @@ export default function QuestionIntroducePage(): JSX.Element {
         <StyledQuestionIntroducePage>
           <QuestionIntroduceTop>
             <QuestionIntroduceTitle>{introduceTitle}</QuestionIntroduceTitle>
-
             <QuestionSubtitleInput onChange={handleChange} value="" />
           </QuestionIntroduceTop>
         </StyledQuestionIntroducePage>

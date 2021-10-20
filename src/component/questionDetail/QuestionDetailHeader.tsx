@@ -12,19 +12,21 @@ import useOutsideClick from '@src/hook/useOutSideClick';
 const StyledQuestionDetailHeader = styled.section`
   display: flex;
   width: 100%;
+  align-items: center;
 `;
 
 const StyledQuestionDetailTitle = styled.h3`
   color: ${({ theme }) => theme.color.secondaryGreen};
   font-weight: 700;
   font-size: 24px;
-  margin-left: 8px;
   margin-right: 5px;
   font-family: ${({ theme }) => theme.fontFamily.title};
 `;
 
 const QuestionDetailLeft = styled.div`
   display: flex;
+  align-items: center;
+  height: 4rem;
 `;
 
 export type QuestionType = {
@@ -116,14 +118,14 @@ export default function QuestionDetailHeader({
           질문 {questionIndex + 1}
         </StyledQuestionDetailTitle>
       </QuestionDetailLeft>
-      <ToggleButton onClick={toggleHandler} text={text} />
+      <ToggleButton toggle={isOpen} onClick={toggleHandler} text={text} />
       {isOpen && (
         <>
           <OutSide onTouchStart={handleClick} />
           <NavToggle
             toggleRef={ref}
             navList={['주관식', '객관식']}
-            position={{ top: '46px', left: '4px' }}
+            position={{ top: '4.5rem', left: '5px' }}
             onClick={handleToggleList}
           />
         </>

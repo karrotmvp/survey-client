@@ -6,7 +6,7 @@ const StyledTargetList = styled.section`
   display: grid;
   grid-template-columns: auto;
   grid-gap: 1rem;
-  margin-top: 1rem;
+  height: 40vh;
 `;
 
 const targetlist = [

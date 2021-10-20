@@ -89,6 +89,11 @@ const global = css`
   ul {
     padding: 0;
   }
+
+  input {
+    -webkit-appearance: none;
+    -webkit-border-radius: 0;
+  }
 `;
 
 export default global;

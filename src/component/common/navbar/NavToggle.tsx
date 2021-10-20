@@ -15,6 +15,9 @@ const NavList = styled.li`
   font-size: 1rem;
   text-align: center;
   color: 707070;
+  :focus {
+    background-color: #f4f5f6;
+  }
 `;
 
 export default function NavToggle({
