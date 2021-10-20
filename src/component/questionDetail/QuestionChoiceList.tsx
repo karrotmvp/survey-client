@@ -1,11 +1,4 @@
-import {
-  ChangeEvent,
-  FormEvent,
-  MouseEvent,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
+import { ChangeEvent, MouseEvent, useEffect, useRef, useState } from 'react';
 
 import styled from '@emotion/styled';
 import { useRecoilState, useRecoilValue } from 'recoil';
@@ -55,6 +48,7 @@ export default function QuestionChoiceList({
         ...questionList.slice(questionIndex + 1),
       ]);
     }
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const ref = elRefs.current[+index!];
     if (ref === null) {
       return;
@@ -113,10 +107,6 @@ export default function QuestionChoiceList({
 
   const { choicesCheck } = useRecoilValue(questionListSelector);
 
-  const onInput = (e: FormEvent<HTMLTextAreaElement>) => {
-    console.log(e);
-  };
-
   useEffect(() => {
     if (elRefs && focus) {
       elRefs.current[choices.length - 1].focus();
@@ -131,7 +121,7 @@ export default function QuestionChoiceList({
             // eslint-disable-next-line no-return-assign
             ref={addToRefs}
             key={index}
-            {...{ value, onDelete, onChange, index, onInput }}
+            {...{ value, onDelete, onChange, index }}
           />
         ))}
       <StyledChoiceButton

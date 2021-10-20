@@ -56,7 +56,7 @@ export default function QuestionTitleInput({
 
     ref.current.style.height = `${ref.current.scrollHeight} px`;
     if (value === '') ref.current.style.height = '64px';
-  }, [ref.current, value]);
+  }, [value]);
 
   const handleResizeHeight = useCallback(() => {
     if (ref === null || ref.current === null) {

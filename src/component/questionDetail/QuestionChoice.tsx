@@ -1,4 +1,4 @@
-import { FormEvent, forwardRef, MouseEvent } from 'react';
+import { forwardRef, MouseEvent } from 'react';
 
 import styled from '@emotion/styled';
 
@@ -36,13 +36,12 @@ const StyledChoiceInput = styled.textarea`
 type questionChoicetype = InputType & {
   index: number;
   onDelete: (e: MouseEvent) => void;
-  onInput: (e: FormEvent<HTMLTextAreaElement>) => void;
 };
 
 // eslint-disable-next-line arrow-body-style
 const QuestionChoice = forwardRef<HTMLTextAreaElement, questionChoicetype>(
   // eslint-disable-next-line arrow-body-style
-  ({ index, onDelete, onChange, value, onInput }, ref) => {
+  ({ index, onDelete, onChange, value }, ref) => {
     return (
       <StyledQuestionChoice data-list={index}>
         <StyledChoiceInput
@@ -50,7 +49,6 @@ const QuestionChoice = forwardRef<HTMLTextAreaElement, questionChoicetype>(
           ref={ref}
           value={value}
           onChange={onChange}
-          onInput={onInput}
           placeholder={`객관식 답변 ${index + 1}`}
           data-list={index}
         />
