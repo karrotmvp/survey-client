@@ -1,4 +1,11 @@
-import { ChangeEvent, MouseEvent } from 'react';
+import {
+  ChangeEvent,
+  FormEvent,
+  MouseEvent,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 
 import styled from '@emotion/styled';
 import { useRecoilState, useRecoilValue } from 'recoil';
@@ -20,6 +27,15 @@ export default function QuestionChoiceList({
 }): JSX.Element {
   const [questionList, setQuestionlist] = useRecoilState(questionListAtom);
   const { choices } = questionList[questionIndex];
+  const elRefs = useRef<HTMLTextAreaElement[]>([]);
+
+  const [focus, setFocus] = useState(false);
+  // since it is an array we need to method to add the refs
+  const addToRefs = (el: HTMLTextAreaElement) => {
+    if (el && !elRefs.current.includes(el)) {
+      elRefs.current.push(el);
+    }
+  };
 
   const onChange = (e: ChangeEvent) => {
     const target = e.target as HTMLTextAreaElement;
@@ -39,6 +55,12 @@ export default function QuestionChoiceList({
         ...questionList.slice(questionIndex + 1),
       ]);
     }
+    const ref = elRefs.current[+index!];
+    if (ref === null) {
+      return;
+    }
+    ref.style.height = 'auto';
+    ref.style.height = `${ref.scrollHeight}px`;
   };
 
   const handleClick = () => {
@@ -50,6 +72,8 @@ export default function QuestionChoiceList({
       },
       ...questionList.slice(questionIndex + 1),
     ]);
+
+    setFocus(true);
   };
 
   const onDelete = (e: MouseEvent) => {
@@ -68,26 +92,9 @@ export default function QuestionChoiceList({
     }
   };
 
-  // const StyledIconButton = styled.button`
-  //   width: fit-content;
-  //   display: flex;
-  //   align-items: center;
-  //   padding: 8px 1rem;
-  //   background: rgba(255, 208, 183, 0.5);
-  //   border-radius: 8px;
-  //   color: ${({ theme }) => theme.color.primaryOrange};
-
-  //   svg {
-  //     margin-right: 8px;
-  //   }
-  //   :disabled {
-  //     opacity: 0.5;
-  //   }
-  // `;
-
   const StyledChoiceButton = styled.button`
     width: 100%;
-    height: 43px;
+    height: 55px;
     border-radius: 25.5px;
     display: flex;
     justify-content: flex-start;
@@ -106,13 +113,25 @@ export default function QuestionChoiceList({
 
   const { choicesCheck } = useRecoilValue(questionListSelector);
 
+  const onInput = (e: FormEvent<HTMLTextAreaElement>) => {
+    console.log(e);
+  };
+
+  useEffect(() => {
+    if (elRefs && focus) {
+      elRefs.current[choices.length - 1].focus();
+    }
+  }, [focus, choices.length]);
+
   return (
     <StyledQuestionChoiceList>
       {choices &&
         choices.map(({ value }, index) => (
           <QuestionChoice
+            // eslint-disable-next-line no-return-assign
+            ref={addToRefs}
             key={index}
-            {...{ value, onDelete, onChange, index }}
+            {...{ value, onDelete, onChange, index, onInput }}
           />
         ))}
       <StyledChoiceButton

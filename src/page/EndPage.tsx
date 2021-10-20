@@ -59,15 +59,19 @@ const FeedBackButton = styled.button`
 `;
 
 export default function EndPage(): JSX.Element {
-  const { push } = useNavigator();
+  const { replace } = useNavigator();
 
   const goFeedBack = () => {
-    push('/feedback');
+    replace('/feedback');
   };
 
   const closeMini = () => {
     mini.close();
   };
+
+  // useEffect(() => {
+
+  // }, []);
   return (
     <StyledEndPage>
       <section>
@@ -75,8 +79,9 @@ export default function EndPage(): JSX.Element {
         <EndTitle>설문 제작 완료 🎉</EndTitle>
 
         <EndText>
-          만드신 설문은 고객님께 실제 발행될 예정이에요!답변이 충분히 모이면
-          알림을 보내드릴게요.
+          만드신 설문은 고객님께 실제 발행될 예정이에요!
+          <br />
+          답변이 충분히 모이면 알림을 보내드릴게요.
         </EndText>
       </section>
       <section>

@@ -45,8 +45,18 @@ export default function QuestionTitleInput({
     if (ref === null || ref.current === null) {
       return;
     }
+    ref.current.style.height = 'auto';
     ref.current.style.height = `${ref.current.scrollHeight}px`;
   }, []);
+
+  useEffect(() => {
+    if (ref === null || ref.current === null) {
+      return;
+    }
+
+    ref.current.style.height = `${ref.current.scrollHeight} px`;
+    if (value === '') ref.current.style.height = '64px';
+  }, [ref.current, value]);
 
   const handleResizeHeight = useCallback(() => {
     if (ref === null || ref.current === null) {

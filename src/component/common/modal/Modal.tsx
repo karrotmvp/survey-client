@@ -2,15 +2,6 @@ import { useEffect, useState } from 'react';
 
 import styled from '@emotion/styled';
 
-import { ReactComponent as clearIcon } from '@config/icon/clear.svg';
-
-const ModalClose = styled(clearIcon)`
-  position: absolute;
-  top: 15px;
-  right: 10px;
-  font-size: 2rem;
-  display: block;
-`;
 const ModalWrapper = styled.div`
   display: flex;
   z-index: 2;
@@ -22,43 +13,39 @@ const ModalWrapper = styled.div`
   align-items: center;
   bottom: 0;
   left: 0;
+  z-index: 999999999;
 `;
 
 const ModalCover = styled.div<{ isOpen: boolean }>`
   @keyframes modalUp {
     from {
-      transform: translateY(+375px);
-      opacity: 1;
+      opacity: 0;
     }
     to {
-      transform: translateY(0);
-      opacity: 0;
+      opacity: 1;
     }
   }
   @keyframes modalDown {
     from {
-      transform: translateY(0);
-      opacity: 0;
-    }
-    to {
-      transform: translateY(+375px);
       opacity: 1;
     }
+    to {
+      opacity: 0;
+    }
   }
-
-  width: 100%;
+  display: flex;
+  flex-direction: column;
   position: relative;
-
+  width: 80%;
+  height: 175px;
+  background-color: #ffff;
   animation: ${({ isOpen }) =>
-    isOpen ? `modalUp 0.3s ease-in-out` : `modalDown 0.6s ease-in-out`};
-  border-radius: 15px;
-  background-color: white;
-  padding: 1rem;
+    isOpen ? `modalUp 0.3s ease-in-out` : `modalDown 0.8s ease-in-out`};
   -webkit-box-shadow: 0px 0px 23px 10px rgba(0, 0, 0, 0.2);
   box-shadow: 0px 0px 23px 10px rgba(0, 0, 0, 0.2);
 `;
 
-export default function UpDownModal({
+export default function Modal({
   setPopup,
   children,
 }: {
@@ -76,7 +63,6 @@ export default function UpDownModal({
   return (
     <ModalWrapper onMouseDown={handleClickOutside}>
       <ModalCover onMouseDown={e => e.stopPropagation()} {...{ isOpen }}>
-        <ModalClose onClick={handleClickOutside} />
         {children}
       </ModalCover>
     </ModalWrapper>

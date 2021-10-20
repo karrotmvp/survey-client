@@ -49,13 +49,15 @@ const TostText = styled.h4`
 
 export default function TostModal({
   onClick,
+  text,
 }: {
   onClick: (e: MouseEvent) => void;
+  text: string;
 }): JSX.Element {
   return (
     <StyledTostModal>
       <InfoIcon />
-      <TostText>질문은 3개 이하까지 만들 수 있어요</TostText>
+      <TostText>{text}</TostText>
     </StyledTostModal>
   );
 }

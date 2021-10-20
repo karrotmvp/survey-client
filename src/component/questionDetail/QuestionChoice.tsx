@@ -1,4 +1,4 @@
-import { MouseEvent, useCallback, useEffect, useRef } from 'react';
+import { FormEvent, forwardRef, MouseEvent } from 'react';
 
 import styled from '@emotion/styled';
 
@@ -33,47 +33,31 @@ const StyledChoiceInput = styled.textarea`
     border: 1px dashed #141414;
   }
 `;
-
-export default function QuestionChoice({
-  value,
-  onDelete,
-  onChange,
-  index,
-}: InputType & {
+type questionChoicetype = InputType & {
   index: number;
   onDelete: (e: MouseEvent) => void;
-}): JSX.Element {
-  const ref = useRef<HTMLTextAreaElement>(null);
+  onInput: (e: FormEvent<HTMLTextAreaElement>) => void;
+};
 
-  useEffect(() => {
-    if (ref === null || ref.current === null) {
-      return;
-    }
-    ref.current.style.height = '2rem';
-    ref.current.style.height = `${ref.current.scrollHeight + 1}px`;
-  }, []);
+// eslint-disable-next-line arrow-body-style
+const QuestionChoice = forwardRef<HTMLTextAreaElement, questionChoicetype>(
+  // eslint-disable-next-line arrow-body-style
+  ({ index, onDelete, onChange, value, onInput }, ref) => {
+    return (
+      <StyledQuestionChoice data-list={index}>
+        <StyledChoiceInput
+          rows={1}
+          ref={ref}
+          value={value}
+          onChange={onChange}
+          onInput={onInput}
+          placeholder={`객관식 답변 ${index + 1}`}
+          data-list={index}
+        />
+        {index !== 0 && <DeleteIcon onClick={onDelete} data-list={index} />}
+      </StyledQuestionChoice>
+    );
+  },
+);
 
-  const handleResizeHeight = useCallback(() => {
-    if (ref === null || ref.current === null) {
-      return;
-    }
-
-    ref.current.style.height = '2rem';
-    ref.current.style.height = `${ref.current.scrollHeight + 1}px`;
-  }, [ref]);
-
-  return (
-    <StyledQuestionChoice data-list={index}>
-      <StyledChoiceInput
-        rows={1}
-        ref={ref}
-        value={value}
-        onChange={onChange}
-        onInput={handleResizeHeight}
-        placeholder={`객관식 답변 ${index + 1}`}
-        data-list={index}
-      />
-      {index !== 0 && <DeleteIcon onClick={onDelete} data-list={index} />}
-    </StyledQuestionChoice>
-  );
-}
+export default QuestionChoice;

@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 
 import styled from '@emotion/styled';
 import { useNavigator } from '@karrotframe/navigator';
-import Slider from 'react-slick';
+import Slider, { Settings } from 'react-slick';
 import {
   useRecoilState,
   useRecoilValueLoadable,
@@ -77,7 +77,7 @@ type userType = {
   role: string;
 };
 export default function HomePage(): JSX.Element {
-  const { push } = useNavigator();
+  const { replace } = useNavigator();
   const userData = useGet<userType>('/members/me');
 
   const [code, setCode] = useRecoilState(codeAtom);
@@ -95,20 +95,19 @@ export default function HomePage(): JSX.Element {
     setCode(respCode);
   };
 
-  const settings = {
+  const settings: Settings = {
     dots: true,
     infinite: true,
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
     arrows: false,
+    autoplay: true,
+    autoplaySpeed: 3000,
   };
   const StyledImg = styled.img`
     width: 100%;
     object-fit: contain;
-  `;
-  const SlidWarpper = styled.div`
-    padding: 0 8px;
   `;
 
   const StyledSlide = styled(Slider)`
@@ -117,10 +116,14 @@ export default function HomePage(): JSX.Element {
       opacity: 1;
     }
 
+    .slick-slider {
+      margin: 0 -15px;
+    }
+
     .slick-dots li.slick-active button:before {
       color: ${({ theme }) => theme.color.primaryOrange} !important;
     }
-    margin-top: 1rem;
+    margin-top: 2rem;
     margin-bottom: 3rem;
   `;
   useEffect(() => {
@@ -131,7 +134,7 @@ export default function HomePage(): JSX.Element {
     if (sessionStorage.getItem('jwt')) {
       userData().then(data => {
         setUser({ nickName: '', storeName: data === '' ? '' : data.data.name });
-        push('/target');
+        replace('/target');
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -146,15 +149,11 @@ export default function HomePage(): JSX.Element {
           </StyledColomn>
           <HomeBanner />
           <StyledSlide {...settings}>
-            <SlidWarpper>
-              <StyledImg src="./img/homeImg1.png" />
-            </SlidWarpper>
-            <SlidWarpper>
-              <StyledImg src="./img/homeImg2.png" />
-            </SlidWarpper>
-            <SlidWarpper>
-              <StyledImg src="./img/homeImg3.png" />
-            </SlidWarpper>
+            <StyledImg src="./img/homeImg1.png" />
+
+            <StyledImg src="./img/homeImg2.png" />
+
+            <StyledImg src="./img/homeImg3.png" />
           </StyledSlide>
           <CreateQuestionButton onClick={handleClick}>
             설문 만들러가기
