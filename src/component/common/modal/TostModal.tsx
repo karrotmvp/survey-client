@@ -34,7 +34,7 @@ const StyledTostModal = styled.div`
   background-color: #272727;
   animation: modal 1.5s ease-in-out;
   animation-fill-mode: forwards;
-  position: absolute;
+  position: fixed;
   bottom: 3rem;
   left: 50%;
   transform: translate(-50%, 0);

@@ -23,13 +23,17 @@ import useMiniAuth from '../hook/useAuth';
 const StyledHomePage = styled.section`
   background: #ffff;
   width: 100%;
-  min-height: 100vh;
-  padding-top: 5.5rem;
+  height: 100vh;
+  padding-top: 3.8rem;
+  padding-bottom: 50px;
 `;
 
 const StyledSection = styled.section`
   padding: 0 18px;
   height: calc(100vh - 5.5rem);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 `;
 
 const CreateQuestionButton = styled.button`
@@ -43,20 +47,18 @@ const CreateQuestionButton = styled.button`
 `;
 
 const Logo = styled(LogoIcon)`
-  width: 12%;
   height: auto;
 `;
 
 const TitleLogo = styled(MuddIcon)`
   margin: 0 8px;
-  width: 25%;
+
   height: auto;
 `;
 
 const BetaLogo = styled(BetaIcon)`
   margin: 2px 0;
   path {
-    width: 10%;
     height: auto;
   }
 `;
@@ -92,6 +94,7 @@ export default function HomePage(): JSX.Element {
     if (!respCode) {
       return;
     }
+    replace('/target');
     setCode(respCode);
   };
 
@@ -144,20 +147,24 @@ export default function HomePage(): JSX.Element {
       <NavBar type="CLOSE" />
       <StyledHomePage>
         <StyledSection>
-          <StyledColomn>
-            <Logo /> <TitleLogo /> <BetaLogo />
-          </StyledColomn>
-          <HomeBanner />
-          <StyledSlide {...settings}>
-            <StyledImg src="./img/homeImg1.png" />
+          <div>
+            <StyledColomn>
+              <Logo /> <TitleLogo /> <BetaLogo />
+            </StyledColomn>
+            <HomeBanner />
+            <StyledSlide {...settings}>
+              <StyledImg src="./img/homeImg1.png" />
 
-            <StyledImg src="./img/homeImg2.png" />
+              <StyledImg src="./img/homeImg2.png" />
 
-            <StyledImg src="./img/homeImg3.png" />
-          </StyledSlide>
-          <CreateQuestionButton onClick={handleClick}>
-            설문 만들러가기
-          </CreateQuestionButton>
+              <StyledImg src="./img/homeImg3.png" />
+            </StyledSlide>
+          </div>
+          <div>
+            <CreateQuestionButton onClick={handleClick}>
+              설문 만들러가기
+            </CreateQuestionButton>
+          </div>
         </StyledSection>
       </StyledHomePage>
     </>

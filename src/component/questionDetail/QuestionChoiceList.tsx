@@ -4,6 +4,7 @@ import styled from '@emotion/styled';
 import { useRecoilState, useRecoilValue } from 'recoil';
 
 import { questionListAtom, questionListSelector } from '@atom/questionAtom';
+import AlertTostModal from '@component/common/modal/TostModal';
 import { ReactComponent as PluseIcon } from '@config/icon/plus.svg';
 
 import QuestionChoice from './QuestionChoice';
@@ -21,7 +22,7 @@ export default function QuestionChoiceList({
   const [questionList, setQuestionlist] = useRecoilState(questionListAtom);
   const { choices } = questionList[questionIndex];
   const elRefs = useRef<HTMLTextAreaElement[]>([]);
-
+  const [isToastOpen, setToast] = useState(false);
   const [focus, setFocus] = useState(false);
   // since it is an array we need to method to add the refs
   const addToRefs = (el: HTMLTextAreaElement) => {
@@ -57,17 +58,21 @@ export default function QuestionChoiceList({
     ref.style.height = `${ref.scrollHeight}px`;
   };
 
-  const handleClick = () => {
-    setQuestionlist([
-      ...questionList.slice(0, questionIndex),
-      {
-        ...questionList[questionIndex],
-        choices: [...choices, { value: '' }],
-      },
-      ...questionList.slice(questionIndex + 1),
-    ]);
+  const handleClick = (e: MouseEvent) => {
+    if (e.currentTarget.ariaDisabled === 'true') {
+      setToast(true);
+    } else {
+      setQuestionlist([
+        ...questionList.slice(0, questionIndex),
+        {
+          ...questionList[questionIndex],
+          choices: [...choices, { value: '' }],
+        },
+        ...questionList.slice(questionIndex + 1),
+      ]);
 
-    setFocus(true);
+      setFocus(true);
+    }
   };
 
   const onDelete = (e: MouseEvent) => {
@@ -97,13 +102,24 @@ export default function QuestionChoiceList({
     background-color: #f4f5f6;
     font-size: 1rem;
     font-weight: 400;
+    color: #141414;
     svg {
       margin-right: 8px;
     }
-    :disabled {
+    &[aria-disabled='true'] {
       opacity: 0.5;
     }
   `;
+
+  const handleContentAlert = () => {
+    setTimeout(() => {
+      setToast(false);
+    }, 1600);
+  };
+
+  useEffect(() => {
+    if (isToastOpen) handleContentAlert();
+  }, [isToastOpen]);
 
   const { choicesCheck } = useRecoilValue(questionListSelector);
 
@@ -115,6 +131,12 @@ export default function QuestionChoiceList({
 
   return (
     <StyledQuestionChoiceList>
+      {isToastOpen && (
+        <AlertTostModal
+          text={'객관식 답변을 모두 입력하세요'}
+          onClick={handleContentAlert}
+        />
+      )}
       {choices &&
         choices.map(({ value }, index) => (
           <QuestionChoice
@@ -125,7 +147,7 @@ export default function QuestionChoiceList({
           />
         ))}
       <StyledChoiceButton
-        disabled={!choicesCheck[questionIndex]}
+        aria-disabled={!choicesCheck[questionIndex]}
         onClick={handleClick}
       >
         <PluseIcon /> 항목 추가
