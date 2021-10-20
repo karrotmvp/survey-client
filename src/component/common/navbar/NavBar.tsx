@@ -24,12 +24,12 @@ const NavBarStyle = styled.div<{ shadow?: boolean }>`
   background-color: #ffff;
   padding: 1rem;
   z-index: 99999;
-   ${({ shadow }) => (shadow ? 'border-bottom : 1px solid #E5E5E5;' : '')}
+  ${({ shadow }) => (shadow ? 'border-bottom : 1px solid #E5E5E5;' : '')};
   }
 `;
 
 const NavTitle = styled.span`
-  margin-left: 36px;
+  margin-left: 1rem;
   color: #141414;
   font-size: 1rem;
   font-weight: 700;
