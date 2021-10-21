@@ -91,8 +91,6 @@ export default function HomePage(): JSX.Element {
 
   const handleClick = async () => {
     const respCode = await getCode();
-    // eslint-disable-next-line no-console
-    console.log(respCode);
     if (!respCode) {
       return;
     }
@@ -135,20 +133,20 @@ export default function HomePage(): JSX.Element {
       sessionStorage.setItem('jwt', jwt.contents.data);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [jwt.state, jwt.contents.data, sessionStorage]);
+  }, [code, jwt.state, jwt.contents.data, sessionStorage]);
 
   useEffect(() => {
     if (jwt.state === 'hasValue' && sessionStorage.getItem('jwt') !== '') {
       userData().then(data => {
         if (!data) throw new Error('error');
-        setUser({ nickName: '', storeName: data.data.name });
-        // eslint-disable-next-line no-console
-        console.log(data.data.name);
+        else setUser({ nickName: '', storeName: data.data.name });
+
         replace('/target');
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [code, jwt.state, jwt.contents.data, userData]);
+
   return (
     <>
       <NavBar type="CLOSE" />
