@@ -25,7 +25,6 @@ const NavBarStyle = styled.div<{ shadow?: boolean }>`
   padding: 1rem;
   z-index: 99999;
   ${({ shadow }) => (shadow ? 'border-bottom : 1px solid #E5E5E5;' : '')};
-  }
 `;
 
 const NavTitle = styled.span`
