@@ -72,10 +72,12 @@ const StyledColomn = styled.div`
 `;
 
 type userType = {
-  daangnId: string;
-  name: string;
-  imageUrl: string;
-  role: string;
+  data: {
+    daangnId: string;
+    name: string;
+    imageUrl: string;
+    role: string;
+  };
 };
 export default function HomePage(): JSX.Element {
   const { replace } = useNavigator();
@@ -138,10 +140,11 @@ export default function HomePage(): JSX.Element {
   useEffect(() => {
     if (jwt.state === 'hasValue' && sessionStorage.getItem('jwt') !== '') {
       userData().then(data => {
-        if (!data) throw new Error('error');
-        else setUser({ nickName: '', storeName: data.data.name });
-
-        replace('/target');
+        if (data === '') throw new Error('error');
+        else {
+          setUser({ nickName: '', storeName: data.data.data.name });
+          replace('/target');
+        }
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
