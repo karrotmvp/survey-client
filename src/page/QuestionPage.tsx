@@ -64,6 +64,7 @@ export default function QuestionPage(): JSX.Element {
   const submitData = useRecoilValue(questionSelector);
   const { replace } = useNavigator();
   const submit = useSubmit('/surveys');
+
   const handleAddQuestionButton = (e: MouseEvent) => {
     if ((e.currentTarget as HTMLButtonElement).ariaDisabled === 'true') {
       setContentTostOpen(true);
@@ -114,6 +115,7 @@ export default function QuestionPage(): JSX.Element {
   useEffect(() => {
     if (isTostOpen) handleAlert();
   }, [isTostOpen]);
+
   useEffect(() => {
     if (isContentTostOpen) handleContentAlert();
   }, [isContentTostOpen]);
@@ -140,6 +142,7 @@ export default function QuestionPage(): JSX.Element {
     width: 50%;
     height: 51px;
     background-color: #ffff;
+    color: #141414;
     border-top: 1px solid #e8e8e8;
     border-right: 1px solid #e8e8e8;
     :focus {
@@ -154,6 +157,7 @@ export default function QuestionPage(): JSX.Element {
     width: 50%;
     height: 52px;
     background-color: #ffff;
+    color: #141414;
     border-top: 1px solid #e8e8e8;
     :focus {
       background-color: #f4f5f6;

@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-import { Navigator, Screen } from '@karrotframe/navigator';
+import { Navigator, Screen, INavigatorTheme } from '@karrotframe/navigator';
 import ReactGA from 'react-ga';
 import { useHistory } from 'react-router-dom';
 
@@ -22,8 +22,20 @@ export default function Router(): JSX.Element {
     });
   }, [history]);
 
+  const checkMobileType = (): INavigatorTheme => {
+    const UA = navigator.userAgent.toLowerCase(); // userAgent 값 얻기
+    if (UA.indexOf('android') > -1) return 'Android';
+    if (
+      UA.indexOf('iphone') > -1 ||
+      UA.indexOf('ipad') > -1 ||
+      UA.indexOf('ipod') > -1
+    )
+      return 'Cupertino';
+    return 'Android';
+  };
+
   return (
-    <Navigator useCustomRouter theme="Cupertino">
+    <Navigator useCustomRouter theme={checkMobileType()}>
       <Screen path="/">
         <HomePage />
       </Screen>
