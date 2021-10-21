@@ -13,14 +13,10 @@ export default function useSubmit(
   if (token) axios.defaults.headers.common[Authorization] = token;
 
   const fetchData = async (bodyData: unknown) => {
-    try {
-      if (!url) throw new Error(`Error: URL IS NULL`);
-      const res = await axios.post(url, bodyData);
-      if (res.status !== 201) throw new Error(`Error`);
-    } catch (error) {
-      // eslint-disable-next-line no-console
-      console.error(error);
-    }
+    if (!url) throw new Error(`Error: URL IS NULL`);
+    const res = await axios.post(url, bodyData);
+    if (res.status !== 201) throw new Error(`Error`);
   };
+
   return fetchData;
 }

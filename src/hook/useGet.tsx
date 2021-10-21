@@ -14,16 +14,10 @@ export default function useGet<T>(
     const Authorization = 'X-AUTH-TOKEN';
     if (token) axios.defaults.headers.common[Authorization] = token;
 
-    try {
-      if (!url) throw new Error(`Error: URL IS NULL`);
-      const res = await axios.get<T>(url);
-      if (res.status !== 200) throw new Error(`Error`);
-      return res;
-    } catch (error) {
-      // eslint-disable-next-line no-console
-      console.error(error);
-    }
-    return '';
+    if (!url) throw new Error(`Error: URL IS NULL`);
+    const res = await axios.get<T>(url);
+    if (res.status !== 200) throw new Error(`Error`);
+    return res;
   };
   return fetchData;
 }
