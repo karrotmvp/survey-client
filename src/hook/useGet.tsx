@@ -10,7 +10,7 @@ export default function useGet<T>(
 
   const fetchData = async () => {
     const token = sessionStorage.getItem('jwt');
-    axios.defaults.baseURL = 'https://server.daangn-survey.com';
+    axios.defaults.baseURL = 'https://server.daangn-survey.com/api/v1';
     const Authorization = 'X-AUTH-TOKEN';
     if (token) axios.defaults.headers.common[Authorization] = token;
 
