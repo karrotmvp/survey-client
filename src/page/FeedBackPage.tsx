@@ -6,6 +6,7 @@ import { useRecoilState } from 'recoil';
 import AlertTostModal from '@component/common/modal/TostModal';
 import mini from '@src/api/mini';
 import { questionFeedBack } from '@src/atom/questionAtom';
+import Modal from '@src/component/common/modal/Modal';
 import NavBar from '@src/component/common/navbar/NavBar';
 import contents from '@src/config/const/const';
 import useSubmit from '@src/hook/useSubmit';
@@ -71,10 +72,42 @@ const StyledTitleInput = styled.textarea`
   margin-bottom: 0.8rem;
 `;
 
+const ConfirmModal = styled.div`
+  width: 100%;
+  font-size: 16px;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 150%;
+  text-align: center;
+  color: #242424;
+  padding: 0 24px;
+  height: 124px;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+`;
+
+const ConfirmButton = styled.button`
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 140%;
+  width: 100%;
+  height: 52px;
+  background-color: #ffff;
+  color: #141414;
+  border-top: 1px solid #e8e8e8;
+  :focus {
+    background-color: #f4f5f6;
+  }
+`;
+
 export default function FeedBackPage(): JSX.Element {
   const [feedback, setFeedback] = useRecoilState(questionFeedBack);
   const [isToastOpen, setToastOpen] = useState(false);
+  const [isPopup, setPopup] = useState(false);
+
   const post = useSubmit('/feedbacks');
+
   const handleChange = (e: ChangeEvent) => {
     setFeedback({
       question: contents.text.feedback.SUBTITLE,
@@ -85,7 +118,7 @@ export default function FeedBackPage(): JSX.Element {
   const handleComplete = (e: MouseEvent) => {
     if (e.currentTarget.ariaDisabled !== 'true') {
       post(feedback);
-      mini.close();
+      setPopup(true);
     } else {
       setToastOpen(true);
     }
@@ -128,6 +161,20 @@ export default function FeedBackPage(): JSX.Element {
             text={'내용을 모두 입력하세요'}
             onClick={handleAlert}
           />
+        )}
+
+        {isPopup && (
+          <Modal setPopup={setPopup}>
+            <ConfirmModal>소중한 의견 남겨 주셔서 감사합니다.</ConfirmModal>
+
+            <ConfirmButton
+              onClick={() => {
+                mini.close();
+              }}
+            >
+              종료하기
+            </ConfirmButton>
+          </Modal>
         )}
       </StyledFeedBackPage>
     </>
