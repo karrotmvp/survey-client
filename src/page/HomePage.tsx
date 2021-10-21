@@ -81,21 +81,24 @@ type userType = {
 export default function HomePage(): JSX.Element {
   const { replace } = useNavigator();
   const userData = useGet<userType>('/members/me');
-
   const [code, setCode] = useRecoilState(codeAtom);
   const getCode = useMiniAuth(
     process.env.REACT_APP_PRESET_BIZ || '',
     process.env.REACT_APP_APP_ID || '',
   );
+
   const jwt = useRecoilValueLoadable(authorizationSelector);
   const setUser = useSetRecoilState(userAtom);
+
   const handleClick = async () => {
     const respCode = await getCode();
+    // eslint-disable-next-line no-console
+    console.log(code);
     if (!respCode) {
       return;
     }
-    replace('/target');
     setCode(respCode);
+    replace('/target');
   };
 
   const settings: Settings = {
@@ -129,19 +132,28 @@ export default function HomePage(): JSX.Element {
     margin-top: 2rem;
     margin-bottom: 3rem;
   `;
+
   useEffect(() => {
     if (jwt.state === 'hasValue') {
       sessionStorage.setItem('jwt', jwt.contents.data);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [jwt.state, jwt.contents.data, sessionStorage]);
 
+  useEffect(() => {
     if (sessionStorage.getItem('jwt')) {
       userData().then(data => {
         setUser({ nickName: '', storeName: data === '' ? '' : data.data.name });
-        replace('/target');
+        if (jwt.state === 'hasValue') {
+          replace('/target');
+        }
+        if (jwt.state === 'hasError') {
+          throw new Error('jwt error');
+        }
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [code, jwt.state, jwt.contents.data]);
+  }, [code, jwt.state, jwt.contents.data, userData]);
   return (
     <>
       <NavBar type="CLOSE" />
