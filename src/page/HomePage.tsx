@@ -138,8 +138,9 @@ export default function HomePage(): JSX.Element {
   useEffect(() => {
     if (jwt.state === 'hasValue' && sessionStorage.getItem('jwt') !== '') {
       userData().then(data => {
-        if (!data) throw new Error('error');
-        else setUser({ nickName: '', storeName: data.data.name });
+        if (data === '') throw new Error('error');
+
+        setUser({ nickName: '', storeName: data.data.name });
 
         replace('/target');
       });
