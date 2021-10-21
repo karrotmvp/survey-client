@@ -93,12 +93,11 @@ export default function HomePage(): JSX.Element {
   const handleClick = async () => {
     const respCode = await getCode();
     // eslint-disable-next-line no-console
-    console.log(code);
+    console.log(respCode);
     if (!respCode) {
       return;
     }
     setCode(respCode);
-    replace('/target');
   };
 
   const settings: Settings = {
