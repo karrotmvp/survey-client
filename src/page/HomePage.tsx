@@ -84,7 +84,7 @@ export default function HomePage(): JSX.Element {
 
   const [code, setCode] = useRecoilState(codeAtom);
   const getCode = useMiniAuth(
-    'https://mini-assets.kr.karrotmarket.com/presets/mvp-survey-select-biz-profile/production.html',
+    process.env.REACT_APP_PRESET_BIZ || '',
     process.env.REACT_APP_APP_ID || '',
   );
 
