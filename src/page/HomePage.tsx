@@ -18,7 +18,7 @@ import { ReactComponent as MuddIcon } from '@config/icon/mudda.svg';
 import { userAtom } from '@src/atom/userAtom';
 import useGet from '@src/hook/useGet';
 
-// import useMiniAuth from '../hook/useAuth';
+import useMiniAuth from '../hook/useAuth';
 
 const StyledHomePage = styled.section`
   background: #ffff;
@@ -83,21 +83,20 @@ export default function HomePage(): JSX.Element {
   const { replace } = useNavigator();
   const userData = useGet<userType>('/members/me');
   const [code, setCode] = useRecoilState(codeAtom);
-  // const getCode = useMiniAuth(
-  //   process.env.REACT_APP_PRESET_BIZ || '',
-  //   process.env.REACT_APP_APP_ID || '',
-  // );
+  const getCode = useMiniAuth(
+    process.env.REACT_APP_PRESET_BIZ || '',
+    process.env.REACT_APP_APP_ID || '',
+  );
 
   const jwt = useRecoilValueLoadable(authorizationSelector);
   const setUser = useSetRecoilState(userAtom);
 
   const handleClick = async () => {
-    // const respCode = await getCode();
-    // if (!respCode) {
-    //   setCode('4214');
-    //   return;
-    // }
-    setCode('4214');
+    const respCode = await getCode();
+    if (!respCode) {
+      return;
+    }
+    setCode(respCode);
   };
 
   const settings: Settings = {
