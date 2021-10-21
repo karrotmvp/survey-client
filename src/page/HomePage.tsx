@@ -23,25 +23,17 @@ import useMiniAuth from '../hook/useAuth';
 const StyledHomePage = styled.section`
   background: #ffff;
   width: 100%;
-<<<<<<< HEAD
-  min-height: 100vh;
-  padding-top: 5.5rem;
-=======
   height: 100vh;
   padding-top: 3.8rem;
   padding-bottom: 50px;
->>>>>>> 737c1477dd62e01db2aded6967e9e80f1bb8f5f3
 `;
 
 const StyledSection = styled.section`
   padding: 0 18px;
   height: calc(100vh - 5.5rem);
-<<<<<<< HEAD
-=======
   display: flex;
   flex-direction: column;
   justify-content: space-between;
->>>>>>> 737c1477dd62e01db2aded6967e9e80f1bb8f5f3
 `;
 
 const CreateQuestionButton = styled.button`
@@ -55,30 +47,17 @@ const CreateQuestionButton = styled.button`
 `;
 
 const Logo = styled(LogoIcon)`
-<<<<<<< HEAD
-  width: 12%;
-=======
->>>>>>> 737c1477dd62e01db2aded6967e9e80f1bb8f5f3
   height: auto;
 `;
 
 const TitleLogo = styled(MuddIcon)`
   margin: 0 8px;
-<<<<<<< HEAD
-  width: 25%;
-=======
-
->>>>>>> 737c1477dd62e01db2aded6967e9e80f1bb8f5f3
   height: auto;
 `;
 
 const BetaLogo = styled(BetaIcon)`
   margin: 2px 0;
   path {
-<<<<<<< HEAD
-    width: 10%;
-=======
->>>>>>> 737c1477dd62e01db2aded6967e9e80f1bb8f5f3
     height: auto;
   }
 `;
@@ -101,21 +80,11 @@ type userType = {
 export default function HomePage(): JSX.Element {
   const { replace } = useNavigator();
   const userData = useGet<userType>('/members/me');
-<<<<<<< HEAD
-
-=======
->>>>>>> 737c1477dd62e01db2aded6967e9e80f1bb8f5f3
   const [code, setCode] = useRecoilState(codeAtom);
   const getCode = useMiniAuth(
     process.env.REACT_APP_PRESET_BIZ || '',
     process.env.REACT_APP_APP_ID || '',
   );
-<<<<<<< HEAD
-  const jwt = useRecoilValueLoadable(authorizationSelector);
-  const setUser = useSetRecoilState(userAtom);
-  const handleClick = async () => {
-    const respCode = await getCode();
-=======
 
   const jwt = useRecoilValueLoadable(authorizationSelector);
   const setUser = useSetRecoilState(userAtom);
@@ -124,7 +93,6 @@ export default function HomePage(): JSX.Element {
     const respCode = await getCode();
     // eslint-disable-next-line no-console
     console.log(respCode);
->>>>>>> 737c1477dd62e01db2aded6967e9e80f1bb8f5f3
     if (!respCode) {
       return;
     }
@@ -162,20 +130,10 @@ export default function HomePage(): JSX.Element {
     margin-top: 2rem;
     margin-bottom: 3rem;
   `;
-<<<<<<< HEAD
-=======
-
->>>>>>> 737c1477dd62e01db2aded6967e9e80f1bb8f5f3
   useEffect(() => {
     if (jwt.state === 'hasValue') {
       sessionStorage.setItem('jwt', jwt.contents.data);
     }
-<<<<<<< HEAD
-
-    if (sessionStorage.getItem('jwt')) {
-      userData().then(data => {
-        setUser({ nickName: '', storeName: data === '' ? '' : data.data.name });
-=======
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [jwt.state, jwt.contents.data, sessionStorage]);
 
@@ -186,37 +144,16 @@ export default function HomePage(): JSX.Element {
         setUser({ nickName: '', storeName: data.data.name });
         // eslint-disable-next-line no-console
         console.log(data.data.name);
->>>>>>> 737c1477dd62e01db2aded6967e9e80f1bb8f5f3
         replace('/target');
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-<<<<<<< HEAD
-  }, [code, jwt.state, jwt.contents.data]);
-=======
   }, [code, jwt.state, jwt.contents.data, userData]);
->>>>>>> 737c1477dd62e01db2aded6967e9e80f1bb8f5f3
   return (
     <>
       <NavBar type="CLOSE" />
       <StyledHomePage>
         <StyledSection>
-<<<<<<< HEAD
-          <StyledColomn>
-            <Logo /> <TitleLogo /> <BetaLogo />
-          </StyledColomn>
-          <HomeBanner />
-          <StyledSlide {...settings}>
-            <StyledImg src="./img/homeImg1.png" />
-
-            <StyledImg src="./img/homeImg2.png" />
-
-            <StyledImg src="./img/homeImg3.png" />
-          </StyledSlide>
-          <CreateQuestionButton onClick={handleClick}>
-            설문 만들러가기
-          </CreateQuestionButton>
-=======
           <div>
             <StyledColomn>
               <Logo /> <TitleLogo /> <BetaLogo />
@@ -235,7 +172,6 @@ export default function HomePage(): JSX.Element {
               설문 만들러가기
             </CreateQuestionButton>
           </div>
->>>>>>> 737c1477dd62e01db2aded6967e9e80f1bb8f5f3
         </StyledSection>
       </StyledHomePage>
     </>

@@ -1,21 +1,12 @@
-<<<<<<< HEAD
-import { ChangeEvent } from 'react';
-=======
 import { ChangeEvent, MouseEvent, useEffect, useState } from 'react';
->>>>>>> 737c1477dd62e01db2aded6967e9e80f1bb8f5f3
 
 import styled from '@emotion/styled';
 import { useRecoilState } from 'recoil';
 
-<<<<<<< HEAD
-import mini from '@src/api/mini';
-import { questionFeedBack } from '@src/atom/questionAtom';
-=======
 import AlertTostModal from '@component/common/modal/TostModal';
 import mini from '@src/api/mini';
 import { questionFeedBack } from '@src/atom/questionAtom';
 import Modal from '@src/component/common/modal/Modal';
->>>>>>> 737c1477dd62e01db2aded6967e9e80f1bb8f5f3
 import NavBar from '@src/component/common/navbar/NavBar';
 import contents from '@src/config/const/const';
 import useSubmit from '@src/hook/useSubmit';
@@ -36,11 +27,6 @@ const FeedbackTitle = styled.h1`
   font-size: 22px;
   line-height: 120%;
   color: #fe7e35;
-<<<<<<< HEAD
-  margin-bottom: 1rem;
-  width: 284px;
-=======
->>>>>>> 737c1477dd62e01db2aded6967e9e80f1bb8f5f3
   line-height: 140%;
   white-space: pre-wrap;
 `;
@@ -51,12 +37,8 @@ const CompleteButton = styled.button`
   font-weight: 400;
   color: ${({ theme }) => theme.color.primaryOrange};
   padding: 1rem 0 1rem 0.5rem;
-<<<<<<< HEAD
-  :disabled {
-=======
 
   &[aria-disabled='true'] {
->>>>>>> 737c1477dd62e01db2aded6967e9e80f1bb8f5f3
     color: #c9c9c9;
   }
 `;
@@ -66,10 +48,7 @@ const FeedbackSubtitle = styled.h4`
   font-weight: normal;
   font-size: 16px;
   line-height: 140%;
-<<<<<<< HEAD
-=======
   margin-top: 1rem;
->>>>>>> 737c1477dd62e01db2aded6967e9e80f1bb8f5f3
   margin-bottom: 1rem;
 `;
 
@@ -92,10 +71,6 @@ const StyledTitleInput = styled.textarea`
   margin-bottom: 0.8rem;
 `;
 
-<<<<<<< HEAD
-export default function FeedBackPage(): JSX.Element {
-  const [feedback, setFeedback] = useRecoilState(questionFeedBack);
-=======
 const ConfirmModal = styled.div`
   width: 100%;
   font-size: 16px;
@@ -130,7 +105,6 @@ export default function FeedBackPage(): JSX.Element {
   const [isToastOpen, setToastOpen] = useState(false);
   const [isPopup, setPopup] = useState(false);
 
->>>>>>> 737c1477dd62e01db2aded6967e9e80f1bb8f5f3
   const post = useSubmit('/feedbacks');
   const handleChange = (e: ChangeEvent) => {
     setFeedback({
@@ -139,13 +113,6 @@ export default function FeedBackPage(): JSX.Element {
     });
   };
 
-<<<<<<< HEAD
-  const handleComplete = () => {
-    post(feedback);
-    mini.close();
-  };
-
-=======
   const handleComplete = (e: MouseEvent) => {
     if (e.currentTarget.ariaDisabled !== 'true') {
       post(feedback);
@@ -164,20 +131,12 @@ export default function FeedBackPage(): JSX.Element {
     if (isToastOpen) handleAlert();
   }, [isToastOpen]);
 
->>>>>>> 737c1477dd62e01db2aded6967e9e80f1bb8f5f3
   return (
     <>
       <NavBar
         type="BACK"
         title="무따 서비스 피드백"
         appendRight={
-<<<<<<< HEAD
-          <CompleteButton onClick={handleComplete}>완료</CompleteButton>
-        }
-      />
-      <StyledFeedBackPage>
-        <FeedbackTitle>{contents.text.feedback.TITLE}</FeedbackTitle>
-=======
           <CompleteButton
             aria-disabled={!feedback.answer}
             onClick={handleComplete}
@@ -189,15 +148,12 @@ export default function FeedBackPage(): JSX.Element {
       <StyledFeedBackPage>
         <FeedbackTitle>무따는 더 좋은 설문 서비스가</FeedbackTitle>
         <FeedbackTitle>되고 싶어요</FeedbackTitle>
->>>>>>> 737c1477dd62e01db2aded6967e9e80f1bb8f5f3
         <FeedbackSubtitle>{contents.text.feedback.SUBTITLE}</FeedbackSubtitle>
         <StyledTitleInput
           value={feedback.answer}
           onChange={handleChange}
           placeholder={contents.placeholder.FEEDBACK}
         />
-<<<<<<< HEAD
-=======
         {isToastOpen && (
           <AlertTostModal
             text={'내용을 모두 입력하세요'}
@@ -218,7 +174,6 @@ export default function FeedBackPage(): JSX.Element {
             </ConfirmButton>
           </Modal>
         )}
->>>>>>> 737c1477dd62e01db2aded6967e9e80f1bb8f5f3
       </StyledFeedBackPage>
     </>
   );

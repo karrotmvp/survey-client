@@ -64,10 +64,6 @@ export default function QuestionPage(): JSX.Element {
   const submitData = useRecoilValue(questionSelector);
   const { replace } = useNavigator();
   const submit = useSubmit('/surveys');
-<<<<<<< HEAD
-=======
-
->>>>>>> 737c1477dd62e01db2aded6967e9e80f1bb8f5f3
   const handleAddQuestionButton = (e: MouseEvent) => {
     if ((e.currentTarget as HTMLButtonElement).ariaDisabled === 'true') {
       setContentTostOpen(true);
@@ -118,10 +114,6 @@ export default function QuestionPage(): JSX.Element {
   useEffect(() => {
     if (isTostOpen) handleAlert();
   }, [isTostOpen]);
-<<<<<<< HEAD
-=======
-
->>>>>>> 737c1477dd62e01db2aded6967e9e80f1bb8f5f3
   useEffect(() => {
     if (isContentTostOpen) handleContentAlert();
   }, [isContentTostOpen]);
@@ -148,10 +140,7 @@ export default function QuestionPage(): JSX.Element {
     width: 50%;
     height: 51px;
     background-color: #ffff;
-<<<<<<< HEAD
-=======
     color: #141414;
->>>>>>> 737c1477dd62e01db2aded6967e9e80f1bb8f5f3
     border-top: 1px solid #e8e8e8;
     border-right: 1px solid #e8e8e8;
     :focus {
@@ -166,10 +155,7 @@ export default function QuestionPage(): JSX.Element {
     width: 50%;
     height: 52px;
     background-color: #ffff;
-<<<<<<< HEAD
-=======
     color: #141414;
->>>>>>> 737c1477dd62e01db2aded6967e9e80f1bb8f5f3
     border-top: 1px solid #e8e8e8;
     :focus {
       background-color: #f4f5f6;
@@ -220,15 +206,9 @@ export default function QuestionPage(): JSX.Element {
       {isPopup && (
         <Modal setPopup={setPopup}>
           <ConfirmModal>
-<<<<<<< HEAD
-            설문 작성을 완료하면
-            <br />
-            질문을 다시 편집할 수 없어요.
-=======
             설문 작성을 완료하면 질문을
             <br />
             더 이상 수정할 수 없어요.
->>>>>>> 737c1477dd62e01db2aded6967e9e80f1bb8f5f3
             <br />
             완료하시겠어요?
           </ConfirmModal>
@@ -238,11 +218,7 @@ export default function QuestionPage(): JSX.Element {
                 setPopup(false);
               }}
             >
-<<<<<<< HEAD
-              다시 고칠게요
-=======
               수정
->>>>>>> 737c1477dd62e01db2aded6967e9e80f1bb8f5f3
             </CancelButton>
             <ConfirmButton
               onClick={() => {
@@ -251,11 +227,7 @@ export default function QuestionPage(): JSX.Element {
                 replace('/complete');
               }}
             >
-<<<<<<< HEAD
-              네, 완료할게요
-=======
               확인
->>>>>>> 737c1477dd62e01db2aded6967e9e80f1bb8f5f3
             </ConfirmButton>
           </div>
         </Modal>

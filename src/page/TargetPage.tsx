@@ -6,11 +6,7 @@ import TargetList from '@src/component/common/target/TargetList';
 const StyledTargetPage = styled.section`
   background: #ffff;
   width: 100%;
-<<<<<<< HEAD
-  min-height: 100vh;
-=======
   height: 100vh;
->>>>>>> 737c1477dd62e01db2aded6967e9e80f1bb8f5f3
   padding: 3.5rem 1rem 1rem 1rem;
   overflow-y: scroll;
 `;
