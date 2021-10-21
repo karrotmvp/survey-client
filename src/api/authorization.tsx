@@ -11,21 +11,16 @@ const authorizationSelector = selector({
   get: async ({ get }) => {
     const code = get(codeAtom);
     if (code) {
-      try {
-        const res: AxiosResponse<{ data: string }> = await axios.get<{
-          data: string;
-        }>(
-          `https://server.daangn-survey.com/api/v1/auth/business?bizProfileId=${code}`,
-        );
-        if (res.status !== 200) throw Error('로그인 확인 바랍니다');
-        const { data } = res;
-        return data;
-      } catch (e) {
-        // eslint-disable-next-line no-console
-        console.error(e);
-      }
+      const res: AxiosResponse<{ data: string }> = await axios.get<{
+        data: string;
+      }>(
+        `https://server.daangn-survey.com/api/v1/auth/business?bizProfileId=${code}`,
+      );
+      if (res.status !== 200) throw Error('로그인 확인 바랍니다');
+      const { data } = res;
+      return data;
     }
-    return { data: '' };
+    throw Error('로그인 확인 바랍니다');
   },
 });
 
