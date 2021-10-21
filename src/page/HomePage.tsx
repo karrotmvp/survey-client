@@ -87,15 +87,18 @@ export default function HomePage(): JSX.Element {
     'https://mini-assets.kr.karrotmarket.com/presets/mvp-survey-select-biz-profile/production.html',
     process.env.REACT_APP_APP_ID || '',
   );
+
   const jwt = useRecoilValueLoadable(authorizationSelector);
   const setUser = useSetRecoilState(userAtom);
+
   const handleClick = async () => {
     const respCode = await getCode();
+    console.log(code);
     if (!respCode) {
       return;
     }
-    replace('/target');
     setCode(respCode);
+    replace('/target');
   };
 
   const settings: Settings = {
@@ -129,11 +132,14 @@ export default function HomePage(): JSX.Element {
     margin-top: 2rem;
     margin-bottom: 3rem;
   `;
+
   useEffect(() => {
     if (jwt.state === 'hasValue') {
       sessionStorage.setItem('jwt', jwt.contents.data);
     }
+  }, [jwt.state, jwt.contents.data, sessionStorage]);
 
+  useEffect(() => {
     if (sessionStorage.getItem('jwt')) {
       userData().then(data => {
         setUser({ nickName: '', storeName: data === '' ? '' : data.data.name });
@@ -146,7 +152,7 @@ export default function HomePage(): JSX.Element {
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [code, jwt.state, jwt.contents.data]);
+  }, [code, jwt.state, jwt.contents.data, userData]);
   return (
     <>
       <NavBar type="CLOSE" />
