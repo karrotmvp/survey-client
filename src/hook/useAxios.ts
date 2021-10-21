@@ -56,7 +56,7 @@ export default function useAxios(initialUrl: string): StateType {
     data: '',
   });
   const token = sessionStorage.getItem('jwt');
-  axios.defaults.baseURL = process.env.REACT_APP_API_URL;
+  axios.defaults.baseURL = 'https://server.daangn-survey.com';
   const Authorization = 'X-AUTH-TOKEN';
 
   if (token) axios.defaults.headers.common[Authorization] = token;
