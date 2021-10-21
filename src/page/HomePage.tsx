@@ -141,15 +141,13 @@ export default function HomePage(): JSX.Element {
   }, [jwt.state, jwt.contents.data, sessionStorage]);
 
   useEffect(() => {
-    if (sessionStorage.getItem('jwt')) {
+    if (jwt.state === 'hasValue' && sessionStorage.getItem('jwt') !== '') {
       userData().then(data => {
-        setUser({ nickName: '', storeName: data === '' ? '' : data.data.name });
-        if (jwt.state === 'hasValue') {
-          replace('/target');
-        }
-        if (jwt.state === 'hasError') {
-          throw new Error('jwt error');
-        }
+        if (!data) throw new Error('error');
+        setUser({ nickName: '', storeName: data.data.name });
+        // eslint-disable-next-line no-console
+        console.log(data.data.name);
+        replace('/target');
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
