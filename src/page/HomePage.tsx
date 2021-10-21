@@ -93,6 +93,7 @@ export default function HomePage(): JSX.Element {
 
   const handleClick = async () => {
     const respCode = await getCode();
+    // eslint-disable-next-line no-console
     console.log(code);
     if (!respCode) {
       return;
@@ -137,6 +138,7 @@ export default function HomePage(): JSX.Element {
     if (jwt.state === 'hasValue') {
       sessionStorage.setItem('jwt', jwt.contents.data);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [jwt.state, jwt.contents.data, sessionStorage]);
 
   useEffect(() => {
