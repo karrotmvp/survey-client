@@ -4,6 +4,10 @@ import styled from '@emotion/styled';
 import { useRecoilState, useRecoilValue } from 'recoil';
 
 import { questionListAtom, questionListSelector } from '@atom/questionAtom';
+<<<<<<< HEAD
+=======
+import AlertTostModal from '@component/common/modal/TostModal';
+>>>>>>> 737c1477dd62e01db2aded6967e9e80f1bb8f5f3
 import { ReactComponent as PluseIcon } from '@config/icon/plus.svg';
 
 import QuestionChoice from './QuestionChoice';
@@ -21,7 +25,11 @@ export default function QuestionChoiceList({
   const [questionList, setQuestionlist] = useRecoilState(questionListAtom);
   const { choices } = questionList[questionIndex];
   const elRefs = useRef<HTMLTextAreaElement[]>([]);
+<<<<<<< HEAD
 
+=======
+  const [isToastOpen, setToast] = useState(false);
+>>>>>>> 737c1477dd62e01db2aded6967e9e80f1bb8f5f3
   const [focus, setFocus] = useState(false);
   // since it is an array we need to method to add the refs
   const addToRefs = (el: HTMLTextAreaElement) => {
@@ -57,6 +65,7 @@ export default function QuestionChoiceList({
     ref.style.height = `${ref.scrollHeight}px`;
   };
 
+<<<<<<< HEAD
   const handleClick = () => {
     setQuestionlist([
       ...questionList.slice(0, questionIndex),
@@ -68,6 +77,23 @@ export default function QuestionChoiceList({
     ]);
 
     setFocus(true);
+=======
+  const handleClick = (e: MouseEvent) => {
+    if (e.currentTarget.ariaDisabled === 'true') {
+      setToast(true);
+    } else {
+      setQuestionlist([
+        ...questionList.slice(0, questionIndex),
+        {
+          ...questionList[questionIndex],
+          choices: [...choices, { value: '' }],
+        },
+        ...questionList.slice(questionIndex + 1),
+      ]);
+
+      setFocus(true);
+    }
+>>>>>>> 737c1477dd62e01db2aded6967e9e80f1bb8f5f3
   };
 
   const onDelete = (e: MouseEvent) => {
@@ -97,14 +123,35 @@ export default function QuestionChoiceList({
     background-color: #f4f5f6;
     font-size: 1rem;
     font-weight: 400;
+<<<<<<< HEAD
     svg {
       margin-right: 8px;
     }
     :disabled {
+=======
+    color: #141414;
+    svg {
+      margin-right: 8px;
+    }
+    &[aria-disabled='true'] {
+>>>>>>> 737c1477dd62e01db2aded6967e9e80f1bb8f5f3
       opacity: 0.5;
     }
   `;
 
+<<<<<<< HEAD
+=======
+  const handleContentAlert = () => {
+    setTimeout(() => {
+      setToast(false);
+    }, 1600);
+  };
+
+  useEffect(() => {
+    if (isToastOpen) handleContentAlert();
+  }, [isToastOpen]);
+
+>>>>>>> 737c1477dd62e01db2aded6967e9e80f1bb8f5f3
   const { choicesCheck } = useRecoilValue(questionListSelector);
 
   useEffect(() => {
@@ -115,6 +162,15 @@ export default function QuestionChoiceList({
 
   return (
     <StyledQuestionChoiceList>
+<<<<<<< HEAD
+=======
+      {isToastOpen && (
+        <AlertTostModal
+          text={'객관식 답변을 입력해주세요'}
+          onClick={handleContentAlert}
+        />
+      )}
+>>>>>>> 737c1477dd62e01db2aded6967e9e80f1bb8f5f3
       {choices &&
         choices.map(({ value }, index) => (
           <QuestionChoice
@@ -125,7 +181,11 @@ export default function QuestionChoiceList({
           />
         ))}
       <StyledChoiceButton
+<<<<<<< HEAD
         disabled={!choicesCheck[questionIndex]}
+=======
+        aria-disabled={!choicesCheck[questionIndex]}
+>>>>>>> 737c1477dd62e01db2aded6967e9e80f1bb8f5f3
         onClick={handleClick}
       >
         <PluseIcon /> 항목 추가

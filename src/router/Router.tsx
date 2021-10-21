@@ -1,6 +1,10 @@
 import { useEffect } from 'react';
 
+<<<<<<< HEAD
 import { Navigator, Screen } from '@karrotframe/navigator';
+=======
+import { Navigator, Screen, INavigatorTheme } from '@karrotframe/navigator';
+>>>>>>> 737c1477dd62e01db2aded6967e9e80f1bb8f5f3
 import ReactGA from 'react-ga';
 import { useHistory } from 'react-router-dom';
 
@@ -22,8 +26,25 @@ export default function Router(): JSX.Element {
     });
   }, [history]);
 
+<<<<<<< HEAD
   return (
     <Navigator useCustomRouter theme="Cupertino">
+=======
+  const checkMobileType = (): INavigatorTheme => {
+    const UA = navigator.userAgent.toLowerCase(); // userAgent 값 얻기
+    if (UA.indexOf('android') > -1) return 'Android';
+    if (
+      UA.indexOf('iphone') > -1 ||
+      UA.indexOf('ipad') > -1 ||
+      UA.indexOf('ipod') > -1
+    )
+      return 'Cupertino';
+    return 'Android';
+  };
+
+  return (
+    <Navigator useCustomRouter theme={checkMobileType()}>
+>>>>>>> 737c1477dd62e01db2aded6967e9e80f1bb8f5f3
       <Screen path="/">
         <HomePage />
       </Screen>

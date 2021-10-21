@@ -62,7 +62,11 @@ export default function QuestionTitleInput({
     if (ref === null || ref.current === null) {
       return;
     }
+<<<<<<< HEAD
 
+=======
+    ref.current.style.height = 'auto';
+>>>>>>> 737c1477dd62e01db2aded6967e9e80f1bb8f5f3
     ref.current.style.height = `${ref.current.scrollHeight + 1}px`;
   }, [ref]);
 
