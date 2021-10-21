@@ -170,7 +170,7 @@ export default function FeedBackPage(): JSX.Element {
                 mini.close();
               }}
             >
-              종료하기
+              종료
             </ConfirmButton>
           </Modal>
         )}
