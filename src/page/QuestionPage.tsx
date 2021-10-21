@@ -208,9 +208,9 @@ export default function QuestionPage(): JSX.Element {
       {isPopup && (
         <Modal setPopup={setPopup}>
           <ConfirmModal>
-            설문 작성을 완료하면
+            설문 작성을 완료하면 질문을
             <br />
-            질문을 다시 편집할 수 없어요.
+            더 이상 수정할 수 없어요.
             <br />
             완료하시겠어요?
           </ConfirmModal>
@@ -220,7 +220,7 @@ export default function QuestionPage(): JSX.Element {
                 setPopup(false);
               }}
             >
-              다시 고칠게요
+              수정
             </CancelButton>
             <ConfirmButton
               onClick={() => {
@@ -229,7 +229,7 @@ export default function QuestionPage(): JSX.Element {
                 replace('/complete');
               }}
             >
-              네, 완료할게요
+              확인
             </ConfirmButton>
           </div>
         </Modal>

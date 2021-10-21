@@ -133,7 +133,7 @@ export default function QuestionChoiceList({
     <StyledQuestionChoiceList>
       {isToastOpen && (
         <AlertTostModal
-          text={'객관식 답변을 모두 입력하세요'}
+          text={'객관식 답변을 입력해주세요'}
           onClick={handleContentAlert}
         />
       )}
