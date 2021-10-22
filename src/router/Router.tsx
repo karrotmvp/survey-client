@@ -17,6 +17,7 @@ export default function Router(): JSX.Element {
     history.listen(location => {
       fa.logEvent('pageView', { path: location.pathname + location.search });
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [history]);
 
   const checkMobileType = (): INavigatorTheme => {

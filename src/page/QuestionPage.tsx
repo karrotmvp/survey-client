@@ -9,6 +9,7 @@ import NavBar from '@component/common/navbar/NavBar';
 import QuestionCardList from '@component/question/QuestionCardList';
 import { ReactComponent as PlusIcon } from '@config/icon/plus.svg';
 import StyledBasicPage from '@config/style/styledCompoent';
+import { useAnalytics } from '@src/analytics/faContext';
 import {
   questionListAtom,
   questionListSelector,
