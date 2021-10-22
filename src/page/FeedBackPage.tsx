@@ -4,13 +4,13 @@ import styled from '@emotion/styled';
 import { useRecoilState } from 'recoil';
 
 import AlertTostModal from '@component/common/modal/TostModal';
+import { useAnalytics } from '@src/analytics/faContext';
 import mini from '@src/api/mini';
 import { questionFeedBack } from '@src/atom/questionAtom';
 import Modal from '@src/component/common/modal/Modal';
 import NavBar from '@src/component/common/navbar/NavBar';
 import contents from '@src/config/const/const';
 import useSubmit from '@src/hook/useSubmit';
-import { useAnalytics } from '@src/analytics/faContext';
 
 const StyledFeedBackPage = styled.section`
   background-color: #ffff;

@@ -9,6 +9,7 @@ import NavBar from '@component/common/navbar/NavBar';
 import QuestionCardList from '@component/question/QuestionCardList';
 import { ReactComponent as PlusIcon } from '@config/icon/plus.svg';
 import StyledBasicPage from '@config/style/styledCompoent';
+import { useAnalytics } from '@src/analytics/faContext';
 import {
   questionListAtom,
   questionListSelector,
@@ -16,7 +17,6 @@ import {
 } from '@src/atom/questionAtom';
 import Modal from '@src/component/common/modal/Modal';
 import useSubmit from '@src/hook/useSubmit';
-import { useAnalytics } from '@src/analytics/faContext';
 
 const AddQuestionButton = styled.button`
   background-color: ${({ theme }) => theme.color.primaryOrange};
