@@ -144,8 +144,10 @@ export default function HomePage(): JSX.Element {
   useEffect(() => {
     if (jwt.state === 'hasValue' && sessionStorage.getItem('jwt') !== '') {
       userData().then(({ data }: userType) => {
-        setUser({ nickName: '', storeName: data.name });
-        replace('/target');
+        if (data.name) {
+          setUser({ nickName: '', storeName: data.name });
+          replace('/target');
+        }
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
