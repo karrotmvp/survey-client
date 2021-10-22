@@ -3,6 +3,7 @@ import { useNavigator } from '@karrotframe/navigator';
 import { useSetRecoilState } from 'recoil';
 
 import { questionTarget } from '@atom/questionAtom';
+import { useAnalytics } from '@src/analytics/faContext';
 
 const StyledTargetItem = styled.button`
   background: #f4f3f8;
@@ -40,9 +41,11 @@ export default function TargetItem({
   subtitle,
   index,
 }: TargetItemType): JSX.Element {
+  const fa = useAnalytics();
   const setTarget = useSetRecoilState(questionTarget);
   const { push } = useNavigator();
   const handleClick = () => {
+    fa.logEvent('clickTarget', { target: index + 1 });
     setTarget(index + 1);
     push('/question');
   };

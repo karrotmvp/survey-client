@@ -10,6 +10,7 @@ import Modal from '@src/component/common/modal/Modal';
 import NavBar from '@src/component/common/navbar/NavBar';
 import contents from '@src/config/const/const';
 import useSubmit from '@src/hook/useSubmit';
+import { useAnalytics } from '@src/analytics/faContext';
 
 const StyledFeedBackPage = styled.section`
   background-color: #ffff;
@@ -104,7 +105,7 @@ export default function FeedBackPage(): JSX.Element {
   const [feedback, setFeedback] = useRecoilState(questionFeedBack);
   const [isToastOpen, setToastOpen] = useState(false);
   const [isPopup, setPopup] = useState(false);
-
+  const fa = useAnalytics();
   const post = useSubmit('/feedbacks');
   const handleChange = (e: ChangeEvent) => {
     setFeedback({
@@ -115,9 +116,11 @@ export default function FeedBackPage(): JSX.Element {
 
   const handleComplete = (e: MouseEvent) => {
     if (e.currentTarget.ariaDisabled !== 'true') {
+      fa.logEvent('feedback-completeClick-active');
       post(feedback);
       setPopup(true);
     } else {
+      fa.logEvent('feedback-completeClick-disable');
       setToastOpen(true);
     }
   };

@@ -16,6 +16,7 @@ import {
 } from '@src/atom/questionAtom';
 import Modal from '@src/component/common/modal/Modal';
 import useSubmit from '@src/hook/useSubmit';
+import { useAnalytics } from '@src/analytics/faContext';
 
 const AddQuestionButton = styled.button`
   background-color: ${({ theme }) => theme.color.primaryOrange};
@@ -64,6 +65,8 @@ export default function QuestionPage(): JSX.Element {
   const submitData = useRecoilValue(questionSelector);
   const { replace } = useNavigator();
   const submit = useSubmit('/surveys');
+  const fa = useAnalytics();
+
   const handleAddQuestionButton = (e: MouseEvent) => {
     if ((e.currentTarget as HTMLButtonElement).ariaDisabled === 'true') {
       setContentTostOpen(true);
@@ -93,8 +96,12 @@ export default function QuestionPage(): JSX.Element {
 
   const handleComplete = (e: MouseEvent) => {
     if ((e.currentTarget as HTMLButtonElement).ariaDisabled === 'true') {
+      fa.logEvent('question-completeClick-disable');
       setContentTostOpen(true);
     } else {
+      fa.logEvent('question-completeClick-active', {
+        questionlen: questionList.length,
+      });
       setPopup(true);
     }
   };

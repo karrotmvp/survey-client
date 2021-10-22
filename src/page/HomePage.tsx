@@ -15,6 +15,7 @@ import HomeBanner from '@component/home/HomeBanner';
 import { ReactComponent as BetaIcon } from '@config/icon/BETA.svg';
 import { ReactComponent as LogoIcon } from '@config/icon/logo.svg';
 import { ReactComponent as MuddIcon } from '@config/icon/mudda.svg';
+import { useAnalytics } from '@src/analytics/faContext';
 import { userAtom } from '@src/atom/userAtom';
 import useGet from '@src/hook/useGet';
 
@@ -83,6 +84,7 @@ export default function HomePage(): JSX.Element {
   const { replace } = useNavigator();
   const userData = useGet<userType>('/members/me');
   const [code, setCode] = useRecoilState(codeAtom);
+  const fa = useAnalytics();
   const getCode = useMiniAuth(
     process.env.REACT_APP_PRESET_BIZ || '',
     process.env.REACT_APP_APP_ID || '',
@@ -96,6 +98,8 @@ export default function HomePage(): JSX.Element {
     if (!respCode) {
       return;
     }
+    fa.setUserId(respCode);
+    fa.logEvent('logInButton-click');
     setCode(respCode);
   };
 
