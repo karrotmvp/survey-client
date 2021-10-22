@@ -17,6 +17,7 @@ import {
 } from '@src/atom/questionAtom';
 import Modal from '@src/component/common/modal/Modal';
 import useSubmit from '@src/hook/useSubmit';
+import { useAnalytics } from '@src/analytics/faContext';
 
 const AddQuestionButton = styled.button`
   background-color: ${({ theme }) => theme.color.primaryOrange};
