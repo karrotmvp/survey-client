@@ -4,6 +4,7 @@ import styled from '@emotion/styled';
 import { useRecoilState } from 'recoil';
 
 import AlertTostModal from '@component/common/modal/TostModal';
+import { useAnalytics } from '@src/analytics/faContext';
 import mini from '@src/api/mini';
 import { questionFeedBack } from '@src/atom/questionAtom';
 import Modal from '@src/component/common/modal/Modal';
@@ -104,7 +105,7 @@ export default function FeedBackPage(): JSX.Element {
   const [feedback, setFeedback] = useRecoilState(questionFeedBack);
   const [isToastOpen, setToastOpen] = useState(false);
   const [isPopup, setPopup] = useState(false);
-
+  const fa = useAnalytics();
   const post = useSubmit('/feedbacks');
   const handleChange = (e: ChangeEvent) => {
     setFeedback({
@@ -115,9 +116,11 @@ export default function FeedBackPage(): JSX.Element {
 
   const handleComplete = (e: MouseEvent) => {
     if (e.currentTarget.ariaDisabled !== 'true') {
+      fa.logEvent('feedback-completeClick-active');
       post(feedback);
       setPopup(true);
     } else {
+      fa.logEvent('feedback-completeClick-disable');
       setToastOpen(true);
     }
   };

@@ -1,25 +1,23 @@
 import { useEffect } from 'react';
 
 import { Navigator, Screen, INavigatorTheme } from '@karrotframe/navigator';
-import ReactGA from 'react-ga';
 import { useHistory } from 'react-router-dom';
 
 import HomePage from '@page/HomePage';
 import QuestionPage from '@page/QuestionPage';
+import { useAnalytics } from '@src/analytics/faContext';
 import EndPage from '@src/page/EndPage';
 import FeedBackPage from '@src/page/FeedBackPage';
 import TargetPage from '@src/page/TargetPage';
 
-ReactGA.initialize(process.env.REACT_APP_TRACKING_ID || '');
-
 export default function Router(): JSX.Element {
   const history = useHistory();
-
+  const fa = useAnalytics();
   useEffect(() => {
     history.listen(location => {
-      ReactGA.ga('set', 'page', location.pathname + location.search);
-      ReactGA.ga('send', 'pageview');
+      fa.logEvent('pageView', { path: location.pathname + location.search });
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [history]);
 
   const checkMobileType = (): INavigatorTheme => {

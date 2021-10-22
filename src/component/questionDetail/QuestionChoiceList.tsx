@@ -6,6 +6,7 @@ import { useRecoilState, useRecoilValue } from 'recoil';
 import { questionListAtom, questionListSelector } from '@atom/questionAtom';
 import AlertTostModal from '@component/common/modal/TostModal';
 import { ReactComponent as PluseIcon } from '@config/icon/plus.svg';
+import { useAnalytics } from '@src/analytics/faContext';
 
 import QuestionChoice from './QuestionChoice';
 
@@ -24,6 +25,7 @@ export default function QuestionChoiceList({
   const elRefs = useRef<HTMLTextAreaElement[]>([]);
   const [isToastOpen, setToast] = useState(false);
   const [focus, setFocus] = useState(false);
+  const fa = useAnalytics();
   // since it is an array we need to method to add the refs
   const addToRefs = (el: HTMLTextAreaElement) => {
     if (el && !elRefs.current.includes(el)) {
@@ -60,8 +62,10 @@ export default function QuestionChoiceList({
 
   const handleClick = (e: MouseEvent) => {
     if (e.currentTarget.ariaDisabled === 'true') {
+      fa.logEvent('choiceAdd-disable');
       setToast(true);
     } else {
+      fa.logEvent('choiceAdd-active');
       setQuestionlist([
         ...questionList.slice(0, questionIndex),
         {
@@ -76,6 +80,7 @@ export default function QuestionChoiceList({
   };
 
   const onDelete = (e: MouseEvent) => {
+    fa.logEvent('choiceDelete');
     const target = e.currentTarget as HTMLButtonElement;
     const index = target.dataset.list;
 

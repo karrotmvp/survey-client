@@ -9,6 +9,7 @@ import NavBar from '@component/common/navbar/NavBar';
 import QuestionCardList from '@component/question/QuestionCardList';
 import { ReactComponent as PlusIcon } from '@config/icon/plus.svg';
 import StyledBasicPage from '@config/style/styledCompoent';
+import { useAnalytics } from '@src/analytics/faContext';
 import {
   questionListAtom,
   questionListSelector,
@@ -64,6 +65,8 @@ export default function QuestionPage(): JSX.Element {
   const submitData = useRecoilValue(questionSelector);
   const { replace } = useNavigator();
   const submit = useSubmit('/surveys');
+  const fa = useAnalytics();
+
   const handleAddQuestionButton = (e: MouseEvent) => {
     if ((e.currentTarget as HTMLButtonElement).ariaDisabled === 'true') {
       setContentTostOpen(true);
@@ -93,8 +96,12 @@ export default function QuestionPage(): JSX.Element {
 
   const handleComplete = (e: MouseEvent) => {
     if ((e.currentTarget as HTMLButtonElement).ariaDisabled === 'true') {
+      fa.logEvent('question-completeClick-disable');
       setContentTostOpen(true);
     } else {
+      fa.logEvent('question-completeClick-active', {
+        questionlen: questionList.length,
+      });
       setPopup(true);
     }
   };
