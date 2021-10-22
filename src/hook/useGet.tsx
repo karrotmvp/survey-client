@@ -1,11 +1,11 @@
 import { useState } from 'react';
 
-import axios, { AxiosResponse } from 'axios';
+import axios from 'axios';
 
 export default function useGet<T>(
   initialUrl: string,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-): () => Promise<AxiosResponse<T, any> | ''> {
+): () => Promise<T> {
   const [url] = useState(initialUrl);
 
   const fetchData = async () => {
@@ -17,7 +17,9 @@ export default function useGet<T>(
     if (!url) throw new Error(`Error: URL IS NULL`);
     const res = await axios.get<T>(url);
     if (res.status !== 200) throw new Error(`Error`);
-    return res;
+
+    return res.data;
+
   };
 
   return fetchData;
