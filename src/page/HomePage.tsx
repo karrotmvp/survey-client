@@ -146,6 +146,7 @@ export default function HomePage(): JSX.Element {
       userData().then(({ data }: userType) => {
         setUser({ nickName: '', storeName: data.name });
         replace('/target');
+
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
