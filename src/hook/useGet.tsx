@@ -17,7 +17,9 @@ export default function useGet<T>(
     if (!url) throw new Error(`Error: URL IS NULL`);
     const res = await axios.get<T>(url);
     if (res.status !== 200) throw new Error(`Error`);
+
     return res.data;
+
   };
 
   return fetchData;
