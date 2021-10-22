@@ -11,7 +11,6 @@ import Modal from '@src/component/common/modal/Modal';
 import NavBar from '@src/component/common/navbar/NavBar';
 import contents from '@src/config/const/const';
 import useSubmit from '@src/hook/useSubmit';
-import { useAnalytics } from '@src/analytics/faContext';
 
 const StyledFeedBackPage = styled.section`
   background-color: #ffff;
