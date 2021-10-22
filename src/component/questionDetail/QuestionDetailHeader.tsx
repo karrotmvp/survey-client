@@ -7,6 +7,7 @@ import { questionListAtom } from '@atom/questionAtom';
 import ToggleButton from '@component/common/button/ToggleButton';
 import NavToggle from '@component/common/navbar/NavToggle';
 import { ReactComponent as TrashIcon } from '@config/icon/trash.svg';
+import { useAnalytics } from '@src/analytics/faContext';
 import useOutsideClick from '@src/hook/useOutSideClick';
 
 const StyledQuestionDetailHeader = styled.section`
@@ -41,13 +42,14 @@ export default function QuestionDetailHeader({
   const [questionListState, setQuestionList] = useRecoilState(questionListAtom);
   const [isOpen, setToggle] = useState(false);
   const ref = useRef<HTMLUListElement>(null);
-
+  const fa = useAnalytics();
   const handleClick = useOutsideClick(ref, () => {
     if (isOpen) {
       setToggle(false);
     }
   });
   const toggleHandler = (e: MouseEvent) => {
+    fa.logEvent('check-type-button');
     setToggle(!isOpen);
   };
 
