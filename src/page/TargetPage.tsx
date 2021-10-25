@@ -1,4 +1,7 @@
+import { useEffect } from 'react';
+
 import styled from '@emotion/styled';
+import { useHistory } from 'react-router-dom';
 
 import NavBar from '@component/common/navbar/NavBar';
 import TargetList from '@src/component/common/target/TargetList';
@@ -23,6 +26,15 @@ const StyledTargetArticle = styled.article`
 `;
 
 export default function TargetPage(): JSX.Element {
+  const history = useHistory();
+  useEffect(() => {
+    console.log(history);
+    const unblock = history.block('정말 떠나실건가요?');
+    return () => {
+      unblock();
+    };
+  }, [history]);
+
   return (
     <>
       <NavBar type="CLOSE" title="설문 고객 선택" />

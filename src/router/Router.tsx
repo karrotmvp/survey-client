@@ -15,7 +15,7 @@ export default function Router(): JSX.Element {
   const fa = useAnalytics();
   useEffect(() => {
     history.listen(location => {
-      fa.logEvent('pageView', { path: location.pathname + location.search });
+      fa.logEvent(`page-view-${location.pathname}`);
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [history]);

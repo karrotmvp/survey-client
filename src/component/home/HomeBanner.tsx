@@ -23,7 +23,7 @@ export default function HomeBanner(): JSX.Element {
         <StyledHighlight>설문</StyledHighlight>을 만들고
       </StyledText>
       <StyledText>
-        고객님의 <StyledHighlight>의견</StyledHighlight>을 들어봐요
+        우리 동네 이웃 <StyledHighlight>의견</StyledHighlight>을 들어봐요
       </StyledText>
     </StyledHomeBanner>
   );
