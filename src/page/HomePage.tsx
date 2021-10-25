@@ -82,7 +82,7 @@ type userType = {
 };
 export default function HomePage(): JSX.Element {
   const { replace } = useNavigator();
-  const userData = useGet<userType>('/members/me');
+  const getData = useGet<userType>('/members/me');
   const [code, setCode] = useRecoilState(codeAtom);
   const fa = useAnalytics();
   const getCode = useMiniAuth(
@@ -143,7 +143,9 @@ export default function HomePage(): JSX.Element {
 
   useEffect(() => {
     if (jwt.state === 'hasValue' && sessionStorage.getItem('jwt') !== '') {
-      userData().then(({ data }: userType) => {
+      getData().then(({ data }: userType) => {
+        // eslint-disable-next-line no-console
+        console.log(data);
         if (data.name) {
           setUser({ nickName: '', storeName: data.name });
           replace('/target');
@@ -151,7 +153,7 @@ export default function HomePage(): JSX.Element {
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [code, jwt.state, jwt.contents.data, userData]);
+  }, [code, jwt.state, jwt.contents.data, getData]);
 
   return (
     <>
