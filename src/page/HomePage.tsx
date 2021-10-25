@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import styled from '@emotion/styled';
 import { useNavigator } from '@karrotframe/navigator';
@@ -17,9 +17,22 @@ import { ReactComponent as LogoIcon } from '@config/icon/logo.svg';
 import { ReactComponent as MuddIcon } from '@config/icon/mudda.svg';
 import { useAnalytics } from '@src/analytics/faContext';
 import { userAtom } from '@src/atom/userAtom';
+import Modal from '@src/component/common/modal/Modal';
 import useGet from '@src/hook/useGet';
 
 import useMiniAuth from '../hook/useAuth';
+
+const StyledImg = styled.img`
+  width: 60%;
+  position: absolute;
+  top: 13%;
+`;
+
+const StyledImgThird = styled.img`
+  width: 75%;
+  position: absolute;
+  top: 20%;
+`;
 
 const StyledHomePage = styled.section`
   background: #ffff;
@@ -81,10 +94,12 @@ type userType = {
   };
 };
 export default function HomePage(): JSX.Element {
-  const { replace } = useNavigator();
+  const { push } = useNavigator();
   const getData = useGet<userType>('/members/me');
   const [code, setCode] = useRecoilState(codeAtom);
   const fa = useAnalytics();
+
+  const [isPopup, setPopup] = useState(false);
   const getCode = useMiniAuth(
     process.env.REACT_APP_PRESET_BIZ || '',
     process.env.REACT_APP_APP_ID || '',
@@ -113,9 +128,29 @@ export default function HomePage(): JSX.Element {
     autoplay: true,
     autoplaySpeed: 3000,
   };
-  const StyledImg = styled.img`
+
+  const ConfirmModal = styled.div`
     width: 100%;
-    object-fit: contain;
+    font-size: 16px;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 150%;
+    text-align: center;
+    color: #242424;
+    padding: 0 24px;
+    height: 124px;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+  `;
+
+  const StyledCover = styled.div`
+    display: flex;
+    justify-content: center;
+    background: #f4f3f8;
+    border-radius: 8px;
+    height: 50vh;
+    position: relative;
   `;
 
   const StyledSlide = styled(Slider)`
@@ -131,29 +166,46 @@ export default function HomePage(): JSX.Element {
     .slick-dots li.slick-active button:before {
       color: ${({ theme }) => theme.color.primaryOrange} !important;
     }
+
     margin-top: 2rem;
     margin-bottom: 3rem;
+    height: 65%;
+  `;
+
+  const StyledSliderTitle = styled.h1`
+    font-family: ${({ theme }) => theme.fontFamily.title};
+    font-weight: bold;
+    font-size: 14px;
+    line-height: 120%;
+    /* identical to box height, or 17px */
+    margin-top: 1.3rem;
+    text-align: center;
+
+    /* 707070 */
+
+    color: #707070;
   `;
   useEffect(() => {
     if (jwt.state === 'hasValue') {
       sessionStorage.setItem('jwt', jwt.contents.data);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [code, jwt.state, jwt.contents.data, sessionStorage]);
+  }, [code, jwt, sessionStorage]);
 
   useEffect(() => {
-    if (jwt.state === 'hasValue' && sessionStorage.getItem('jwt') !== '') {
+    if (jwt.state === 'hasValue' && sessionStorage.getItem('jwt')) {
       getData().then(({ data }: userType) => {
         // eslint-disable-next-line no-console
-        console.log(data);
         if (data.name) {
           setUser({ nickName: '', storeName: data.name });
-          replace('/target');
+          push('/target');
         }
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [code, jwt.state, jwt.contents.data, getData]);
+  }, [jwt, sessionStorage]);
+
+  // eslint-disable-next-line consistent-return
 
   return (
     <>
@@ -165,21 +217,50 @@ export default function HomePage(): JSX.Element {
               <Logo /> <TitleLogo /> <BetaLogo />
             </StyledColomn>
             <HomeBanner />
-            <StyledSlide {...settings}>
-              <StyledImg src="./img/homeImg1.png" />
-
-              <StyledImg src="./img/homeImg2.png" />
-
-              <StyledImg src="./img/homeImg3.png" />
-            </StyledSlide>
           </div>
-          <div>
-            <CreateQuestionButton onClick={handleClick}>
-              설문 만들러가기
-            </CreateQuestionButton>
-          </div>
+          <StyledSlide {...settings}>
+            <div>
+              <StyledCover>
+                <StyledSliderTitle>
+                  우리 매장에 대한 고객님 의견을 물어볼 수 있어요
+                </StyledSliderTitle>
+                <StyledImg src="./img/home_img1.png" />
+              </StyledCover>
+            </div>
+            <div>
+              <StyledCover>
+                <StyledSliderTitle>
+                  우리 동네 상권/고객을 파악해볼 수 있어요
+                </StyledSliderTitle>
+                <StyledImg src="./img/home_img2.png" />
+              </StyledCover>
+            </div>
+            <div>
+              <StyledCover>
+                <StyledSliderTitle>
+                  이웃들에게 재밌는 퀴즈를 내고 맞춰봐요
+                </StyledSliderTitle>
+                <StyledImgThird src="./img/home_img3.png" />
+              </StyledCover>
+            </div>
+          </StyledSlide>
+
+          <CreateQuestionButton onClick={handleClick}>
+            설문 만들러가기
+          </CreateQuestionButton>
         </StyledSection>
       </StyledHomePage>
+      {isPopup && (
+        <Modal setPopup={setPopup}>
+          <ConfirmModal>
+            설문 작성을 완료하면 질문을
+            <br />
+            더 이상 수정할 수 없어요.
+            <br />
+            완료하시겠어요?
+          </ConfirmModal>
+        </Modal>
+      )}
     </>
   );
 }
