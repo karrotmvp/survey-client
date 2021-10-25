@@ -45,6 +45,7 @@ export default function QuestionDetailPage(): JSX.Element {
       setQuestion(questionListState[type - 1]);
       // setEnd(false);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [setQuestion, type]);
 
   const CompleteButton = styled.button`

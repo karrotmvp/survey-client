@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 import { useNavigator } from '@karrotframe/navigator';
 
+import { useAnalytics } from '@src/analytics/faContext';
 import mini from '@src/api/mini';
 import NavBar from '@src/component/common/navbar/NavBar';
 
@@ -60,12 +61,14 @@ const FeedBackButton = styled.button`
 
 export default function EndPage(): JSX.Element {
   const { replace } = useNavigator();
-
+  const fa = useAnalytics();
   const goFeedBack = () => {
+    fa.logEvent('complete_gofeedback_button_click');
     replace('/feedback');
   };
 
   const closeMini = () => {
+    fa.logEvent('complete_like_button_click');
     mini.close();
   };
 
