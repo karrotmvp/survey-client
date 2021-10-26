@@ -25,7 +25,7 @@ const StyledTargetArticle = styled.article`
 export default function TargetPage(): JSX.Element {
   return (
     <>
-      <NavBar type="CLOSE" title="설문 고객 선택" />
+      <NavBar type="BACK" title="설문 고객 선택" />
       <StyledTargetPage>
         <StyledTargetArticle></StyledTargetArticle>
         <TargetList />

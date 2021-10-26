@@ -1,11 +1,10 @@
 import { ThemeProvider, Global } from '@emotion/react';
-import { HashRouter } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
 import { RecoilRoot } from 'recoil';
 
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import '@karrotframe/navigator/index.css';
-
 
 import fa from './analytics/analytics';
 import { AnalyticsContext } from './analytics/faContext';
@@ -19,9 +18,9 @@ function App(): JSX.Element {
       <RecoilRoot>
         <AnalyticsContext.Provider value={fa}>
           <Global styles={global} />
-          <HashRouter>
+          <BrowserRouter>
             <Router />
-          </HashRouter>
+          </BrowserRouter>
         </AnalyticsContext.Provider>
       </RecoilRoot>
     </ThemeProvider>

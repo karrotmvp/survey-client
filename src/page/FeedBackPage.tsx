@@ -116,18 +116,18 @@ export default function FeedBackPage(): JSX.Element {
 
   const handleComplete = (e: MouseEvent) => {
     if (e.currentTarget.ariaDisabled !== 'true') {
-      fa.logEvent('feedback-completeClick-active');
+      fa.logEvent('feedback_complete_button_active_click');
       post(feedback);
       setPopup(true);
     } else {
-      fa.logEvent('feedback-completeClick-disable');
+      fa.logEvent('feedback_complete_button_disable_click');
       setToastOpen(true);
     }
   };
   const handleAlert = () => {
     setTimeout(() => {
       setToastOpen(false);
-    }, 1600);
+    }, 3000);
   };
 
   useEffect(() => {

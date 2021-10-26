@@ -70,7 +70,9 @@ export default function QuestionPage(): JSX.Element {
   const handleAddQuestionButton = (e: MouseEvent) => {
     if ((e.currentTarget as HTMLButtonElement).ariaDisabled === 'true') {
       setContentTostOpen(true);
+      fa.logEvent('question_add_button_active_click');
     } else if (questionList.length < 3) {
+      fa.logEvent('question_add_button_disable_click');
       setQuestionList([
         ...questionList,
         {
@@ -85,23 +87,21 @@ export default function QuestionPage(): JSX.Element {
   const handleAlert = () => {
     setTimeout(() => {
       setTostOpen(false);
-    }, 1600);
+    }, 3000);
   };
 
   const handleContentAlert = () => {
     setTimeout(() => {
       setContentTostOpen(false);
-    }, 1600);
+    }, 3000);
   };
 
   const handleComplete = (e: MouseEvent) => {
     if ((e.currentTarget as HTMLButtonElement).ariaDisabled === 'true') {
-      fa.logEvent('question-completeClick-disable');
+      fa.logEvent('question_complete_button_disable_click');
       setContentTostOpen(true);
     } else {
-      fa.logEvent('question-completeClick-active', {
-        questionlen: questionList.length,
-      });
+      fa.logEvent('question_complete_button_active_click');
       setPopup(true);
     }
   };
@@ -109,7 +109,7 @@ export default function QuestionPage(): JSX.Element {
   useEffect(() => {
     setTimeout(() => {
       setTostOpen(true);
-    }, 1600);
+    }, 1000);
   }, []);
 
   useEffect(() => {
@@ -223,12 +223,22 @@ export default function QuestionPage(): JSX.Element {
             <CancelButton
               onClick={() => {
                 setPopup(false);
+                fa.logEvent('question_modal_complete_button_cancel');
               }}
             >
               수정
             </CancelButton>
             <ConfirmButton
               onClick={() => {
+                fa.logEvent('question_modal_complete_button_click', {
+                  questionlen: questionList.length,
+                  textlen: questionList.filter(
+                    ({ questionType }) => questionType === 2,
+                  ).length,
+                  choicelen: questionList.filter(
+                    ({ questionType }) => questionType === 3,
+                  ).length,
+                });
                 submit(submitData);
                 restQuestion();
                 replace('/complete');
