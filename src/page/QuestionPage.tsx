@@ -109,7 +109,7 @@ export default function QuestionPage(): JSX.Element {
   useEffect(() => {
     setTimeout(() => {
       setTostOpen(true);
-    }, 3000);
+    }, 1000);
   }, []);
 
   useEffect(() => {

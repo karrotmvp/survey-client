@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 
 import styled from '@emotion/styled';
 import { useNavigator } from '@karrotframe/navigator';
-import { useHistory } from 'react-router-dom';
 import Slider, { Settings } from 'react-slick';
 import {
   useRecoilState,
@@ -99,7 +98,7 @@ export default function HomePage(): JSX.Element {
   const getData = useGet<userType>('/members/me');
   const [code, setCode] = useRecoilState(codeAtom);
   const fa = useAnalytics();
-  const history = useHistory();
+
   const [isPopup, setPopup] = useState(false);
   const getCode = useMiniAuth(
     process.env.REACT_APP_PRESET_BIZ || '',
@@ -209,14 +208,6 @@ export default function HomePage(): JSX.Element {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [jwt, sessionStorage]);
-
-  useEffect(() => {
-    console.log(history);
-    const unblock = history.block('정말 떠나실건가요?');
-    return () => {
-      unblock();
-    };
-  }, [history]);
 
   // eslint-disable-next-line consistent-return
 

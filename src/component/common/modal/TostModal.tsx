@@ -32,7 +32,7 @@ const StyledTostModal = styled.div`
   align-items: center;
   width: fit-content;
   background-color: #272727;
-  animation: modal 1.5s ease-in-out;
+  animation: modal 3s ease-in-out;
   animation-fill-mode: forwards;
   position: fixed;
   bottom: 3rem;
