@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import styled from '@emotion/styled';
 import { useNavigator } from '@karrotframe/navigator';
@@ -17,6 +17,7 @@ import { ReactComponent as LogoIcon } from '@config/icon/logo.svg';
 import { ReactComponent as MuddIcon } from '@config/icon/mudda.svg';
 import { useAnalytics } from '@src/analytics/faContext';
 import { userAtom } from '@src/atom/userAtom';
+import Modal from '@src/component/common/modal/Modal';
 import useGet from '@src/hook/useGet';
 
 import useMiniAuth from '../hook/useAuth';
@@ -98,6 +99,7 @@ export default function HomePage(): JSX.Element {
   const [code, setCode] = useRecoilState(codeAtom);
   const fa = useAnalytics();
 
+
   const getCode = useMiniAuth(
     process.env.REACT_APP_PRESET_BIZ || '',
     process.env.REACT_APP_APP_ID || '',
@@ -112,7 +114,7 @@ export default function HomePage(): JSX.Element {
       return;
     }
     if (respCode === code) {
-      push('/home');
+      push('/target');
     }
     fa.setUserId(respCode);
     fa.logEvent('home_login_button_click');
@@ -129,6 +131,7 @@ export default function HomePage(): JSX.Element {
     autoplay: true,
     autoplaySpeed: 3000,
   };
+
 
   const StyledCover = styled.div`
     display: flex;
@@ -162,8 +165,10 @@ export default function HomePage(): JSX.Element {
     font-weight: bold;
     font-size: 14px;
     line-height: 120%;
+
     margin-top: 1.3rem;
     text-align: center;
+
     color: #707070;
   `;
 
