@@ -99,7 +99,7 @@ export default function HomePage(): JSX.Element {
   const [code, setCode] = useRecoilState(codeAtom);
   const fa = useAnalytics();
 
-  const [isPopup, setPopup] = useState(false);
+
   const getCode = useMiniAuth(
     process.env.REACT_APP_PRESET_BIZ || '',
     process.env.REACT_APP_APP_ID || '',
@@ -132,20 +132,6 @@ export default function HomePage(): JSX.Element {
     autoplaySpeed: 3000,
   };
 
-  const ConfirmModal = styled.div`
-    width: 100%;
-    font-size: 16px;
-    font-weight: 400;
-    font-size: 16px;
-    line-height: 150%;
-    text-align: center;
-    color: #242424;
-    padding: 0 24px;
-    height: 124px;
-    align-items: center;
-    display: flex;
-    justify-content: center;
-  `;
 
   const StyledCover = styled.div`
     display: flex;
@@ -172,7 +158,6 @@ export default function HomePage(): JSX.Element {
 
     margin-top: 2rem;
     margin-bottom: 3rem;
-    height: 65%;
   `;
 
   const StyledSliderTitle = styled.h1`
@@ -180,11 +165,9 @@ export default function HomePage(): JSX.Element {
     font-weight: bold;
     font-size: 14px;
     line-height: 120%;
-    /* identical to box height, or 17px */
+
     margin-top: 1.3rem;
     text-align: center;
-
-    /* 707070 */
 
     color: #707070;
   `;
@@ -254,17 +237,6 @@ export default function HomePage(): JSX.Element {
           </CreateQuestionButton>
         </StyledSection>
       </StyledHomePage>
-      {isPopup && (
-        <Modal setPopup={setPopup}>
-          <ConfirmModal>
-            설문 작성을 완료하면 질문을
-            <br />
-            더 이상 수정할 수 없어요.
-            <br />
-            완료하시겠어요?
-          </ConfirmModal>
-        </Modal>
-      )}
     </>
   );
 }

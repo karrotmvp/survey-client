@@ -10,6 +10,8 @@ const ModalWrapper = styled.div`
   width: 100%;
   background-color: rgba(0, 0, 0, 0.6);
   justify-content: center;
+  display: flex;
+
   align-items: center;
   bottom: 0;
   left: 0;
@@ -37,7 +39,6 @@ const ModalCover = styled.div<{ isOpen: boolean }>`
   flex-direction: column;
   position: relative;
   width: 80%;
-  height: 175px;
   background-color: #ffff;
   animation: ${({ isOpen }) =>
     isOpen ? `modalUp 0.3s ease-in-out` : `modalDown 0.8s ease-in-out`};
