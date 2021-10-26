@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 
 const StyledHomeBanner = styled.div`
-  font-size: 22px;
+  font-size: 1.3rem;
   font-weight: 700;
 `;
 
@@ -11,6 +11,7 @@ const StyledHighlight = styled.span`
   font-weight: 700;
 `;
 const StyledText = styled.h1`
+  font-size: 1.3rem;
   font-family: ${({ theme }) => theme.fontFamily.title};
   font-weight: 400;
   margin-bottom: 8px;
@@ -23,7 +24,7 @@ export default function HomeBanner(): JSX.Element {
         <StyledHighlight>설문</StyledHighlight>을 만들고
       </StyledText>
       <StyledText>
-        고객님의 <StyledHighlight>의견</StyledHighlight>을 들어봐요
+        우리 동네 이웃 <StyledHighlight>의견</StyledHighlight>을 들어봐요
       </StyledText>
     </StyledHomeBanner>
   );

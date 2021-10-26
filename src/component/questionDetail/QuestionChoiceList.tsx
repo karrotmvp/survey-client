@@ -62,10 +62,10 @@ export default function QuestionChoiceList({
 
   const handleClick = (e: MouseEvent) => {
     if (e.currentTarget.ariaDisabled === 'true') {
-      fa.logEvent('choiceAdd-disable');
+      fa.logEvent('question_choice_add_button_disable_click');
       setToast(true);
     } else {
-      fa.logEvent('choiceAdd-active');
+      fa.logEvent('question_choice_add_button_active_click');
       setQuestionlist([
         ...questionList.slice(0, questionIndex),
         {
@@ -80,7 +80,7 @@ export default function QuestionChoiceList({
   };
 
   const onDelete = (e: MouseEvent) => {
-    fa.logEvent('choiceDelete');
+    fa.logEvent('question_choice_delete_button_click');
     const target = e.currentTarget as HTMLButtonElement;
     const index = target.dataset.list;
 

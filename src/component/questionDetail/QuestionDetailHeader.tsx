@@ -49,7 +49,7 @@ export default function QuestionDetailHeader({
     }
   });
   const toggleHandler = (e: MouseEvent) => {
-    fa.logEvent('check-type-button');
+    fa.logEvent('question_type_button_click');
     setToggle(!isOpen);
   };
 
@@ -76,6 +76,11 @@ export default function QuestionDetailHeader({
     };
 
     if (target.dataset.list) {
+      if (checkTargetNum(+target.dataset.list + 2) === 2) {
+        fa.logEvent('question_type_text_button_click');
+      } else {
+        fa.logEvent('question_type_choice_button_click');
+      }
       setQuestionList([
         ...questionListState.slice(0, questionIndex),
         {

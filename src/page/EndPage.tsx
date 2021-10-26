@@ -1,6 +1,10 @@
+import { useEffect } from 'react';
+
 import styled from '@emotion/styled';
 import { useNavigator } from '@karrotframe/navigator';
+import { useHistory } from 'react-router-dom';
 
+import { useAnalytics } from '@src/analytics/faContext';
 import mini from '@src/api/mini';
 import NavBar from '@src/component/common/navbar/NavBar';
 
@@ -60,18 +64,26 @@ const FeedBackButton = styled.button`
 
 export default function EndPage(): JSX.Element {
   const { replace } = useNavigator();
-
+  const fa = useAnalytics();
+  const history = useHistory();
   const goFeedBack = () => {
+    fa.logEvent('complete_gofeedback_button_click');
     replace('/feedback');
   };
 
   const closeMini = () => {
+    fa.logEvent('complete_like_button_click');
     mini.close();
   };
 
-  // useEffect(() => {
-
-  // }, []);
+  useEffect(
+    () => () => {
+      if (history.action === 'POP') {
+        history.go(-4);
+      }
+    },
+    [history],
+  );
   return (
     <StyledEndPage>
       <section>

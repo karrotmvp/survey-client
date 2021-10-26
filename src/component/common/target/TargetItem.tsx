@@ -45,7 +45,7 @@ export default function TargetItem({
   const setTarget = useSetRecoilState(questionTarget);
   const { push } = useNavigator();
   const handleClick = () => {
-    fa.logEvent('clickTarget', { target: index + 1 });
+    fa.logEvent('target_button_click', { target: index + 1 });
     setTarget(index + 1);
     push('/question');
   };
