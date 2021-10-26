@@ -79,7 +79,6 @@ export default function EndPage(): JSX.Element {
   useEffect(
     () => () => {
       if (history.action === 'POP') {
-        console.log('jjh');
         history.go(-4);
       }
     },
