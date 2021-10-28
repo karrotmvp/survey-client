@@ -99,6 +99,7 @@ export default function HomePage(): JSX.Element {
   const fa = useAnalytics();
 
   const getCode = useMiniAuth(
+    true,
     process.env.REACT_APP_PRESET_BIZ || '',
     process.env.REACT_APP_APP_ID || '',
   );
@@ -155,7 +156,6 @@ export default function HomePage(): JSX.Element {
 
     margin-top: 2rem;
     margin-bottom: 3rem;
-    height: 65%;
   `;
 
   const StyledSliderTitle = styled.h1`
