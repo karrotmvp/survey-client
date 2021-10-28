@@ -52,7 +52,7 @@ const StyledSection = styled.section`
 const CreateQuestionButton = styled.button`
   width: 100%;
   background-color: ${({ theme }) => theme.color.primaryOrange};
-  border-radius: 12px;
+  border-radius: 8px;
   padding: 20px 100px;
   font-size: 18px;
   color: #ffff;
@@ -99,6 +99,7 @@ export default function HomePage(): JSX.Element {
   const fa = useAnalytics();
 
   const getCode = useMiniAuth(
+    true,
     process.env.REACT_APP_PRESET_BIZ || '',
     process.env.REACT_APP_APP_ID || '',
   );
@@ -155,7 +156,6 @@ export default function HomePage(): JSX.Element {
 
     margin-top: 2rem;
     margin-bottom: 3rem;
-    height: 65%;
   `;
 
   const StyledSliderTitle = styled.h1`

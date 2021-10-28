@@ -6,7 +6,6 @@ import { useRecoilState } from 'recoil';
 import { questionListAtom } from '@atom/questionAtom';
 import ToggleButton from '@component/common/button/ToggleButton';
 import NavToggle from '@component/common/navbar/NavToggle';
-import { ReactComponent as TrashIcon } from '@config/icon/trash.svg';
 import { useAnalytics } from '@src/analytics/faContext';
 import useOutsideClick from '@src/hook/useOutSideClick';
 
@@ -104,12 +103,14 @@ export default function QuestionDetailHeader({
   `;
 
   const DeleteButton = styled.button`
-    border-radius: 50%;
+    border-radius: 20px;
     margin-left: auto;
     display: flex;
+    color: #707070;
+    background-color: #f4f3f8;
     align-items: center;
     justify-content: center;
-    background-color: transparent;
+    padding: 0.5rem 1rem;
   `;
   const handleDeleteButton = () => {
     setQuestionList([
@@ -138,9 +139,7 @@ export default function QuestionDetailHeader({
         </>
       )}
       {questionIndex !== 0 && (
-        <DeleteButton onClick={handleDeleteButton}>
-          <TrashIcon />
-        </DeleteButton>
+        <DeleteButton onClick={handleDeleteButton}>삭제</DeleteButton>
       )}
     </StyledQuestionDetailHeader>
   );

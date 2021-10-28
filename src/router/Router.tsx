@@ -24,7 +24,6 @@ export default function Router(): JSX.Element {
       <Screen path="/">
         <HomePage />
       </Screen>
-
       <Screen path="/target">
         <TargetPage />
       </Screen>
