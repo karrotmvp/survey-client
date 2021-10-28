@@ -33,7 +33,7 @@ const CancelButton = styled.button`
   font-size: 14px;
   line-height: 140%;
   width: 50%;
-  height: 65px;
+  padding: 1.2rem 0.2rem;
   background-color: #ffff;
   color: #141414;
   border-top: 1px solid #e8e8e8;
@@ -49,7 +49,7 @@ const ConfirmButton = styled.button`
   font-size: 14px;
   line-height: 140%;
   width: 50%;
-  height: 65px;
+  padding: 1.2rem 0.2rem;
   background-color: #ffff;
   color: #141414;
   border-top: 1px solid #e8e8e8;
@@ -81,12 +81,14 @@ const ModalTitle = styled.h1`
   text-align: center;
   color: #141414;
 `;
+
+const ModalButtons = styled.div``;
 const ModalImg = styled.img`
   width: 150px;
   margin: 0 auto;
 `;
 export default function TargetPage(): JSX.Element {
-  const [isPopup, setPopup] = useState(false);
+  const [isPopup, setPopup] = useState(true);
   const history = useHistory();
   const alarmPost = useSubmit('/notifications/chat');
   useEffect(() => {
@@ -134,14 +136,14 @@ export default function TargetPage(): JSX.Element {
             링크를 채팅으로 보내드려요
           </ConfirmModal>
 
-          <div>
+          <ModalButtons>
             <CancelButton onClick={handleAlarmCancel}>
               알림받지 않고 나가기
             </CancelButton>
             <ConfirmButton onClick={handleAlarmClose}>
               나중에 채팅받기
             </ConfirmButton>
-          </div>
+          </ModalButtons>
         </Modal>
       )}
     </>
