@@ -3,6 +3,7 @@ import { useLocation } from 'react-router-dom';
 import mini from '@api/mini';
 
 export default function useMiniAuth(
+  isBiz: boolean,
   presetUrl: string,
   appId: string,
 ): () => Promise<string> {
@@ -11,7 +12,7 @@ export default function useMiniAuth(
   const getCodeAsync = () => {
     const urlSearchParams = new URLSearchParams(location.search);
 
-    if (urlSearchParams.has('code')) {
+    if (urlSearchParams.has('code') && !isBiz) {
       return Promise.resolve<string>(urlSearchParams.get('code') || '');
     }
 
