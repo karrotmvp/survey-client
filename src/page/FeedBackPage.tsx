@@ -99,6 +99,8 @@ const ConfirmButton = styled.button`
   :focus {
     background-color: #f4f5f6;
   }
+  border-bottom-right-radius: 12px;
+  border-bottom-left-radius: 12px;
 `;
 
 export default function FeedBackPage(): JSX.Element {
