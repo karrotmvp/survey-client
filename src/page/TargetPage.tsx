@@ -88,7 +88,7 @@ const ModalImg = styled.img`
   margin: 0 auto;
 `;
 export default function TargetPage(): JSX.Element {
-  const [isPopup, setPopup] = useState(true);
+  const [isPopup, setPopup] = useState(false);
   const history = useHistory();
   const alarmPost = useSubmit('/notifications/chat');
   useEffect(() => {
