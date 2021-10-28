@@ -20,7 +20,8 @@ import useSubmit from '@src/hook/useSubmit';
 
 const AddQuestionButton = styled.button`
   background-color: ${({ theme }) => theme.color.primaryOrange};
-  padding: 9px 26px;
+  width: 127px;
+  padding: 0.5rem 0;
   border-radius: 8px;
   font-size: 0.8rem;
   font-weight: 700;
@@ -153,6 +154,7 @@ export default function QuestionPage(): JSX.Element {
     :focus {
       background-color: #f4f5f6;
     }
+    border-bottom-left-radius: 12px;
   `;
 
   const ConfirmButton = styled.button`
@@ -167,6 +169,7 @@ export default function QuestionPage(): JSX.Element {
     :focus {
       background-color: #f4f5f6;
     }
+    border-bottom-right-radius: 12px;
   `;
 
   return (

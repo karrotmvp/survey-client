@@ -52,7 +52,7 @@ const StyledSection = styled.section`
 const CreateQuestionButton = styled.button`
   width: 100%;
   background-color: ${({ theme }) => theme.color.primaryOrange};
-  border-radius: 12px;
+  border-radius: 8px;
   padding: 20px 100px;
   font-size: 18px;
   color: #ffff;
