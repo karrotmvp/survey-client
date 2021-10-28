@@ -39,7 +39,9 @@ const ModalCover = styled.div<{ isOpen: boolean }>`
   flex-direction: column;
   position: relative;
   width: 80%;
+  border-radius: 12px;
   background-color: #ffff;
+
   animation: ${({ isOpen }) =>
     isOpen ? `modalUp 0.3s ease-in-out` : `modalDown 0.8s ease-in-out`};
   -webkit-box-shadow: 0px 0px 23px 10px rgba(0, 0, 0, 0.2);

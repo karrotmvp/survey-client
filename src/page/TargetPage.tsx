@@ -33,7 +33,7 @@ const CancelButton = styled.button`
   font-size: 14px;
   line-height: 140%;
   width: 50%;
-  height: 51px;
+  height: 65px;
   background-color: #ffff;
   color: #141414;
   border-top: 1px solid #e8e8e8;
@@ -41,6 +41,7 @@ const CancelButton = styled.button`
   :focus {
     background-color: #f4f5f6;
   }
+  border-bottom-left-radius: 12px;
 `;
 
 const ConfirmButton = styled.button`
@@ -48,13 +49,14 @@ const ConfirmButton = styled.button`
   font-size: 14px;
   line-height: 140%;
   width: 50%;
-  height: 52px;
+  height: 65px;
   background-color: #ffff;
   color: #141414;
   border-top: 1px solid #e8e8e8;
   :focus {
     background-color: #f4f5f6;
   }
+  border-bottom-right-radius: 12px;
 `;
 const ConfirmModal = styled.div`
   width: 100%;
@@ -69,7 +71,7 @@ const ConfirmModal = styled.div`
   align-items: center;
   display: flex;
   justify-content: center;
-  margin-bottom: 29px;
+  margin-bottom: 1rem;
 `;
 
 const ModalTitle = styled.h1`
@@ -122,20 +124,22 @@ export default function TargetPage(): JSX.Element {
       </StyledTargetPage>
       {isPopup && (
         <Modal setPopup={setPopup}>
-          <ModalTitle>나중에 알림받기</ModalTitle>
+          <ModalTitle>나중에 채팅받기</ModalTitle>
           <ModalImg src="./img/alarmImg.png" />
           <ConfirmModal>
-            지금 질문이 생각나지 않으신가요?
+            설문 내용이 떠오르지 않나요?
             <br />
-            나중에 알림받기를 신청하면
+            언제든 만들 수 있도록
             <br />
-            설문 제작할 수 있는 링크를 보내드려요!
+            링크를 채팅으로 보내드려요
           </ConfirmModal>
 
           <div>
-            <CancelButton onClick={handleAlarmCancel}>취소</CancelButton>
+            <CancelButton onClick={handleAlarmCancel}>
+              알림받지 않고 나가기
+            </CancelButton>
             <ConfirmButton onClick={handleAlarmClose}>
-              나중에 알림받기
+              나중에 채팅받기
             </ConfirmButton>
           </div>
         </Modal>

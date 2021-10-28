@@ -16,7 +16,7 @@ const StyledToggleButton = styled.button`
   padding: 8px 0.7rem 8px 0.9rem;
   border-radius: 4px;
   background-color: transparent;
-  color: #8e8f95;
+  color: #707070;
   :focus {
     background-color: #f4f5f6;
   }
@@ -26,7 +26,7 @@ const ButtonText = styled.span`
   font-size: 14px;
   font-weight: 500;
   margin-right: 8px;
-  color: #8e8f95;
+  color: #707070;
 `;
 
 const ToggleIcon = styled(ExpandIcon)<{ toggle: boolean }>`

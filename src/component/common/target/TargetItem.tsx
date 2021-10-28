@@ -7,7 +7,7 @@ import { useAnalytics } from '@src/analytics/faContext';
 
 const StyledTargetItem = styled.button`
   background: #f4f3f8;
-  border-radius: 12px;
+  border-radius: 8px;
   padding: 0 1rem;
   display: flex;
   flex-direction: column;

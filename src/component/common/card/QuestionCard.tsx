@@ -24,14 +24,12 @@ const StyledQuestionCard = styled.li`
   padding-top: 12px;
 `;
 
-const StyledQuestionInput = styled.div`
+const StyledQuestionInput = styled.span`
   font-size: 0.9rem;
   font-weight: 400;
   color: #707070;
-  padding: 4px;
+  padding: 0.4rem 0;
   border-bottom: 1px solid #707070;
-  width: 100px;
-  opacity: 0.5;
 `;
 const StyledQuestionChoiceOrText = styled.div`
   padding-top: 2rem;

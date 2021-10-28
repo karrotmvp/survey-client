@@ -39,6 +39,8 @@ const StyledTostModal = styled.div`
   left: 50%;
   transform: translate(-50%, 0);
   z-index: 99;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 8px;
 `;
 
 const TostText = styled.h4`
