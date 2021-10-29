@@ -11,7 +11,7 @@ export default function useMiniAuth(
 
   const getCodeAsync = () => {
     const urlSearchParams = new URLSearchParams(location.search);
-
+    // const isPreload = urlSearchParams.get('preload');
     if (urlSearchParams.has('code') && !isBiz) {
       return Promise.resolve<string>(urlSearchParams.get('code') || '');
     }

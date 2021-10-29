@@ -4,6 +4,7 @@ import HomePage from '@page/HomePage';
 import QuestionPage from '@page/QuestionPage';
 import EndPage from '@src/page/EndPage';
 import FeedBackPage from '@src/page/FeedBackPage';
+import Redirect from '@src/page/Redirect';
 import TargetPage from '@src/page/TargetPage';
 
 export default function Router(): JSX.Element {
@@ -21,8 +22,11 @@ export default function Router(): JSX.Element {
 
   return (
     <Navigator useCustomRouter theme={checkMobileType()}>
-      <Screen path="/">
+      <Screen path="/survey">
         <HomePage />
+      </Screen>
+      <Screen path="/redirect">
+        <Redirect />
       </Screen>
       <Screen path="/target">
         <TargetPage />
