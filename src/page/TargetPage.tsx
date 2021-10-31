@@ -17,12 +17,12 @@ const StyledTargetPage = styled.section`
   overflow-y: scroll;
 `;
 
-const StyledTargetArticle = styled.article`
+const TargetImg = styled.div`
   margin-top: 2.2rem;
   width: 100%;
   height: 0;
   padding-top: calc(228 / 328 * 100%);
-  background: url('./img/targetImg.png') center center / cover no-repeat;
+  background: url('../../img/targetImg.png') center center / cover no-repeat;
   position: relative;
   border-radius: 4px;
   margin-bottom: 32px;
@@ -121,7 +121,7 @@ export default function TargetPage(): JSX.Element {
     <>
       <NavBar type="BACK" title="설문 고객 선택" />
       <StyledTargetPage>
-        <StyledTargetArticle></StyledTargetArticle>
+        <TargetImg />
         <TargetList />
       </StyledTargetPage>
       {isPopup && (
