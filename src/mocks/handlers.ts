@@ -21,7 +21,7 @@ const handlers = [
   ),
 
   rest.get(
-    `https://dev.daangn-survey.com/api/v1/surveys/:id`,
+    `http://dev.daangn-survey.com/api/v1/surveys/:surveysId`,
     (req, res, ctx) =>
       res(
         ctx.status(200),
