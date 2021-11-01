@@ -135,7 +135,7 @@ export default function QuestionChoiceList({
         elRefs.current[elRefs.current.length - 1].focus();
       }, 200);
     }
-  }, [choices.length]);
+  }, [choices.length, choicesCheck]);
 
   return (
     <StyledQuestionChoiceList>
@@ -148,7 +148,6 @@ export default function QuestionChoiceList({
       {choices &&
         choices.map(({ value }, index) => (
           <QuestionChoice
-            // eslint-disable-next-line no-return-assign
             ref={addToRefs}
             key={index}
             {...{ value, onDelete, onChange, index }}

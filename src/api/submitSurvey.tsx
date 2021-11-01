@@ -22,7 +22,7 @@ const surveyData = selector({
     if (token) axios.defaults.headers.common[Authorization] = token;
     const surveyId = get(surveyIdAtom);
     try {
-      const data: AxiosResponse<any> = await axios.get<profileType>(
+      const data: AxiosResponse<unknown> = await axios.get<profileType>(
         `/surveys/${surveyId}`,
       );
 
