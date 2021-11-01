@@ -53,14 +53,12 @@ export default function AnswerHome(): JSX.Element {
 
   const click = async () => {
     const resCode = await auth();
-    console.log(resCode);
     if (resCode) {
       setCode(resCode);
     }
   };
 
   useEffect(() => {
-    console.log(isSuccess);
     if (isSuccess) {
       getSurveyData().then(data => {
         if (!data) return;
@@ -70,6 +68,7 @@ export default function AnswerHome(): JSX.Element {
         push(`/responses/${responseId}/1`);
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isSuccess, code]);
 
   // const responsId = 162;
