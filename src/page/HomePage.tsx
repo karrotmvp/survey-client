@@ -9,17 +9,17 @@ import {
   useSetRecoilState,
 } from 'recoil';
 
-import { authorizationSelector, codeAtom } from '@api/authorization';
+import { authorizationBizSelector, bizCodeAtom } from '@api/authorization';
+import { userAtom } from '@atom/userAtom';
+import LogInButton from '@component/common/button/LogInButton';
 import NavBar from '@component/common/navbar/NavBar';
 import HomeBanner from '@component/home/HomeBanner';
 import { ReactComponent as BetaIcon } from '@config/icon/BETA.svg';
 import { ReactComponent as LogoIcon } from '@config/icon/logo.svg';
 import { ReactComponent as MuddIcon } from '@config/icon/mudda.svg';
+import useGet from '@hook/useGet';
 import { useAnalytics } from '@src/analytics/faContext';
-import { userAtom } from '@src/atom/userAtom';
-import useGet from '@src/hook/useGet';
-
-import useMiniAuth from '../hook/useAuth';
+import { useMiniBizAuth } from '@src/hook/useAuth';
 
 const StyledImg = styled.img`
   width: 60%;
@@ -49,16 +49,6 @@ const StyledSection = styled.section`
   justify-content: space-between;
 `;
 
-const CreateQuestionButton = styled.button`
-  width: 100%;
-  background-color: ${({ theme }) => theme.color.primaryOrange};
-  border-radius: 8px;
-  padding: 20px 100px;
-  font-size: 18px;
-  color: #ffff;
-  font-weight: 700;
-`;
-
 const Logo = styled(LogoIcon)`
   height: auto;
 `;
@@ -85,112 +75,103 @@ const StyledColomn = styled.div`
 `;
 
 type userType = {
-  data: {
-    daangnId: string;
-    name: string;
-    imageUrl: string;
-    role: string;
-  };
+  daangnId: string;
+  name: string;
+  imageUrl: string;
+  role: string;
 };
+
+const StyledCover = styled.div`
+  display: flex;
+  justify-content: center;
+  background: #f4f3f8;
+  border-radius: 8px;
+  height: 50vh;
+  position: relative;
+`;
+
+const StyledSlide = styled(Slider)`
+  .slick-dots li button:before {
+    color: #f4f3f8;
+    opacity: 1;
+  }
+
+  .slick-slider {
+    margin: 0 -15px;
+  }
+
+  .slick-dots li.slick-active button:before {
+    color: ${({ theme }) => theme.color.primaryOrange} !important;
+  }
+
+  margin-top: 2rem;
+  margin-bottom: 3rem;
+`;
+
+const StyledSliderTitle = styled.h1`
+  font-family: ${({ theme }) => theme.fontFamily.title};
+  font-weight: bold;
+  font-size: 14px;
+  line-height: 120%;
+
+  margin-top: 1.3rem;
+  text-align: center;
+
+  color: #707070;
+`;
+
+const settings: Settings = {
+  dots: true,
+  infinite: true,
+  speed: 500,
+  slidesToShow: 1,
+  slidesToScroll: 1,
+  arrows: false,
+  autoplay: true,
+  autoplaySpeed: 3000,
+};
+
 export default function HomePage(): JSX.Element {
   const { push } = useNavigator();
   const getData = useGet<userType>('/members/me');
-  const [code, setCode] = useRecoilState(codeAtom);
+  const [code, setCode] = useRecoilState(bizCodeAtom);
   const fa = useAnalytics();
-
-  const getCode = useMiniAuth(
-    true,
-    process.env.REACT_APP_PRESET_BIZ || '',
-    process.env.REACT_APP_APP_ID || '',
-  );
-
-  const jwt = useRecoilValueLoadable(authorizationSelector);
+  const getBizId = useMiniBizAuth(process.env.REACT_APP_APP_ID || '');
+  const jwt = useRecoilValueLoadable(authorizationBizSelector);
   const setUser = useSetRecoilState(userAtom);
 
   const handleClick = async () => {
-    const respCode = await getCode();
-    if (!respCode) {
+    const resBizId = await getBizId();
+    if (!resBizId) {
       return;
     }
-    if (respCode === code) {
-      push('/target');
+    if (resBizId === code) {
+      push('/survey/create/target');
     }
-    fa.setUserId(respCode);
+    fa.setUserId(resBizId);
     fa.logEvent('home_login_button_click');
-    setCode(respCode);
+    setCode(resBizId);
   };
-
-  const settings: Settings = {
-    dots: true,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    arrows: false,
-    autoplay: true,
-    autoplaySpeed: 3000,
-  };
-
-  const StyledCover = styled.div`
-    display: flex;
-    justify-content: center;
-    background: #f4f3f8;
-    border-radius: 8px;
-    height: 50vh;
-    position: relative;
-  `;
-
-  const StyledSlide = styled(Slider)`
-    .slick-dots li button:before {
-      color: #f4f3f8;
-      opacity: 1;
-    }
-
-    .slick-slider {
-      margin: 0 -15px;
-    }
-
-    .slick-dots li.slick-active button:before {
-      color: ${({ theme }) => theme.color.primaryOrange} !important;
-    }
-
-    margin-top: 2rem;
-    margin-bottom: 3rem;
-  `;
-
-  const StyledSliderTitle = styled.h1`
-    font-family: ${({ theme }) => theme.fontFamily.title};
-    font-weight: bold;
-    font-size: 14px;
-    line-height: 120%;
-
-    margin-top: 1.3rem;
-    text-align: center;
-
-    color: #707070;
-  `;
 
   useEffect(() => {
     if (jwt.state === 'hasValue') {
       sessionStorage.setItem('jwt', jwt.contents.data);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [code, jwt, sessionStorage]);
+  }, [code, jwt]);
 
   useEffect(() => {
     if (jwt.state === 'hasValue' && sessionStorage.getItem('jwt')) {
-      getData().then(({ data }: userType) => {
-        // eslint-disable-next-line no-console
+      getData().then(data => {
+        if (data === undefined) return;
+
         if (data.name) {
           setUser({ nickName: '', storeName: data.name });
-          push('/target');
+          push('/survey/create/target');
         }
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [jwt, sessionStorage]);
-
-  // eslint-disable-next-line consistent-return
 
   return (
     <>
@@ -230,9 +211,7 @@ export default function HomePage(): JSX.Element {
             </div>
           </StyledSlide>
 
-          <CreateQuestionButton onClick={handleClick}>
-            설문 만들러가기
-          </CreateQuestionButton>
+          <LogInButton text={'설문 만들러가기'} onClick={handleClick} />
         </StyledSection>
       </StyledHomePage>
     </>

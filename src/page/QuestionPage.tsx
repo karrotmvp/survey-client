@@ -60,7 +60,6 @@ export default function QuestionPage(): JSX.Element {
   const [isTostOpen, setTostOpen] = useState(false);
   const [isContentTostOpen, setContentTostOpen] = useState(false);
   const [isPopup, setPopup] = useState(false);
-
   const restQuestion = useResetRecoilState(questionListAtom);
   const listValueState = useRecoilValue(questionListSelector);
   const submitData = useRecoilValue(questionSelector);
@@ -77,7 +76,7 @@ export default function QuestionPage(): JSX.Element {
       setQuestionList([
         ...questionList,
         {
-          questionType: 2,
+          questionType: 3,
           text: '',
           choices: [{ value: '' }],
         },
@@ -244,7 +243,7 @@ export default function QuestionPage(): JSX.Element {
                 });
                 submit(submitData);
                 restQuestion();
-                replace('/complete');
+                replace('/survey/create/complete');
               }}
             >
               확인

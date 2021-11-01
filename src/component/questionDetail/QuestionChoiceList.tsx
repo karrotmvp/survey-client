@@ -10,6 +10,26 @@ import { useAnalytics } from '@src/analytics/faContext';
 
 import QuestionChoice from './QuestionChoice';
 
+const StyledChoiceButton = styled.button`
+  width: 100%;
+  height: 55px;
+  border-radius: 25.5px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding-left: 1.2rem;
+  background-color: #f4f5f6;
+  font-size: 1rem;
+  font-weight: 400;
+  color: #141414;
+  svg {
+    margin-right: 8px;
+  }
+  &[aria-disabled='true'] {
+    opacity: 0.5;
+  }
+`;
+
 const StyledQuestionChoiceList = styled.ul`
   display: grid;
   grid-gap: 1rem;
@@ -21,10 +41,12 @@ export default function QuestionChoiceList({
   questionIndex: number;
 }): JSX.Element {
   const [questionList, setQuestionlist] = useRecoilState(questionListAtom);
+
   const { choices } = questionList[questionIndex];
+  if (choices === undefined) throw new Error('choice undefined');
   const elRefs = useRef<HTMLTextAreaElement[]>([]);
   const [isToastOpen, setToast] = useState(false);
-  const [focus, setFocus] = useState(false);
+
   const fa = useAnalytics();
   // since it is an array we need to method to add the refs
   const addToRefs = (el: HTMLTextAreaElement) => {
@@ -37,7 +59,7 @@ export default function QuestionChoiceList({
     const target = e.target as HTMLTextAreaElement;
     const index = target.dataset.list;
 
-    if (choices && index !== undefined) {
+    if (index !== undefined) {
       setQuestionlist([
         ...questionList.slice(0, questionIndex),
         {
@@ -74,8 +96,6 @@ export default function QuestionChoiceList({
         },
         ...questionList.slice(questionIndex + 1),
       ]);
-
-      setFocus(true);
     }
   };
 
@@ -93,33 +113,14 @@ export default function QuestionChoiceList({
         },
         ...questionList.slice(questionIndex + 1),
       ]);
+      elRefs.current = [];
     }
   };
-
-  const StyledChoiceButton = styled.button`
-    width: 100%;
-    height: 55px;
-    border-radius: 25.5px;
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    padding-left: 1.2rem;
-    background-color: #f4f5f6;
-    font-size: 1rem;
-    font-weight: 400;
-    color: #141414;
-    svg {
-      margin-right: 8px;
-    }
-    &[aria-disabled='true'] {
-      opacity: 0.5;
-    }
-  `;
 
   const handleContentAlert = () => {
     setTimeout(() => {
       setToast(false);
-    }, 1600);
+    }, 3000);
   };
 
   useEffect(() => {
@@ -129,10 +130,12 @@ export default function QuestionChoiceList({
   const { choicesCheck } = useRecoilValue(questionListSelector);
 
   useEffect(() => {
-    if (elRefs && focus) {
-      elRefs.current[choices.length - 1].focus();
+    if (elRefs && !choicesCheck[0] && elRefs.current.length !== 1) {
+      setTimeout(() => {
+        elRefs.current[elRefs.current.length - 1].focus();
+      }, 200);
     }
-  }, [focus, choices.length]);
+  }, [choices.length, choicesCheck]);
 
   return (
     <StyledQuestionChoiceList>
@@ -145,7 +148,6 @@ export default function QuestionChoiceList({
       {choices &&
         choices.map(({ value }, index) => (
           <QuestionChoice
-            // eslint-disable-next-line no-return-assign
             ref={addToRefs}
             key={index}
             {...{ value, onDelete, onChange, index }}

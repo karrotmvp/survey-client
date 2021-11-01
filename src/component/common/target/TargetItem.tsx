@@ -47,7 +47,7 @@ export default function TargetItem({
   const handleClick = () => {
     fa.logEvent('target_button_click', { target: index + 1 });
     setTarget(index + 1);
-    push('/question');
+    push('/survey/create/question');
   };
   return (
     <StyledTargetItem onClick={handleClick}>

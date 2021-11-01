@@ -29,8 +29,10 @@ const ButtonText = styled.span`
   color: #707070;
 `;
 
-const ToggleIcon = styled(ExpandIcon)<{ toggle: boolean }>`
-  ${({ toggle }) => (toggle ? `transform: rotate(180deg)` : '')};
+const ToggleIcon = styled(ExpandIcon)`
+  &[aria-checked='true'] {
+    transform: rotate(180deg);
+  }
 `;
 
 export default function ToggleButton({
@@ -41,7 +43,7 @@ export default function ToggleButton({
   return (
     <StyledToggleButton onClick={onClick}>
       <ButtonText>{text}</ButtonText>
-      <ToggleIcon toggle={toggle} />
+      <ToggleIcon aria-checked={toggle} />
     </StyledToggleButton>
   );
 }
