@@ -75,12 +75,10 @@ const StyledColomn = styled.div`
 `;
 
 type userType = {
-  data: {
-    daangnId: string;
-    name: string;
-    imageUrl: string;
-    role: string;
-  };
+  daangnId: string;
+  name: string;
+  imageUrl: string;
+  role: string;
 };
 
 const StyledCover = styled.div`
@@ -163,13 +161,16 @@ export default function HomePage(): JSX.Element {
 
   useEffect(() => {
     if (jwt.state === 'hasValue' && sessionStorage.getItem('jwt')) {
-      getData().then(({ data }: userType) => {
+      getData().then(data => {
+        if (data === undefined) return;
+
         if (data.name) {
           setUser({ nickName: '', storeName: data.name });
           push('/survey/create/target');
         }
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [jwt, sessionStorage]);
 
   return (

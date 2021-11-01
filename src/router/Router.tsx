@@ -2,6 +2,8 @@ import { Navigator, Screen, INavigatorTheme } from '@karrotframe/navigator';
 
 import HomePage from '@page/HomePage';
 import QuestionPage from '@page/QuestionPage';
+import AnswerComplete from '@src/page/AnswerComplete';
+import AnswerDetailPage from '@src/page/AnswerDetailPage';
 import AnswerHome from '@src/page/AnswerHome';
 import EndPage from '@src/page/EndPage';
 import FeedBackPage from '@src/page/FeedBackPage';
@@ -22,11 +24,17 @@ export default function Router(): JSX.Element {
 
   return (
     <Navigator useCustomRouter theme={checkMobileType()}>
-      <Screen path="/">
+      <Screen path="/survey/create">
         <HomePage />
       </Screen>
-      <Screen path="/survey/create">
+      <Screen path="/">
         <AnswerHome />
+      </Screen>
+      <Screen path="/responses/:responsesId/:questionNumber">
+        <AnswerDetailPage />
+      </Screen>
+      <Screen path="/responses/complete">
+        <AnswerComplete />
       </Screen>
       <Screen path="/survey/create/target">
         <TargetPage />
