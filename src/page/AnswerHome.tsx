@@ -1,7 +1,11 @@
 import { useEffect, useState } from 'react';
 
 import styled from '@emotion/styled';
-import { useNavigator } from '@karrotframe/navigator';
+import {
+  useNavigator,
+  useParams,
+  useQueryParams,
+} from '@karrotframe/navigator';
 import {
   RecoilValueReadOnly,
   useRecoilState,
@@ -37,7 +41,13 @@ export default function AnswerHome(): JSX.Element {
   const [code, setCode] = useRecoilState(codeAtom);
   const setQuestion = useSetRecoilState(questionListAtom);
   const { push } = useNavigator();
-  const responseId = 162;
+  const { questionCategory } = useQueryParams<{ questionCategory: string }>();
+  const { responsesId } =
+    useParams<{ responsesId?: string; questionNumber?: string }>();
+  if (!responsesId) throw new Error('responsesId none');
+
+  // eslint-disable-next-line no-console
+  console.log(questionCategory);
   type questionDataType = {
     surveyId: number;
     title: string;
@@ -46,7 +56,7 @@ export default function AnswerHome(): JSX.Element {
     questions: questionAtomType[];
   };
 
-  const getSurveyData = useGet<questionDataType>(`/surveys/${responseId}`);
+  const getSurveyData = useGet<questionDataType>(`/surveys/${responsesId}`);
   const [isSuccess, setSuccess] = useLogin(authorizationSelector);
 
   const auth = useMiniAuth(process.env.REACT_APP_APP_ID || '');
@@ -65,7 +75,7 @@ export default function AnswerHome(): JSX.Element {
         const { questions } = data;
         setQuestion(questions);
         setSuccess(false);
-        push(`/responses/${responseId}/1`);
+        push(`/responses/${responsesId}/1`);
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

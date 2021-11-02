@@ -27,7 +27,7 @@ export default function Router(): JSX.Element {
       <Screen path="/survey/create">
         <HomePage />
       </Screen>
-      <Screen path="/">
+      <Screen path="/responses/:responsesId">
         <AnswerHome />
       </Screen>
       <Screen path="/responses/:responsesId/:questionNumber">
