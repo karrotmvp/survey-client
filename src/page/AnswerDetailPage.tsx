@@ -2,20 +2,25 @@ import styled from '@emotion/styled';
 import { useNavigator, useParams } from '@karrotframe/navigator';
 import { useRecoilState, useRecoilValue } from 'recoil';
 
+import ResponseTextInput from '@component/response/ResponseTextInput';
 import { questionListAtom } from '@src/atom/questionAtom';
 import responseListAtom from '@src/atom/responseAtom';
 import NavBar from '@src/component/common/navbar/NavBar';
+import QuestionDot from '@src/component/questionDetail/QuestionDot';
 import ResponseChoiceInput from '@src/component/response/ResponseChoiceInput';
-import ResponseTextInput from '@src/component/response/ResponseTextInput';
 
 const StyledResponsePage = styled.section`
   background: #ffff;
   width: 100%;
   height: 100vh;
-  padding: 4rem 1rem 1rem 1rem;
+  padding: 5rem 1rem 1rem 1rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  .response_title {
+    display: flex;
+    align-items: center;
+  }
 `;
 
 const StyledQuestionDetailTitle = styled.h3`
@@ -23,7 +28,7 @@ const StyledQuestionDetailTitle = styled.h3`
   font-weight: 700;
   font-size: 1rem;
   line-height: 120%;
-  margin-right: 5px;
+  margin-right: 0.5rem;
   font-family: ${({ theme }) => theme.fontFamily.title};
   margin-bottom: 0.5rem;
 `;
@@ -34,7 +39,7 @@ const StyledAnswerTitle = styled.h3`
   margin-right: 5px;
   font-size: 18px;
   line-height: 140%;
-  margin-bottom: 3.8rem;
+  margin-bottom: 1.5rem;
 `;
 
 export type InputType = {
@@ -78,14 +83,19 @@ export default function AnswerDetailPage(): JSX.Element {
 
   return (
     <>
-      <NavBar type="BACK" />
+      <NavBar type="BACK" title="설문 답변" />
       <StyledResponsePage>
-        <StyledQuestionDetailTitle>
-          질문 {questionNumber}
-        </StyledQuestionDetailTitle>
-        <StyledAnswerTitle>
-          미용실 방문시에 가장 불편했던건 어떤건가요?
-        </StyledAnswerTitle>
+        <div>
+          <div className="response_title">
+            <StyledQuestionDetailTitle>
+              질문 {questionNumber}
+            </StyledQuestionDetailTitle>
+            <QuestionDot number={+questionNumber} />
+          </div>
+          <StyledAnswerTitle>
+            미용실 방문시에 가장 불편했던건 어떤건가요?ssss ss
+          </StyledAnswerTitle>
+        </div>
         {questionType === 2 ? (
           <ResponseTextInput
             {...{

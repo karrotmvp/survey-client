@@ -8,6 +8,7 @@ const StyledResponseChoiceList = styled.ul`
   display: grid;
   grid-gap: 1rem;
   grid-template-columns: auto;
+  overflow: scroll;
 `;
 
 type ResponseChoiceListType = {

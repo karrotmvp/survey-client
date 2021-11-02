@@ -1,5 +1,6 @@
 import { useState } from 'react';
 
+import styled from '@emotion/styled';
 import { useParams } from '@karrotframe/navigator';
 import { useRecoilValue } from 'recoil';
 
@@ -9,6 +10,17 @@ import { InputType } from '@src/page/AnswerDetailPage';
 
 import ResponseNextButton from '../common/button/ResponseNextButton';
 import ResponseChoiceList from './ResponseChoiceList';
+
+const StyledTextInput = styled.section`
+  display: flex;
+  height: calc(100vh - 16rem);
+  flex-direction: column;
+  justify-content: space-between;
+  .button_wrapper {
+    background-color: #fff;
+    padding-top: 1rem;
+  }
+`;
 
 export default function ResponseChoiceInput({
   isLast,
@@ -32,11 +44,13 @@ export default function ResponseChoiceInput({
   };
 
   return (
-    <>
+    <StyledTextInput>
       <ResponseChoiceList
         {...{ questionChoice, setChoiceId, selectedChoiceId }}
       />
-      <ResponseNextButton {...{ handleNextClick, isLast }} />
-    </>
+      <div className="button_wrapper">
+        <ResponseNextButton {...{ handleNextClick, isLast }} />
+      </div>
+    </StyledTextInput>
   );
 }

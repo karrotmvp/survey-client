@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 
+import { ReactComponent as CheckIcon } from '@config/icon/check.svg';
 import { choiceType } from '@src/atom/questionAtom';
 
 const StyledResponseChoice = styled.li`
@@ -7,9 +8,24 @@ const StyledResponseChoice = styled.li`
   width: 100%;
   background: #f4f5f6;
   border-radius: 25.5px;
-  &[aria-checked='true'] {
-    opacity: 0.5;
+  color: #141414;
+  svg {
+    opacity: 0.3;
+    margin-left: 0.9rem;
   }
+  &[aria-checked='true'] {
+    border: 1px solid #fe7e35;
+    background: #fff2eb;
+    font-weight: 700;
+    color: ${({ theme }) => theme.color.primaryOrange};
+    svg {
+      opacity: 1;
+    }
+  }
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 `;
 
 export default function ResponseChoiceItem({
@@ -27,7 +43,10 @@ export default function ResponseChoiceItem({
       data-list={choiceId}
       onClick={handleClick}
     >
-      {value}
+      <span>{value}</span>
+      <div>
+        <CheckIcon className="checkIcon" />
+      </div>
     </StyledResponseChoice>
   );
 }
