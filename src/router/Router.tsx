@@ -23,7 +23,7 @@ export default function Router(): JSX.Element {
   };
 
   return (
-    <Navigator useCustomRouter theme={checkMobileType()}>
+    <Navigator theme={checkMobileType()}>
       <Screen path="/survey/create">
         <HomePage />
       </Screen>
