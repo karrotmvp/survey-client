@@ -57,6 +57,8 @@ export default function QuestionCard({
           onChange={handleChange}
           placeholder={contents.placeholder.TEXT}
           value={title}
+          row={2}
+          backgroundColor={'#F4F5F6'}
         />
 
         <StyledQuestionChoiceOrText>
