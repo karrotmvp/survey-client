@@ -1,5 +1,6 @@
 import { ChangeEvent, useState } from 'react';
 
+import styled from '@emotion/styled';
 import { useParams } from '@karrotframe/navigator';
 import { useRecoilValue } from 'recoil';
 
@@ -9,6 +10,12 @@ import { InputType } from '@src/page/AnswerDetailPage';
 import ResponseNextButton from '../common/button/ResponseNextButton';
 import QuestionTitleInput from '../common/input/QuestionTitleInput';
 
+const StyledTextInput = styled.section`
+  display: flex;
+  height: calc(100vh - 16rem);
+  flex-direction: column;
+  justify-content: space-between;
+`;
 export default function ResponseTextInput({
   isLast,
   setResponse,
@@ -34,15 +41,16 @@ export default function ResponseTextInput({
   };
 
   return (
-    <>
+    <StyledTextInput>
       <QuestionTitleInput
         value={text}
         onChange={handleChange}
         placeholder={'답변을 입력해주세요'}
         questionIndex={+questionNumber}
+        row={1}
       />
 
       <ResponseNextButton {...{ handleNextClick, isLast }} />
-    </>
+    </StyledTextInput>
   );
 }
