@@ -12,6 +12,87 @@ import NavBar from '@src/component/common/navbar/NavBar';
 import contents from '@src/config/const/const';
 import useSubmit from '@src/hook/useSubmit';
 
+export default function FeedBackPage(): JSX.Element {
+  const [feedback, setFeedback] = useRecoilState(questionFeedBack);
+  const [isToastOpen, setToastOpen] = useState(false);
+  const [isPopup, setPopup] = useState(false);
+  const fa = useAnalytics();
+  const post = useSubmit('/feedbacks');
+  const handleChange = (e: ChangeEvent) => {
+    setFeedback({
+      question: contents.text.feedback.SUBTITLE,
+      answer: (e.target as HTMLTextAreaElement).value,
+    });
+  };
+
+  const handleComplete = (e: MouseEvent) => {
+    if (e.currentTarget.ariaDisabled !== 'true') {
+      fa.logEvent('feedback_complete_button_active_click');
+      post(feedback);
+      setPopup(true);
+    } else {
+      fa.logEvent('feedback_complete_button_disable_click');
+      setToastOpen(true);
+    }
+  };
+  const handleAlert = () => {
+    setTimeout(() => {
+      setToastOpen(false);
+    }, 3000);
+  };
+
+  useEffect(() => {
+    if (isToastOpen) handleAlert();
+  }, [isToastOpen]);
+
+  return (
+    <>
+      <NavBar
+        type="BACK"
+        title="무따 서비스 피드백"
+        appendRight={
+          <CompleteButton
+            aria-disabled={!feedback.answer}
+            onClick={handleComplete}
+          >
+            완료
+          </CompleteButton>
+        }
+      />
+      <StyledFeedBackPage>
+        <FeedbackTitle>무따는 더 좋은 설문 서비스가</FeedbackTitle>
+        <FeedbackTitle>되고 싶어요</FeedbackTitle>
+        <FeedbackSubtitle>{contents.text.feedback.SUBTITLE}</FeedbackSubtitle>
+        <StyledTitleInput
+          value={feedback.answer}
+          onChange={handleChange}
+          placeholder={contents.placeholder.FEEDBACK}
+        />
+        {isToastOpen && (
+          <AlertTostModal
+            text={'내용을 모두 입력하세요'}
+            onClick={handleAlert}
+          />
+        )}
+
+        {isPopup && (
+          <Modal setPopup={setPopup}>
+            <ConfirmModal>소중한 의견 남겨 주셔서 감사합니다.</ConfirmModal>
+
+            <ConfirmButton
+              onClick={() => {
+                mini.close();
+              }}
+            >
+              종료
+            </ConfirmButton>
+          </Modal>
+        )}
+      </StyledFeedBackPage>
+    </>
+  );
+}
+
 const StyledFeedBackPage = styled.section`
   background-color: #ffff;
   width: 100%;
@@ -102,84 +183,3 @@ const ConfirmButton = styled.button`
   border-bottom-right-radius: 12px;
   border-bottom-left-radius: 12px;
 `;
-
-export default function FeedBackPage(): JSX.Element {
-  const [feedback, setFeedback] = useRecoilState(questionFeedBack);
-  const [isToastOpen, setToastOpen] = useState(false);
-  const [isPopup, setPopup] = useState(false);
-  const fa = useAnalytics();
-  const post = useSubmit('/feedbacks');
-  const handleChange = (e: ChangeEvent) => {
-    setFeedback({
-      question: contents.text.feedback.SUBTITLE,
-      answer: (e.target as HTMLTextAreaElement).value,
-    });
-  };
-
-  const handleComplete = (e: MouseEvent) => {
-    if (e.currentTarget.ariaDisabled !== 'true') {
-      fa.logEvent('feedback_complete_button_active_click');
-      post(feedback);
-      setPopup(true);
-    } else {
-      fa.logEvent('feedback_complete_button_disable_click');
-      setToastOpen(true);
-    }
-  };
-  const handleAlert = () => {
-    setTimeout(() => {
-      setToastOpen(false);
-    }, 3000);
-  };
-
-  useEffect(() => {
-    if (isToastOpen) handleAlert();
-  }, [isToastOpen]);
-
-  return (
-    <>
-      <NavBar
-        type="BACK"
-        title="무따 서비스 피드백"
-        appendRight={
-          <CompleteButton
-            aria-disabled={!feedback.answer}
-            onClick={handleComplete}
-          >
-            완료
-          </CompleteButton>
-        }
-      />
-      <StyledFeedBackPage>
-        <FeedbackTitle>무따는 더 좋은 설문 서비스가</FeedbackTitle>
-        <FeedbackTitle>되고 싶어요</FeedbackTitle>
-        <FeedbackSubtitle>{contents.text.feedback.SUBTITLE}</FeedbackSubtitle>
-        <StyledTitleInput
-          value={feedback.answer}
-          onChange={handleChange}
-          placeholder={contents.placeholder.FEEDBACK}
-        />
-        {isToastOpen && (
-          <AlertTostModal
-            text={'내용을 모두 입력하세요'}
-            onClick={handleAlert}
-          />
-        )}
-
-        {isPopup && (
-          <Modal setPopup={setPopup}>
-            <ConfirmModal>소중한 의견 남겨 주셔서 감사합니다.</ConfirmModal>
-
-            <ConfirmButton
-              onClick={() => {
-                mini.close();
-              }}
-            >
-              종료
-            </ConfirmButton>
-          </Modal>
-        )}
-      </StyledFeedBackPage>
-    </>
-  );
-}

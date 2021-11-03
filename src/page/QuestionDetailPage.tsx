@@ -9,10 +9,6 @@ import NavBar from '@component/common/navbar/NavBar';
 import QuestionDetailHeader from '@component/questionDetail/QuestionDetailHeader';
 import StyledBasicPage from '@config/style/styledCompoent';
 
-const QuestionDetailBottom = styled.section`
-  margin-top: 52px;
-`;
-
 export default function QuestionDetailPage(): JSX.Element {
   // const { push } = useNavigator();
   const resetQuestionState = useResetRecoilState(questionAtom);
@@ -45,21 +41,7 @@ export default function QuestionDetailPage(): JSX.Element {
       setQuestion(questionListState[type - 1]);
       // setEnd(false);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [setQuestion, type]);
-
-  const CompleteButton = styled.button`
-    background-color: transparent;
-    font-size: 1rem;
-    font-weight: 400;
-    color: ${({ theme }) => theme.color.primaryOrange};
-    padding: 0.5rem 1rem;
-  `;
-
-  const StyleQuestionPage = styled.section`
-    width: 100%;
-    min-height: calc(100vh - 5.5rem);
-  `;
 
   return (
     <StyledBasicPage onClick={handleReset}>
@@ -84,3 +66,20 @@ export default function QuestionDetailPage(): JSX.Element {
     </StyledBasicPage>
   );
 }
+
+const StyleQuestionPage = styled.section`
+  width: 100%;
+  min-height: calc(100vh - 5.5rem);
+`;
+
+const CompleteButton = styled.button`
+  background-color: transparent;
+  font-size: 1rem;
+  font-weight: 400;
+  color: ${({ theme }) => theme.color.primaryOrange};
+  padding: 0.5rem 1rem;
+`;
+
+const QuestionDetailBottom = styled.section`
+  margin-top: 52px;
+`;

@@ -9,6 +9,52 @@ import { responseUserAtom } from '@src/atom/responseAtom';
 import LoginButton from '@src/component/common/button/LogInButton';
 import NavBar from '@src/component/common/navbar/NavBar';
 
+export default function AnswerComplete(): JSX.Element {
+  const history = useHistory();
+  const bizProfile = useRecoilValue(responseUserAtom);
+  useEffect(() => {
+    const unblock = history.block((location, action) => {
+      if (action === 'POP') {
+        mini.close();
+        return false;
+      }
+      return undefined;
+    });
+
+    return () => {
+      unblock();
+    };
+  }, [history]);
+
+  const handleVisitBizProfile = () => {
+    if (!bizProfile?.profileUrl) {
+      return;
+    }
+    window.location.href = bizProfile.profileUrl;
+  };
+
+  return (
+    <StyledAnswerComplete>
+      <NavBar type="CLOSE" transparent />
+      <div className="answer_complete_page center">
+        <CompleteImg src="./../../img/responseComplete.png" />
+        <CompleteTitle>의견을 남겨주셔서 감사해요!</CompleteTitle>
+        <SurveySubtitle>
+          여러분이 남긴 의견은 <b>{bizProfile?.name} 사장님</b>이 <br />
+          매장을 개선하는 데 큰 도움이 됩니다 💪
+        </SurveySubtitle>
+      </div>
+
+      <div className="answer_complete_page">
+        <LoginButton text="나가기" onClick={() => mini.close()} />
+        <BizProfileVisit onClick={handleVisitBizProfile}>
+          {bizProfile?.name} 비즈 프로필 방문하기
+        </BizProfileVisit>
+      </div>
+    </StyledAnswerComplete>
+  );
+}
+
 const StyledAnswerComplete = styled.section`
   background-color: #fff2eb;
   height: 100vh;
@@ -58,52 +104,7 @@ const BizProfileVisit = styled.button`
   align-items: center;
   font-weight: 400;
   background-color: transparent;
-  margin-top: 1rem;
+  margin: 1rem 0;
   text-decoration: underline;
   text-underline-offset: 4px;
 `;
-
-export default function AnswerComplete(): JSX.Element {
-  const history = useHistory();
-  const bizProfile = useRecoilValue(responseUserAtom);
-  useEffect(() => {
-    const unblock = history.block((location, action) => {
-      if (action === 'POP') {
-        mini.close();
-        return false;
-      }
-      return undefined;
-    });
-
-    return () => {
-      unblock();
-    };
-  }, [history]);
-
-  const handleVisitBizProfile = () => {
-    if (!bizProfile?.profileUrl) {
-      return;
-    }
-    window.location.href = bizProfile.profileUrl;
-  };
-  return (
-    <StyledAnswerComplete>
-      <NavBar type="CLOSE" transparent />
-      <div className="answer_complete_page center">
-        <CompleteImg src="./../../img/responseComplete.png" />
-        <CompleteTitle>의견을 남겨주셔서 감사해요!</CompleteTitle>
-        <SurveySubtitle>
-          여러분이 남긴 의견은 <b>{bizProfile?.name} 사장님</b>이 <br />
-          매장을 개선하는 데 큰 도움이 됩니다 💪
-        </SurveySubtitle>
-      </div>
-
-      <div className="answer_complete_page">
-        <LoginButton text="나가기" onClick={() => mini.close()} />
-        <BizProfileVisit onClick={handleVisitBizProfile}>
-          {bizProfile?.name} 비즈 프로필 방문하기
-        </BizProfileVisit>
-      </div>
-    </StyledAnswerComplete>
-  );
-}

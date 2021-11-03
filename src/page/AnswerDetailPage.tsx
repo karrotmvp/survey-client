@@ -9,39 +9,6 @@ import NavBar from '@src/component/common/navbar/NavBar';
 import QuestionDot from '@src/component/questionDetail/QuestionDot';
 import ResponseChoiceInput from '@src/component/response/ResponseChoiceInput';
 
-const StyledResponsePage = styled.section`
-  background: #ffff;
-  width: 100%;
-  height: 100vh;
-  padding: 5rem 1rem 1rem 1rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  .response_title {
-    display: flex;
-    align-items: center;
-  }
-`;
-
-const StyledQuestionDetailTitle = styled.h3`
-  color: ${({ theme }) => theme.color.primaryOrange};
-  font-weight: 700;
-  font-size: 1rem;
-  line-height: 120%;
-  margin-right: 0.5rem;
-  font-family: ${({ theme }) => theme.fontFamily.title};
-  margin-bottom: 0.5rem;
-`;
-
-const StyledAnswerTitle = styled.h3`
-  color: #141414;
-  font-weight: 600;
-  margin-right: 5px;
-  font-size: 1.2rem;
-  line-height: 140%;
-  margin-bottom: 1.5rem;
-`;
-
 export type InputType = {
   setResponse: (
     responseInput: { choiceId: number } | { answer: string },
@@ -127,3 +94,36 @@ export default function AnswerDetailPage(): JSX.Element {
     </>
   );
 }
+
+const StyledResponsePage = styled.section`
+  background: #ffff;
+  width: 100%;
+  height: 100vh;
+  padding: 5rem 1rem 1rem 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  .response_title {
+    display: flex;
+    align-items: center;
+  }
+`;
+
+const StyledQuestionDetailTitle = styled.h3`
+  color: ${({ theme }) => theme.color.primaryOrange};
+  font-weight: 700;
+  font-size: 1rem;
+  line-height: 120%;
+  margin-right: 0.5rem;
+  font-family: ${({ theme }) => theme.fontFamily.title};
+  margin-bottom: 0.5rem;
+`;
+
+const StyledAnswerTitle = styled.h3`
+  color: #141414;
+  font-weight: 600;
+  margin-right: 5px;
+  font-size: 1.2rem;
+  line-height: 140%;
+  margin-bottom: 1.5rem;
+`;

@@ -4,7 +4,7 @@ import styled from '@emotion/styled';
 
 import { ReactComponent as InfoIcon } from '@config/icon/InfoIcon.svg';
 
-const StyledTostModal = styled.div`
+const StyledTostModal = styled.div<{ bottom: string | undefined }>`
   @keyframes modal {
     0% {
       transform: translate(-50%, 100%);
@@ -35,7 +35,7 @@ const StyledTostModal = styled.div`
   animation: modal 3s ease-in-out;
   animation-fill-mode: forwards;
   position: fixed;
-  bottom: 3rem;
+  bottom: ${({ bottom }) => bottom || '3rem'};
   left: 50%;
   transform: translate(-50%, 0);
   z-index: 99;
@@ -49,15 +49,17 @@ const TostText = styled.h4`
   margin: 0 8px;
 `;
 
-export default function TostModal({
+export default function ToastModal({
   onClick,
   text,
+  bottom,
 }: {
   onClick: (e: MouseEvent) => void;
   text: string;
+  bottom?: string;
 }): JSX.Element {
   return (
-    <StyledTostModal>
+    <StyledTostModal bottom={bottom}>
       <InfoIcon />
       <TostText>{text}</TostText>
     </StyledTostModal>

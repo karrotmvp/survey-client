@@ -57,7 +57,7 @@ const StyleQuestionPage = styled.section`
 
 export default function QuestionPage(): JSX.Element {
   const [questionList, setQuestionList] = useRecoilState(questionListAtom);
-  const [isTostOpen, setTostOpen] = useState(false);
+  const [isToastOpen, setToastOpen] = useState(false);
   const [isContentTostOpen, setContentTostOpen] = useState(false);
   const [isPopup, setPopup] = useState(false);
   const restQuestion = useResetRecoilState(questionListAtom);
@@ -86,7 +86,7 @@ export default function QuestionPage(): JSX.Element {
 
   const handleAlert = () => {
     setTimeout(() => {
-      setTostOpen(false);
+      setToastOpen(false);
     }, 3000);
   };
 
@@ -108,19 +108,19 @@ export default function QuestionPage(): JSX.Element {
 
   useEffect(() => {
     setTimeout(() => {
-      setTostOpen(true);
+      setToastOpen(true);
     }, 1000);
   }, []);
 
   useEffect(() => {
     if (questionList.length === 3) {
-      setTostOpen(true);
+      setToastOpen(true);
     }
   }, [questionList.length]);
 
   useEffect(() => {
-    if (isTostOpen) handleAlert();
-  }, [isTostOpen]);
+    if (isToastOpen) handleAlert();
+  }, [isToastOpen]);
   useEffect(() => {
     if (isContentTostOpen) handleContentAlert();
   }, [isContentTostOpen]);
@@ -187,7 +187,7 @@ export default function QuestionPage(): JSX.Element {
         }
       />
       <StyledBasicPage>
-        {isTostOpen && (
+        {isToastOpen && (
           <AlertTostModal
             text={'질문은 3개 이하까지 만들 수 있어요'}
             onClick={handleAlert}

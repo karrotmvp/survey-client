@@ -9,6 +9,7 @@ import {
 import { useRecoilState, useSetRecoilState } from 'recoil';
 
 import LoginButton from '@component/common/button/LogInButton';
+import AlertTostModal from '@component/common/modal/TostModal';
 import NavBar from '@component/common/navbar/NavBar';
 import { ReactComponent as LogoIcon } from '@config/icon/mudda_orange.svg';
 import { ReactComponent as MuddaIcon } from '@config/icon/mudda_textLogo.svg';
@@ -53,6 +54,10 @@ const QuestionCategoryTage = styled.div`
   font-size: 0.7rem;
   line-height: 100%;
   width: fit-content;
+  .loading {
+    height: 1.8rem;
+    width: 7rem;
+  }
 `;
 
 const SurveyTitle = styled.h1`
@@ -81,7 +86,11 @@ const TitleLogo = styled(MuddaIcon)`
   height: 20px;
 `;
 
-const questionCategories = ['고객의견', '신메뉴추천'];
+const questionCategories = [
+  '의견을 알려주세요',
+  '메뉴 추천받아요',
+  '퀴즈 풀어봐요',
+];
 
 const Dot = styled.div`
   background-color: #c4c4c4;
@@ -107,6 +116,9 @@ type surveyBriefType = {
   target: string;
   createdAt: string;
 };
+type respondedType = {
+  responded: string;
+};
 
 export default function AnswerHome(): JSX.Element {
   const { push } = useNavigator();
@@ -121,12 +133,16 @@ export default function AnswerHome(): JSX.Element {
 
   const [code, setCode] = useRecoilState(codeAtom);
   const [isSuccess, setSuccess] = useLogin(authorizationSelector);
+  const [isTostOpen, setTostOpen] = useState(false);
   const [briefData, setBrief] = useState<surveyBriefType | null>(null);
 
   const setBizUser = useSetRecoilState(responseUserAtom);
   const setQuestion = useSetRecoilState(questionListAtom);
 
   const getSurveyData = useGet<questionDataType>(`/surveys/${responsesId}`);
+  const getSurveyUserData = useGet<respondedType>(
+    `responses/surveys/${responsesId}/responded`,
+  );
   const getSurveyBrief = useGet<surveyBriefType>(
     `/surveys/brief/${responsesId}`,
     true,
@@ -137,7 +153,8 @@ export default function AnswerHome(): JSX.Element {
   const click = async () => {
     const resCode = await auth();
     if (resCode) {
-      setCode(resCode);
+      if (resCode === code) setSuccess(true);
+      else setCode(resCode);
     }
   };
 
@@ -152,16 +169,32 @@ export default function AnswerHome(): JSX.Element {
     }
 
     if (isSuccess) {
-      getSurveyData().then(data => {
+      getSurveyUserData().then(data => {
         if (!data) return;
-        const { questions } = data;
-        setQuestion(questions);
-        setSuccess(false);
-        push(`/responses/${responsesId}/1`);
+        if (data.responded) {
+          setTostOpen(true);
+          return;
+        }
+        getSurveyData().then(res => {
+          if (!res) return;
+          const { questions } = res;
+          setQuestion(questions);
+          setSuccess(false);
+          push(`/responses/${responsesId}/1`);
+        });
       });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isSuccess, code, briefData]);
+
+  const handleAlert = () => {
+    setTimeout(() => {
+      setTostOpen(false);
+    }, 3000);
+  };
+
+  useEffect(() => {
+    if (isTostOpen) handleAlert();
+  }, [isTostOpen]);
 
   return (
     <>
@@ -175,28 +208,67 @@ export default function AnswerHome(): JSX.Element {
         }
       />
       <StyledHomePage>
-        {!briefData ? (
-          <div></div>
-        ) : (
-          <div>
-            <QuestionCategoryTage>
-              {questionCategories[+questionCategory]}
-            </QuestionCategoryTage>
-            <SurveyTitle>{briefData.title}</SurveyTitle>
-            <SurveySubtitle>
-              {briefData.questionCount}질문 <Dot /> 예상시간{' '}
-              {briefData.estimatedTime} 초
-            </SurveySubtitle>
-            <BizProfile {...briefData.bizProfile} />
-          </div>
-        )}
+        <div>
+          <QuestionCategoryTage>
+            {questionCategories[+questionCategory]}
+          </QuestionCategoryTage>
+
+          {briefData ? (
+            <>
+              <SurveyTitle>{briefData.title}</SurveyTitle>
+
+              <SurveySubtitle>
+                {briefData.questionCount}질문 <Dot /> 예상시간{' '}
+                {briefData.estimatedTime} 초
+              </SurveySubtitle>
+              <BizProfile {...briefData.bizProfile} />
+            </>
+          ) : (
+            <>
+              <LoadingText />
+              <LoadingSubText />
+              <LoadingProfile />
+            </>
+          )}
+        </div>
+
         <div className="logIn_button">
           <SurveySubtitle>
             설문을 작성하시면 매장을 개선하는데 큰 도움이 돼요
           </SurveySubtitle>
+          {isTostOpen && (
+            <AlertTostModal
+              text={'이미 답변한 설문입니다'}
+              onClick={handleAlert}
+              bottom={'9rem'}
+            />
+          )}
           <LoginButton onClick={click} text={'설문 답변하기'} />
         </div>
       </StyledHomePage>
     </>
   );
 }
+
+const LoadingText = styled.div`
+  height: 1.8rem;
+  width: 60%;
+  background: #f4f5f6;
+  border-radius: 8px;
+  margin: 0.8rem 0;
+`;
+
+const LoadingSubText = styled.div`
+  height: 1.2rem;
+  width: 40%;
+  background: #f4f5f6;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+`;
+
+const LoadingProfile = styled.div`
+  width: 100%;
+  height: 6rem;
+  background: #f4f5f6;
+  border-radius: 12px;
+`;
