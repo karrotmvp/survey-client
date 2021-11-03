@@ -1,5 +1,4 @@
 import { ThemeProvider, Global } from '@emotion/react';
-import { BrowserRouter } from 'react-router-dom';
 import { RecoilRoot } from 'recoil';
 
 import 'slick-carousel/slick/slick.css';
@@ -18,9 +17,7 @@ function App(): JSX.Element {
       <RecoilRoot>
         <AnalyticsContext.Provider value={fa}>
           <Global styles={global} />
-          <BrowserRouter>
-            <Router />
-          </BrowserRouter>
+          <Router />
         </AnalyticsContext.Provider>
       </RecoilRoot>
     </ThemeProvider>

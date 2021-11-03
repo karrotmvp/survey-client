@@ -16,7 +16,7 @@ const StyledQuestionDetailHeader = styled.section`
 `;
 
 const StyledQuestionDetailTitle = styled.h3`
-  color: ${({ theme }) => theme.color.secondaryGreen};
+  color: ${({ theme }) => theme.color.primaryOrange};
   font-weight: 700;
   font-size: 24px;
   margin-right: 5px;

@@ -8,6 +8,7 @@ const StyledResponseChoiceList = styled.ul`
   display: grid;
   grid-gap: 1rem;
   grid-template-columns: auto;
+  overflow: scroll;
 `;
 
 type ResponseChoiceListType = {
@@ -23,7 +24,8 @@ export default function ResponseChoiceList({
 }: ResponseChoiceListType): JSX.Element {
   const handleClick = (e: React.MouseEvent<HTMLLIElement>) => {
     const selectId = e.currentTarget.dataset.list || '-1';
-    setChoiceId(+selectId);
+    if (+selectId === selectedChoiceId) setChoiceId(-1);
+    else setChoiceId(+selectId);
   };
 
   return (

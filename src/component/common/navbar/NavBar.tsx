@@ -10,9 +10,11 @@ type NavBarType = {
   appendRight?: React.ReactNode;
   title?: string;
   shadow?: boolean;
+  transparent?: boolean;
+  appendCenter?: React.ReactNode;
 };
 
-const NavBarStyle = styled.div<{ shadow?: boolean }>`
+const NavBarStyle = styled.div<{ shadow?: boolean; transparent?: boolean }>`
   display: flex;
   width: 100%;
   height: 3.5rem;
@@ -21,7 +23,8 @@ const NavBarStyle = styled.div<{ shadow?: boolean }>`
   position: fixed;
   top: 0;
   left: 0;
-  background-color: #ffff;
+  background-color: ${({ transparent }) =>
+    transparent ? 'transparent' : '#ffff'};
   padding: 1rem;
   z-index: 99999;
   ${({ shadow }) => (shadow ? 'border-bottom : 1px solid #E5E5E5;' : '')};
@@ -34,16 +37,19 @@ const NavTitle = styled.span`
   font-weight: 700;
 `;
 
-const AppendLeft = styled.div`
+const NavItem = styled.nav`
   display: flex;
   height: 100%;
   align-items: center;
+  width: 33%;
 `;
 
 export default function NavBar({
   type,
   appendRight,
+  appendCenter,
   title,
+  transparent,
   shadow,
 }: NavBarType): JSX.Element {
   const { pop } = useNavigator();
@@ -57,16 +63,17 @@ export default function NavBar({
   };
 
   return (
-    <NavBarStyle shadow={shadow}>
-      <AppendLeft>
+    <NavBarStyle shadow={shadow} transparent={transparent}>
+      <NavItem>
         {type === 'CLOSE' ? (
           <ClearIcon onClick={close} />
         ) : (
           <ArrowIcon onClick={goBack} />
         )}
         {title && <NavTitle>{title}</NavTitle>}
-      </AppendLeft>
-      {appendRight}
+      </NavItem>
+      <NavItem>{appendCenter}</NavItem>
+      <NavItem>{appendRight}</NavItem>
     </NavBarStyle>
   );
 }

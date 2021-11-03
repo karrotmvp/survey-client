@@ -23,18 +23,18 @@ export default function Router(): JSX.Element {
   };
 
   return (
-    <Navigator useCustomRouter theme={checkMobileType()}>
-      <Screen path="/survey/create">
+    <Navigator theme={checkMobileType()}>
+      <Screen path="/">
         <HomePage />
       </Screen>
-      <Screen path="/">
+      <Screen path="/responses/:responsesId/complete">
+        <AnswerComplete />
+      </Screen>
+      <Screen path="/responses/:responsesId">
         <AnswerHome />
       </Screen>
-      <Screen path="/responses/:responsesId/:questionNumber">
+      <Screen path="/responses/:responsesId/:questionTypes">
         <AnswerDetailPage />
-      </Screen>
-      <Screen path="/responses/complete">
-        <AnswerComplete />
       </Screen>
       <Screen path="/survey/create/target">
         <TargetPage />
