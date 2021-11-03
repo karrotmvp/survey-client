@@ -10,6 +10,7 @@ type NavBarType = {
   appendRight?: React.ReactNode;
   title?: string;
   shadow?: boolean;
+  appendCenter?: React.ReactNode;
 };
 
 const NavBarStyle = styled.div<{ shadow?: boolean }>`
@@ -34,15 +35,17 @@ const NavTitle = styled.span`
   font-weight: 700;
 `;
 
-const AppendLeft = styled.div`
+const NavItem = styled.nav`
   display: flex;
   height: 100%;
   align-items: center;
+  width: 33%;
 `;
 
 export default function NavBar({
   type,
   appendRight,
+  appendCenter,
   title,
   shadow,
 }: NavBarType): JSX.Element {
@@ -58,15 +61,16 @@ export default function NavBar({
 
   return (
     <NavBarStyle shadow={shadow}>
-      <AppendLeft>
+      <NavItem>
         {type === 'CLOSE' ? (
           <ClearIcon onClick={close} />
         ) : (
           <ArrowIcon onClick={goBack} />
         )}
         {title && <NavTitle>{title}</NavTitle>}
-      </AppendLeft>
-      {appendRight}
+      </NavItem>
+      <NavItem>{appendCenter}</NavItem>
+      <NavItem>{appendRight}</NavItem>
     </NavBarStyle>
   );
 }

@@ -27,14 +27,14 @@ export default function Router(): JSX.Element {
       <Screen path="/survey/create">
         <HomePage />
       </Screen>
+      <Screen path="/responses/:responsesId/complete">
+        <AnswerComplete />
+      </Screen>
       <Screen path="/responses/:responsesId">
         <AnswerHome />
       </Screen>
-      <Screen path="/responses/:responsesId/:questionNumber">
+      <Screen path="/responses/:responsesId/:questionTypes">
         <AnswerDetailPage />
-      </Screen>
-      <Screen path="/responses/complete">
-        <AnswerComplete />
       </Screen>
       <Screen path="/survey/create/target">
         <TargetPage />

@@ -1,9 +1,11 @@
+import { useEffect, useState } from 'react';
+
 import styled from '@emotion/styled';
 import { useNavigator, useParams } from '@karrotframe/navigator';
 import { useRecoilValue } from 'recoil';
 
 import { questionListAtom } from '@src/atom/questionAtom';
-import responseListAtom from '@src/atom/responseAtom';
+import { responseListAtom } from '@src/atom/responseAtom';
 import useSubmit from '@src/hook/useSubmit';
 
 const NextButton = styled.button`
@@ -33,20 +35,28 @@ export default function ResponseNextButton({
   const { push } = useNavigator();
   const responseState = useRecoilValue(responseListAtom);
   const question = useRecoilValue(questionListAtom);
+  const [isSubmit, setSubmit] = useState(false);
   const handleLastClick = (e: React.MouseEvent) => {
     handleNextClick(e);
-    const responses = question.map(({ questionType, questionId }, idx) => ({
-      questionType,
-      questionId,
-      ...responseState[idx],
-    }));
-
-    responsePost({
-      surveyId: +responsesId,
-      responses,
-    });
-    push('/responses/complete');
+    setSubmit(true);
   };
+
+  useEffect(() => {
+    if (isSubmit && responseState.length === question.length) {
+      const responses = question.map(({ questionType, questionId }, idx) => ({
+        questionType,
+        questionId,
+        ...responseState[idx],
+      }));
+
+      responsePost({
+        surveyId: +responsesId,
+        responses,
+      });
+      setSubmit(false);
+      push(`/responses/${responsesId}/complete`);
+    }
+  }, [isSubmit, responseState]);
 
   return (
     <>

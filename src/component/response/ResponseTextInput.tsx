@@ -4,7 +4,7 @@ import styled from '@emotion/styled';
 import { useParams } from '@karrotframe/navigator';
 import { useRecoilValue } from 'recoil';
 
-import responseListAtom from '@src/atom/responseAtom';
+import { responseListAtom } from '@src/atom/responseAtom';
 import { InputType } from '@src/page/AnswerDetailPage';
 
 import ResponseNextButton from '../common/button/ResponseNextButton';
@@ -20,11 +20,12 @@ export default function ResponseTextInput({
   isLast,
   setResponse,
 }: InputType): JSX.Element {
-  const { questionNumber, responsesId } =
-    useParams<{ responsesId?: string; questionNumber?: string }>();
-  if (!questionNumber || !responsesId)
+  const { questionTypes, responsesId } =
+    useParams<{ responsesId?: string; questionTypes?: string }>();
+  if (!questionTypes || !responsesId)
     throw new Error('questionNumber or responsesId none');
 
+  const questionNumber = Number.isNaN(+questionTypes) ? 1 : +questionTypes;
   const response = useRecoilValue(responseListAtom);
   const initialText = response[+questionNumber - 1]
     ? response[+questionNumber - 1].answer || ''

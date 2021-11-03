@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 
 type QuestionType = {
   number: number;
+  questionNumber: number;
 };
 
 const StyledQuestionDot = styled.div`
@@ -20,14 +21,17 @@ const Dot = styled.div<{ active?: boolean }>`
   opacity: ${({ active }) => (active ? '1' : '0.4')};
 `;
 
-export default function QuestionDot({ number }: QuestionType): JSX.Element {
+export default function QuestionDot({
+  number,
+  questionNumber,
+}: QuestionType): JSX.Element {
   switch (number) {
     case 1:
       return (
         <StyledQuestionDot>
           <Dot active />
           <Dot />
-          <Dot />
+          {questionNumber === 2 ? null : <Dot />}
         </StyledQuestionDot>
       );
     case 2:
@@ -35,7 +39,7 @@ export default function QuestionDot({ number }: QuestionType): JSX.Element {
         <StyledQuestionDot>
           <Dot active />
           <Dot active />
-          <Dot />
+          {questionNumber === 2 ? null : <Dot />}
         </StyledQuestionDot>
       );
     case 3:
