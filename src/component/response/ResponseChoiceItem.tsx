@@ -9,6 +9,8 @@ const StyledResponseChoice = styled.li`
   background: #f4f5f6;
   border-radius: 25.5px;
   color: #141414;
+  border: 1px solid #f4f5f6;
+  transition: 0.2s;
   svg {
     opacity: 0.3;
     margin-left: 0.9rem;
