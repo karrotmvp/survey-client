@@ -93,13 +93,13 @@ export default function AnswerComplete(): JSX.Element {
         <CompleteImg src="./../../img/responseComplete.png" />
         <CompleteTitle>의견을 남겨주셔서 감사해요!</CompleteTitle>
         <SurveySubtitle>
-          여러분이 남긴 의견은 {bizProfile?.name} 사장님이 <br />
+          여러분이 남긴 의견은 <b>{bizProfile?.name} 사장님</b>이 <br />
           매장을 개선하는 데 큰 도움이 됩니다 💪
         </SurveySubtitle>
       </div>
 
       <div className="answer_complete_page">
-        <LoginButton text="제출 완료" onClick={() => mini.close()} />
+        <LoginButton text="나가기" onClick={() => mini.close()} />
         <BizProfileVisit onClick={handleVisitBizProfile}>
           {bizProfile?.name} 비즈 프로필 방문하기
         </BizProfileVisit>
