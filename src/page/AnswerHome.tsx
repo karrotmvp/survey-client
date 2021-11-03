@@ -176,7 +176,7 @@ export default function AnswerHome(): JSX.Element {
       />
       <StyledHomePage>
         {!briefData ? (
-          <div>loading</div>
+          <div></div>
         ) : (
           <div>
             <QuestionCategoryTage>

@@ -1,7 +1,8 @@
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 
 import styled from '@emotion/styled';
 import { useParams } from '@karrotframe/navigator';
+import { useHistory } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 
 import { responseListAtom } from '@src/atom/responseAtom';
@@ -40,7 +41,21 @@ export default function ResponseTextInput({
   const handleNextClick = () => {
     setResponse({ answer: text });
   };
+  const history = useHistory();
 
+  useEffect(() => {
+    const unblock = history.block((location, action) => {
+      if (action === 'POP' && isLast) {
+        setResponse({ answer: text });
+      }
+      return undefined;
+    });
+
+    return () => {
+      unblock();
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [history]);
   return (
     <StyledTextInput>
       <QuestionTitleInput
@@ -51,7 +66,10 @@ export default function ResponseTextInput({
         row={1}
       />
 
-      <ResponseNextButton {...{ handleNextClick, isLast }} />
+      <ResponseNextButton
+        disable={text === ''}
+        {...{ handleNextClick, isLast }}
+      />
     </StyledTextInput>
   );
 }

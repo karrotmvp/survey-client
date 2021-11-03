@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import styled from '@emotion/styled';
 import { useParams } from '@karrotframe/navigator';
+import { useHistory } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 
 import { choiceType } from '@src/atom/questionAtom';
@@ -44,14 +45,31 @@ export default function ResponseChoiceInput({
   const handleNextClick = () => {
     setResponse({ choiceId: selectedChoiceId });
   };
+  const history = useHistory();
 
+  useEffect(() => {
+    const unblock = history.block((location, action) => {
+      if (action === 'POP' && isLast) {
+        setResponse({ choiceId: selectedChoiceId });
+      }
+      return undefined;
+    });
+
+    return () => {
+      unblock();
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [history]);
   return (
     <StyledTextInput>
       <ResponseChoiceList
         {...{ questionChoice, setChoiceId, selectedChoiceId }}
       />
       <div className="button_wrapper">
-        <ResponseNextButton {...{ handleNextClick, isLast }} />
+        <ResponseNextButton
+          disable={selectedChoiceId === -1}
+          {...{ handleNextClick, isLast }}
+        />
       </div>
     </StyledTextInput>
   );

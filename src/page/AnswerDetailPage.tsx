@@ -80,7 +80,6 @@ export default function AnswerDetailPage(): JSX.Element {
       responseInput,
       ...response.slice(+questionNumber),
     ];
-    console.log(responseInput, newRes);
     setResponseState(newRes);
 
     if (!isLast) {

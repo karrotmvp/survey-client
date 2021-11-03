@@ -17,7 +17,7 @@ const StyledBizProfile = styled.div`
       margin-left: 1rem;
       display: flex;
       flex-direction: column;
-      justify-content: center;
+      justify-content: space-between;
     }
   }
 `;
@@ -31,7 +31,6 @@ const Dot = styled.div`
 
 const BizProfileTitle = styled.h3`
   color: #141414;
-  margin: 6px 0;
   font-weight: 600;
   display: flex;
   align-items: center;
@@ -70,13 +69,14 @@ export default function BizProfile({
   const handleClickProfile = () => {
     window.location.href = profileUrl;
   };
+  const shortenRegin = region.split(' ');
   return (
     <StyledBizProfile onClick={handleClickProfile}>
       <div className="biz_profile_left">
         <BizProfileImg src={imageUrl} />
         <div className="biz_profile_left_text">
           <BizProfileTitle>
-            {region} <Dot /> {bizCategory}
+            {shortenRegin[shortenRegin.length - 1]} <Dot /> {bizCategory}
           </BizProfileTitle>
           <BizProfileSubtitle>{name} 사장님의 설문</BizProfileSubtitle>
         </div>
