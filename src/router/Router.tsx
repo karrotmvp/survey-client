@@ -24,7 +24,7 @@ export default function Router(): JSX.Element {
 
   return (
     <Navigator theme={checkMobileType()}>
-      <Screen path="/survey/create">
+      <Screen path="/">
         <HomePage />
       </Screen>
       <Screen path="/responses/:responsesId/complete">
