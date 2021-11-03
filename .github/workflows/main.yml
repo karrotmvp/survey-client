@@ -28,12 +28,14 @@ jobs:
           DEV_APP_ID: ${{ secrets.APP_ID }}
           DEV_API_URL: ${{ secrets.DEV_API_URL }}
           DEV_PRESET_BIZ: ${{ secrets.PRESET_BIZ }}
+          DEV_PRESET: ${{ secrets.DEV_PRESET }}
           GA_KEY: ${{ secrets.TRACKING_ID }}
         run: |
           touch .env
           echo REACT_APP_APP_ID="$DEV_APP_ID" >> .env
           echo REACT_APP_API_URL="$DEV_API_URL" >> .env
           echo REACT_APP_PRESET_BIZ="$DEV_PRESET_BIZ" >> .env
+          echo REACT_APP_PRESET="$DEV_PRESET" >> .env
           echo REACT_APP_TRACKING_ID="$GA_KEY" >> .env
           cat .env
 
