@@ -24,7 +24,8 @@ export default function ResponseChoiceList({
 }: ResponseChoiceListType): JSX.Element {
   const handleClick = (e: React.MouseEvent<HTMLLIElement>) => {
     const selectId = e.currentTarget.dataset.list || '-1';
-    setChoiceId(+selectId);
+    if (+selectId === selectedChoiceId) setChoiceId(-1);
+    else setChoiceId(+selectId);
   };
 
   return (
