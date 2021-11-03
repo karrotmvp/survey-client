@@ -140,7 +140,7 @@ export default function AnswerHome(): JSX.Element {
   const setQuestion = useSetRecoilState(questionListAtom);
 
   const getSurveyData = useGet<questionDataType>(`/surveys/${responsesId}`);
-  const getSurveyUserData = useGet<respondedType>(
+  const getSurveyUserResponded = useGet<respondedType>(
     `responses/surveys/${responsesId}/responded`,
   );
   const getSurveyBrief = useGet<surveyBriefType>(
@@ -152,8 +152,7 @@ export default function AnswerHome(): JSX.Element {
 
   const click = async () => {
     const resCode = await auth();
-    // eslint-disable-next-line no-console
-    console.log(resCode);
+
     if (resCode) {
       if (resCode === code) setSuccess(true);
       setCode(resCode);
@@ -161,8 +160,6 @@ export default function AnswerHome(): JSX.Element {
   };
 
   useEffect(() => {
-    // eslint-disable-next-line no-console
-    console.log('useEffect');
     if (!briefData) {
       getSurveyBrief().then(res => {
         if (res && briefData === null) {
@@ -173,16 +170,13 @@ export default function AnswerHome(): JSX.Element {
     }
 
     if (isSuccess) {
-      getSurveyUserData().then(data => {
-        // eslint-disable-next-line no-console
-        console.log('useEffectdata', data);
+      getSurveyUserResponded().then(data => {
         if (!data) return;
         if (data.responded) {
           setTostOpen(true);
         }
+
         getSurveyData().then(res => {
-          // eslint-disable-next-line no-console
-          console.log('useEffectres', res);
           if (!res) return;
           const { questions } = res;
           setQuestion(questions);
@@ -239,13 +233,13 @@ export default function AnswerHome(): JSX.Element {
           <SurveySubtitle>
             설문을 작성하시면 매장을 개선하는데 큰 도움이 돼요
           </SurveySubtitle>
-          {isTostOpen && (
-            <AlertTostModal
-              text={'이미 답변한 설문입니다'}
-              onClick={handleAlert}
-              bottom={'9rem'}
-            />
-          )}
+
+          <AlertTostModal
+            text={'이미 답변한 설문입니다'}
+            onClick={handleAlert}
+            bottom={'9rem'}
+          />
+
           <LoginButton onClick={click} text={'설문 답변하기'} />
         </div>
       </StyledHomePage>

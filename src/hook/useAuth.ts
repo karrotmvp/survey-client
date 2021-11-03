@@ -14,8 +14,6 @@ const useMiniAuth = (
     const urlSearchParams = new URLSearchParams(location.search);
     const isPreload = urlSearchParams.get('preload');
     if (urlSearchParams.has('code') || isPreload === 'true') {
-      // eslint-disable-next-line no-console
-      console.log(urlSearchParams.get('code'));
       if (onClose) {
         onClose();
       }
@@ -30,8 +28,6 @@ const useMiniAuth = (
         },
         onSuccess(result: { code: string }) {
           if (result && result.code) {
-            // eslint-disable-next-line no-console
-            console.log(result.code);
             resolve(result.code);
           }
         },
