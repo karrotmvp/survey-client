@@ -234,11 +234,13 @@ export default function AnswerHome(): JSX.Element {
             설문을 작성하시면 매장을 개선하는데 큰 도움이 돼요
           </SurveySubtitle>
 
-          <AlertTostModal
-            text={'이미 답변한 설문입니다'}
-            onClick={handleAlert}
-            bottom={'9rem'}
-          />
+          {isTostOpen && (
+            <AlertTostModal
+              text={'이미 답변한 설문입니다'}
+              onClick={handleAlert}
+              bottom={'9rem'}
+            />
+          )}
 
           <LoginButton onClick={click} text={'설문 답변하기'} />
         </div>
