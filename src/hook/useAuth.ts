@@ -14,6 +14,7 @@ const useMiniAuth = (
     const urlSearchParams = new URLSearchParams(location.search);
     const isPreload = urlSearchParams.get('preload');
     if (urlSearchParams.has('code') || isPreload === 'true') {
+      console.log(urlSearchParams.get('code'));
       if (onClose) {
         onClose();
       }
@@ -28,6 +29,7 @@ const useMiniAuth = (
         },
         onSuccess(result: { code: string }) {
           if (result && result.code) {
+            console.log(result.code);
             resolve(result.code);
           }
         },
