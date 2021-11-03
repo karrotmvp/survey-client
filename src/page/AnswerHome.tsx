@@ -154,11 +154,13 @@ export default function AnswerHome(): JSX.Element {
     const resCode = await auth();
     if (resCode) {
       if (resCode === code) setSuccess(true);
-      else setCode(resCode);
+      setCode(resCode);
     }
   };
 
   useEffect(() => {
+    // eslint-disable-next-line no-console
+    console.log('useEffect');
     if (!briefData) {
       getSurveyBrief().then(res => {
         if (res && briefData === null) {
@@ -170,12 +172,15 @@ export default function AnswerHome(): JSX.Element {
 
     if (isSuccess) {
       getSurveyUserData().then(data => {
+        // eslint-disable-next-line no-console
+        console.log('useEffectdata', data);
         if (!data) return;
         if (data.responded) {
           setTostOpen(true);
-          return;
         }
         getSurveyData().then(res => {
+          // eslint-disable-next-line no-console
+          console.log('useEffectres', res);
           if (!res) return;
           const { questions } = res;
           setQuestion(questions);
@@ -224,11 +229,7 @@ export default function AnswerHome(): JSX.Element {
               <BizProfile {...briefData.bizProfile} />
             </>
           ) : (
-            <>
-              <LoadingText />
-              <LoadingSubText />
-              <LoadingProfile />
-            </>
+            <div></div>
           )}
         </div>
 
@@ -249,26 +250,3 @@ export default function AnswerHome(): JSX.Element {
     </>
   );
 }
-
-const LoadingText = styled.div`
-  height: 1.8rem;
-  width: 60%;
-  background: #f4f5f6;
-  border-radius: 8px;
-  margin: 0.8rem 0;
-`;
-
-const LoadingSubText = styled.div`
-  height: 1.2rem;
-  width: 40%;
-  background: #f4f5f6;
-  border-radius: 8px;
-  margin-bottom: 1rem;
-`;
-
-const LoadingProfile = styled.div`
-  width: 100%;
-  height: 6rem;
-  background: #f4f5f6;
-  border-radius: 12px;
-`;
