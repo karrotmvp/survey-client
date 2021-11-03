@@ -24,13 +24,12 @@ const StyledTostModal = styled.div<{ bottom: string | undefined }>`
       opacity: 0;
     }
   }
-  font-size: 1rem;
-  font-weight: 400;
+  font-size: 0.6rem;
+  line-height: 120%;
   color: #fff;
-  padding: 1rem 1.2rem;
+  padding: 0.8rem 1.2rem;
   display: flex;
   align-items: center;
-  width: fit-content;
   background-color: #272727;
   animation: modal 3s ease-in-out;
   animation-fill-mode: forwards;
@@ -41,6 +40,7 @@ const StyledTostModal = styled.div<{ bottom: string | undefined }>`
   z-index: 99;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 8px;
+  width: 20rem;
 `;
 
 const TostText = styled.h4`
