@@ -152,6 +152,7 @@ export default function AnswerHome(): JSX.Element {
 
   const click = async () => {
     const resCode = await auth();
+    // eslint-disable-next-line no-console
     console.log(resCode);
     if (resCode) {
       if (resCode === code) setSuccess(true);
