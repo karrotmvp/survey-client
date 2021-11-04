@@ -1,4 +1,4 @@
-import { MouseEvent } from 'react';
+import { useEffect } from 'react';
 
 import styled from '@emotion/styled';
 
@@ -24,12 +24,13 @@ const StyledTostModal = styled.div<{ bottom: string | undefined }>`
       opacity: 0;
     }
   }
-  font-size: 0.6rem;
+  font-size: 1.3rem;
   line-height: 120%;
   color: #fff;
-  padding: 0.8rem 1.2rem;
+  padding: 1.2rem;
   display: flex;
   align-items: center;
+  justify-content: center;
   background-color: #272727;
   animation: modal 3s ease-in-out;
   animation-fill-mode: forwards;
@@ -40,28 +41,50 @@ const StyledTostModal = styled.div<{ bottom: string | undefined }>`
   z-index: 99;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 8px;
-  width: 20rem;
+  width: 31.2rem;
 `;
 
-const TostText = styled.h4`
-  font-size: 0.8rem;
+const ToastText = styled.h4`
+  font-size: 1.2rem;
   font-weight: 400;
   margin: 0 8px;
 `;
 
+const ToastIcon = styled(InfoIcon)`
+  width: 1.6rem;
+`;
+
 export default function ToastModal({
-  onClick,
   text,
   bottom,
+  isToastOpen,
+  setToastOpen,
+  time,
 }: {
-  onClick: (e: MouseEvent) => void;
+  isToastOpen: boolean;
+  setToastOpen: React.Dispatch<React.SetStateAction<boolean>>;
   text: string;
   bottom?: string;
+  time: number;
 }): JSX.Element {
+  const handleAlert = () => {
+    setTimeout(() => {
+      setToastOpen(false);
+    }, time);
+  };
+
+  useEffect(() => {
+    if (isToastOpen) handleAlert();
+  }, [isToastOpen]);
+
   return (
-    <StyledTostModal bottom={bottom}>
-      <InfoIcon />
-      <TostText>{text}</TostText>
-    </StyledTostModal>
+    <>
+      {isToastOpen && (
+        <StyledTostModal bottom={bottom}>
+          <ToastIcon />
+          <ToastText>{text}</ToastText>
+        </StyledTostModal>
+      )}
+    </>
   );
 }

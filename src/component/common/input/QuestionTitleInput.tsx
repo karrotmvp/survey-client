@@ -15,11 +15,11 @@ const StyledTitleInput = styled.textarea<{
   border-radius: 4px 4px 0px 0px;
   color: #111111;
   caret-color: ${({ theme }) => theme.color.primaryOrange};
-  font-size: 16px;
+  font-size: 1.6rem;
   line-height: 140%;
   letter-spacing: -2%;
-  padding: 10px 0.5rem;
-  margin-top: 0.5rem;
+  padding: 0.8rem 0.6rem;
+  margin-top: 0.8rem;
   resize: none;
   &::placeholder {
     color: #c6c9cc;

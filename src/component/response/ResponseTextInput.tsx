@@ -13,7 +13,7 @@ import QuestionTitleInput from '../common/input/QuestionTitleInput';
 
 const StyledTextInput = styled.section`
   display: flex;
-  height: calc(100vh - 16rem);
+  height: calc(100vh - 25.6rem);
   flex-direction: column;
   justify-content: space-between;
 `;

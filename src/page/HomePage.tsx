@@ -16,7 +16,7 @@ import NavBar from '@component/common/navbar/NavBar';
 import HomeBanner from '@component/home/HomeBanner';
 import { ReactComponent as BetaIcon } from '@config/icon/BETA.svg';
 import { ReactComponent as LogoIcon } from '@config/icon/logo.svg';
-import { ReactComponent as MuddIcon } from '@config/icon/mudda.svg';
+import { ReactComponent as MuddaIcon } from '@config/icon/mudda.svg';
 import useGet from '@hook/useGet';
 import { useAnalytics } from '@src/analytics/faContext';
 import { useMiniBizAuth } from '@src/hook/useAuth';
@@ -37,13 +37,7 @@ const StyledHomePage = styled.section`
   background: #ffff;
   width: 100%;
   height: 100vh;
-  padding-top: 3.8rem;
-  padding-bottom: 50px;
-`;
-
-const StyledSection = styled.section`
-  padding: 0 18px;
-  height: calc(100vh - 5.5rem);
+  padding: 8rem 1.6rem 1.6rem 1.6rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -53,7 +47,7 @@ const Logo = styled(LogoIcon)`
   height: auto;
 `;
 
-const TitleLogo = styled(MuddIcon)`
+const TitleLogo = styled(MuddaIcon)`
   margin: 0 8px;
   height: auto;
 `;
@@ -65,7 +59,7 @@ const BetaLogo = styled(BetaIcon)`
   }
 `;
 
-const StyledColomn = styled.div`
+const StyledColumn = styled.div`
   display: flex;
   justify-content: flex-start;
   margin-bottom: 2rem;
@@ -86,7 +80,7 @@ const StyledCover = styled.div`
   justify-content: center;
   background: #f4f3f8;
   border-radius: 8px;
-  height: 50vh;
+  height: 54vh;
   position: relative;
 `;
 
@@ -103,7 +97,7 @@ const StyledSlide = styled(Slider)`
   .slick-dots li.slick-active button:before {
     color: ${({ theme }) => theme.color.primaryOrange} !important;
   }
-
+  height: 70%;
   margin-top: 2rem;
   margin-bottom: 3rem;
 `;
@@ -177,42 +171,40 @@ export default function HomePage(): JSX.Element {
     <>
       <NavBar type="CLOSE" />
       <StyledHomePage>
-        <StyledSection>
+        <div>
+          <StyledColumn>
+            <Logo /> <TitleLogo /> <BetaLogo />
+          </StyledColumn>
+          <HomeBanner />
+        </div>
+        <StyledSlide {...settings}>
           <div>
-            <StyledColomn>
-              <Logo /> <TitleLogo /> <BetaLogo />
-            </StyledColomn>
-            <HomeBanner />
+            <StyledCover>
+              <StyledSliderTitle>
+                우리 매장에 대한 고객님 의견을 물어볼 수 있어요
+              </StyledSliderTitle>
+              <StyledImg src="./img/home_img1.png" />
+            </StyledCover>
           </div>
-          <StyledSlide {...settings}>
-            <div>
-              <StyledCover>
-                <StyledSliderTitle>
-                  우리 매장에 대한 고객님 의견을 물어볼 수 있어요
-                </StyledSliderTitle>
-                <StyledImg src="./img/home_img1.png" />
-              </StyledCover>
-            </div>
-            <div>
-              <StyledCover>
-                <StyledSliderTitle>
-                  우리 동네 상권/고객을 파악해볼 수 있어요
-                </StyledSliderTitle>
-                <StyledImg src="./img/home_img2.png" />
-              </StyledCover>
-            </div>
-            <div>
-              <StyledCover>
-                <StyledSliderTitle>
-                  이웃들에게 재밌는 퀴즈를 내고 맞춰봐요
-                </StyledSliderTitle>
-                <StyledImgThird src="./img/home_img3.png" />
-              </StyledCover>
-            </div>
-          </StyledSlide>
+          <div>
+            <StyledCover>
+              <StyledSliderTitle>
+                우리 동네 상권/고객을 파악해볼 수 있어요
+              </StyledSliderTitle>
+              <StyledImg src="./img/home_img2.png" />
+            </StyledCover>
+          </div>
+          <div>
+            <StyledCover>
+              <StyledSliderTitle>
+                이웃들에게 재밌는 퀴즈를 내고 맞춰봐요
+              </StyledSliderTitle>
+              <StyledImgThird src="./img/home_img3.png" />
+            </StyledCover>
+          </div>
+        </StyledSlide>
 
-          <LogInButton text={'설문 만들러가기'} onClick={handleClick} />
-        </StyledSection>
+        <LogInButton text={'설문 만들러가기'} onClick={handleClick} />
       </StyledHomePage>
     </>
   );

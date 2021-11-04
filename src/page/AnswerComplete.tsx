@@ -41,14 +41,14 @@ export default function AnswerComplete(): JSX.Element {
         <CompleteTitle>의견을 남겨주셔서 감사해요!</CompleteTitle>
         <SurveySubtitle>
           여러분이 남긴 의견은 <b>{bizProfile?.name} 사장님</b>이 <br />
-          매장을 개선하는 데 큰 도움이 됩니다 💪
+          매장을 개선하는 데 큰 도움이 됩니다
         </SurveySubtitle>
       </div>
 
       <div className="answer_complete_page">
         <LoginButton text="나가기" onClick={() => mini.close()} />
         <BizProfileVisit onClick={handleVisitBizProfile}>
-          {bizProfile?.name} 비즈 프로필 방문하기
+          {bizProfile?.name}비즈 프로필 방문하기
         </BizProfileVisit>
       </div>
     </StyledAnswerComplete>
@@ -58,7 +58,7 @@ export default function AnswerComplete(): JSX.Element {
 const StyledAnswerComplete = styled.section`
   background-color: #fff2eb;
   height: 100vh;
-  padding: 5rem 1rem 1rem 1rem;
+  padding: 8rem 1.6rem 1.6rem 1.6rem;
   display: flex;
   justify-content: space-between;
   flex-direction: column;
@@ -79,32 +79,28 @@ const CompleteImg = styled.img`
 `;
 
 const CompleteTitle = styled.h1`
-  font-size: 1.2rem;
+  font-size: 1.8rem;
   line-height: 140%;
-  margin: 1rem 0;
+  margin: 1.6rem 0;
   color: #fe7e35;
 `;
 
 const SurveySubtitle = styled.h3`
-  color: #8e8f95;
-
-  font-size: 1rem;
+  font-size: 1.6rem;
   line-height: 140%;
   font-weight: 400;
   text-align: center;
-
   color: #707070;
 `;
 
 const BizProfileVisit = styled.button`
   color: #8e8f95;
-  font-size: 0.8rem;
+  font-size: 1.4rem;
   line-height: 100%;
   display: flex;
   align-items: center;
   font-weight: 400;
   background-color: transparent;
-  margin: 1rem 0;
+  margin: 1.6rem 0;
   text-decoration: underline;
-  text-underline-offset: 4px;
 `;

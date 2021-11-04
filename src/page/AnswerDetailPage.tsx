@@ -31,12 +31,6 @@ export default function AnswerDetailPage(): JSX.Element {
   const isLast = questionLength === questionNumber;
   const [response, setResponseState] = useRecoilState(responseListAtom);
 
-  // 주관식 / 객관식 나눠짐
-  // 주관식 객관식에 따라서 set 하는 객체가 다름
-  // hoc 의 위치가 어디여야하는가?
-  // 주관식 객관식답변페이지는 아예 다르게 구성할건가.
-  // 훅을 써야되나?
-
   const { push } = useNavigator();
 
   const setResponse = (
@@ -99,7 +93,7 @@ const StyledResponsePage = styled.section`
   background: #ffff;
   width: 100%;
   height: 100vh;
-  padding: 5rem 1rem 1rem 1rem;
+  padding: 8rem 1.6rem 1.6rem 1.6rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -112,18 +106,18 @@ const StyledResponsePage = styled.section`
 const StyledQuestionDetailTitle = styled.h3`
   color: ${({ theme }) => theme.color.primaryOrange};
   font-weight: 700;
-  font-size: 1rem;
-  line-height: 120%;
-  margin-right: 0.5rem;
+  font-size: 1.8rem;
+  line-height: 100%;
+  margin-right: 0.8rem;
   font-family: ${({ theme }) => theme.fontFamily.title};
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.8rem;
 `;
 
 const StyledAnswerTitle = styled.h3`
   color: #141414;
   font-weight: 600;
-  margin-right: 5px;
-  font-size: 1.2rem;
+  margin-right: 0.5rem;
+  font-size: 1.8rem;
   line-height: 140%;
-  margin-bottom: 1.5rem;
+  margin-bottom: 2.6rem;
 `;

@@ -17,9 +17,9 @@ const StyledIconButton = styled.button<StyleButtonType>`
   display: flex;
   align-items: center;
   padding: ${({ buttonSize }) =>
-    buttonSize === 'LARGE' ? '12.5px 30px' : '8px 1rem'};
+    buttonSize === 'LARGE' ? '1.25rem 3rem' : '0.8rem 1rem'};
   border-radius: ${({ buttonSize }) =>
-    buttonSize === 'LARGE' ? '33px' : '20px'};
+    buttonSize === 'LARGE' ? '3.3rem' : '2rem'};
   background-color: ${({ buttonColor, theme }) =>
     buttonColor === 'PRIMARY' ? theme.color.primaryOrange : '#ffff'};
   ${({ buttonSize }) =>
@@ -30,11 +30,12 @@ const StyledIconButton = styled.button<StyleButtonType>`
 
 const ButtonText = styled.span<StyleButtonType>`
   font-size: ${({ buttonSize }) =>
-    buttonSize === 'LARGE' ? '18px' : '0.8rem'};
+    buttonSize === 'LARGE' ? '1.8rem' : '1.3rem'};
   font-weight: ${({ buttonSize }) => (buttonSize === 'LARGE' ? '700' : '400')};
   color: ${({ buttonColor, theme }) =>
     buttonColor === 'PRIMARY' ? theme.color.white : theme.color.gray};
-  margin-left: ${({ buttonSize }) => (buttonSize === 'LARGE' ? '9px' : '3px')};
+  margin-left: ${({ buttonSize }) =>
+    buttonSize === 'LARGE' ? '0.9rem' : '0.3rem'};
 `;
 
 export default function IconButton({

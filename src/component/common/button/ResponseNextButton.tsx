@@ -12,9 +12,9 @@ const NextButton = styled.button`
   width: 100%;
   background-color: ${({ theme }) => theme.color.primaryOrange};
   color: #fff;
-  font-size: 14px;
+  font-size: 1%.4rem;
   font-weight: 400;
-  padding: 1rem 0;
+  padding: 1.6rem 0;
   border-radius: 8px;
 
   &:disabled {

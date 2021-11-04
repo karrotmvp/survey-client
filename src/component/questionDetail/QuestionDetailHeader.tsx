@@ -16,11 +16,10 @@ const StyledQuestionDetailHeader = styled.section`
 `;
 
 const StyledQuestionDetailTitle = styled.h3`
-  color: ${({ theme }) => theme.color.primaryOrange};
+  color: #141414;
   font-weight: 700;
-  font-size: 24px;
+  font-size: 1.6rem;
   margin-right: 5px;
-  font-family: ${({ theme }) => theme.fontFamily.title};
 `;
 
 const QuestionDetailLeft = styled.div`
@@ -133,7 +132,7 @@ export default function QuestionDetailHeader({
           <NavToggle
             toggleRef={ref}
             navList={['주관식', '객관식']}
-            position={{ top: '4.5rem', left: '5px' }}
+            position={{ top: '5.5rem', left: '0' }}
             onClick={handleToggleList}
           />
         </>
