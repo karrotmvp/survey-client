@@ -1,4 +1,4 @@
-import { ChangeEvent, MouseEvent, useEffect, useState } from 'react';
+import { ChangeEvent, MouseEvent, useState } from 'react';
 
 import styled from '@emotion/styled';
 import { useRecoilState } from 'recoil';
@@ -35,15 +35,6 @@ export default function FeedBackPage(): JSX.Element {
       setToastOpen(true);
     }
   };
-  const handleAlert = () => {
-    setTimeout(() => {
-      setToastOpen(false);
-    }, 3000);
-  };
-
-  useEffect(() => {
-    if (isToastOpen) handleAlert();
-  }, [isToastOpen]);
 
   return (
     <>
@@ -68,12 +59,12 @@ export default function FeedBackPage(): JSX.Element {
           onChange={handleChange}
           placeholder={contents.placeholder.FEEDBACK}
         />
-        {isToastOpen && (
-          <AlertTostModal
-            text={'내용을 모두 입력하세요'}
-            onClick={handleAlert}
-          />
-        )}
+
+        <AlertTostModal
+          text={'내용을 모두 입력하세요'}
+          time={3000}
+          {...{ isToastOpen, setToastOpen }}
+        />
 
         {isPopup && (
           <Modal setPopup={setPopup}>
@@ -97,7 +88,7 @@ const StyledFeedBackPage = styled.section`
   background-color: #ffff;
   width: 100%;
   height: 100vh;
-  padding: 5.5rem 1rem 1rem 1rem;
+  padding: 8rem 1.6rem 1.6rem 1.6rem;
   display: flex;
   flex-direction: column;
 `;
@@ -106,7 +97,7 @@ const FeedbackTitle = styled.h1`
   font-family: ${({ theme }) => theme.fontFamily.title};
   font-style: normal;
   font-weight: bold;
-  font-size: 22px;
+  font-size: 2.2rem;
   line-height: 120%;
   color: #fe7e35;
   line-height: 140%;
@@ -115,10 +106,10 @@ const FeedbackTitle = styled.h1`
 
 const CompleteButton = styled.button`
   background-color: transparent;
-  font-size: 1rem;
+  font-size: 1.6rem;
   font-weight: 400;
   color: ${({ theme }) => theme.color.primaryOrange};
-  padding: 1rem 0 1rem 0.5rem;
+  padding: 1.6rem 0 1.6rem 0.8rem;
 
   &[aria-disabled='true'] {
     color: #c9c9c9;
@@ -128,14 +119,14 @@ const CompleteButton = styled.button`
 const FeedbackSubtitle = styled.h4`
   font-style: normal;
   font-weight: normal;
-  font-size: 16px;
+  font-size: 1.6rem;
   line-height: 140%;
-  margin-top: 1rem;
-  margin-bottom: 1rem;
+  margin-top: 1.6rem;
+  margin-bottom: 1.6rem;
 `;
 
 const StyledTitleInput = styled.textarea`
-  margin-top: 1rem;
+  margin-top: 1.6rem;
   border: none;
   resize: none;
   outline: none;
@@ -145,12 +136,11 @@ const StyledTitleInput = styled.textarea`
   border: 1px solid #c9c9c9;
   box-sizing: border-box;
   border-radius: 7px;
-  padding: 0.5rem;
-  font-size: 1rem;
+  padding: 0.8rem;
+  font-size: 1.6rem;
   ::placeholder {
     color: #c9c9c9;
   }
-  margin-bottom: 0.8rem;
 `;
 
 const ConfirmModal = styled.div`

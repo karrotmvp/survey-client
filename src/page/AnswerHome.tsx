@@ -37,13 +37,19 @@ const StyledHomePage = styled.section`
     flex-direction: column;
     align-items: center;
   }
+  .response_home_center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 14%;
+  }
 `;
 
 const LogoWrapper = styled.div`
-  width: 100%;
   justify-content: center;
   display: flex;
   align-items: center;
+  width: 100%;
 `;
 
 const QuestionCategoryTag = styled.div`
@@ -60,8 +66,11 @@ const SurveyTitle = styled.h1`
   color: #141414;
   font-size: ${({ theme }) => theme.fontSize.XXL};
   line-height: 140%;
-  margin: 1.2rem 0;
+  margin: 0.8rem 0;
   font-weight: 600;
+  text-align: center;
+  word-break: keep-all;
+  padding: 0 1.4rem;
 `;
 
 const SurveySubtitle = styled.h3`
@@ -127,7 +136,7 @@ export default function AnswerHome(): JSX.Element {
 
   const [code, setCode] = useRecoilState(codeAtom);
   const [isSuccess, setSuccess] = useLogin(authorizationSelector);
-  const [isTostOpen, setTostOpen] = useState(false);
+  const [isToastOpen, setToastOpen] = useState(false);
   const [briefData, setBrief] = useState<surveyBriefType | null>(null);
 
   const setBizUser = useSetRecoilState(responseUserAtom);
@@ -167,7 +176,7 @@ export default function AnswerHome(): JSX.Element {
       getSurveyUserResponded().then(data => {
         if (!data) return;
         if (data.responded) {
-          setTostOpen(true);
+          setToastOpen(true);
         }
 
         getSurveyData().then(res => {
@@ -181,16 +190,6 @@ export default function AnswerHome(): JSX.Element {
     }
   }, [isSuccess, code, briefData]);
 
-  const handleAlert = () => {
-    setTimeout(() => {
-      setTostOpen(false);
-    }, 3000);
-  };
-
-  useEffect(() => {
-    if (isTostOpen) handleAlert();
-  }, [isTostOpen]);
-
   return (
     <>
       <NavBar
@@ -203,7 +202,7 @@ export default function AnswerHome(): JSX.Element {
         }
       />
       <StyledHomePage>
-        <div>
+        <div className="response_home_center">
           <QuestionCategoryTag>
             {questionCategories[+questionCategory]}
           </QuestionCategoryTag>
@@ -228,13 +227,12 @@ export default function AnswerHome(): JSX.Element {
             설문을 작성하시면 매장을 개선하는데 큰 도움이 돼요
           </SurveySubtitle>
 
-          {isTostOpen && (
-            <AlertTostModal
-              text={'이미 답변한 설문입니다'}
-              onClick={handleAlert}
-              bottom={'9rem'}
-            />
-          )}
+          <AlertTostModal
+            text={'이미 답변한 설문입니다'}
+            bottom={'9rem'}
+            {...{ isToastOpen, setToastOpen }}
+            time={3000}
+          />
 
           <LoginButton onClick={click} text={'설문 답변하기'} />
         </div>
