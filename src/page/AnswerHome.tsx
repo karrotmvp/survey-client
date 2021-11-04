@@ -163,8 +163,6 @@ export default function AnswerHome(): JSX.Element {
       if (resCode === code) setSuccess(true);
       setCode(resCode);
     }
-    fa.logEvent(`response_login_button_click`, { responsesId });
-    fa.logEvent(`${responsesId}_response_login_button_click`);
   };
 
   useEffect(() => {
@@ -182,11 +180,15 @@ export default function AnswerHome(): JSX.Element {
         if (!data) return;
         if (data.responded) {
           setToastOpen(true);
+          fa.logEvent(`response_login_button_click_responded`, { responsesId });
+          fa.logEvent(`${responsesId}_response_login_button_click_responded`);
           return;
         }
 
         getSurveyData().then(res => {
           if (!res) return;
+          fa.logEvent(`response_login_button_click`, { responsesId });
+          fa.logEvent(`${responsesId}_response_login_button_click`);
           const { questions } = res;
           setQuestion(questions);
           setSuccess(false);
