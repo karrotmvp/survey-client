@@ -20,8 +20,8 @@ const StyledQuestionCard = styled.li`
   display: flex;
   flex-direction: column;
   position: relative;
-  padding-bottom: 2.4rem;
-  padding-top: 1.2rem;
+  padding-bottom: 1.6rem;
+  padding-top: 1.6rem;
 `;
 
 const StyledQuestionInput = styled.span`

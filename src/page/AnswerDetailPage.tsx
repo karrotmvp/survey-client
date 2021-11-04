@@ -1,8 +1,11 @@
+import { useEffect } from 'react';
+
 import styled from '@emotion/styled';
 import { useNavigator, useParams } from '@karrotframe/navigator';
 import { useRecoilState, useRecoilValue } from 'recoil';
 
 import ResponseTextInput from '@component/response/ResponseTextInput';
+import { useAnalytics } from '@src/analytics/faContext';
 import { questionListAtom } from '@src/atom/questionAtom';
 import { responseListAtom } from '@src/atom/responseAtom';
 import NavBar from '@src/component/common/navbar/NavBar';
@@ -18,7 +21,7 @@ export type InputType = {
 
 export default function AnswerDetailPage(): JSX.Element {
   const questions = useRecoilValue(questionListAtom);
-
+  const fa = useAnalytics();
   const { questionTypes, responsesId } =
     useParams<{ responsesId?: string; questionTypes?: string }>();
   if (!questionTypes || !responsesId)
@@ -44,9 +47,25 @@ export default function AnswerDetailPage(): JSX.Element {
     setResponseState(newRes);
 
     if (!isLast) {
+      fa.logEvent(`response_question_${questionNumber}_next_button_click`, {
+        responsesId,
+      });
+      fa.logEvent(
+        `${responsesId}_response_question_${questionNumber}_next_button_click`,
+      );
       push(`/responses/${responsesId}/${+questionNumber + 1}`);
     }
   };
+
+  useEffect(() => {
+    fa.logEvent(`response_question_${questionNumber}_show`, {
+      responsesId,
+      questionLength,
+    });
+    fa.logEvent(`${responsesId}_response_question_${questionNumber}_show`, {
+      questionLength,
+    });
+  }, []);
 
   return (
     <>

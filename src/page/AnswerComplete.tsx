@@ -1,9 +1,11 @@
 import { useEffect } from 'react';
 
 import styled from '@emotion/styled';
+import { useParams } from '@karrotframe/navigator';
 import { useHistory } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 
+import { useAnalytics } from '@src/analytics/faContext';
 import mini from '@src/api/mini';
 import { responseUserAtom } from '@src/atom/responseAtom';
 import LoginButton from '@src/component/common/button/LogInButton';
@@ -11,6 +13,11 @@ import NavBar from '@src/component/common/navbar/NavBar';
 
 export default function AnswerComplete(): JSX.Element {
   const history = useHistory();
+
+  const { responsesId } = useParams<{ responsesId?: string }>();
+  if (!responsesId) throw new Error('questionNumber or responsesId none');
+
+  const fa = useAnalytics();
   const bizProfile = useRecoilValue(responseUserAtom);
   useEffect(() => {
     const unblock = history.block((location, action) => {
@@ -30,6 +37,10 @@ export default function AnswerComplete(): JSX.Element {
     if (!bizProfile?.profileUrl) {
       return;
     }
+    fa.logEvent(`response_complete_bizprofile_click`, {
+      responsesId,
+    });
+    fa.logEvent(`${responsesId}_response_complete_bizprofile_click`);
     window.location.href = bizProfile.profileUrl;
   };
 

@@ -21,6 +21,7 @@ const StyledTitleInput = styled.textarea<{
   padding: 0.8rem 0.6rem;
   margin-top: 0.8rem;
   resize: none;
+  font-weight: 400;
   &::placeholder {
     color: #c6c9cc;
   }

@@ -1,6 +1,8 @@
 import styled from '@emotion/styled';
+import { useParams } from '@karrotframe/navigator';
 
 import { ReactComponent as ArrowRight } from '@config/icon/arrow_right_24.svg';
+import { useAnalytics } from '@src/analytics/faContext';
 
 const StyledBizProfile = styled.div`
   display: flex;
@@ -67,7 +69,14 @@ export default function BizProfile({
   profileUrl,
   imageUrl,
 }: bizProfileType): JSX.Element {
+  const { responsesId } = useParams<{ responsesId?: string }>();
+  if (!responsesId) throw new Error('questionNumber or responsesId none');
+
+  const fa = useAnalytics();
+
   const handleClickProfile = () => {
+    fa.logEvent(`response_home_bizprofile_click`, { responsesId });
+    fa.logEvent(`${responsesId}_response_home_bizprofile_click`);
     window.location.href = profileUrl;
   };
   const shortenRegin = region.split(' ');

@@ -28,6 +28,9 @@ const NavBarStyle = styled.div<{ shadow?: boolean; transparent?: boolean }>`
   padding: 1.6rem;
   z-index: 99999;
   ${({ shadow }) => (shadow ? 'border-bottom : 1px solid #E5E5E5;' : '')};
+  .nav_last {
+    justify-content: flex-end;
+  }
 `;
 
 const NavTitle = styled.span`
@@ -74,7 +77,7 @@ export default function NavBar({
         {title && <NavTitle>{title}</NavTitle>}
       </NavItem>
       {appendCenter && <NavItem>{appendCenter}</NavItem>}
-      <NavItem>{appendRight}</NavItem>
+      <NavItem className={'nav_last'}>{appendRight}</NavItem>
     </NavBarStyle>
   );
 }

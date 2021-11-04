@@ -4,6 +4,7 @@ import styled from '@emotion/styled';
 import { useNavigator, useParams } from '@karrotframe/navigator';
 import { useRecoilValue } from 'recoil';
 
+import { useAnalytics } from '@src/analytics/faContext';
 import { questionListAtom } from '@src/atom/questionAtom';
 import { responseListAtom } from '@src/atom/responseAtom';
 import useSubmit from '@src/hook/useSubmit';
@@ -36,7 +37,7 @@ export default function ResponseNextButton({
   const { responsesId } =
     useParams<{ responsesId?: string; questionNumber?: string }>();
   if (!responsesId) throw new Error('questionNumber or responsesId none');
-
+  const fa = useAnalytics();
   const responsePost = useSubmit('/responses');
   const { push } = useNavigator();
   const responseState = useRecoilValue(responseListAtom);
@@ -44,6 +45,10 @@ export default function ResponseNextButton({
   const [isSubmit, setSubmit] = useState(false);
   const handleLastClick = (e: React.MouseEvent) => {
     handleNextClick(e);
+    fa.logEvent(`response_question_complete_button_click`, {
+      responsesId,
+    });
+    fa.logEvent(`${responsesId}_response_question_complete_button_click`);
     setSubmit(true);
   };
 

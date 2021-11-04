@@ -14,6 +14,7 @@ import NavBar from '@component/common/navbar/NavBar';
 import { ReactComponent as LogoIcon } from '@config/icon/mudda_orange.svg';
 import { ReactComponent as MuddaIcon } from '@config/icon/mudda_textLogo.svg';
 import { useMiniAuth } from '@hook/useAuth';
+import { useAnalytics } from '@src/analytics/faContext';
 import { authorizationSelector, codeAtom } from '@src/api/authorization';
 import { questionAtomType, questionListAtom } from '@src/atom/questionAtom';
 import { responseUserAtom } from '@src/atom/responseAtom';
@@ -152,14 +153,18 @@ export default function AnswerHome(): JSX.Element {
   );
 
   const auth = useMiniAuth(process.env.REACT_APP_APP_ID || '');
+  const fa = useAnalytics();
 
   const click = async () => {
     const resCode = await auth();
 
     if (resCode) {
+      fa.setUserId(resCode);
       if (resCode === code) setSuccess(true);
       setCode(resCode);
     }
+    fa.logEvent(`response_login_button_click`, { responsesId });
+    fa.logEvent(`${responsesId}_response_login_button_click`);
   };
 
   useEffect(() => {
@@ -177,6 +182,7 @@ export default function AnswerHome(): JSX.Element {
         if (!data) return;
         if (data.responded) {
           setToastOpen(true);
+          return;
         }
 
         getSurveyData().then(res => {
