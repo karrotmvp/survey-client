@@ -1,44 +1,72 @@
+import { useCallback } from 'react';
+
 import { useLocation } from 'react-router-dom';
 
 import mini from '@api/mini';
 
-export default function useMiniAuth(
-  isBiz: boolean,
-  presetUrl: string,
+const useMiniAuth = (
   appId: string,
-): () => Promise<string> {
+  onClose?: () => void,
+): (() => Promise<string>) => {
   const location = useLocation();
 
-  const getCodeAsync = () => {
+  const getCodeAsync = useCallback(() => {
     const urlSearchParams = new URLSearchParams(location.search);
-
-    if (urlSearchParams.has('code') && !isBiz) {
+    const isPreload = urlSearchParams.get('preload');
+    if (urlSearchParams.has('code') || isPreload === 'true') {
+      if (onClose) {
+        onClose();
+      }
       return Promise.resolve<string>(urlSearchParams.get('code') || '');
     }
 
     return new Promise<string>((resolve, reject) => {
       mini.startPreset({
-        preset: presetUrl,
+        preset: process.env.REACT_APP_PRESET || '',
         params: {
           appId,
         },
-        // eslint-disable-next-line object-shorthand
-        onSuccess(result) {
-          if (!result && result.bizProfileId) {
-            resolve('');
+        onSuccess(result: { code: string }) {
+          if (result && result.code) {
+            resolve(result.code);
           }
-
-          resolve(result.bizProfileId);
         },
         onFailure() {
           reject(new Error('fail'));
         },
-        onClose() {
-          resolve('');
-        },
+        onClose,
       });
     });
-  };
-
+  }, [appId, location.search, onClose]);
   return getCodeAsync;
-}
+};
+
+const useMiniBizAuth = (
+  appId: string,
+  onClose?: () => void,
+): (() => Promise<string>) => {
+  const getCodeAsync = useCallback(
+    () =>
+      new Promise<string>((resolve, reject) => {
+        mini.startPreset({
+          preset: process.env.REACT_APP_PRESET_BIZ || '',
+          params: {
+            appId,
+          },
+          onSuccess(result: { bizProfileId: string }) {
+            if (result && result.bizProfileId) {
+              resolve(result.bizProfileId);
+            }
+          },
+          onFailure() {
+            reject(new Error('fail'));
+          },
+          onClose,
+        });
+      }),
+    [appId, onClose],
+  );
+  return getCodeAsync;
+};
+
+export { useMiniAuth, useMiniBizAuth };

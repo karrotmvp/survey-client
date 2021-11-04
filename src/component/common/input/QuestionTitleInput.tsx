@@ -2,28 +2,32 @@ import { ChangeEvent, useCallback, useEffect, useRef } from 'react';
 
 import styled from '@emotion/styled';
 
-const StyledTitleInput = styled.textarea`
+const StyledTitleInput = styled.textarea<{
+  inputBackground: string | undefined;
+}>`
   width: 100%;
   overflow: hidden;
   border-width: 0 0 1px 0;
   border-style: solid;
   border-color: #c9c9c9;
-  background-color: #f4f5f6;
+  background-color: ${({ inputBackground }) =>
+    inputBackground || 'transparent'};
   border-radius: 4px 4px 0px 0px;
   color: #111111;
-  caret-color: ${({ theme }) => theme.color.secondaryGreen};
-  font-size: 16px;
+  caret-color: ${({ theme }) => theme.color.primaryOrange};
+  font-size: 1.6rem;
   line-height: 140%;
   letter-spacing: -2%;
-  padding: 10px 0.5rem;
-  margin-top: 0.5rem;
+  padding: 0.8rem 0.6rem;
+  margin-top: 0.8rem;
   resize: none;
+  font-weight: 400;
   &::placeholder {
     color: #c6c9cc;
   }
   &:focus {
     outline: none;
-    border-color: ${({ theme }) => theme.color.secondaryGreen};
+    border-color: ${({ theme }) => theme.color.primaryOrange};
   }
 `;
 
@@ -38,7 +42,13 @@ export default function QuestionTitleInput({
   onChange,
   questionIndex,
   placeholder,
-}: InputType & { questionIndex: number }): JSX.Element {
+  row,
+  backgroundColor,
+}: InputType & {
+  questionIndex: number;
+  row: number;
+  backgroundColor?: string;
+}): JSX.Element {
   const ref = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
@@ -55,8 +65,7 @@ export default function QuestionTitleInput({
     }
 
     ref.current.style.height = `${ref.current.scrollHeight} px`;
-    if (value === '') ref.current.style.height = '64px';
-  }, [value]);
+  }, [row, value]);
 
   const handleResizeHeight = useCallback(() => {
     if (ref === null || ref.current === null) {
@@ -69,7 +78,9 @@ export default function QuestionTitleInput({
   return (
     <StyledTitleInput
       ref={ref}
+      rows={row}
       value={value}
+      inputBackground={backgroundColor}
       onInput={handleResizeHeight}
       onChange={onChange}
       placeholder={placeholder}

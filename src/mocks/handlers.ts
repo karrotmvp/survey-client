@@ -21,7 +21,7 @@ const handlers = [
   ),
 
   rest.get(
-    `https://dev.daangn-survey.com/api/v1/surveys/:id`,
+    `http://dev.daangn-survey.com/api/v1/surveys/:surveysId`,
     (req, res, ctx) =>
       res(
         ctx.status(200),
@@ -52,6 +52,36 @@ const handlers = [
               ],
             },
           ],
+        }),
+      ),
+  ),
+
+  rest.get(
+    `http://dev.daangn-survey.com/api/v1/surveys/brief/:surveysId`,
+    (req, res, ctx) =>
+      res(
+        ctx.status(200),
+        ctx.json({
+          status: 200,
+          message: '설문 요약 정보를 조회합니다.',
+          data: {
+            estimatedTime: 30,
+            questionCount: 3,
+            title: '제목입니다',
+            description: null,
+            bizProfile: {
+              name: '베타무따',
+              imageUrl:
+                'https://dnvefa72aowie.cloudfront.net/origin/profile/business_profile_placeholder_market_type.png?q=95&s=256x256&t=inside',
+              region: '서울특별시 서초구 반포동',
+              profileUrl:
+                'karrot.alpha://minikarrot/router?app=https%3A%2F%2Fwebview.alpha.kr.karrotmarket.com%2Fbusiness-platform%2Fhome&path=%2Fbiz_accounts%2F4210%2Fviewer%2Fhome&navbar=false&scrollable=false',
+              bizCategory: '기타',
+            },
+            target: '모든 이웃',
+            createdAt: '2021-11-02T15:23:53.253851',
+          },
+          timestamp: 1635835228494,
         }),
       ),
   ),

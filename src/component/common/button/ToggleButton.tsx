@@ -13,7 +13,7 @@ type ToggleButtonType = {
 const StyledToggleButton = styled.button`
   display: flex;
   align-items: center;
-  padding: 8px 0.7rem 8px 0.9rem;
+  padding: 0.6rem 0.8rem 0.5rem;
   border-radius: 4px;
   background-color: transparent;
   color: #707070;
@@ -23,14 +23,16 @@ const StyledToggleButton = styled.button`
 `;
 
 const ButtonText = styled.span`
-  font-size: 14px;
-  font-weight: 500;
-  margin-right: 8px;
+  font-size: 1.4rem;
+  font-weight: 400;
+  margin-right: 0.8rem;
   color: #707070;
 `;
 
-const ToggleIcon = styled(ExpandIcon)<{ toggle: boolean }>`
-  ${({ toggle }) => (toggle ? `transform: rotate(180deg)` : '')};
+const ToggleIcon = styled(ExpandIcon)`
+  &[aria-checked='true'] {
+    transform: rotate(180deg);
+  }
 `;
 
 export default function ToggleButton({
@@ -41,7 +43,7 @@ export default function ToggleButton({
   return (
     <StyledToggleButton onClick={onClick}>
       <ButtonText>{text}</ButtonText>
-      <ToggleIcon toggle={toggle} />
+      <ToggleIcon aria-checked={toggle} />
     </StyledToggleButton>
   );
 }

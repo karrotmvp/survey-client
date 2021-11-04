@@ -1,13 +1,6 @@
 import axios, { AxiosResponse } from 'axios';
 import { atom, selector } from 'recoil';
 
-import { questionSelector } from '../atom/questionAtom';
-
-const submitTrigger = atom({
-  key: 'submitTrigger',
-  default: false,
-});
-
 type profileType = {
   daangnId: string;
   imageUrl: string;
@@ -15,7 +8,11 @@ type profileType = {
   role: string;
 };
 
-const submitSurveySelector = selector({
+const surveyIdAtom = atom({
+  key: 'surveyId',
+  default: 0,
+});
+const surveyData = selector({
   key: 'submitSurveySelector',
   get: async ({ get }) => {
     const token = sessionStorage.getItem('jwt');
@@ -23,16 +20,13 @@ const submitSurveySelector = selector({
 
     const Authorization = 'X-AUTH-TOKEN';
     if (token) axios.defaults.headers.common[Authorization] = token;
-    const bodyData = get(questionSelector);
+    const surveyId = get(surveyIdAtom);
     try {
-      const data: AxiosResponse<profileType> = await axios.get<profileType>(
-        `/members/me`,
+      const data: AxiosResponse<unknown> = await axios.get<profileType>(
+        `/surveys/${surveyId}`,
       );
 
-      return {
-        ...bodyData,
-        title: `${data.data.name} 님의 설문조사`,
-      };
+      return data;
     } catch (e) {
       // eslint-disable-next-line no-console
       console.error(e);
@@ -41,4 +35,4 @@ const submitSurveySelector = selector({
   },
 });
 
-export { submitSurveySelector, submitTrigger };
+export { surveyData, surveyIdAtom };

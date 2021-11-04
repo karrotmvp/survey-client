@@ -5,11 +5,11 @@ import TargetItem from './TargetItem';
 const StyledTargetList = styled.section`
   display: grid;
   grid-template-columns: auto;
-  grid-gap: 1rem;
+  grid-gap: 1.2rem;
   height: 40vh;
 `;
 
-const targetlist = [
+const targetList = [
   { title: '모든 고객님', subtitle: '매장 동네 근처 모든 고객님' },
   {
     title: '비즈 프로필을 방문한 고객님',
@@ -21,7 +21,7 @@ const targetlist = [
 export default function TargetList(): JSX.Element {
   return (
     <StyledTargetList>
-      {targetlist.map(({ title, subtitle }, index) => (
+      {targetList.map(({ title, subtitle }, index) => (
         <TargetItem key={index} {...{ title, subtitle, index }} />
       ))}
     </StyledTargetList>

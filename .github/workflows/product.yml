@@ -34,6 +34,7 @@ jobs:
           echo REACT_APP_APP_ID="$PROD_APP_ID" >> .env
           echo REACT_APP_API_URL="$PROD_API_URL" >> .env
           echo REACT_APP_PRESET_BIZ="$PROD_PRESET_BIZ" >> .env
+          echo REACT_APP_PRESET="$PROD_PRESET" >> .env
           echo REACT_APP_TRACKING_ID="$GA_KEY" >> .env
           cat .env
       - name: NPM install

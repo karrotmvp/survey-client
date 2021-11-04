@@ -4,7 +4,7 @@ import styled from '@emotion/styled';
 import { useNavigator } from '@karrotframe/navigator';
 import { useRecoilState, useRecoilValue, useResetRecoilState } from 'recoil';
 
-import AlertTostModal from '@component/common/modal/TostModal';
+import AlertToastModal from '@component/common/modal/TostModal';
 import NavBar from '@component/common/navbar/NavBar';
 import QuestionCardList from '@component/question/QuestionCardList';
 import { ReactComponent as PlusIcon } from '@config/icon/plus.svg';
@@ -20,10 +20,9 @@ import useSubmit from '@src/hook/useSubmit';
 
 const AddQuestionButton = styled.button`
   background-color: ${({ theme }) => theme.color.primaryOrange};
-  width: 127px;
-  padding: 0.5rem 0;
+  padding: 0.8rem;
   border-radius: 8px;
-  font-size: 0.8rem;
+  font-size: 1.3rem;
   font-weight: 700;
   color: #ffff;
   display: flex;
@@ -33,34 +32,28 @@ const AddQuestionButton = styled.button`
     margin-right: 8px;
   }
   &[aria-disabled='true'] {
-    opacity: 0.5;
+    background-color: #c9c9c9;
   }
   margin-left: auto;
 `;
 
 const CompleteButton = styled.button`
   background-color: transparent;
-  font-size: 1rem;
+  font-size: 1.6rem;
   font-weight: 400;
   color: ${({ theme }) => theme.color.primaryOrange};
-  padding: 1rem 0 1rem 0.5rem;
+  padding: 1.6rem 0 1.6rem 0.8rem;
 
   &[aria-disabled='true'] {
     color: #c9c9c9;
   }
 `;
 
-const StyleQuestionPage = styled.section`
-  width: 100%;
-  height: calc(100vh - 5.5rem);
-`;
-
 export default function QuestionPage(): JSX.Element {
   const [questionList, setQuestionList] = useRecoilState(questionListAtom);
-  const [isTostOpen, setTostOpen] = useState(false);
-  const [isContentTostOpen, setContentTostOpen] = useState(false);
+  const [isToastOpen, setToastOpen] = useState(false);
+  const [isContentToastOpen, setContentToastOpen] = useState(false);
   const [isPopup, setPopup] = useState(false);
-
   const restQuestion = useResetRecoilState(questionListAtom);
   const listValueState = useRecoilValue(questionListSelector);
   const submitData = useRecoilValue(questionSelector);
@@ -70,14 +63,14 @@ export default function QuestionPage(): JSX.Element {
 
   const handleAddQuestionButton = (e: MouseEvent) => {
     if ((e.currentTarget as HTMLButtonElement).ariaDisabled === 'true') {
-      setContentTostOpen(true);
+      setContentToastOpen(true);
       fa.logEvent('question_add_button_active_click');
     } else if (questionList.length < 3) {
       fa.logEvent('question_add_button_disable_click');
       setQuestionList([
         ...questionList,
         {
-          questionType: 2,
+          questionType: 3,
           text: '',
           choices: [{ value: '' }],
         },
@@ -85,22 +78,10 @@ export default function QuestionPage(): JSX.Element {
     }
   };
 
-  const handleAlert = () => {
-    setTimeout(() => {
-      setTostOpen(false);
-    }, 3000);
-  };
-
-  const handleContentAlert = () => {
-    setTimeout(() => {
-      setContentTostOpen(false);
-    }, 3000);
-  };
-
   const handleComplete = (e: MouseEvent) => {
     if ((e.currentTarget as HTMLButtonElement).ariaDisabled === 'true') {
       fa.logEvent('question_complete_button_disable_click');
-      setContentTostOpen(true);
+      setContentToastOpen(true);
     } else {
       fa.logEvent('question_complete_button_active_click');
       setPopup(true);
@@ -109,22 +90,15 @@ export default function QuestionPage(): JSX.Element {
 
   useEffect(() => {
     setTimeout(() => {
-      setTostOpen(true);
+      setToastOpen(true);
     }, 1000);
   }, []);
 
   useEffect(() => {
     if (questionList.length === 3) {
-      setTostOpen(true);
+      setToastOpen(true);
     }
   }, [questionList.length]);
-
-  useEffect(() => {
-    if (isTostOpen) handleAlert();
-  }, [isTostOpen]);
-  useEffect(() => {
-    if (isContentTostOpen) handleContentAlert();
-  }, [isContentTostOpen]);
 
   const ConfirmModal = styled.div`
     width: 100%;
@@ -188,30 +162,29 @@ export default function QuestionPage(): JSX.Element {
         }
       />
       <StyledBasicPage>
-        {isTostOpen && (
-          <AlertTostModal
-            text={'질문은 3개 이하까지 만들 수 있어요'}
-            onClick={handleAlert}
-          />
+        <AlertToastModal
+          text={'질문은 3개 이하까지 만들 수 있어요'}
+          time={3000}
+          {...{ isToastOpen, setToastOpen }}
+        />
+
+        <AlertToastModal
+          text={'내용을 모두 입력하세요'}
+          time={3000}
+          isToastOpen={isContentToastOpen}
+          setToastOpen={setContentToastOpen}
+        />
+
+        <QuestionCardList />
+        {questionList.length < 3 && (
+          <AddQuestionButton
+            className="complete"
+            aria-disabled={!listValueState.check || listValueState.len === 3}
+            onClick={handleAddQuestionButton}
+          >
+            <PlusIcon /> 질문 추가
+          </AddQuestionButton>
         )}
-        {isContentTostOpen && (
-          <AlertTostModal
-            text={'내용을 모두 입력하세요'}
-            onClick={handleContentAlert}
-          />
-        )}
-        <StyleQuestionPage>
-          <QuestionCardList />
-          {questionList.length < 3 && (
-            <AddQuestionButton
-              className="complete"
-              aria-disabled={!listValueState.check || listValueState.len === 3}
-              onClick={handleAddQuestionButton}
-            >
-              <PlusIcon /> 질문 추가
-            </AddQuestionButton>
-          )}
-        </StyleQuestionPage>
       </StyledBasicPage>
       {isPopup && (
         <Modal setPopup={setPopup}>
@@ -244,7 +217,7 @@ export default function QuestionPage(): JSX.Element {
                 });
                 submit(submitData);
                 restQuestion();
-                replace('/complete');
+                replace('/survey/create/complete');
               }}
             >
               확인

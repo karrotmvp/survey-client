@@ -1,19 +1,25 @@
 import { atom, selector } from 'recoil';
 
 import { userSelector } from './userAtom';
+// post 보내는 것과 get 받는 것의 type 이 다르다.
+export type choiceType = {
+  value: string;
+  choiceId?: number;
+};
 
 export type questionAtomType = {
   questionType: 2 | 3;
   text: string;
+  questionId?: number;
   description?: string;
-  choices: { value: string }[];
+  choices?: choiceType[];
 };
 
 const questionListAtom = atom<questionAtomType[]>({
   key: 'questionListAtom',
   default: [
     {
-      questionType: 2,
+      questionType: 3,
       text: '',
       choices: [{ value: '' }],
     },
@@ -23,7 +29,7 @@ const questionListAtom = atom<questionAtomType[]>({
 const questionAtom = atom<questionAtomType>({
   key: 'questionAtom',
   default: {
-    questionType: 2,
+    questionType: 3,
     text: '',
     choices: [{ value: '' }],
   },
@@ -35,14 +41,18 @@ const questionListSelector = selector({
     const questionList = get(questionListAtom);
     const len = questionList.length;
     const check = questionList.every(({ text }) => text);
-    const choicesCheck = questionList.map(({ questionType, choices }) =>
-      choices.every(({ value }) => {
+    const choicesCheck = questionList.map(({ questionType, choices }) => {
+      if (choices === undefined) {
+        return true;
+      }
+
+      return choices.every(({ value }) => {
         if (questionType === 2) {
           return true;
         }
         return value;
-      }),
-    );
+      });
+    });
 
     return {
       len,

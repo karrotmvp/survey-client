@@ -8,7 +8,7 @@ const StyledAddButton = styled.button`
   background-color: #ffff;
   background: rgba(254, 126, 53, 0.2);
   border-radius: 8px;
-  font-size: 1rem;
+  font-size: 1.6rem;
   line-height: 120%;
   font-weight: 700;
   color: ${({ theme }) => theme.color.primaryOrange};

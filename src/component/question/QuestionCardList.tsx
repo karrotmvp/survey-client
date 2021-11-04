@@ -9,7 +9,6 @@ import QuestionCard from '@component/common/card/QuestionCard';
 const StyledQuestionCardList = styled.ul`
   display: grid;
   grid-template-columns: auto;
-  padding-top: 24px;
 `;
 
 export default function QuestionCardList(): JSX.Element {

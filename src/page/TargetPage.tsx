@@ -13,19 +13,17 @@ const StyledTargetPage = styled.section`
   background: #ffff;
   width: 100%;
   height: 100vh;
-  padding: 3.5rem 1rem 1rem 1rem;
-  overflow-y: scroll;
+  padding: 8rem 1.6rem 1.6rem 1.6rem;
 `;
 
-const StyledTargetArticle = styled.article`
-  margin-top: 2.2rem;
+const TargetImg = styled.div`
   width: 100%;
   height: 0;
   padding-top: calc(228 / 328 * 100%);
-  background: url('./img/targetImg.png') center center / cover no-repeat;
+  background: url('../../img/targetImg.png') center center / cover no-repeat;
   position: relative;
   border-radius: 4px;
-  margin-bottom: 32px;
+  margin-bottom: 3.2rem;
 `;
 
 const CancelButton = styled.button`
@@ -33,7 +31,7 @@ const CancelButton = styled.button`
   font-size: 14px;
   line-height: 140%;
   width: 50%;
-  padding: 1.2rem 0.2rem;
+  padding: 1.8rem 0.3rem;
   background-color: #ffff;
   color: #141414;
   border-top: 1px solid #e8e8e8;
@@ -49,7 +47,7 @@ const ConfirmButton = styled.button`
   font-size: 14px;
   line-height: 140%;
   width: 50%;
-  padding: 1.2rem 0.2rem;
+  padding: 1.8rem 0.3rem;
   background-color: #ffff;
   color: #141414;
   border-top: 1px solid #e8e8e8;
@@ -71,20 +69,22 @@ const ConfirmModal = styled.div`
   align-items: center;
   display: flex;
   justify-content: center;
-  margin-bottom: 1rem;
 `;
 
 const ModalTitle = styled.h1`
-  margin: 20px 0;
+  margin-top: 2.6rem;
+  margin-bottom: 1.6rem;
   font-size: 18px;
   line-height: 150%;
   text-align: center;
   color: #141414;
 `;
 
-const ModalButtons = styled.div``;
+const ModalButtons = styled.div`
+  height: 52px;
+`;
 const ModalImg = styled.img`
-  width: 150px;
+  width: 200px;
   margin: 0 auto;
 `;
 export default function TargetPage(): JSX.Element {
@@ -121,7 +121,7 @@ export default function TargetPage(): JSX.Element {
     <>
       <NavBar type="BACK" title="설문 고객 선택" />
       <StyledTargetPage>
-        <StyledTargetArticle></StyledTargetArticle>
+        <TargetImg />
         <TargetList />
       </StyledTargetPage>
       {isPopup && (
