@@ -16,7 +16,7 @@ const NextButton = styled.button`
   font-weight: 400;
   padding: 1.6rem 0;
   border-radius: 8px;
-
+  margin-top: 0.8rem;
   &:disabled {
     background-color: #c9c9c9;
   }
