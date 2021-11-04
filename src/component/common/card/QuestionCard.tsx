@@ -25,7 +25,7 @@ const StyledQuestionCard = styled.li`
 `;
 
 const StyledQuestionInput = styled.span`
-  font-size: 1.6rem;
+  font-size: 1.4rem;
   font-weight: 400;
   color: #707070;
   padding: 0.6rem 0;
@@ -63,7 +63,7 @@ export default function QuestionCard({
 
         <StyledQuestionChoiceOrText>
           {questionType === 2 ? (
-            <StyledQuestionInput>주관식 답변</StyledQuestionInput>
+            <StyledQuestionInput>주관식 답변...</StyledQuestionInput>
           ) : (
             <QuestionChoiceList questionIndex={questionIndex} />
           )}

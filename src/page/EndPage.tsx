@@ -12,46 +12,45 @@ const StyledEndPage = styled.section`
   background-color: #ffff;
   width: 100%;
   height: 100vh;
-  padding: 5.5rem 1rem 1rem 1rem;
+  padding: 8rem 1.6rem 1.6rem 1.6rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 `;
 
 const EndTitle = styled.h1`
-  font-size: 1.5rem;
+  font-size: 2.4rem;
   font-weight: 700;
   font-family: ${({ theme }) => theme.fontFamily.title};
   color: ${({ theme }) => theme.color.primaryOrange};
 
   line-height: 140%;
-  margin-bottom: 1rem;
+  margin-bottom: 1.6rem;
 `;
 
 const EndText = styled.span`
   color: #141414;
   font-weight: 400;
-  margin-bottom: 2rem;
   line-height: 160%;
+  font-size: 1.6rem;
 `;
 
 const EndButton = styled.button`
   width: 100%;
   text-align: center;
   font-weight: bold;
-  font-size: 16px;
+  font-size: 1.6rem;
   line-height: 120%;
   padding: 15px 0;
   background-color: ${({ theme }) => theme.color.primaryOrange};
   color: #fff;
   border-radius: 8px;
-  margin-bottom: 24px;
 `;
 
 const FeedBackButton = styled.button`
   width: 100%;
-  padding: 1rem;
-  font-size: 16px;
+  padding: 1.6rem;
+  font-size: 1.6rem;
   line-height: 120%;
   text-align: center;
   background-color: transparent;
@@ -59,7 +58,6 @@ const FeedBackButton = styled.button`
   color: #707070;
   margin-left: auto;
   border-radius: 8px;
-  margin-bottom: 50px;
 `;
 
 export default function EndPage(): JSX.Element {
@@ -93,7 +91,7 @@ export default function EndPage(): JSX.Element {
         <EndText>
           만드신 설문은 고객님께 실제 발행될 예정이에요!
           <br />
-          답변이 충분히 모이면 알림을 보내드릴게요.
+          답변이 충분히 모이면 알림을 보내드릴게요.🔥
         </EndText>
       </section>
       <section>

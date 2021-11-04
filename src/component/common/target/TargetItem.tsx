@@ -8,7 +8,7 @@ import { useAnalytics } from '@src/analytics/faContext';
 const StyledTargetItem = styled.button`
   background: #f4f3f8;
   border-radius: 8px;
-  padding: 0 1rem;
+  padding: 0 1.6rem;
   display: flex;
   flex-direction: column;
   :focus {
@@ -23,11 +23,11 @@ const TargetTitle = styled.h2`
   line-height: 120%;
   color: #141414;
   margin-bottom: 8px;
-  font-size: 1rem;
+  font-size: 1.6rem;
 `;
 const TargetSubtitle = styled.span`
   font-weight: 400;
-  font-size: 14px;
+  font-size: 1.4rem;
   color: #707070;
 `;
 

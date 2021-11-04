@@ -34,14 +34,15 @@ const NavTitle = styled.span`
   margin-left: 1.6rem;
   color: #141414;
   font-size: 1.6rem;
-  font-weight: 700;
+  font-weight: 600;
+  white-space: nowrap;
 `;
 
 const NavItem = styled.nav`
   display: flex;
   height: 100%;
   align-items: center;
-  width: 33%;
+  min-width: 40%;
 `;
 
 export default function NavBar({
@@ -72,7 +73,7 @@ export default function NavBar({
         )}
         {title && <NavTitle>{title}</NavTitle>}
       </NavItem>
-      <NavItem>{appendCenter}</NavItem>
+      {appendCenter && <NavItem>{appendCenter}</NavItem>}
       <NavItem>{appendRight}</NavItem>
     </NavBarStyle>
   );

@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 const StyledNavToggle = styled.ul`
   padding: 0.8rem 2.4rem;
   background: #ffffff;
-  box-shadow: 0px 0px 0.8rem 0.1rem rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 0.8rem 0.1rem rgba(0, 0, 0, 0.1);
   border-radius: 1.6rem;
   list-style: none;
   position: absolute;
@@ -14,6 +14,7 @@ const NavList = styled.li`
   padding: 0.8rem;
   font-size: 1.6rem;
   text-align: center;
+  line-height: 120%;
   color: #707070;
   :focus {
     background-color: #f4f5f6;
