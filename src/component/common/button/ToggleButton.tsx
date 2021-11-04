@@ -13,7 +13,7 @@ type ToggleButtonType = {
 const StyledToggleButton = styled.button`
   display: flex;
   align-items: center;
-  padding: 8px 0.7rem 8px 0.9rem;
+  padding: 0.6rem 0.8rem 0.5rem;
   border-radius: 4px;
   background-color: transparent;
   color: #707070;
@@ -23,9 +23,9 @@ const StyledToggleButton = styled.button`
 `;
 
 const ButtonText = styled.span`
-  font-size: 14px;
-  font-weight: 500;
-  margin-right: 8px;
+  font-size: 1.4rem;
+  font-weight: 400;
+  margin-right: 0.8rem;
   color: #707070;
 `;
 

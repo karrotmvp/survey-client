@@ -27,7 +27,7 @@ const StyledHomePage = styled.section`
   background: #ffff;
   width: 100%;
   height: 100vh;
-  padding: 5rem 1rem 1rem 1rem;
+  padding: 8rem 1.6rem 1.6rem 1.6rem;
   display: flex;
   justify-content: space-between;
   flex-direction: column;
@@ -46,45 +46,39 @@ const LogoWrapper = styled.div`
   align-items: center;
 `;
 
-const QuestionCategoryTage = styled.div`
+const QuestionCategoryTag = styled.div`
   background: #f4f4f4;
   border-radius: 4px;
-  padding: 0.5rem;
+  padding: 0.8rem;
   color: #8e8f95;
-  font-size: 0.7rem;
+  font-size: ${({ theme }) => theme.fontSize.M};
   line-height: 100%;
   width: fit-content;
-  .loading {
-    height: 1.8rem;
-    width: 7rem;
-  }
 `;
 
 const SurveyTitle = styled.h1`
   color: #141414;
-  font-size: 1.4rem;
+  font-size: ${({ theme }) => theme.fontSize.XXL};
   line-height: 140%;
-  margin: 0.8rem 0;
+  margin: 1.2rem 0;
+  font-weight: 600;
 `;
 
 const SurveySubtitle = styled.h3`
   color: #8e8f95;
-  font-size: 0.8rem;
+  font-size: ${({ theme }) => theme.fontSize.L};
   line-height: 100%;
   display: flex;
   align-items: center;
   font-weight: 400;
-  margin-bottom: 1rem;
+  margin-bottom: 2.4rem;
 `;
 
 const Logo = styled(LogoIcon)`
-  margin-right: 0.3rem;
-  height: 20px;
+  margin-right: 0.6rem;
 `;
 
-const TitleLogo = styled(MuddaIcon)`
-  height: 20px;
-`;
+const TitleLogo = styled(MuddaIcon)``;
 
 const questionCategories = [
   '의견을 알려주세요',
@@ -97,7 +91,7 @@ const Dot = styled.div`
   width: 2px;
   height: 2px;
   border-radius: 50%;
-  margin: 0 8px;
+  margin: 0 0.8rem;
 `;
 
 type questionDataType = {
@@ -210,9 +204,9 @@ export default function AnswerHome(): JSX.Element {
       />
       <StyledHomePage>
         <div>
-          <QuestionCategoryTage>
+          <QuestionCategoryTag>
             {questionCategories[+questionCategory]}
-          </QuestionCategoryTage>
+          </QuestionCategoryTag>
 
           {briefData ? (
             <>

@@ -14,12 +14,12 @@ import ResponseChoiceList from './ResponseChoiceList';
 
 const StyledTextInput = styled.section`
   display: flex;
-  height: calc(100vh - 16rem);
+  height: calc(100vh - 25.6rem);
   flex-direction: column;
   justify-content: space-between;
   .button_wrapper {
     background-color: #fff;
-    padding-top: 1rem;
+    padding-top: 1.6rem;
   }
 `;
 

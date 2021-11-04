@@ -6,18 +6,18 @@ const StyledBizProfile = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 1rem;
-  border: 1px solid #f4f4f4;
+  padding: 1.6rem;
+  border: 1px solid #c9c9c9;
   width: 100%;
   border-radius: 8px;
   .biz_profile_left {
     display: flex;
-
+    height: 4rem;
     .biz_profile_left_text {
-      margin-left: 1rem;
+      margin-left: 1.6rem;
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
+      justify-content: center;
     }
   }
 `;
@@ -26,7 +26,7 @@ const Dot = styled.div`
   width: 2px;
   height: 2px;
   border-radius: 50%;
-  margin: 0 8px;
+  margin: 0 0.8rem;
 `;
 
 const BizProfileTitle = styled.h3`
@@ -34,20 +34,21 @@ const BizProfileTitle = styled.h3`
   font-weight: 600;
   display: flex;
   align-items: center;
-  font-size: 14px;
+  font-size: 1.4rem;
   line-height: 100%;
   color: #141414;
+  margin-bottom: 0.8rem;
 `;
 
 const BizProfileSubtitle = styled.h3`
   color: #707070;
-  font-size: 0.8rem;
+  font-size: 1.2rem;
   line-height: 100%;
   font-weight: 400;
 `;
 const BizProfileImg = styled.img`
-  width: 40px;
-  height: 40px;
+  width: 4rem;
+  height: 4rem;
   border-radius: 50%;
 `;
 

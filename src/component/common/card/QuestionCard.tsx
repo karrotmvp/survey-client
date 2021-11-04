@@ -20,22 +20,22 @@ const StyledQuestionCard = styled.li`
   display: flex;
   flex-direction: column;
   position: relative;
-  padding-bottom: 24px;
-  padding-top: 12px;
+  padding-bottom: 2.4rem;
+  padding-top: 1.2rem;
 `;
 
 const StyledQuestionInput = styled.span`
-  font-size: 0.9rem;
+  font-size: 1.6rem;
   font-weight: 400;
   color: #707070;
-  padding: 0.4rem 0;
+  padding: 0.6rem 0;
   border-bottom: 1px solid #707070;
 `;
 const StyledQuestionChoiceOrText = styled.div`
-  padding-top: 2rem;
+  padding-top: 3.2rem;
 `;
 
-const Divid = styled.div`
+const Divider = styled.div`
   width: 100%;
   height: 1px;
   background-color: #f4f4f4;
@@ -49,7 +49,7 @@ export default function QuestionCard({
 }: QuestionCardType): JSX.Element {
   return (
     <>
-      {questionIndex !== 0 && <Divid />}
+      {questionIndex !== 0 && <Divider />}
       <StyledQuestionCard>
         <QuestionDetailHeader {...{ questionIndex, questionType }} />
         <QuestionTitleInput

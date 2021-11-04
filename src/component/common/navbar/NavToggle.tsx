@@ -1,20 +1,20 @@
 import styled from '@emotion/styled';
 
 const StyledNavToggle = styled.ul`
-  padding: 8px 24px;
+  padding: 0.8rem 2.4rem;
   background: #ffffff;
-  box-shadow: 0px 0px 8px 1px rgba(0, 0, 0, 0.1);
-  border-radius: 1rem;
+  box-shadow: 0px 0px 0.8rem 0.1rem rgba(0, 0, 0, 0.1);
+  border-radius: 1.6rem;
   list-style: none;
   position: absolute;
   z-index: 99999999;
 `;
 const NavList = styled.li`
-  width: 106px;
-  padding: 8px;
-  font-size: 1rem;
+  width: 10.6rem;
+  padding: 0.8rem;
+  font-size: 1.6rem;
   text-align: center;
-  color: 707070;
+  color: #707070;
   :focus {
     background-color: #f4f5f6;
   }

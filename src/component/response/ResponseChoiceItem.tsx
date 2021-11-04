@@ -4,16 +4,17 @@ import { ReactComponent as CheckIcon } from '@config/icon/check.svg';
 import { choiceType } from '@src/atom/questionAtom';
 
 const StyledResponseChoice = styled.li`
-  padding: 12px 1rem;
+  padding: 0.8rem 1.6rem;
   width: 100%;
   background: #f4f5f6;
   border-radius: 25.5px;
   color: #141414;
   border: 1px solid #f4f5f6;
   transition: 0.2s;
+  font-size: 1.6rem;
   svg {
     opacity: 0.3;
-    margin-left: 0.9rem;
+    margin-left: 1.4rem;
   }
   &[aria-checked='true'] {
     border: 1px solid #fe7e35;

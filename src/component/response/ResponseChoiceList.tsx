@@ -6,7 +6,7 @@ import ResponseChoiceItem from './ResponseChoiceItem';
 
 const StyledResponseChoiceList = styled.ul`
   display: grid;
-  grid-gap: 1rem;
+  grid-gap: 1.2rem;
   grid-template-columns: auto;
   overflow: scroll;
 `;

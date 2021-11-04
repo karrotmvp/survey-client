@@ -17,7 +17,7 @@ type NavBarType = {
 const NavBarStyle = styled.div<{ shadow?: boolean; transparent?: boolean }>`
   display: flex;
   width: 100%;
-  height: 3.5rem;
+  height: 5.6rem;
   align-items: center;
   justify-content: space-between;
   position: fixed;
@@ -25,15 +25,15 @@ const NavBarStyle = styled.div<{ shadow?: boolean; transparent?: boolean }>`
   left: 0;
   background-color: ${({ transparent }) =>
     transparent ? 'transparent' : '#ffff'};
-  padding: 1rem;
+  padding: 1.6rem;
   z-index: 99999;
   ${({ shadow }) => (shadow ? 'border-bottom : 1px solid #E5E5E5;' : '')};
 `;
 
 const NavTitle = styled.span`
-  margin-left: 1rem;
+  margin-left: 1.6rem;
   color: #141414;
-  font-size: 1rem;
+  font-size: 1.6rem;
   font-weight: 700;
 `;
 

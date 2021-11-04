@@ -1,6 +1,12 @@
 import { css } from '@emotion/react';
 
 const global = css`
+  html {
+    /* 루트 요소 폰트 사이즈 */
+    /* 기본값 16px에서 150%로 키워 24px */
+    font-size: 10px;
+  }
+
   @font-face {
     font-family: 'SpoqaHanSansNeo';
     font-weight: 300;
@@ -47,13 +53,6 @@ const global = css`
     box-sizing: border-box;
   }
 
-  html,
-  body,
-  #root {
-    height: 100%;
-    width: 100%;
-  }
-
   body * {
     margin: 0;
     font-family: 'SpoqaHanSansNeo';
@@ -62,6 +61,7 @@ const global = css`
   #root {
     width: 100%;
     height: 100vh;
+    font-size: 10px;
   }
   button {
     border: none;

@@ -49,11 +49,11 @@ const theme: Theme = {
     white: '#F4F5F6',
   },
   fontSize: {
-    XXL: '2rem', // 32px
-    XL: '1.5rem', //  24px
-    L: '1.2rem', // 18px
-    M: '1rem', // 1rem
-    S: '0.75rem', // 12px
+    XXL: '2.2rem', // 22px
+    XL: '1.6rem', //  16px
+    L: '1.4rem', //  14px
+    M: '1.3rem', // 1rem 13px
+    S: '1.2rem', // 12px
   },
 
   border: {
