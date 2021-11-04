@@ -42,7 +42,7 @@ const NavItem = styled.nav`
   display: flex;
   height: 100%;
   align-items: center;
-  min-width: 40%;
+  min-width: 33%;
 `;
 
 export default function NavBar({
