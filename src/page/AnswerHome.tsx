@@ -24,6 +24,8 @@ import BizProfile, {
 import useGet from '@src/hook/useGet';
 import useLogin from '@src/hook/useLogin';
 
+import { userType } from './HomePage';
+
 const StyledHomePage = styled.section`
   background: #ffff;
   width: 100%;
@@ -151,6 +153,7 @@ export default function AnswerHome(): JSX.Element {
     `/surveys/brief/${responsesId}`,
     true,
   );
+  const getData = useGet<userType>('/members/me');
 
   const auth = useMiniAuth(process.env.REACT_APP_APP_ID || '');
   const fa = useAnalytics();
@@ -159,7 +162,6 @@ export default function AnswerHome(): JSX.Element {
     const resCode = await auth();
 
     if (resCode) {
-      fa.setUserId(resCode);
       if (resCode === code) setSuccess(true);
       setCode(resCode);
     }
@@ -176,6 +178,13 @@ export default function AnswerHome(): JSX.Element {
     }
 
     if (isSuccess) {
+      getData().then(data => {
+        if (!data) return;
+        if (data.daangnId) {
+          fa.setUserId(data.daangnId);
+        }
+      });
+
       getSurveyUserResponded().then(data => {
         if (!data) return;
         if (data.responded) {

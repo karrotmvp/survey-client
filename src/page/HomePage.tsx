@@ -68,7 +68,7 @@ const StyledColumn = styled.div`
   }
 `;
 
-type userType = {
+export type userType = {
   daangnId: string;
   name: string;
   imageUrl: string;
@@ -128,6 +128,7 @@ const settings: Settings = {
 export default function HomePage(): JSX.Element {
   const { push } = useNavigator();
   const getData = useGet<userType>('/members/me');
+
   const [code, setCode] = useRecoilState(bizCodeAtom);
   const fa = useAnalytics();
   const getBizId = useMiniBizAuth(process.env.REACT_APP_APP_ID || '');
