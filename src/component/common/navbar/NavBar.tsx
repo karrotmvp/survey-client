@@ -11,6 +11,7 @@ type NavBarType = {
   title?: string;
   shadow?: boolean;
   transparent?: boolean;
+  white?: boolean;
   appendCenter?: React.ReactNode;
 };
 
@@ -55,6 +56,7 @@ export default function NavBar({
   title,
   transparent,
   shadow,
+  white,
 }: NavBarType): JSX.Element {
   const { pop } = useNavigator();
 
@@ -70,7 +72,7 @@ export default function NavBar({
     <NavBarStyle shadow={shadow} transparent={transparent}>
       <NavItem>
         {type === 'CLOSE' ? (
-          <ClearIcon onClick={close} />
+          <StyledClearIcon onClick={close} white={white} />
         ) : (
           <ArrowIcon onClick={goBack} />
         )}
@@ -81,3 +83,7 @@ export default function NavBar({
     </NavBarStyle>
   );
 }
+
+const StyledClearIcon = styled(ClearIcon)<{ white: boolean | undefined }>`
+  color: ${({ white }) => (white ? 'white' : '')};
+`;

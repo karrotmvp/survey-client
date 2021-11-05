@@ -11,7 +11,7 @@ const StyledGuideImg = styled.img`
 export default function GuidePage(): JSX.Element {
   return (
     <StyledGuidePage>
-      <NavBar type="CLOSE" transparent />
+      <NavBar type="CLOSE" transparent white />
       <StyledGuideImg src="./img/guideImg.png" />
     </StyledGuidePage>
   );
