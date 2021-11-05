@@ -59,7 +59,7 @@ export default function AnswerComplete(): JSX.Element {
       <div className="answer_complete_page">
         <LoginButton text="나가기" onClick={() => mini.close()} />
         <BizProfileVisit onClick={handleVisitBizProfile}>
-          {bizProfile?.name}비즈 프로필 방문하기
+          {bizProfile?.name} 비즈프로필 방문하기
         </BizProfileVisit>
       </div>
     </StyledAnswerComplete>
