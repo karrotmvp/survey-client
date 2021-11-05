@@ -86,7 +86,10 @@ export default function BizProfile({
         <BizProfileImg src={imageUrl} />
         <div className="biz_profile_left_text">
           <BizProfileTitle>
-            {shortenRegin[shortenRegin.length - 1]} <Dot /> {bizCategory}
+            {`${shortenRegin[shortenRegin.length - 2]} ${
+              shortenRegin[shortenRegin.length - 1]
+            }`}{' '}
+            <Dot /> {bizCategory}
           </BizProfileTitle>
           <BizProfileSubtitle>{name} 사장님의 설문</BizProfileSubtitle>
         </div>
