@@ -7,6 +7,7 @@ import AnswerDetailPage from '@src/page/AnswerDetailPage';
 import AnswerHome from '@src/page/AnswerHome';
 import EndPage from '@src/page/EndPage';
 import FeedBackPage from '@src/page/FeedBackPage';
+import GuidePage from '@src/page/GuidePage';
 import TargetPage from '@src/page/TargetPage';
 
 export default function Router(): JSX.Element {
@@ -26,6 +27,9 @@ export default function Router(): JSX.Element {
     <Navigator theme={checkMobileType()}>
       <Screen path="/">
         <HomePage />
+      </Screen>
+      <Screen path="/guide">
+        <GuidePage />
       </Screen>
       <Screen path="/responses/:responsesId/complete">
         <AnswerComplete />
