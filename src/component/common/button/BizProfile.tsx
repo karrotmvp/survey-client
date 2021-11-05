@@ -91,7 +91,7 @@ export default function BizProfile({
             }`}{' '}
             <Dot /> {bizCategory}
           </BizProfileTitle>
-          <BizProfileSubtitle>{name} 사장님의 설문</BizProfileSubtitle>
+          <BizProfileSubtitle>{name}</BizProfileSubtitle>
         </div>
       </div>
       <ArrowRight />
