@@ -182,6 +182,7 @@ export default function AnswerHome(): JSX.Element {
           setToastOpen(true);
           fa.logEvent(`response_login_button_click_responded`, { responsesId });
           fa.logEvent(`${responsesId}_response_login_button_click_responded`);
+          setSuccess(false);
           return;
         }
 
