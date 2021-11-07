@@ -168,6 +168,11 @@ export default function AnswerHome(): JSX.Element {
   };
 
   useEffect(() => {
+    fa.logEvent(`response_onboard_show`, { responsesId });
+    fa.logEvent(`${responsesId}_response_onboard_show`);
+  }, []);
+
+  useEffect(() => {
     if (!briefData) {
       getSurveyBrief().then(res => {
         if (res && briefData === null) {
