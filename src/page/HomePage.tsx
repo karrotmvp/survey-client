@@ -22,15 +22,15 @@ import { useAnalytics } from '@src/analytics/faContext';
 import { useMiniBizAuth } from '@src/hook/useAuth';
 
 const StyledImg = styled.img`
-  width: 60%;
+  width: 100%;
   position: absolute;
-  top: 13%;
+  top: 8.5rem;
 `;
 
-const StyledImgThird = styled.img`
-  width: 75%;
+const StyledSecondImg = styled.img`
+  width: calc(100% - 3.3rem);
   position: absolute;
-  top: 20%;
+  top: 8.5rem;
 `;
 
 const StyledHomePage = styled.section`
@@ -78,7 +78,7 @@ export type userType = {
 const StyledCover = styled.div`
   display: flex;
   justify-content: center;
-  background: #f4f3f8;
+  background: #fedecc;
   border-radius: 8px;
   height: 54vh;
   position: relative;
@@ -86,7 +86,7 @@ const StyledCover = styled.div`
 
 const StyledSlide = styled(Slider)`
   .slick-dots li button:before {
-    color: #f4f3f8;
+    color: #7a7885;
     opacity: 1;
   }
 
@@ -105,13 +105,13 @@ const StyledSlide = styled(Slider)`
 const StyledSliderTitle = styled.h1`
   font-family: ${({ theme }) => theme.fontFamily.title};
   font-weight: bold;
-  font-size: 14px;
-  line-height: 120%;
+  font-size: 1.6rem;
 
-  margin-top: 1.3rem;
+  line-height: 140%;
+  margin-top: 2.2rem;
   text-align: center;
 
-  color: #707070;
+  color: ${({ theme }) => theme.color.primaryOrange};
 `;
 
 const settings: Settings = {
@@ -182,7 +182,8 @@ export default function HomePage(): JSX.Element {
           <div>
             <StyledCover>
               <StyledSliderTitle>
-                우리 매장에 대한 고객님 의견을 물어볼 수 있어요
+                우리 매장에 대한 <br />
+                고객님 의견을 물어볼 수 있어요
               </StyledSliderTitle>
               <StyledImg src="./img/home_img1.png" />
             </StyledCover>
@@ -190,17 +191,17 @@ export default function HomePage(): JSX.Element {
           <div>
             <StyledCover>
               <StyledSliderTitle>
-                우리 동네 상권/고객을 파악해볼 수 있어요
+                우리 동네 상권/고객을 <br /> 파악해볼 수 있어요
               </StyledSliderTitle>
-              <StyledImg src="./img/home_img2.png" />
+              <StyledSecondImg src="./img/home_img2.png" />
             </StyledCover>
           </div>
           <div>
             <StyledCover>
               <StyledSliderTitle>
-                이웃들에게 재밌는 퀴즈를 내고 맞춰봐요
+                재밌는 이벤트를 열어 <br /> 이웃/단골과 소통할 수 있어요
               </StyledSliderTitle>
-              <StyledImgThird src="./img/home_img3.png" />
+              <StyledImg src="./img/home_img3.png" />
             </StyledCover>
           </div>
         </StyledSlide>
