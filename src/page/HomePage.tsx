@@ -86,7 +86,9 @@ const StyledCover = styled.div`
 
 const StyledSlide = styled(Slider)`
   height: 100%;
-
+  .slide_div {
+    height: 100%;
+  }
   .slick-list {
     height: 100%;
   }
@@ -101,7 +103,11 @@ const StyledSlide = styled(Slider)`
     }
   }
   .slick-slider {
+    height: 100%;
     margin: 0 -15px;
+  }
+  .slick-track {
+    height: 100%;
   }
 
   .slick-dots li.slick-active button:before {
