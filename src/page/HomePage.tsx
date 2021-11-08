@@ -80,16 +80,26 @@ const StyledCover = styled.div`
   justify-content: center;
   background: #fedecc;
   border-radius: 8px;
-  height: 54vh;
+  height: 100%;
   position: relative;
 `;
 
 const StyledSlide = styled(Slider)`
+  height: 100%;
+
+  .slick-list {
+    height: 100%;
+  }
+
   .slick-dots li button:before {
     color: #7a7885;
     opacity: 1;
   }
-
+  .slick-slide {
+    div {
+      height: 100%;
+    }
+  }
   .slick-slider {
     margin: 0 -15px;
   }
@@ -97,7 +107,6 @@ const StyledSlide = styled(Slider)`
   .slick-dots li.slick-active button:before {
     color: ${({ theme }) => theme.color.primaryOrange} !important;
   }
-  height: 70%;
   margin-top: 2rem;
   margin-bottom: 3rem;
 `;
@@ -106,7 +115,6 @@ const StyledSliderTitle = styled.h1`
   font-family: ${({ theme }) => theme.fontFamily.title};
   font-weight: bold;
   font-size: 1.6rem;
-
   line-height: 140%;
   margin-top: 2.2rem;
   text-align: center;
@@ -179,7 +187,7 @@ export default function HomePage(): JSX.Element {
           <HomeBanner />
         </div>
         <StyledSlide {...settings}>
-          <div>
+          <div className="slide_div">
             <StyledCover>
               <StyledSliderTitle>
                 우리 매장에 대한 <br />
@@ -188,7 +196,7 @@ export default function HomePage(): JSX.Element {
               <StyledImg src="./img/home_img1.png" />
             </StyledCover>
           </div>
-          <div>
+          <div className="slide_div">
             <StyledCover>
               <StyledSliderTitle>
                 우리 동네 상권/고객을 <br /> 파악해볼 수 있어요
@@ -196,7 +204,7 @@ export default function HomePage(): JSX.Element {
               <StyledSecondImg src="./img/home_img2.png" />
             </StyledCover>
           </div>
-          <div>
+          <div className="slide_div">
             <StyledCover>
               <StyledSliderTitle>
                 재밌는 이벤트를 열어 <br /> 이웃/단골과 소통할 수 있어요
