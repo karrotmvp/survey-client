@@ -35,6 +35,7 @@ export default function QuestionCardList(): JSX.Element {
             questionType={questionType}
             questionIndex={questionIndex}
             handleChange={handleChange}
+            warning={Boolean(!text)}
           />
         ))}
     </StyledQuestionCardList>

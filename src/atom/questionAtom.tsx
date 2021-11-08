@@ -26,6 +26,11 @@ const questionListAtom = atom<questionAtomType[]>({
   ],
 });
 
+const questionValidationAtom = atom({
+  key: 'questionValidationAtom',
+  default: false,
+});
+
 const questionAtom = atom<questionAtomType>({
   key: 'questionAtom',
   default: {
@@ -104,4 +109,5 @@ export {
   questionTarget,
   questionListAtom,
   questionListSelector,
+  questionValidationAtom,
 };

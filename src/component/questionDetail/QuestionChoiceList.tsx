@@ -41,6 +41,7 @@ export default function QuestionChoiceList({
   questionIndex: number;
 }): JSX.Element {
   const [questionList, setQuestionlist] = useRecoilState(questionListAtom);
+  const [isValidated, setValidated] = useState(false);
 
   const { choices } = questionList[questionIndex];
   if (choices === undefined) throw new Error('choice undefined');
@@ -86,7 +87,9 @@ export default function QuestionChoiceList({
     if (e.currentTarget.ariaDisabled === 'true') {
       fa.logEvent('question_choice_add_button_disable_click');
       setToastOpen(true);
+      setValidated(true);
     } else {
+      setValidated(false);
       fa.logEvent('question_choice_add_button_active_click');
       setQuestionlist([
         ...questionList.slice(0, questionIndex),
@@ -118,7 +121,6 @@ export default function QuestionChoiceList({
   };
 
   const { choicesCheck } = useRecoilValue(questionListSelector);
-
   useEffect(() => {
     if (elRefs && !choicesCheck[0] && elRefs.current.length !== 1) {
       setTimeout(() => {
@@ -139,6 +141,7 @@ export default function QuestionChoiceList({
           <QuestionChoice
             ref={addToRefs}
             key={index}
+            warning={Boolean(!value) && isValidated}
             {...{ value, onDelete, onChange, index }}
           />
         ))}

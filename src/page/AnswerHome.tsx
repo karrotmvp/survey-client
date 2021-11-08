@@ -166,7 +166,7 @@ export default function AnswerHome(): JSX.Element {
 
   useEffect(() => {
     if (!briefData) {
-      (async function () {
+      (async function getResponseBriefData() {
         const res = await getSurveyBrief();
         if (res && briefData === null) {
           setBrief(res);
@@ -187,7 +187,6 @@ export default function AnswerHome(): JSX.Element {
           setToastOpen(true);
           fa.logEvent(`response_login_button_click_responded`, { responsesId });
           fa.logEvent(`${responsesId}_response_login_button_click_responded`);
-
           return;
         }
         const res = await getSurveyData();

@@ -5,14 +5,18 @@ import styled from '@emotion/styled';
 import { InputType } from '@component/common/input/QuestionTitleInput';
 import { ReactComponent as DeleteIcon } from '@config/icon/delete.svg';
 
-const StyledQuestionChoice = styled.li`
+const StyledQuestionChoice = styled.li<{ warning: boolean | undefined }>`
   padding: 0.5rem 1.6rem;
   width: 100%;
-  background: #f4f5f6;
+  background: ${({ warning }) => (warning ? '#FFE6E6' : '#f4f5f6')};
   border-radius: 25.5px;
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: 0.3s;
+  textarea {
+    border-color: ${({ warning }) => (warning ? '#FF0000' : '#b1b2b2')};
+  }
 `;
 
 const StyledChoiceInput = styled.textarea`
@@ -22,7 +26,7 @@ const StyledChoiceInput = styled.textarea`
   font-size: 1.6rem;
   font-weight: 400;
   line-height: 120%;
-  border: 1px dashed #b1b2b2;
+  border: 1px dashed;
   color: #141414;
   background-color: transparent;
   padding: 4px;
@@ -38,13 +42,14 @@ const StyledChoiceInput = styled.textarea`
 `;
 type questionChoicetype = InputType & {
   index: number;
+  warning?: boolean;
   onDelete: (e: MouseEvent) => void;
 };
 
 // eslint-disable-next-line arrow-body-style
 const QuestionChoice = forwardRef<HTMLTextAreaElement, questionChoicetype>(
-  ({ index, onDelete, onChange, value }, ref) => (
-    <StyledQuestionChoice data-list={index}>
+  ({ index, onDelete, onChange, value, warning }, ref) => (
+    <StyledQuestionChoice data-list={index} warning={warning}>
       <StyledChoiceInput
         rows={1}
         ref={ref}

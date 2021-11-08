@@ -4,14 +4,12 @@ import styled from '@emotion/styled';
 
 const StyledTitleInput = styled.textarea<{
   inputBackground: string | undefined;
+  warning: boolean | undefined;
 }>`
   width: 100%;
   overflow: hidden;
   border-width: 0 0 1px 0;
   border-style: solid;
-  border-color: #c9c9c9;
-  background-color: ${({ inputBackground }) =>
-    inputBackground || 'transparent'};
   border-radius: 4px 4px 0px 0px;
   color: #111111;
   caret-color: ${({ theme }) => theme.color.primaryOrange};
@@ -19,9 +17,13 @@ const StyledTitleInput = styled.textarea<{
   line-height: 140%;
   letter-spacing: -2%;
   padding: 0.8rem 0.6rem;
+  transition: 0.3s ease-in-out;
   margin-top: 0.8rem;
   resize: none;
   font-weight: 400;
+  border-color: ${({ warning }) => (warning ? '#FF0000' : '#c9c9c9')};
+  background-color: ${({ inputBackground, warning }) =>
+    warning ? '#FFE6E6' : inputBackground || 'transparent'};
   &::placeholder {
     color: #c6c9cc;
   }
@@ -44,10 +46,12 @@ export default function QuestionTitleInput({
   placeholder,
   row,
   backgroundColor,
+  warning,
 }: InputType & {
   questionIndex: number;
   row: number;
   backgroundColor?: string;
+  warning?: boolean;
 }): JSX.Element {
   const ref = useRef<HTMLTextAreaElement>(null);
 
@@ -84,6 +88,7 @@ export default function QuestionTitleInput({
       onInput={handleResizeHeight}
       onChange={onChange}
       placeholder={placeholder}
+      warning={warning}
       data-list={questionIndex}
     ></StyledTitleInput>
   );
