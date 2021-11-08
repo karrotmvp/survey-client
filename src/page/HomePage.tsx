@@ -199,7 +199,7 @@ export default function HomePage(): JSX.Element {
                 우리 매장에 대한 <br />
                 고객님 의견을 물어볼 수 있어요
               </StyledSliderTitle>
-              <StyledImg src="./img/home_img1.png" />
+              <StyledImg src="./img/home_Img_1.png" />
             </StyledCover>
           </div>
           <div className="slide_div">
@@ -207,7 +207,7 @@ export default function HomePage(): JSX.Element {
               <StyledSliderTitle>
                 우리 동네 상권/고객을 <br /> 파악해볼 수 있어요
               </StyledSliderTitle>
-              <StyledSecondImg src="./img/home_img2.png" />
+              <StyledSecondImg src="./img/home_Img_2.png" />
             </StyledCover>
           </div>
           <div className="slide_div">
@@ -215,7 +215,7 @@ export default function HomePage(): JSX.Element {
               <StyledSliderTitle>
                 재밌는 이벤트를 열어 <br /> 이웃/단골과 소통할 수 있어요
               </StyledSliderTitle>
-              <StyledImg src="./img/home_img3.png" />
+              <StyledImg src="./img/home_Img_3.png" />
             </StyledCover>
           </div>
         </StyledSlide>
