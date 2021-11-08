@@ -6,7 +6,7 @@ import {
   useParams,
   useQueryParams,
 } from '@karrotframe/navigator';
-import { useRecoilState, useSetRecoilState } from 'recoil';
+import { useSetRecoilState } from 'recoil';
 import { v4 as uuidv4 } from 'uuid';
 
 import LoginButton from '@component/common/button/LogInButton';
@@ -136,11 +136,11 @@ export default function AnswerHome(): JSX.Element {
     ? params.questionCategory
     : '0';
 
-  const [code, setCode] = useRecoilState(codeAtom);
-  const [isSuccess, setSuccess] = useLogin(authorizationSelector);
+  const jwt = useLogin(authorizationSelector);
   const [isToastOpen, setToastOpen] = useState(false);
   const [briefData, setBrief] = useState<surveyBriefType | null>(null);
 
+  const setCode = useSetRecoilState(codeAtom);
   const setBizUser = useSetRecoilState(responseUserAtom);
   const setQuestion = useSetRecoilState(questionListAtom);
 
@@ -160,50 +160,47 @@ export default function AnswerHome(): JSX.Element {
     const resCode = await auth();
 
     if (resCode) {
-      if (resCode === code) setSuccess(true);
       setCode(resCode);
     }
   };
 
   useEffect(() => {
+    if (!briefData) {
+      (async function () {
+        const res = await getSurveyBrief();
+        if (res && briefData === null) {
+          setBrief(res);
+          setBizUser(res.bizProfile);
+        }
+      })();
+    }
     fa.logEvent(`response_onboard_show`, { responsesId });
     fa.logEvent(`${responsesId}_response_onboard_show`);
     fa.setUserId(uuidv4());
   }, []);
 
   useEffect(() => {
-    if (!briefData) {
-      getSurveyBrief().then(res => {
-        if (res && briefData === null) {
-          setBrief(res);
-          setBizUser(res.bizProfile);
-        }
-      });
-    }
-
-    if (isSuccess) {
-      getSurveyUserResponded().then(data => {
-        if (!data) return;
-        if (data.responded) {
+    if (jwt.state === 'hasValue') {
+      (async function getResponseHomeData() {
+        const data = await getSurveyUserResponded();
+        if (data?.responded) {
           setToastOpen(true);
           fa.logEvent(`response_login_button_click_responded`, { responsesId });
           fa.logEvent(`${responsesId}_response_login_button_click_responded`);
-          setSuccess(false);
+
           return;
         }
+        const res = await getSurveyData();
+        if (!res) return;
+        fa.logEvent(`response_login_button_click`, { responsesId });
+        fa.logEvent(`${responsesId}_response_login_button_click`);
+        const { questions } = res;
+        setQuestion(questions);
 
-        getSurveyData().then(res => {
-          if (!res) return;
-          fa.logEvent(`response_login_button_click`, { responsesId });
-          fa.logEvent(`${responsesId}_response_login_button_click`);
-          const { questions } = res;
-          setQuestion(questions);
-          setSuccess(false);
-          push(`/responses/${responsesId}/1`);
-        });
-      });
+        push(`/responses/${responsesId}/1`);
+      })();
     }
-  }, [isSuccess, code, briefData]);
+  }, [jwt]);
 
   return (
     <>
