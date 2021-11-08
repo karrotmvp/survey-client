@@ -66,7 +66,7 @@ export default function EndPage(): JSX.Element {
   const history = useHistory();
   const goFeedBack = () => {
     fa.logEvent('complete_gofeedback_button_click');
-    replace('/survey/create/feedback');
+    replace('/feedback');
   };
 
   const closeMini = () => {

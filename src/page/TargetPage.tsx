@@ -131,9 +131,9 @@ export default function TargetPage(): JSX.Element {
           <ConfirmModal>
             설문 내용이 떠오르지 않나요?
             <br />
-            언제든 만들 수 있도록
+            언제든 만들 수 있도록 링크를
             <br />
-            링크를 채팅으로 보내드려요
+            채팅으로 보내드려요
           </ConfirmModal>
 
           <ModalButtons>

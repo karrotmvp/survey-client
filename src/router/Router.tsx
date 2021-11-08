@@ -46,7 +46,7 @@ export default function Router(): JSX.Element {
       <Screen path="/survey/create/question">
         <QuestionPage />
       </Screen>
-      <Screen path="/survey/create/feedback">
+      <Screen path="/feedback">
         <FeedBackPage />
       </Screen>
       <Screen path="/survey/create/complete">

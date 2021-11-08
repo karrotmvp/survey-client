@@ -1,10 +1,12 @@
 import { ChangeEvent } from 'react';
 
 import styled from '@emotion/styled';
+import { useRecoilValue } from 'recoil';
 
 import QuestionTitleInput from '@component/common/input/QuestionTitleInput';
 import QuestionDetailHeader from '@component/questionDetail/QuestionDetailHeader';
 import contents from '@config/const/const';
+import { questionValidationAtom } from '@src/atom/questionAtom';
 import QuestionChoiceList from '@src/component/questionDetail/QuestionChoiceList';
 
 type QuestionCardType = {
@@ -12,6 +14,7 @@ type QuestionCardType = {
   questionType: 2 | 3;
   questionIndex: number;
   handleChange: (e: ChangeEvent) => void;
+  warning: boolean;
 };
 
 const StyledQuestionCard = styled.li`
@@ -46,7 +49,9 @@ export default function QuestionCard({
   questionIndex,
   questionType,
   handleChange,
+  warning,
 }: QuestionCardType): JSX.Element {
+  const isValidated = useRecoilValue(questionValidationAtom);
   return (
     <>
       {questionIndex !== 0 && <Divider />}
@@ -59,6 +64,7 @@ export default function QuestionCard({
           value={title}
           row={2}
           backgroundColor={'#F4F5F6'}
+          warning={warning && isValidated}
         />
 
         <StyledQuestionChoiceOrText>

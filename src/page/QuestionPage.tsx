@@ -2,7 +2,12 @@ import { MouseEvent, useEffect, useState } from 'react';
 
 import styled from '@emotion/styled';
 import { useNavigator } from '@karrotframe/navigator';
-import { useRecoilState, useRecoilValue, useResetRecoilState } from 'recoil';
+import {
+  useRecoilState,
+  useRecoilValue,
+  useResetRecoilState,
+  useSetRecoilState,
+} from 'recoil';
 
 import AlertToastModal from '@component/common/modal/TostModal';
 import NavBar from '@component/common/navbar/NavBar';
@@ -14,6 +19,7 @@ import {
   questionListAtom,
   questionListSelector,
   questionSelector,
+  questionValidationAtom,
 } from '@src/atom/questionAtom';
 import Modal from '@src/component/common/modal/Modal';
 import useSubmit from '@src/hook/useSubmit';
@@ -57,6 +63,7 @@ export default function QuestionPage(): JSX.Element {
   const restQuestion = useResetRecoilState(questionListAtom);
   const listValueState = useRecoilValue(questionListSelector);
   const submitData = useRecoilValue(questionSelector);
+  const isValidated = useSetRecoilState(questionValidationAtom);
   const { replace } = useNavigator();
   const submit = useSubmit('/surveys');
   const fa = useAnalytics();
@@ -64,9 +71,12 @@ export default function QuestionPage(): JSX.Element {
   const handleAddQuestionButton = (e: MouseEvent) => {
     if ((e.currentTarget as HTMLButtonElement).ariaDisabled === 'true') {
       setContentToastOpen(true);
-      fa.logEvent('question_add_button_active_click');
-    } else if (questionList.length < 3) {
       fa.logEvent('question_add_button_disable_click');
+
+      isValidated(true);
+    } else if (questionList.length < 3) {
+      isValidated(false);
+      fa.logEvent('question_add_button_active_click');
       setQuestionList([
         ...questionList,
         {
@@ -82,6 +92,7 @@ export default function QuestionPage(): JSX.Element {
     if ((e.currentTarget as HTMLButtonElement).ariaDisabled === 'true') {
       fa.logEvent('question_complete_button_disable_click');
       setContentToastOpen(true);
+      isValidated(true);
     } else {
       fa.logEvent('question_complete_button_active_click');
       setPopup(true);

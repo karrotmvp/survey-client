@@ -15,7 +15,7 @@ import LogInButton from '@component/common/button/LogInButton';
 import NavBar from '@component/common/navbar/NavBar';
 import HomeBanner from '@component/home/HomeBanner';
 import { ReactComponent as BetaIcon } from '@config/icon/BETA.svg';
-import { ReactComponent as LogoIcon } from '@config/icon/logo.svg';
+import { ReactComponent as LogoIcon } from '@config/icon/logoIcon.svg';
 import { ReactComponent as MuddaIcon } from '@config/icon/mudda.svg';
 import useGet from '@hook/useGet';
 import { useAnalytics } from '@src/analytics/faContext';
