@@ -7,6 +7,7 @@ import {
   useQueryParams,
 } from '@karrotframe/navigator';
 import { useRecoilState, useSetRecoilState } from 'recoil';
+import { v4 as uuidv4 } from 'uuid';
 
 import LoginButton from '@component/common/button/LogInButton';
 import AlertTostModal from '@component/common/modal/TostModal';
@@ -23,8 +24,6 @@ import BizProfile, {
 } from '@src/component/common/button/BizProfile';
 import useGet from '@src/hook/useGet';
 import useLogin from '@src/hook/useLogin';
-
-import { userType } from './HomePage';
 
 const StyledHomePage = styled.section`
   background: #ffff;
@@ -153,7 +152,6 @@ export default function AnswerHome(): JSX.Element {
     `/surveys/brief/${responsesId}`,
     true,
   );
-  const getData = useGet<userType>('/members/me');
 
   const auth = useMiniAuth(process.env.REACT_APP_APP_ID || '');
   const fa = useAnalytics();
@@ -170,6 +168,7 @@ export default function AnswerHome(): JSX.Element {
   useEffect(() => {
     fa.logEvent(`response_onboard_show`, { responsesId });
     fa.logEvent(`${responsesId}_response_onboard_show`);
+    fa.setUserId(uuidv4());
   }, []);
 
   useEffect(() => {
@@ -183,13 +182,6 @@ export default function AnswerHome(): JSX.Element {
     }
 
     if (isSuccess) {
-      getData().then(data => {
-        if (!data) return;
-        if (data.daangnId) {
-          fa.setUserId(data.daangnId);
-        }
-      });
-
       getSurveyUserResponded().then(data => {
         if (!data) return;
         if (data.responded) {
