@@ -27,7 +27,7 @@ import useSubmit from '@src/hook/useSubmit';
 const AddQuestionButton = styled.button`
   background-color: ${({ theme }) => theme.color.primaryOrange};
   padding: 0.8rem;
-  border-radius: 8px;
+  border-radius: 4px;
   font-size: 1.3rem;
   font-weight: 700;
   color: #ffff;

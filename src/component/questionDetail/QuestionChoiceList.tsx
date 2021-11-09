@@ -64,7 +64,6 @@ export default function QuestionChoiceList({
   const onChange = (e: ChangeEvent) => {
     const target = e.target as HTMLTextAreaElement;
     const index = target.dataset.list;
-
     if (index !== undefined) {
       setQuestionlist([
         ...questionList.slice(0, questionIndex),
@@ -160,7 +159,7 @@ export default function QuestionChoiceList({
         aria-disabled={!choicesCheck[questionIndex]}
         onClick={handleClick}
       >
-        <PluseIcon /> 답변 추가
+        <PluseIcon /> 선택지 추가
       </StyledChoiceButton>
     </StyledQuestionChoiceList>
   );

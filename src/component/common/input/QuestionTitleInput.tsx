@@ -30,6 +30,8 @@ const StyledTitleInput = styled.textarea<{
   &:focus {
     outline: none;
     border-color: ${({ theme }) => theme.color.primaryOrange};
+    background-color: ${({ inputBackground }) =>
+      inputBackground ? '#FFF2EB' : 'transparent'};
   }
 `;
 
