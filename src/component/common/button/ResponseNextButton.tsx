@@ -44,12 +44,12 @@ export default function ResponseNextButton({
   const question = useRecoilValue(questionListAtom);
   const [isSubmit, setSubmit] = useState(false);
   const handleLastClick = (e: React.MouseEvent) => {
-    handleNextClick(e);
     fa.logEvent(`response_question_complete_button_click`, {
       responsesId,
     });
     fa.logEvent(`${responsesId}_response_question_complete_button_click`);
     setSubmit(true);
+    handleNextClick(e);
   };
 
   useEffect(() => {
