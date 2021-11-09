@@ -210,14 +210,6 @@ export default function HomePage(): JSX.Element {
               <StyledSecondImg src="./img/home_Img_2.png" />
             </StyledCover>
           </div>
-          <div className="slide_div">
-            <StyledCover>
-              <StyledSliderTitle>
-                재밌는 이벤트를 열어 <br /> 이웃/단골과 소통할 수 있어요
-              </StyledSliderTitle>
-              <StyledImg src="./img/home_Img_3.png" />
-            </StyledCover>
-          </div>
         </StyledSlide>
 
         <LogInButton text={'설문 만들러가기'} onClick={handleClick} />
