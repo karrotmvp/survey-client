@@ -26,9 +26,9 @@ const StyledTitleInput = styled.textarea<{
   font-weight: 400;
   border-color: ${({ warning }) => (warning ? '#FF0000' : '#c9c9c9')};
   background-color: ${({ inputBackground, warning }) =>
-    warning ? '#FFE6E6' : inputBackground || 'transparent'};
+    warning ? '#FFF6F6' : inputBackground || 'transparent'};
   &::placeholder {
-    color: #c6c9cc;
+    color: #8b8b8b;
   }
   &:focus {
     outline: none;

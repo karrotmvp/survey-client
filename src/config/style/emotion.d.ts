@@ -21,6 +21,17 @@ declare module '@emotion/react' {
       whiteGray: string;
       darkWhite: string;
       white: string;
+      warningRedLight: string;
+      primaryOrangeLight: string;
+      neutralBlack: {
+        main: string;
+        text: string;
+        placeholder: string;
+        disabled: string;
+        button: string;
+        tag: string;
+        line: string;
+      };
     };
     fontSize: {
       XXL: string;

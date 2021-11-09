@@ -47,6 +47,17 @@ const theme: Theme = {
     whiteGray: 'CACBD1',
     darkWhite: '#F4F3F8',
     white: '#F4F5F6',
+    warningRedLight: '#FFF6F6',
+    primaryOrangeLight: '#FFF2EB',
+    neutralBlack: {
+      main: '#141414',
+      text: '#707070',
+      placeholder: '#8b8b8b',
+      disabled: '#c9c9c9',
+      button: '#f4f3f8',
+      tag: '#f4f5f6',
+      line: '#f4f4f4',
+    },
   },
   fontSize: {
     XXL: '2.2rem', // 22px

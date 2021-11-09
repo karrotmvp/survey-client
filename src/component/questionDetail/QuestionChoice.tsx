@@ -46,7 +46,7 @@ const StyledChoiceInput = styled.textarea`
     border: 1px dashed #fe7e35;
   }
   ::placeholder {
-    color: #c9c9c9;
+    color: ${({ theme }) => theme.color.neutralBlack.placeholder};
   }
 `;
 type questionChoicetype = InputType & {

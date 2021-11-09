@@ -139,7 +139,7 @@ const StyledTitleInput = styled.textarea`
   padding: 0.8rem;
   font-size: 1.6rem;
   ::placeholder {
-    color: #c9c9c9;
+    color: ${({ theme }) => theme.color.neutralBlack.placeholder};
   }
 `;
 
