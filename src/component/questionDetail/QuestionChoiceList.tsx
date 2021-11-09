@@ -3,7 +3,11 @@ import { ChangeEvent, MouseEvent, useEffect, useRef, useState } from 'react';
 import styled from '@emotion/styled';
 import { useRecoilState, useRecoilValue } from 'recoil';
 
-import { questionListAtom, questionListSelector } from '@atom/questionAtom';
+import {
+  questionListAtom,
+  questionListSelector,
+  questionValidationAtom,
+} from '@atom/questionAtom';
 import AlertToastModal from '@component/common/modal/TostModal';
 import { ReactComponent as PluseIcon } from '@config/icon/plus.svg';
 import { useAnalytics } from '@src/analytics/faContext';
@@ -42,6 +46,7 @@ export default function QuestionChoiceList({
 }): JSX.Element {
   const [questionList, setQuestionlist] = useRecoilState(questionListAtom);
   const [isValidated, setValidated] = useState(false);
+  const validatedAtom = useRecoilValue(questionValidationAtom);
 
   const { choices } = questionList[questionIndex];
   if (choices === undefined) throw new Error('choice undefined');
@@ -121,6 +126,12 @@ export default function QuestionChoiceList({
   };
 
   const { choicesCheck } = useRecoilValue(questionListSelector);
+
+  useEffect(() => {
+    if (validatedAtom) {
+      setValidated(true);
+    }
+  }, [validatedAtom]);
   useEffect(() => {
     if (elRefs && !choicesCheck[0] && elRefs.current.length !== 1) {
       setTimeout(() => {

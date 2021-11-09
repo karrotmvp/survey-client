@@ -21,6 +21,13 @@ export default function AnswerComplete(): JSX.Element {
   const bizProfile = useRecoilValue(responseUserAtom);
 
   useEffect(() => {
+    fa.logEvent(`response_complete_page_show`, {
+      responsesId,
+    });
+    fa.logEvent(`${responsesId}_response_complete_page_show`);
+  }, []);
+
+  useEffect(() => {
     const unblock = history.block((location, action) => {
       if (action === 'POP') {
         mini.close();
