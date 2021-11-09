@@ -1,9 +1,11 @@
 import { forwardRef, MouseEvent, useState } from 'react';
 
 import styled from '@emotion/styled';
+import { useSetRecoilState } from 'recoil';
 
 import { InputType } from '@component/common/input/QuestionTitleInput';
 import { ReactComponent as DeleteIcon } from '@config/icon/delete.svg';
+import { questionValidationAtom } from '@src/atom/questionAtom';
 
 const StyledQuestionChoice = styled.li<{
   warning: boolean | undefined;
@@ -57,7 +59,7 @@ type questionChoicetype = InputType & {
 const QuestionChoice = forwardRef<HTMLTextAreaElement, questionChoicetype>(
   ({ index, onDelete, onChange, value, warning }, ref) => {
     const [isFocus, setFocus] = useState(false);
-
+    const setQuestionValidation = useSetRecoilState(questionValidationAtom);
     return (
       <StyledQuestionChoice
         data-list={index}
@@ -71,7 +73,10 @@ const QuestionChoice = forwardRef<HTMLTextAreaElement, questionChoicetype>(
           onChange={onChange}
           placeholder={`객관식 답변 ${index + 1}`}
           data-list={index}
-          onFocus={() => setFocus(true)}
+          onFocus={() => {
+            setFocus(true);
+            setQuestionValidation(false);
+          }}
           onBlur={() => setFocus(false)}
         />
         {index !== 0 && <DeleteIcon onClick={onDelete} data-list={index} />}

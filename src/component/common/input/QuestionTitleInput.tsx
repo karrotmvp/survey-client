@@ -1,6 +1,9 @@
 import { ChangeEvent, useCallback, useEffect, useRef } from 'react';
 
 import styled from '@emotion/styled';
+import { useSetRecoilState } from 'recoil';
+
+import { questionValidationAtom } from '@src/atom/questionAtom';
 
 const StyledTitleInput = styled.textarea<{
   inputBackground: string | undefined;
@@ -56,7 +59,7 @@ export default function QuestionTitleInput({
   warning?: boolean;
 }): JSX.Element {
   const ref = useRef<HTMLTextAreaElement>(null);
-
+  const setQuestionValidation = useSetRecoilState(questionValidationAtom);
   useEffect(() => {
     if (ref === null || ref.current === null) {
       return;
@@ -89,6 +92,7 @@ export default function QuestionTitleInput({
       inputBackground={backgroundColor}
       onInput={handleResizeHeight}
       onChange={onChange}
+      onFocus={() => setQuestionValidation(false)}
       placeholder={placeholder}
       warning={warning}
       data-list={questionIndex}
