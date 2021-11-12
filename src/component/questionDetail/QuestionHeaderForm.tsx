@@ -1,14 +1,14 @@
 import { MouseEvent, useRef, useState } from 'react';
 
 import styled from '@emotion/styled';
-import { UseFormSetValue } from 'react-hook-form';
-import { useRecoilState } from 'recoil';
+import { UseFormSetValue, UseFormWatch } from 'react-hook-form';
 
-import { choiceType, questionListAtom } from '@atom/questionAtom';
 import ToggleButton from '@component/common/button/ToggleButton';
 import NavToggle from '@component/common/navbar/NavToggle';
 import { useAnalytics } from '@src/analytics/faContext';
 import useOutsideClick from '@src/hook/useOutSideClick';
+
+import { submitType } from '../question/QuestionCardList';
 
 const StyledQuestionDetailHeader = styled.section`
   display: flex;
@@ -31,23 +31,22 @@ const QuestionDetailLeft = styled.div`
 
 export type QuestionType = {
   questionIndex: number;
-  questionType: 2 | 3;
-  setValue: UseFormSetValue<{
-    text: string;
-    choices?: choiceType[] | undefined;
-    questionType: number;
-  }>;
+  watch: UseFormWatch<submitType>;
+  setValue: UseFormSetValue<submitType>;
+  remove: (index?: number | number[] | undefined) => void;
 };
 
-export default function QuestionDetailHeader({
+export default function QuestionHeaderForm({
   questionIndex,
-  questionType,
+  watch,
   setValue,
+  remove,
 }: QuestionType): JSX.Element {
-  const [questionListState, setQuestionList] = useRecoilState(questionListAtom);
   const [isOpen, setToggle] = useState(false);
   const ref = useRef<HTMLUListElement>(null);
   const fa = useAnalytics();
+
+  const questionType = watch(`questions.${questionIndex}.questionType`);
   const handleClick = useOutsideClick(ref, () => {
     if (isOpen) {
       setToggle(false);
@@ -82,23 +81,14 @@ export default function QuestionDetailHeader({
 
     if (target.dataset.list) {
       if (checkTargetNum(+target.dataset.list + 2) === 2) {
-        setValue('questionType', 2);
-        setValue('choices', undefined);
+        setValue(`questions.${questionIndex}.questionType`, 2);
+
         fa.logEvent('question_type_text_button_click');
       } else {
-        setValue('questionType', 3);
-        setValue('choices', [{ value: '' }]);
+        setValue(`questions.${questionIndex}.questionType`, 3);
+
         fa.logEvent('question_type_choice_button_click');
       }
-
-      setQuestionList([
-        ...questionListState.slice(0, questionIndex),
-        {
-          ...questionListState[questionIndex],
-          questionType: checkTargetNum(+target.dataset.list + 2),
-        },
-        ...questionListState.slice(questionIndex + 1),
-      ]);
     }
     setToggle(false);
   };
@@ -124,11 +114,7 @@ export default function QuestionDetailHeader({
     padding: 0.5rem 1rem;
   `;
   const handleDeleteButton = () => {
-    setQuestionList([
-      ...questionListState.slice(0, questionIndex),
-
-      ...questionListState.slice(questionIndex + 1),
-    ]);
+    remove(questionIndex);
   };
   return (
     <StyledQuestionDetailHeader>

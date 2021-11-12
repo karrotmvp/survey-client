@@ -1,9 +1,11 @@
 import { ChangeEvent, MouseEvent, useEffect, useRef, useState } from 'react';
 
 import styled from '@emotion/styled';
+import { Control, UseFormRegister } from 'react-hook-form';
 import { useRecoilState, useRecoilValue } from 'recoil';
 
 import {
+  choiceType,
   questionListAtom,
   questionListSelector,
   questionValidationAtom,
@@ -12,6 +14,7 @@ import AlertToastModal from '@component/common/modal/TostModal';
 import { ReactComponent as PluseIcon } from '@config/icon/plus.svg';
 import { useAnalytics } from '@src/analytics/faContext';
 
+// import ChoiceInputForm from './ChoiceInputForm';
 import QuestionChoice from './QuestionChoice';
 
 const StyledChoiceButton = styled.button`
@@ -39,10 +42,19 @@ const StyledQuestionChoiceList = styled.ul`
   grid-gap: 1.2rem;
   grid-template-columns: auto;
 `;
+
+export type textType = {
+  text: string;
+  choices?: choiceType[];
+};
 export default function QuestionChoiceList({
   questionIndex,
+  control,
+  register,
 }: {
   questionIndex: number;
+  control: Control<textType>;
+  register: UseFormRegister<textType>;
 }): JSX.Element {
   const [questionList, setQuestionlist] = useRecoilState(questionListAtom);
   const [isValidated, setValidated] = useState(false);
