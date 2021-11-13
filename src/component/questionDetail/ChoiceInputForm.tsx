@@ -44,9 +44,9 @@ type questionChoicetype = {
 const ChoiceInputForm = forwardRef<HTMLTextAreaElement, questionChoicetype>(
   ({ index, onInput, remove, register, warning, choiceRef, questionIndex }) => {
     const [isFocus, setFocus] = useState(false);
-
     const { ref, ...rest } = register(
       `questions.${questionIndex}.choices.${index}.value`,
+      { required: true },
     );
     const setQuestionValidation = useSetRecoilState(questionValidationAtom);
 
@@ -66,7 +66,7 @@ const ChoiceInputForm = forwardRef<HTMLTextAreaElement, questionChoicetype>(
             choiceRef(e);
           }}
           {...rest}
-          placeholder={`객관식 답변 ${index + 1}`}
+          placeholder={`선택지 ${index + 1}`}
           data-list={index}
           onInput={onInput}
           onFocus={() => {

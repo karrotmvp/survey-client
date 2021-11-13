@@ -3,13 +3,17 @@ import {
   Control,
   UseFormRegister,
   UseFormSetValue,
+  UseFormUnregister,
   UseFormWatch,
 } from 'react-hook-form';
 import { useRecoilValue } from 'recoil';
 
 import contents from '@config/const/const';
 import { questionValidationAtom } from '@src/atom/questionAtom';
-import { submitType } from '@src/component/question/QuestionCardList';
+import {
+  errorsType,
+  submitType,
+} from '@src/component/question/QuestionCardList';
 import ChoiceInputFormList from '@src/component/questionDetail/ChoiceInputFormList';
 import QuestionHeaderForm from '@src/component/questionDetail/QuestionHeaderForm';
 // import QuestionChoiceList from '@src/component/questionDetail/QuestionChoiceList';
@@ -22,6 +26,8 @@ export type formConfigType = {
   register: UseFormRegister<submitType>;
   control: Control<submitType>;
   remove: (index?: number | number[] | undefined) => void;
+  unregister: UseFormUnregister<submitType>;
+  errors: errorsType;
 };
 
 type QuestionCardType = {
@@ -61,10 +67,11 @@ export default function QuestionCard({
   setValue,
   remove,
   register,
+  unregister,
   control,
+  errors,
 }: QuestionCardType): JSX.Element {
   const isValidated = useRecoilValue(questionValidationAtom);
-
   const questionType = watch(`questions.${questionIndex}.questionType`);
   return (
     <>
@@ -76,6 +83,7 @@ export default function QuestionCard({
             watch,
             setValue,
             remove,
+            unregister,
           }}
         />
 
@@ -92,7 +100,15 @@ export default function QuestionCard({
           {questionType === 2 ? (
             <StyledQuestionInput>주관식 답변...</StyledQuestionInput>
           ) : (
-            <ChoiceInputFormList {...{ register, control, questionIndex }} />
+            <ChoiceInputFormList
+              {...{
+                questionType,
+                register,
+                control,
+                questionIndex,
+                unregister,
+              }}
+            />
           )}
         </StyledQuestionChoiceOrText>
       </StyledQuestionCard>

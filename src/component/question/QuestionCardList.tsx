@@ -1,7 +1,7 @@
 import { MouseEvent, useEffect, useState } from 'react';
 
 import styled from '@emotion/styled';
-import { useFieldArray, useForm } from 'react-hook-form';
+import { FieldError, useFieldArray, useForm } from 'react-hook-form';
 
 import QuestionCard from '@component/common/card/QuestionCard';
 import AlertToastModal from '@component/common/modal/TostModal';
@@ -22,16 +22,39 @@ export type submitType = {
   questions: questionType[];
 };
 
+export type errorsType = {
+  questions?:
+    | {
+        text?: FieldError | undefined;
+        questionType?: FieldError | undefined;
+        choices?:
+          | {
+              value?: FieldError | undefined;
+              choiceId?: FieldError | undefined;
+            }[]
+          | undefined;
+      }[]
+    | undefined;
+};
+
 export default function QuestionCardList(): JSX.Element {
   const [isContentToastOpen, setContentToastOpen] = useState(false);
   const [isToastOpen, setToastOpen] = useState(false);
 
-  const { handleSubmit, register, control, setValue, watch } =
-    useForm<submitType>({
-      defaultValues: {
-        questions: [{ text: '', questionType: 3, choices: [{ value: '' }] }],
-      },
-    });
+  const {
+    handleSubmit,
+    register,
+    control,
+    setValue,
+    watch,
+    unregister,
+    formState: { errors },
+  } = useForm<submitType>({
+    mode: 'onChange',
+    defaultValues: {
+      questions: [{ text: '', questionType: 3, choices: [{ value: '' }] }],
+    },
+  });
 
   const { fields, append, remove } = useFieldArray({
     control,
@@ -63,7 +86,25 @@ export default function QuestionCardList(): JSX.Element {
     }, 1000);
   }, []);
 
-  const onSubmit = (data: submitType) => console.log(data);
+  const onSubmit = (data: submitType) => {
+    const submitdata = {
+      questions: data.questions.map(res => {
+        if (res.questionType === 2) {
+          return { text: res.text, questionType: res.questionType };
+        }
+        return res;
+      }),
+    };
+
+    if (process.env.NODE_ENV === 'development') {
+      console.log('submitdata : ', submitdata, data);
+    }
+  };
+  useEffect(() => {
+    if (process.env.NODE_ENV === 'development') {
+      console.log(errors);
+    }
+  }, [errors]);
 
   return (
     <>
@@ -84,7 +125,15 @@ export default function QuestionCardList(): JSX.Element {
             fields.map(({ id }, questionIndex) => (
               <QuestionCard
                 key={id}
-                {...{ register, control, setValue, watch, remove }}
+                {...{
+                  register,
+                  control,
+                  setValue,
+                  watch,
+                  remove,
+                  unregister,
+                  errors,
+                }}
                 questionIndex={questionIndex}
               />
             ))}
@@ -92,6 +141,7 @@ export default function QuestionCardList(): JSX.Element {
       </StyledQuestionCardList>
       {fields.length < 3 && (
         <AddQuestionButton
+          type="button"
           className="complete"
           onClick={handleAddQuestionButton}
         >
@@ -101,6 +151,7 @@ export default function QuestionCardList(): JSX.Element {
     </>
   );
 }
+
 const AddQuestionButton = styled.button`
   background-color: ${({ theme }) => theme.color.primaryOrange};
   padding: 0.8rem;

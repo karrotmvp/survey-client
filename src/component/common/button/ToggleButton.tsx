@@ -41,7 +41,7 @@ export default function ToggleButton({
   toggle,
 }: ToggleButtonType): JSX.Element {
   return (
-    <StyledToggleButton onClick={onClick}>
+    <StyledToggleButton type="button" onClick={onClick}>
       <ButtonText>{text}</ButtonText>
       <ToggleIcon aria-checked={toggle} />
     </StyledToggleButton>

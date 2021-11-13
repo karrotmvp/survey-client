@@ -3,9 +3,10 @@ import { forwardRef, MouseEvent, useState } from 'react';
 import styled from '@emotion/styled';
 import { useSetRecoilState } from 'recoil';
 
-import { InputType } from '@component/common/input/QuestionTitleInput';
 import { ReactComponent as DeleteIcon } from '@config/icon/delete.svg';
 import { questionValidationAtom } from '@src/atom/questionAtom';
+
+import { InputType } from '../common/input/QuestionSubtitleInput';
 
 const StyledQuestionChoice = styled.li<{
   warning: boolean | undefined;

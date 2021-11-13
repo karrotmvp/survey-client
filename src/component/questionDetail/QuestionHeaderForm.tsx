@@ -1,7 +1,11 @@
 import { MouseEvent, useRef, useState } from 'react';
 
 import styled from '@emotion/styled';
-import { UseFormSetValue, UseFormWatch } from 'react-hook-form';
+import {
+  UseFormSetValue,
+  UseFormUnregister,
+  UseFormWatch,
+} from 'react-hook-form';
 
 import ToggleButton from '@component/common/button/ToggleButton';
 import NavToggle from '@component/common/navbar/NavToggle';
@@ -34,6 +38,7 @@ export type QuestionType = {
   watch: UseFormWatch<submitType>;
   setValue: UseFormSetValue<submitType>;
   remove: (index?: number | number[] | undefined) => void;
+  unregister: UseFormUnregister<submitType>;
 };
 
 export default function QuestionHeaderForm({
@@ -41,6 +46,7 @@ export default function QuestionHeaderForm({
   watch,
   setValue,
   remove,
+  unregister,
 }: QuestionType): JSX.Element {
   const [isOpen, setToggle] = useState(false);
   const ref = useRef<HTMLUListElement>(null);
@@ -81,12 +87,14 @@ export default function QuestionHeaderForm({
 
     if (target.dataset.list) {
       if (checkTargetNum(+target.dataset.list + 2) === 2) {
+        unregister(`questions.${questionIndex}.choices`, {
+          keepValue: true,
+        });
         setValue(`questions.${questionIndex}.questionType`, 2);
 
         fa.logEvent('question_type_text_button_click');
       } else {
         setValue(`questions.${questionIndex}.questionType`, 3);
-
         fa.logEvent('question_type_choice_button_click');
       }
     }
@@ -136,7 +144,9 @@ export default function QuestionHeaderForm({
         </>
       )}
       {questionIndex !== 0 && (
-        <DeleteButton onClick={handleDeleteButton}>삭제</DeleteButton>
+        <DeleteButton type="button" onClick={handleDeleteButton}>
+          삭제
+        </DeleteButton>
       )}
     </StyledQuestionDetailHeader>
   );

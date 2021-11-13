@@ -14,10 +14,12 @@ export default function ChoiceInputFormList({
   control,
   register,
   questionIndex,
+  questionType,
 }: {
   control: Control<submitType>;
   register: UseFormRegister<submitType>;
   questionIndex: number;
+  questionType: number;
 }): JSX.Element {
   const elRefs = useRef<HTMLTextAreaElement[]>([]);
   const [isToastOpen, setToastOpen] = useState(false);
@@ -74,7 +76,7 @@ export default function ChoiceInputFormList({
           {...{ onInput, register, questionIndex, remove, index }}
         />
       ))}
-      <StyledChoiceButton onClick={handleClick}>
+      <StyledChoiceButton type="button" onClick={handleClick}>
         <PluseIcon /> 선택지 추가
       </StyledChoiceButton>
     </StyledQuestionChoiceList>

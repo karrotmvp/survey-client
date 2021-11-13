@@ -56,7 +56,9 @@ export default function InputForm({
   register: UseFormRegister<submitType>;
 }): JSX.Element {
   const textRef = useRef<HTMLTextAreaElement | null>(null);
-  const { ref, ...rest } = register(`questions.${questionIndex}.text`);
+  const { ref, ...rest } = register(`questions.${questionIndex}.text`, {
+    required: true,
+  });
   useEffect(() => {
     if (textRef === null || textRef.current === null) {
       return;

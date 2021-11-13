@@ -1,4 +1,4 @@
-import { ChangeEvent, useCallback, useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 
 import styled from '@emotion/styled';
 import { UseFormRegister } from 'react-hook-form';
@@ -39,22 +39,15 @@ const StyledTitleInput = styled.textarea<{
   }
 `;
 
-export type InputType = {
-  value: string;
-  onChange: (e: ChangeEvent<HTMLTextAreaElement>) => void;
-  placeholder?: string;
-};
-
 export default function QuestionTitleInput({
-  value,
-  onChange,
   questionIndex,
   placeholder,
   row,
   backgroundColor,
   warning,
   register,
-}: InputType & {
+}: {
+  placeholder?: string;
   questionIndex: number;
   row: number;
   backgroundColor?: string;
@@ -64,7 +57,6 @@ export default function QuestionTitleInput({
     choices?: choiceType[] | undefined;
   }>;
 }): JSX.Element {
-  console.log(onChange);
   const ref = useRef<HTMLTextAreaElement>(null);
   const setQuestionValidation = useSetRecoilState(questionValidationAtom);
   useEffect(() => {
@@ -81,7 +73,7 @@ export default function QuestionTitleInput({
     }
 
     ref.current.style.height = `${ref.current.scrollHeight} px`;
-  }, [row, value]);
+  }, [row]);
 
   const handleResizeHeight = useCallback(() => {
     if (ref === null || ref.current === null) {
@@ -100,7 +92,7 @@ export default function QuestionTitleInput({
       placeholder={placeholder}
       warning={warning}
       data-list={questionIndex}
-      {...{ ...register('text'), ref }}
+      {...{ ...register('text', { required: true }), ref }}
     ></StyledTitleInput>
   );
 }

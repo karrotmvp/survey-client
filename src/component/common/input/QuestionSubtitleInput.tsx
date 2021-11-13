@@ -1,8 +1,6 @@
-import { useCallback, useEffect, useRef } from 'react';
+import { ChangeEvent, useCallback, useEffect, useRef } from 'react';
 
 import styled from '@emotion/styled';
-
-import { InputType } from './QuestionTitleInput';
 
 const StyledSubtitleInput = styled.textarea`
   margin-top: 8px;
@@ -21,6 +19,12 @@ const StyledSubtitleInput = styled.textarea`
     border-color: #141414;
   }
 `;
+
+export type InputType = {
+  value: string;
+  onChange: (e: ChangeEvent<HTMLTextAreaElement>) => void;
+  placeholder?: string;
+};
 
 export default function QuestionSubtitleInput({
   value,
