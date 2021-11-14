@@ -48,6 +48,7 @@ export default function InputForm({
   row,
   backgroundColor,
   register,
+  warning,
 }: InputType & {
   questionIndex: number;
   row: number;
@@ -90,7 +91,7 @@ export default function InputForm({
       onInput={handleResizeHeight}
       placeholder={placeholder}
       data-list={questionIndex}
-      warning={false}
+      warning={warning}
       {...rest}
       ref={e => {
         ref(e);

@@ -7,7 +7,7 @@ import AlertToastModal from '@component/common/modal/TostModal';
 import { ReactComponent as PluseIcon } from '@config/icon/plus.svg';
 import { useAnalytics } from '@src/analytics/faContext';
 
-import { submitType } from '../question/QuestionCardList';
+import { errorsType, submitType } from '../question/QuestionCardList';
 import ChoiceInputForm from './ChoiceInputForm';
 
 export default function ChoiceInputFormList({
@@ -15,11 +15,13 @@ export default function ChoiceInputFormList({
   register,
   questionIndex,
   questionType,
+  errors,
 }: {
   control: Control<submitType>;
   register: UseFormRegister<submitType>;
   questionIndex: number;
   questionType: number;
+  errors: errorsType;
 }): JSX.Element {
   const elRefs = useRef<HTMLTextAreaElement[]>([]);
   const [isToastOpen, setToastOpen] = useState(false);
@@ -73,6 +75,9 @@ export default function ChoiceInputFormList({
         <ChoiceInputForm
           key={item.id}
           choiceRef={addToRefs}
+          warning={Boolean(
+            errors.questions?.[questionIndex]?.choices?.[index]?.value,
+          )}
           {...{ onInput, register, questionIndex, remove, index }}
         />
       ))}

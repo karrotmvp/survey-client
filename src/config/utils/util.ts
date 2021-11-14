@@ -9,9 +9,9 @@ const media = {
   mobile: customMediaQuery(500),
 };
 
-const log = (text: string): void => {
+const log = (message: unknown): void => {
   if (process.env.NODE_ENV === 'development') {
-    console.log(text);
+    console.log(message);
   }
 };
 

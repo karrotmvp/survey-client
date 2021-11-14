@@ -6,10 +6,8 @@ import {
   UseFormUnregister,
   UseFormWatch,
 } from 'react-hook-form';
-import { useRecoilValue } from 'recoil';
 
 import contents from '@config/const/const';
-import { questionValidationAtom } from '@src/atom/questionAtom';
 import {
   errorsType,
   submitType,
@@ -71,7 +69,6 @@ export default function QuestionCard({
   control,
   errors,
 }: QuestionCardType): JSX.Element {
-  const isValidated = useRecoilValue(questionValidationAtom);
   const questionType = watch(`questions.${questionIndex}.questionType`);
   return (
     <>
@@ -93,8 +90,11 @@ export default function QuestionCard({
           placeholder={contents.placeholder.TEXT}
           row={2}
           backgroundColor={'#F4F5F6'}
-          warning={isValidated}
+          warning={Boolean(errors.questions?.[questionIndex]?.text)}
         />
+        {errors.questions?.[questionIndex]?.text && (
+          <span>답변을 입력해주세요</span>
+        )}
 
         <StyledQuestionChoiceOrText>
           {questionType === 2 ? (
@@ -102,6 +102,7 @@ export default function QuestionCard({
           ) : (
             <ChoiceInputFormList
               {...{
+                errors,
                 questionType,
                 register,
                 control,

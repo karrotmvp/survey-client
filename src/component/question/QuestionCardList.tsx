@@ -7,11 +7,26 @@ import QuestionCard from '@component/common/card/QuestionCard';
 import AlertToastModal from '@component/common/modal/TostModal';
 import { ReactComponent as PlusIcon } from '@config/icon/plus.svg';
 import { choiceType } from '@src/atom/questionAtom';
+import { log } from '@src/config/utils/util';
 
-const StyledQuestionCardList = styled.ul`
-  display: grid;
-  grid-template-columns: auto;
-`;
+const questionCheck = (question: questionType[]) => {
+  const check = question.every(({ text }) => text);
+  const choicesCheck = question.map(({ questionType, choices }) => {
+    if (choices === undefined) {
+      return true;
+    }
+
+    return choices.every(({ value }) => {
+      if (questionType === 2) {
+        return true;
+      }
+      return value;
+    });
+  });
+
+  return check && choicesCheck.every(value => value);
+};
+
 type questionType = {
   text: string;
   choices?: choiceType[];
@@ -64,6 +79,7 @@ export default function QuestionCardList(): JSX.Element {
   const questionList = watch('questions');
 
   const handleAddQuestionButton = (e: MouseEvent) => {
+    log(questionList);
     if ((e.currentTarget as HTMLButtonElement).ariaDisabled === 'true') {
       setContentToastOpen(true);
     } else if (questionList.length < 3) {
@@ -100,11 +116,6 @@ export default function QuestionCardList(): JSX.Element {
       console.log('submitdata : ', submitdata, data);
     }
   };
-  useEffect(() => {
-    if (process.env.NODE_ENV === 'development') {
-      console.log(errors);
-    }
-  }, [errors]);
 
   return (
     <>
@@ -133,8 +144,8 @@ export default function QuestionCardList(): JSX.Element {
                   remove,
                   unregister,
                   errors,
+                  questionIndex,
                 }}
-                questionIndex={questionIndex}
               />
             ))}
         </form>
@@ -143,6 +154,7 @@ export default function QuestionCardList(): JSX.Element {
         <AddQuestionButton
           type="button"
           className="complete"
+          aria-disabled={!questionCheck(questionList)}
           onClick={handleAddQuestionButton}
         >
           <PlusIcon /> 질문 추가
@@ -169,4 +181,9 @@ const AddQuestionButton = styled.button`
     background-color: #c9c9c9;
   }
   margin-left: auto;
+`;
+
+const StyledQuestionCardList = styled.ul`
+  display: grid;
+  grid-template-columns: auto;
 `;
