@@ -9,4 +9,10 @@ const media = {
   mobile: customMediaQuery(500),
 };
 
-export default media;
+const log = (text: string): void => {
+  if (process.env.NODE_ENV === 'development') {
+    console.log(text);
+  }
+};
+
+export { media, log };
