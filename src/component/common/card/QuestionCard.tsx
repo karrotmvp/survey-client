@@ -1,21 +1,36 @@
-import { ChangeEvent } from 'react';
-
 import styled from '@emotion/styled';
-import { useRecoilValue } from 'recoil';
+import {
+  Control,
+  UseFormRegister,
+  UseFormSetValue,
+  UseFormUnregister,
+  UseFormWatch,
+} from 'react-hook-form';
 
-import QuestionTitleInput from '@component/common/input/QuestionTitleInput';
-import QuestionDetailHeader from '@component/questionDetail/QuestionDetailHeader';
 import contents from '@config/const/const';
-import { questionValidationAtom } from '@src/atom/questionAtom';
-import QuestionChoiceList from '@src/component/questionDetail/QuestionChoiceList';
+import {
+  errorsType,
+  submitType,
+} from '@src/component/question/QuestionCardList';
+import ChoiceInputFormList from '@src/component/questionDetail/ChoiceInputFormList';
+import QuestionHeaderForm from '@src/component/questionDetail/QuestionHeaderForm';
+// import QuestionChoiceList from '@src/component/questionDetail/QuestionChoiceList';
+
+import InputForm from '../input/InputForm';
+
+export type formConfigType = {
+  watch: UseFormWatch<submitType>;
+  setValue: UseFormSetValue<submitType>;
+  register: UseFormRegister<submitType>;
+  control: Control<submitType>;
+  remove: (index?: number | number[] | undefined) => void;
+  unregister: UseFormUnregister<submitType>;
+  errors: errorsType;
+};
 
 type QuestionCardType = {
-  title: string;
-  questionType: 2 | 3;
   questionIndex: number;
-  handleChange: (e: ChangeEvent) => void;
-  warning: boolean;
-};
+} & formConfigType;
 
 const StyledQuestionCard = styled.li`
   width: 100%;
@@ -45,33 +60,56 @@ const Divider = styled.div`
 `;
 
 export default function QuestionCard({
-  title,
   questionIndex,
-  questionType,
-  handleChange,
-  warning,
+  watch,
+  setValue,
+  remove,
+  register,
+  unregister,
+  control,
+  errors,
 }: QuestionCardType): JSX.Element {
-  const isValidated = useRecoilValue(questionValidationAtom);
+  const questionType = watch(`questions.${questionIndex}.questionType`);
   return (
     <>
       {questionIndex !== 0 && <Divider />}
       <StyledQuestionCard>
-        <QuestionDetailHeader {...{ questionIndex, questionType }} />
-        <QuestionTitleInput
+        <QuestionHeaderForm
+          {...{
+            questionIndex,
+            watch,
+            setValue,
+            remove,
+            unregister,
+          }}
+        />
+
+        <InputForm
+          register={register}
           questionIndex={questionIndex}
-          onChange={handleChange}
           placeholder={contents.placeholder.TEXT}
-          value={title}
           row={2}
           backgroundColor={'#F4F5F6'}
-          warning={warning && isValidated}
+          warning={Boolean(errors.questions?.[questionIndex]?.text)}
         />
+        {errors.questions?.[questionIndex]?.text && (
+          <span>답변을 입력해주세요</span>
+        )}
 
         <StyledQuestionChoiceOrText>
           {questionType === 2 ? (
             <StyledQuestionInput>주관식 답변...</StyledQuestionInput>
           ) : (
-            <QuestionChoiceList questionIndex={questionIndex} />
+            <ChoiceInputFormList
+              {...{
+                errors,
+                questionType,
+                register,
+                control,
+                questionIndex,
+                unregister,
+              }}
+            />
           )}
         </StyledQuestionChoiceOrText>
       </StyledQuestionCard>

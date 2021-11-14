@@ -6,7 +6,7 @@ import { useRecoilState, useResetRecoilState } from 'recoil';
 import { questionAtom, questionListAtom } from '@atom/questionAtom';
 import AddButton from '@component/common/button/QAddButton';
 import NavBar from '@component/common/navbar/NavBar';
-import QuestionDetailHeader from '@component/questionDetail/QuestionDetailHeader';
+// import QuestionDetailHeader from '@component/questionDetail/QuestionDetailHeader';
 import StyledBasicPage from '@config/style/styledCompoent';
 
 export default function QuestionDetailPage(): JSX.Element {
@@ -21,7 +21,7 @@ export default function QuestionDetailPage(): JSX.Element {
   const [isQuestionOpen, setQuestionToggle] = useState(false);
   const [isOpen, setToggle] = useState(false);
 
-  const { questionType } = questionState;
+  // const { questionType } = questionState;
 
   const handleReset = (e: MouseEvent) => {
     if (isOpen) {
@@ -51,10 +51,11 @@ export default function QuestionDetailPage(): JSX.Element {
         appendRight={<CompleteButton>완료</CompleteButton>}
       />
       <StyleQuestionPage>
-        <QuestionDetailHeader
+        {/* <QuestionDetailHeader
           questionIndex={type}
           questionType={questionType}
-        />
+          setValue={setValue}
+        /> */}
         <QuestionDetailBottom>
           {type === 3 ? (
             <AddButton text="설문 목록 보기" onClick={handleRouter} />

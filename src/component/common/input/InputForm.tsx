@@ -2,9 +2,8 @@ import { useCallback, useEffect, useRef } from 'react';
 
 import styled from '@emotion/styled';
 import { UseFormRegister } from 'react-hook-form';
-import { useSetRecoilState } from 'recoil';
 
-import { choiceType, questionValidationAtom } from '@src/atom/questionAtom';
+import { submitType } from '@src/component/question/QuestionCardList';
 
 const StyledTitleInput = styled.textarea<{
   inputBackground: string | undefined;
@@ -39,60 +38,65 @@ const StyledTitleInput = styled.textarea<{
   }
 `;
 
-export default function QuestionTitleInput({
+export type InputType = {
+  placeholder?: string;
+};
+
+export default function InputForm({
   questionIndex,
   placeholder,
   row,
   backgroundColor,
-  warning,
   register,
-}: {
-  placeholder?: string;
+  warning,
+}: InputType & {
   questionIndex: number;
   row: number;
   backgroundColor?: string;
   warning?: boolean;
-  register: UseFormRegister<{
-    text: string;
-    choices?: choiceType[] | undefined;
-  }>;
+  register: UseFormRegister<submitType>;
 }): JSX.Element {
-  const ref = useRef<HTMLTextAreaElement>(null);
-  const setQuestionValidation = useSetRecoilState(questionValidationAtom);
+  const textRef = useRef<HTMLTextAreaElement | null>(null);
+  const { ref, ...rest } = register(`questions.${questionIndex}.text`, {
+    required: true,
+  });
   useEffect(() => {
-    if (ref === null || ref.current === null) {
+    if (textRef === null || textRef.current === null) {
       return;
     }
-    ref.current.style.height = 'auto';
-    ref.current.style.height = `${ref.current.scrollHeight}px`;
+    textRef.current.style.height = 'auto';
+    textRef.current.style.height = `${textRef.current.scrollHeight}px`;
   }, []);
 
   useEffect(() => {
-    if (ref === null || ref.current === null) {
+    if (textRef === null || textRef.current === null) {
       return;
     }
 
-    ref.current.style.height = `${ref.current.scrollHeight} px`;
+    textRef.current.style.height = `${textRef.current.scrollHeight} px`;
   }, [row]);
 
   const handleResizeHeight = useCallback(() => {
-    if (ref === null || ref.current === null) {
+    if (textRef === null || textRef.current === null) {
       return;
     }
-    ref.current.style.height = 'auto';
-    ref.current.style.height = `${ref.current.scrollHeight + 1}px`;
-  }, [ref]);
+    textRef.current.style.height = 'auto';
+    textRef.current.style.height = `${textRef.current.scrollHeight + 1}px`;
+  }, [textRef]);
 
   return (
     <StyledTitleInput
       rows={row}
       inputBackground={backgroundColor}
       onInput={handleResizeHeight}
-      onFocus={() => setQuestionValidation(false)}
       placeholder={placeholder}
-      warning={warning}
       data-list={questionIndex}
-      {...{ ...register('text', { required: true }), ref }}
+      warning={warning}
+      {...rest}
+      ref={e => {
+        ref(e);
+        textRef.current = e;
+      }}
     ></StyledTitleInput>
   );
 }
