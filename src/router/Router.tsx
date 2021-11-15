@@ -31,13 +31,13 @@ export default function Router(): JSX.Element {
       <Screen path="/guide">
         <GuidePage />
       </Screen>
-      <Screen path="/responses/:responsesId/complete">
+      <Screen path="/survey/:surveyId/complete">
         <AnswerComplete />
       </Screen>
-      <Screen path="/responses/:responsesId">
+      <Screen path="/survey/:surveyId">
         <AnswerHome />
       </Screen>
-      <Screen path="/responses/:responsesId/:questionTypes">
+      <Screen path="/survey/:surveyId/:questionTypes">
         <AnswerDetailPage />
       </Screen>
       <Screen path="/survey/create/target">
