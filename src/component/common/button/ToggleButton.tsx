@@ -16,17 +16,17 @@ const StyledToggleButton = styled.button`
   padding: 0.6rem 0.8rem 0.5rem;
   border-radius: 4px;
   background-color: transparent;
-  color: #707070;
+  color: #141414;
   :focus {
     background-color: #f4f5f6;
   }
 `;
 
 const ButtonText = styled.span`
-  font-size: 1.4rem;
+  font-size: 1.5rem;
   font-weight: 400;
   margin-right: 0.8rem;
-  color: #707070;
+  color: #141414;
 `;
 
 const ToggleIcon = styled(ExpandIcon)`

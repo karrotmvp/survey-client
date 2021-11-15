@@ -1,5 +1,7 @@
 import styled from '@emotion/styled';
 
+import { targetList } from '@src/config/const/const';
+
 import TargetItem from './TargetItem';
 
 const StyledTargetList = styled.section`
@@ -8,15 +10,6 @@ const StyledTargetList = styled.section`
   grid-gap: 1.2rem;
   height: 40vh;
 `;
-
-const targetList = [
-  { title: '모든 고객님', subtitle: '매장 동네 근처 모든 고객님' },
-  {
-    title: '비즈프로필을 방문한 고객님',
-    subtitle: '사장님의 비즈프로필을 방문한 고객님',
-  },
-  { title: '단골', subtitle: '사장님의 비즈프로필을 단골로 추가한 고객님' },
-];
 
 export default function TargetList(): JSX.Element {
   return (

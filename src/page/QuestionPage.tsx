@@ -2,14 +2,16 @@ import { useState } from 'react';
 
 import styled from '@emotion/styled';
 import { useNavigator } from '@karrotframe/navigator';
-import { useRecoilValue, useResetRecoilState } from 'recoil';
+import { FieldError, useForm } from 'react-hook-form';
+import { useRecoilValue } from 'recoil';
 
 import NavBar from '@component/common/navbar/NavBar';
 import QuestionCardList from '@component/question/QuestionCardList';
 import StyledBasicPage from '@config/style/styledCompoent';
 import { useAnalytics } from '@src/analytics/faContext';
-import { questionListAtom, questionSelector } from '@src/atom/questionAtom';
+import { choiceType, questionTarget } from '@src/atom/questionAtom';
 import Modal from '@src/component/common/modal/Modal';
+import { targetList } from '@src/config/const/const';
 import useSubmit from '@src/hook/useSubmit';
 
 const CompleteButton = styled.button`
@@ -24,40 +26,121 @@ const CompleteButton = styled.button`
   }
 `;
 
+export type questionCardType = {
+  text: string;
+  choices?: choiceType[];
+  questionType: number;
+};
+
+export type submitType = {
+  questions: questionCardType[];
+};
+
+export type errorsType = {
+  questions?:
+    | {
+        text?: FieldError | undefined;
+        questionType?: FieldError | undefined;
+        choices?:
+          | {
+              value?: FieldError | undefined;
+              choiceId?: FieldError | undefined;
+            }[]
+          | undefined;
+      }[]
+    | undefined;
+};
+
+export function questionCheck(question: questionCardType[]): boolean {
+  const check = question.every(({ text }) => text);
+  const choicesCheck = question.map(({ questionType, choices }) => {
+    if (choices === undefined) {
+      return true;
+    }
+
+    return choices.every(({ value }) => {
+      if (questionType === 2) {
+        return true;
+      }
+      return value;
+    });
+  });
+
+  return check && choicesCheck.every(value => value);
+}
+
 export default function QuestionPage(): JSX.Element {
+  const targetIndex = useRecoilValue(questionTarget);
   const [isPopup, setPopup] = useState(false);
-  const restQuestion = useResetRecoilState(questionListAtom);
-  // const listValueState = useRecoilValue(questionListSelector);
-  const submitData = useRecoilValue(questionSelector);
-  // const isValidated = useSetRecoilState(questionValidationAtom);
+  const [submitData, setSubmitData] = useState<
+    (submitType & { title: string; target: number }) | undefined
+  >(undefined);
   const { replace } = useNavigator();
   const submit = useSubmit('/surveys');
   const fa = useAnalytics();
 
-  // const handleComplete = (e: MouseEvent) => {
-  //   if ((e.currentTarget as HTMLButtonElement).ariaDisabled === 'true') {
-  //     fa.logEvent('question_complete_button_disable_click');
-  //     isValidated(true);
-  //   } else {
-  //     fa.logEvent('question_complete_button_active_click');
-  //     setPopup(true);
-  //   }
-  // };
+  const {
+    handleSubmit,
+    register,
+    control,
+    setValue,
+    watch,
+    unregister,
+    clearErrors,
+    formState: { errors },
+  } = useForm<submitType>({
+    mode: 'onChange',
+    defaultValues: {
+      questions: [{ text: '', questionType: 3, choices: [{ value: '' }] }],
+    },
+  });
+
+  const questionList = watch('questions');
+
+  const onSubmit = (data: submitType) => {
+    setSubmitData({
+      title: 'example title',
+      target: targetIndex,
+      questions: data.questions.map(res => {
+        if (res.questionType === 2) {
+          return { text: res.text, questionType: res.questionType };
+        }
+        return res;
+      }),
+    });
+
+    setPopup(true);
+  };
 
   return (
     <>
       <NavBar
         type="BACK"
-        title="질문 작성"
+        title={`${targetList[targetIndex - 1].title} 대상 설문`}
         shadow
         appendRight={
-          <CompleteButton form="submitForm" type="submit">
+          <CompleteButton
+            aria-disabled={!questionCheck(questionList)}
+            form="submitForm"
+            type="submit"
+          >
             완료
           </CompleteButton>
         }
       />
       <StyledBasicPage>
-        <QuestionCardList />
+        <form id="submitForm" onSubmit={handleSubmit(onSubmit)}>
+          <QuestionCardList
+            {...{
+              register,
+              control,
+              setValue,
+              watch,
+              unregister,
+              errors,
+            }}
+          />
+        </form>
       </StyledBasicPage>
       {isPopup && (
         <Modal setPopup={setPopup}>
@@ -71,6 +154,7 @@ export default function QuestionPage(): JSX.Element {
           <div>
             <CancelButton
               onClick={() => {
+                clearErrors('questions');
                 setPopup(false);
                 fa.logEvent('question_modal_complete_button_cancel');
               }}
@@ -81,7 +165,6 @@ export default function QuestionPage(): JSX.Element {
               onClick={() => {
                 fa.logEvent('question_modal_complete_button_click');
                 submit(submitData);
-                restQuestion();
                 replace('/survey/create/complete');
               }}
             >

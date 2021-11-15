@@ -4,23 +4,21 @@ import styled from '@emotion/styled';
 import { Control, useFieldArray, UseFormRegister } from 'react-hook-form';
 
 import AlertToastModal from '@component/common/modal/TostModal';
-import { ReactComponent as PluseIcon } from '@config/icon/plus.svg';
+import { ReactComponent as ChoiceCircleIcon } from '@config/icon/choiceCircle.svg';
 import { useAnalytics } from '@src/analytics/faContext';
+import { errorsType, submitType } from '@src/page/QuestionPage';
 
-import { errorsType, submitType } from '../question/QuestionCardList';
 import ChoiceInputForm from './ChoiceInputForm';
 
 export default function ChoiceInputFormList({
   control,
   register,
   questionIndex,
-  questionType,
   errors,
 }: {
   control: Control<submitType>;
   register: UseFormRegister<submitType>;
   questionIndex: number;
-  questionType: number;
   errors: errorsType;
 }): JSX.Element {
   const elRefs = useRef<HTMLTextAreaElement[]>([]);
@@ -81,25 +79,34 @@ export default function ChoiceInputFormList({
           {...{ onInput, register, questionIndex, remove, index }}
         />
       ))}
-      <StyledChoiceButton type="button" onClick={handleClick}>
-        <PluseIcon /> 선택지 추가
-      </StyledChoiceButton>
+      <div className="choice_add_button">
+        <StyledCircle />
+        <StyledChoiceButton type="button" onClick={handleClick}>
+          선택지 추가
+        </StyledChoiceButton>
+      </div>
     </StyledQuestionChoiceList>
   );
 }
 
-const StyledChoiceButton = styled.button`
-  width: 100%;
+const StyledCircle = styled(ChoiceCircleIcon)`
+  height: 2rem;
+`;
 
-  border-radius: 25.5px;
-  display: flex;
+const StyledChoiceButton = styled.button`
+  width: fit-content;
+  text-decoration: underline;
   justify-content: flex-start;
   align-items: center;
-  padding: 0.9rem 1.6rem;
-  background-color: #f4f5f6;
-  font-size: 1.6rem;
-  font-weight: 400;
-  color: #707070;
+  margin-left: 0.4rem;
+  text-underline-offset: 4px;
+  padding: 0.9rem 0.6rem 1.5rem 0.6rem;
+  background-color: transparent;
+  line-height: 140%;
+  color: ${({ theme }) => theme.color.primaryOrange};
+  :focus {
+    background-color: #f4f5f6;
+  }
   svg {
     margin-right: 8px;
   }
@@ -112,4 +119,8 @@ const StyledQuestionChoiceList = styled.ul`
   display: grid;
   grid-gap: 1.2rem;
   grid-template-columns: auto;
+  .choice_add_button {
+    display: flex;
+    align-items: center;
+  }
 `;

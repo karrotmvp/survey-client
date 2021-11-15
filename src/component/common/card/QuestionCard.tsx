@@ -7,14 +7,10 @@ import {
   UseFormWatch,
 } from 'react-hook-form';
 
-import contents from '@config/const/const';
-import {
-  errorsType,
-  submitType,
-} from '@src/component/question/QuestionCardList';
+import { contents } from '@config/const/const';
 import ChoiceInputFormList from '@src/component/questionDetail/ChoiceInputFormList';
 import QuestionHeaderForm from '@src/component/questionDetail/QuestionHeaderForm';
-// import QuestionChoiceList from '@src/component/questionDetail/QuestionChoiceList';
+import { errorsType, submitType } from '@src/page/QuestionPage';
 
 import InputForm from '../input/InputForm';
 
@@ -59,6 +55,15 @@ const Divider = styled.div`
   background-color: #f4f4f4;
 `;
 
+const ErrorText = styled.h6`
+  font-size: 1.3rem;
+  line-height: 100%;
+  font-weight: 400;
+  color: #ff0000;
+  padding-left: 1.6rem;
+  margin-top: 0.8rem;
+`;
+
 export default function QuestionCard({
   questionIndex,
   watch,
@@ -88,12 +93,12 @@ export default function QuestionCard({
           register={register}
           questionIndex={questionIndex}
           placeholder={contents.placeholder.TEXT}
-          row={2}
+          row={1}
           backgroundColor={'#F4F5F6'}
           warning={Boolean(errors.questions?.[questionIndex]?.text)}
         />
         {errors.questions?.[questionIndex]?.text && (
-          <span>답변을 입력해주세요</span>
+          <ErrorText>답변을 입력해주세요</ErrorText>
         )}
 
         <StyledQuestionChoiceOrText>
@@ -103,7 +108,6 @@ export default function QuestionCard({
             <ChoiceInputFormList
               {...{
                 errors,
-                questionType,
                 register,
                 control,
                 questionIndex,

@@ -1,75 +1,40 @@
 import { MouseEvent, useEffect, useState } from 'react';
 
 import styled from '@emotion/styled';
-import { FieldError, useFieldArray, useForm } from 'react-hook-form';
+import {
+  Control,
+  useFieldArray,
+  UseFormRegister,
+  UseFormSetValue,
+  UseFormUnregister,
+  UseFormWatch,
+} from 'react-hook-form';
 
 import QuestionCard from '@component/common/card/QuestionCard';
 import AlertToastModal from '@component/common/modal/TostModal';
 import { ReactComponent as PlusIcon } from '@config/icon/plus.svg';
-import { choiceType } from '@src/atom/questionAtom';
 import { log } from '@src/config/utils/util';
+import { errorsType, questionCheck, submitType } from '@src/page/QuestionPage';
 
-const questionCheck = (question: questionType[]) => {
-  const check = question.every(({ text }) => text);
-  const choicesCheck = question.map(({ questionType, choices }) => {
-    if (choices === undefined) {
-      return true;
-    }
-
-    return choices.every(({ value }) => {
-      if (questionType === 2) {
-        return true;
-      }
-      return value;
-    });
-  });
-
-  return check && choicesCheck.every(value => value);
+type questionCardListType = {
+  register: UseFormRegister<submitType>;
+  control: Control<submitType>;
+  setValue: UseFormSetValue<submitType>;
+  watch: UseFormWatch<submitType>;
+  unregister: UseFormUnregister<submitType>;
+  errors: errorsType;
 };
 
-type questionType = {
-  text: string;
-  choices?: choiceType[];
-  questionType: number;
-};
-
-export type submitType = {
-  questions: questionType[];
-};
-
-export type errorsType = {
-  questions?:
-    | {
-        text?: FieldError | undefined;
-        questionType?: FieldError | undefined;
-        choices?:
-          | {
-              value?: FieldError | undefined;
-              choiceId?: FieldError | undefined;
-            }[]
-          | undefined;
-      }[]
-    | undefined;
-};
-
-export default function QuestionCardList(): JSX.Element {
+export default function QuestionCardList({
+  register,
+  control,
+  setValue,
+  watch,
+  unregister,
+  errors,
+}: questionCardListType): JSX.Element {
   const [isContentToastOpen, setContentToastOpen] = useState(false);
   const [isToastOpen, setToastOpen] = useState(false);
-
-  const {
-    handleSubmit,
-    register,
-    control,
-    setValue,
-    watch,
-    unregister,
-    formState: { errors },
-  } = useForm<submitType>({
-    mode: 'onChange',
-    defaultValues: {
-      questions: [{ text: '', questionType: 3, choices: [{ value: '' }] }],
-    },
-  });
 
   const { fields, append, remove } = useFieldArray({
     control,
@@ -102,21 +67,6 @@ export default function QuestionCardList(): JSX.Element {
     }, 1000);
   }, []);
 
-  const onSubmit = (data: submitType) => {
-    const submitdata = {
-      questions: data.questions.map(res => {
-        if (res.questionType === 2) {
-          return { text: res.text, questionType: res.questionType };
-        }
-        return res;
-      }),
-    };
-
-    if (process.env.NODE_ENV === 'development') {
-      console.log('submitdata : ', submitdata, data);
-    }
-  };
-
   return (
     <>
       <AlertToastModal
@@ -131,25 +81,24 @@ export default function QuestionCardList(): JSX.Element {
         setToastOpen={setContentToastOpen}
       />
       <StyledQuestionCardList>
-        <form id="submitForm" onSubmit={handleSubmit(onSubmit)}>
-          {fields &&
-            fields.map(({ id }, questionIndex) => (
-              <QuestionCard
-                key={id}
-                {...{
-                  register,
-                  control,
-                  setValue,
-                  watch,
-                  remove,
-                  unregister,
-                  errors,
-                  questionIndex,
-                }}
-              />
-            ))}
-        </form>
+        {fields &&
+          fields.map(({ id }, questionIndex) => (
+            <QuestionCard
+              key={id}
+              {...{
+                register,
+                control,
+                setValue,
+                watch,
+                remove,
+                unregister,
+                errors,
+                questionIndex,
+              }}
+            />
+          ))}
       </StyledQuestionCardList>
+
       {fields.length < 3 && (
         <AddQuestionButton
           type="button"

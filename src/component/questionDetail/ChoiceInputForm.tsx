@@ -4,33 +4,12 @@ import styled from '@emotion/styled';
 import { UseFormRegister } from 'react-hook-form';
 import { useSetRecoilState } from 'recoil';
 
+import { ReactComponent as ChoiceCircleIcon } from '@config/icon/choiceCircle.svg';
 import { ReactComponent as DeleteIcon } from '@config/icon/delete.svg';
 import { questionValidationAtom } from '@src/atom/questionAtom';
+import { submitType } from '@src/page/QuestionPage';
 
-import { submitType } from '../question/QuestionCardList';
-
-const StyledChoiceInput = styled.textarea`
-  resize: none;
-  outline: none;
-  width: 100%;
-  font-size: 1.6rem;
-  font-weight: 400;
-  line-height: 120%;
-  border: 1px dashed;
-  color: #141414;
-  background-color: transparent;
-  padding: 4px;
-  margin-right: 12px;
-  overflow-y: hidden;
-  :focus {
-    border: 1px dashed #fe7e35;
-  }
-  ::placeholder {
-    color: ${({ theme }) => theme.color.neutralBlack.placeholder};
-  }
-`;
-
-type questionChoicetype = {
+type questionChoiceType = {
   index: number;
   warning?: boolean;
   register: UseFormRegister<submitType>;
@@ -40,8 +19,7 @@ type questionChoicetype = {
   questionIndex: number;
 };
 
-// eslint-disable-next-line arrow-body-style
-const ChoiceInputForm = forwardRef<HTMLTextAreaElement, questionChoicetype>(
+const ChoiceInputForm = forwardRef<HTMLTextAreaElement, questionChoiceType>(
   ({ index, onInput, remove, register, warning, choiceRef, questionIndex }) => {
     const [isFocus, setFocus] = useState(false);
     const { ref, ...rest } = register(
@@ -59,6 +37,9 @@ const ChoiceInputForm = forwardRef<HTMLTextAreaElement, questionChoicetype>(
         warning={warning}
         isFocus={isFocus}
       >
+        <div className="choice_circle_Icon">
+          <ChoiceCircleIcon />
+        </div>
         <StyledChoiceInput
           rows={1}
           ref={e => {
@@ -66,7 +47,7 @@ const ChoiceInputForm = forwardRef<HTMLTextAreaElement, questionChoicetype>(
             choiceRef(e);
           }}
           {...rest}
-          placeholder={`선택지 ${index + 1}`}
+          placeholder={`객관식 선택지 ${index + 1}`}
           data-list={index}
           onInput={onInput}
           onFocus={() => {
@@ -83,23 +64,41 @@ const ChoiceInputForm = forwardRef<HTMLTextAreaElement, questionChoicetype>(
 
 export default ChoiceInputForm;
 
+const StyledChoiceInput = styled.textarea`
+  resize: none;
+  outline: none;
+  border: none;
+  width: 100%;
+  margin-left: 0.8rem;
+  font-size: 1.6rem;
+  font-weight: 400;
+  line-height: 120%;
+  border-bottom: 1px solid;
+  color: #141414;
+  background-color: transparent;
+  padding: 5.5px 0;
+  overflow-y: hidden;
+  :focus {
+    border-color: #fe7e35;
+  }
+  ::placeholder {
+    color: ${({ theme }) => theme.color.neutralBlack.placeholder};
+  }
+`;
+
 const StyledQuestionChoice = styled.li<{
   warning: boolean | undefined;
   isFocus: boolean;
 }>`
-  padding: 0.5rem 1.6rem;
   width: 100%;
-  background: ${({ warning, isFocus }) => {
-    if (warning) return '#FFE6E6';
-    if (isFocus) return '#fff2eb';
-    return '#f4f5f6';
-  }};
-  border-radius: 25.5px;
   display: flex;
   align-items: center;
   justify-content: center;
   transition: 0.3s;
-
+  .choice_circle_Icon {
+    align-items: center;
+    display: flex;
+  }
   textarea {
     border-color: ${({ warning }) => (warning ? '#FF0000' : '#b1b2b2')};
   }
