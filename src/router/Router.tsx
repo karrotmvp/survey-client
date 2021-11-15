@@ -31,6 +31,18 @@ export default function Router(): JSX.Element {
       <Screen path="/guide">
         <GuidePage />
       </Screen>
+      <Screen path="/feedback">
+        <FeedBackPage />
+      </Screen>
+      <Screen path="/survey/create/target">
+        <TargetPage />
+      </Screen>
+      <Screen path="/survey/create/question">
+        <QuestionPage />
+      </Screen>
+      <Screen path="/survey/create/complete">
+        <EndPage />
+      </Screen>
       <Screen path="/survey/:surveyId/complete">
         <AnswerComplete />
       </Screen>
@@ -39,18 +51,6 @@ export default function Router(): JSX.Element {
       </Screen>
       <Screen path="/survey/:surveyId/:questionTypes">
         <AnswerDetailPage />
-      </Screen>
-      <Screen path="/survey/create/target">
-        <TargetPage />
-      </Screen>
-      <Screen path="/survey/create/question">
-        <QuestionPage />
-      </Screen>
-      <Screen path="/feedback">
-        <FeedBackPage />
-      </Screen>
-      <Screen path="/survey/create/complete">
-        <EndPage />
       </Screen>
     </Navigator>
   );
