@@ -128,9 +128,9 @@ type respondedType = {
 export default function AnswerHome(): JSX.Element {
   const { push } = useNavigator();
   const params = useQueryParams<{ questionCategory: string }>();
-  const { responsesId } =
-    useParams<{ responsesId?: string; questionNumber?: string }>();
-  if (!responsesId) throw new Error('responsesId none');
+  const { surveyId } =
+    useParams<{ surveyId?: string; questionNumber?: string }>();
+  if (!surveyId) throw new Error('surveyId none');
 
   const questionCategory = params.questionCategory
     ? params.questionCategory
@@ -144,12 +144,12 @@ export default function AnswerHome(): JSX.Element {
   const setBizUser = useSetRecoilState(responseUserAtom);
   const setQuestion = useSetRecoilState(questionListAtom);
 
-  const getSurveyData = useGet<questionDataType>(`/surveys/${responsesId}`);
+  const getSurveyData = useGet<questionDataType>(`/surveys/${surveyId}`);
   const getSurveyUserResponded = useGet<respondedType>(
-    `responses/surveys/${responsesId}/responded`,
+    `responses/surveys/${surveyId}/responded`,
   );
   const getSurveyBrief = useGet<surveyBriefType>(
-    `/surveys/brief/${responsesId}`,
+    `/surveys/brief/${surveyId}`,
     true,
   );
 
@@ -174,8 +174,8 @@ export default function AnswerHome(): JSX.Element {
         }
       })();
     }
-    fa.logEvent(`response_onboard_show`, { responsesId });
-    fa.logEvent(`${responsesId}_response_onboard_show`);
+    fa.logEvent(`response_onboard_show`, { surveyId });
+    fa.logEvent(`${surveyId}_response_onboard_show`);
     fa.setUserId(uuidv4());
   }, []);
 
@@ -185,18 +185,20 @@ export default function AnswerHome(): JSX.Element {
         const data = await getSurveyUserResponded();
         if (data?.responded) {
           setToastOpen(true);
-          fa.logEvent(`response_login_button_click_responded`, { responsesId });
-          fa.logEvent(`${responsesId}_response_login_button_click_responded`);
+          fa.logEvent(`response_login_button_click_responded`, {
+            surveyId,
+          });
+          fa.logEvent(`${surveyId}_response_login_button_click_responded`);
           return;
         }
         const res = await getSurveyData();
         if (!res) return;
-        fa.logEvent(`response_login_button_click`, { responsesId });
-        fa.logEvent(`${responsesId}_response_login_button_click`);
+        fa.logEvent(`response_login_button_click`, { surveyId });
+        fa.logEvent(`${surveyId}_response_login_button_click`);
         const { questions } = res;
         setQuestion(questions);
 
-        push(`/responses/${responsesId}/1`);
+        push(`/survey/${surveyId}/1`);
       })();
     }
   }, [jwt]);

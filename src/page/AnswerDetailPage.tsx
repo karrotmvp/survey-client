@@ -22,10 +22,10 @@ export type InputType = {
 export default function AnswerDetailPage(): JSX.Element {
   const questions = useRecoilValue(questionListAtom);
   const fa = useAnalytics();
-  const { questionTypes, responsesId } =
-    useParams<{ responsesId?: string; questionTypes?: string }>();
-  if (!questionTypes || !responsesId)
-    throw new Error('questionNumber or responsesId none');
+  const { questionTypes, surveyId } =
+    useParams<{ surveyId?: string; questionTypes?: string }>();
+  if (!questionTypes || !surveyId)
+    throw new Error('questionNumber or surveyId none');
 
   const questionNumber = Number.isNaN(+questionTypes) ? 1 : +questionTypes;
   const { questionType } = questions[questionNumber - 1];
@@ -48,21 +48,21 @@ export default function AnswerDetailPage(): JSX.Element {
 
     if (!isLast) {
       fa.logEvent(`response_question_${questionNumber}_next_button_click`, {
-        responsesId,
+        surveyId,
       });
       fa.logEvent(
-        `${responsesId}_response_question_${questionNumber}_next_button_click`,
+        `${surveyId}_response_question_${questionNumber}_next_button_click`,
       );
-      push(`/responses/${responsesId}/${+questionNumber + 1}`);
+      push(`/survey/${surveyId}/${+questionNumber + 1}`);
     }
   };
 
   useEffect(() => {
     fa.logEvent(`response_question_${questionNumber}_show`, {
-      responsesId,
+      surveyId,
       questionLength,
     });
-    fa.logEvent(`${responsesId}_response_question_${questionNumber}_show`, {
+    fa.logEvent(`${surveyId}_response_question_${questionNumber}_show`, {
       questionLength,
     });
   }, []);

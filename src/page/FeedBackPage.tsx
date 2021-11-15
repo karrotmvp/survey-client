@@ -9,7 +9,7 @@ import mini from '@src/api/mini';
 import { questionFeedBack } from '@src/atom/questionAtom';
 import Modal from '@src/component/common/modal/Modal';
 import NavBar from '@src/component/common/navbar/NavBar';
-import contents from '@src/config/const/const';
+import { contents } from '@src/config/const/const';
 import useSubmit from '@src/hook/useSubmit';
 
 export default function FeedBackPage(): JSX.Element {

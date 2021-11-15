@@ -14,17 +14,17 @@ import NavBar from '@src/component/common/navbar/NavBar';
 export default function AnswerComplete(): JSX.Element {
   const history = useHistory();
   const { push } = useNavigator();
-  const { responsesId } = useParams<{ responsesId?: string }>();
-  if (!responsesId) throw new Error('questionNumber or responsesId none');
+  const { surveyId } = useParams<{ surveyId?: string }>();
+  if (!surveyId) throw new Error('questionNumber or surveyId none');
 
   const fa = useAnalytics();
   const bizProfile = useRecoilValue(responseUserAtom);
 
   useEffect(() => {
     fa.logEvent(`response_complete_page_show`, {
-      responsesId,
+      surveyId,
     });
-    fa.logEvent(`${responsesId}_response_complete_page_show`);
+    fa.logEvent(`${surveyId}_response_complete_page_show`);
   }, []);
 
   useEffect(() => {
@@ -46,9 +46,9 @@ export default function AnswerComplete(): JSX.Element {
       return;
     }
     fa.logEvent(`response_complete_bizprofile_click`, {
-      responsesId,
+      surveyId,
     });
-    fa.logEvent(`${responsesId}_response_complete_bizprofile_click`);
+    fa.logEvent(`${surveyId}_response_complete_bizprofile_click`);
     window.location.href = bizProfile.profileUrl;
   };
 
