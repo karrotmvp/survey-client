@@ -36,7 +36,7 @@ const StyledTostModal = styled.div<{ bottom: string | undefined }>`
   animation-fill-mode: forwards;
   position: fixed;
   bottom: ${({ bottom }) => bottom || ''};
-  top: 3rem;
+  top: ${({ bottom }) => (bottom ? '' : '3rem')};
   left: 50%;
   transform: translate(-50%, 0);
   z-index: 99;
