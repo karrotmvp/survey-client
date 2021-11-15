@@ -131,6 +131,7 @@ export default function AnswerHome(): JSX.Element {
         const { questions } = res;
         setQuestion(questions);
         setToastOpen(false);
+        setCode('');
         push(`/survey/${surveyId}/1`);
       })();
     }
