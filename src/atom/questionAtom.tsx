@@ -15,15 +15,6 @@ export type questionAtomType = {
   choices?: choiceType[];
 };
 
-const questionFormListAtom = atom<{ questionType: 2 | 3 }[]>({
-  key: 'questionListAtom',
-  default: [
-    {
-      questionType: 3,
-    },
-  ],
-});
-
 const questionListAtom = atom<questionAtomType[]>({
   key: 'questionListAtom',
   default: [
@@ -112,7 +103,6 @@ const questionSelector = selector({
 });
 
 export {
-  questionFormListAtom,
   questionSelector,
   questionAtom,
   questionFeedBack,

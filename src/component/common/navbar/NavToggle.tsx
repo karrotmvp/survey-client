@@ -1,18 +1,17 @@
 import styled from '@emotion/styled';
 
 const StyledNavToggle = styled.ul`
-  padding: 0.8rem 2.4rem;
+  padding: 1.2rem;
   background: #ffffff;
-  box-shadow: 0 0 0.8rem 0.1rem rgba(0, 0, 0, 0.1);
-  border-radius: 1.6rem;
+  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
   list-style: none;
   position: absolute;
   z-index: 99999999;
 `;
 const NavList = styled.li`
-  width: 10.6rem;
-  padding: 0.8rem;
-  font-size: 1.6rem;
+  padding: 1.2rem;
+  font-size: 1.5rem;
   text-align: center;
   line-height: 120%;
   color: #707070;

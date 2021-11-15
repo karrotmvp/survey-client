@@ -35,13 +35,15 @@ const StyledTostModal = styled.div<{ bottom: string | undefined }>`
   animation: modal 3s ease-in-out;
   animation-fill-mode: forwards;
   position: fixed;
-  bottom: ${({ bottom }) => bottom || '3rem'};
+  bottom: ${({ bottom }) => bottom || ''};
+  top: 3rem;
   left: 50%;
   transform: translate(-50%, 0);
   z-index: 99;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 8px;
   width: 31.2rem;
+  z-index: 999999999;
 `;
 
 const ToastText = styled.h4`

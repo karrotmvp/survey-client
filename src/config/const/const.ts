@@ -1,6 +1,6 @@
 const contents = {
   placeholder: {
-    TEXT: '고객님 의견이 필요하거나 질문하고 싶은 것을 적어주세요',
+    TEXT: '우리 동네 이웃에게 묻고 싶은 것을 적어주세요',
     DESCRIPTION: '질문에 덧붙일 것이 있다면 적어주세요 (옵션)',
     CHOICE: '객관식 답변',
     FEEDBACK: '자유롭게 의견을 남겨주세요!',
@@ -18,4 +18,19 @@ const contents = {
   },
 };
 
-export default contents;
+const targetList = [
+  { title: '모든 고객님', subtitle: '매장 동네 근처 모든 고객님' },
+  {
+    title: '비즈프로필을 방문한 고객님',
+    subtitle: '사장님의 비즈프로필을 방문한 고객님',
+  },
+  { title: '단골', subtitle: '사장님의 비즈프로필을 단골로 추가한 고객님' },
+];
+
+enum questionTypes {
+  TITLETYPE = 1,
+  TEXTTYPE,
+  CHOICETYPE,
+}
+
+export { contents, targetList, questionTypes };

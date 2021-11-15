@@ -28,10 +28,10 @@ export default function ResponseChoiceInput({
   questionChoice,
   setResponse,
 }: InputType & { questionChoice: choiceType[] }): JSX.Element {
-  const { questionTypes, responsesId } =
-    useParams<{ responsesId?: string; questionTypes?: string }>();
-  if (!questionTypes || !responsesId)
-    throw new Error('questionNumber or responsesId none');
+  const { questionTypes, surveyId } =
+    useParams<{ surveyId?: string; questionTypes?: string }>();
+  if (!questionTypes || !surveyId)
+    throw new Error('questionNumber or surveyId none');
 
   const questionNumber = Number.isNaN(+questionTypes) ? 1 : +questionTypes;
   const response = useRecoilValue(responseListAtom);

@@ -69,14 +69,14 @@ export default function BizProfile({
   profileUrl,
   imageUrl,
 }: bizProfileType): JSX.Element {
-  const { responsesId } = useParams<{ responsesId?: string }>();
-  if (!responsesId) throw new Error('questionNumber or responsesId none');
+  const { surveyId } = useParams<{ surveyId?: string }>();
+  if (!surveyId) throw new Error('questionNumber or surveyId none');
 
   const fa = useAnalytics();
 
   const handleClickProfile = () => {
-    fa.logEvent(`response_home_bizprofile_click`, { responsesId });
-    fa.logEvent(`${responsesId}_response_home_bizprofile_click`);
+    fa.logEvent(`response_home_bizprofile_click`, { surveyId });
+    fa.logEvent(`${surveyId}_response_home_bizprofile_click`);
     window.location.href = profileUrl;
   };
   const shortenRegin = region.split(' ');
