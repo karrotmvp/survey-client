@@ -34,6 +34,7 @@ export default function ResponseTextInput({
     : '';
 
   const [text, setText] = useState(initialText);
+  // eslint-disable-next-line no-console
   console.log(setText);
   // const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
   //   setText(e.target.value);

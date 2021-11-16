@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { useEffect, useState } from 'react';
 
 import styled from '@emotion/styled';
@@ -6,7 +7,7 @@ import {
   useParams,
   useQueryParams,
 } from '@karrotframe/navigator';
-import { useSetRecoilState } from 'recoil';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 import { v4 as uuidv4 } from 'uuid';
 
 import LoginButton from '@component/common/button/LogInButton';
@@ -24,6 +25,179 @@ import BizProfile, {
 } from '@src/component/common/button/BizProfile';
 import useGet from '@src/hook/useGet';
 import useLogin from '@src/hook/useLogin';
+
+const questionCategories = [
+  '의견을 알려주세요',
+  '메뉴 추천받아요',
+  '퀴즈 풀어봐요',
+];
+
+type questionDataType = {
+  surveyId: number;
+  title: string;
+  description: string;
+  target: number;
+  questions: questionAtomType[];
+};
+
+type surveyBriefType = {
+  estimatedTime: number;
+  questionCount: number;
+  title: string;
+  bizProfile: bizProfileType;
+  target: string;
+  createdAt: string;
+};
+type respondedType = {
+  responded: string;
+};
+
+export default function AnswerHome(): JSX.Element {
+  const { push } = useNavigator();
+  const params = useQueryParams<{ questionCategory: string }>();
+  const { surveyId } =
+    useParams<{ surveyId?: string; questionNumber?: string }>();
+  if (!surveyId) throw new Error('surveyId none');
+
+  const questionCategory = params.questionCategory
+    ? params.questionCategory
+    : '0';
+
+  const jwt = useLogin(authorizationSelector);
+  const [isToastOpen, setToastOpen] = useState(false);
+  const [briefData, setBrief] = useState<surveyBriefType | null>(null);
+
+  const [code, setCode] = useRecoilState(codeAtom);
+  const setBizUser = useSetRecoilState(responseUserAtom);
+  const setQuestion = useSetRecoilState(questionListAtom);
+
+  const getSurveyData = useGet<questionDataType>(`/surveys/${surveyId}`);
+  const getSurveyUserResponded = useGet<respondedType>(
+    `responses/surveys/${surveyId}/responded`,
+  );
+  const getSurveyBrief = useGet<surveyBriefType>(
+    `/surveys/brief/${surveyId}`,
+    true,
+  );
+
+  const auth = useMiniAuth(process.env.REACT_APP_APP_ID || '');
+  const fa = useAnalytics();
+
+  async function getResponseHomeData() {
+    const data = await getSurveyUserResponded();
+    const res = await getSurveyData();
+    console.log(isToastOpen);
+    if (data?.responded) {
+      setToastOpen(true);
+      fa.logEvent(`response_login_button_click_responded`, {
+        surveyId,
+      });
+      fa.logEvent(`${surveyId}_response_login_button_click_responded`);
+      return;
+    }
+
+    fa.logEvent(`response_login_button_click`, { surveyId });
+    fa.logEvent(`${surveyId}_response_login_button_click`);
+    if (!res) return;
+    const { questions } = res;
+    setQuestion(questions);
+    setToastOpen(false);
+    setCode('');
+    push(`/survey/${surveyId}/1`);
+  }
+
+  const click = async () => {
+    const resCode = await auth();
+
+    if (resCode) {
+      setCode(resCode);
+
+      console.log(code);
+      if (code === resCode) {
+        getResponseHomeData();
+      }
+    }
+  };
+
+  useEffect(() => {
+    console.log('useEffect');
+    if (!briefData) {
+      (async function getResponseBriefData() {
+        const res = await getSurveyBrief();
+        if (res && briefData === null) {
+          setBrief(res);
+          setBizUser(res.bizProfile);
+        }
+      })();
+    }
+    fa.logEvent(`response_onboard_show`, { surveyId });
+    fa.logEvent(`${surveyId}_response_onboard_show`);
+    fa.setUserId(uuidv4());
+  }, [briefData]);
+
+  useEffect(() => {
+    if (jwt.state === 'hasValue') {
+      getResponseHomeData();
+    }
+  }, [jwt]);
+
+  return (
+    <>
+      <NavBar
+        type="CLOSE"
+        appendCenter={
+          <LogoWrapper>
+            <Logo />
+            <TitleLogo />
+          </LogoWrapper>
+        }
+      />
+      <StyledHomePage>
+        <div className="response_home_center">
+          <QuestionCategoryTag>
+            {questionCategories[+questionCategory]}
+          </QuestionCategoryTag>
+
+          {briefData ? (
+            <>
+              <SurveyTitle>{briefData.title}</SurveyTitle>
+
+              <SurveySubtitle>
+                {briefData.questionCount}질문 <Dot /> 예상시간{' '}
+                {briefData.estimatedTime} 초
+              </SurveySubtitle>
+              <BizProfile {...briefData.bizProfile} />
+            </>
+          ) : (
+            <div></div>
+          )}
+        </div>
+
+        <div className="logIn_button">
+          <SurveySubtitle>
+            설문을 작성하시면 매장을 개선하는데 큰 도움이 돼요
+          </SurveySubtitle>
+
+          <AlertTostModal
+            text={'이미 답변한 설문입니다'}
+            bottom={'9rem'}
+            {...{ isToastOpen, setToastOpen }}
+            time={3000}
+          />
+
+          <LoginButton onClick={click} text={'설문 답변하기'} />
+        </div>
+      </StyledHomePage>
+    </>
+  );
+}
+const Dot = styled.div`
+  background-color: #c4c4c4;
+  width: 2px;
+  height: 2px;
+  border-radius: 50%;
+  margin: 0 0.8rem;
+`;
 
 const StyledHomePage = styled.section`
   background: #ffff;
@@ -90,166 +264,3 @@ const Logo = styled(LogoIcon)`
 `;
 
 const TitleLogo = styled(MuddaIcon)``;
-
-const questionCategories = [
-  '의견을 알려주세요',
-  '메뉴 추천받아요',
-  '퀴즈 풀어봐요',
-];
-
-const Dot = styled.div`
-  background-color: #c4c4c4;
-  width: 2px;
-  height: 2px;
-  border-radius: 50%;
-  margin: 0 0.8rem;
-`;
-
-type questionDataType = {
-  surveyId: number;
-  title: string;
-  description: string;
-  target: number;
-  questions: questionAtomType[];
-};
-
-type surveyBriefType = {
-  estimatedTime: number;
-  questionCount: number;
-  title: string;
-  bizProfile: bizProfileType;
-  target: string;
-  createdAt: string;
-};
-type respondedType = {
-  responded: string;
-};
-
-export default function AnswerHome(): JSX.Element {
-  const { push } = useNavigator();
-  const params = useQueryParams<{ questionCategory: string }>();
-  const { surveyId } =
-    useParams<{ surveyId?: string; questionNumber?: string }>();
-  if (!surveyId) throw new Error('surveyId none');
-
-  const questionCategory = params.questionCategory
-    ? params.questionCategory
-    : '0';
-
-  const jwt = useLogin(authorizationSelector);
-  const [isToastOpen, setToastOpen] = useState(false);
-  const [briefData, setBrief] = useState<surveyBriefType | null>(null);
-
-  const setCode = useSetRecoilState(codeAtom);
-  const setBizUser = useSetRecoilState(responseUserAtom);
-  const setQuestion = useSetRecoilState(questionListAtom);
-
-  const getSurveyData = useGet<questionDataType>(`/surveys/${surveyId}`);
-  const getSurveyUserResponded = useGet<respondedType>(
-    `responses/surveys/${surveyId}/responded`,
-  );
-  const getSurveyBrief = useGet<surveyBriefType>(
-    `/surveys/brief/${surveyId}`,
-    true,
-  );
-
-  const auth = useMiniAuth(process.env.REACT_APP_APP_ID || '');
-  const fa = useAnalytics();
-
-  const click = async () => {
-    const resCode = await auth();
-
-    if (resCode) {
-      setCode(resCode);
-    }
-  };
-
-  useEffect(() => {
-    if (!briefData) {
-      (async function getResponseBriefData() {
-        const res = await getSurveyBrief();
-        if (res && briefData === null) {
-          setBrief(res);
-          setBizUser(res.bizProfile);
-        }
-      })();
-    }
-    fa.logEvent(`response_onboard_show`, { surveyId });
-    fa.logEvent(`${surveyId}_response_onboard_show`);
-    fa.setUserId(uuidv4());
-  }, []);
-
-  useEffect(() => {
-    if (jwt.state === 'hasValue') {
-      (async function getResponseHomeData() {
-        const data = await getSurveyUserResponded();
-        if (data?.responded) {
-          setToastOpen(true);
-          fa.logEvent(`response_login_button_click_responded`, {
-            surveyId,
-          });
-          fa.logEvent(`${surveyId}_response_login_button_click_responded`);
-          return;
-        }
-        const res = await getSurveyData();
-        if (!res) return;
-        fa.logEvent(`response_login_button_click`, { surveyId });
-        fa.logEvent(`${surveyId}_response_login_button_click`);
-        const { questions } = res;
-        setQuestion(questions);
-
-        push(`/survey/${surveyId}/1`);
-      })();
-    }
-  }, [jwt]);
-
-  return (
-    <>
-      <NavBar
-        type="CLOSE"
-        appendCenter={
-          <LogoWrapper>
-            <Logo />
-            <TitleLogo />
-          </LogoWrapper>
-        }
-      />
-      <StyledHomePage>
-        <div className="response_home_center">
-          <QuestionCategoryTag>
-            {questionCategories[+questionCategory]}
-          </QuestionCategoryTag>
-
-          {briefData ? (
-            <>
-              <SurveyTitle>{briefData.title}</SurveyTitle>
-
-              <SurveySubtitle>
-                {briefData.questionCount}질문 <Dot /> 예상시간{' '}
-                {briefData.estimatedTime} 초
-              </SurveySubtitle>
-              <BizProfile {...briefData.bizProfile} />
-            </>
-          ) : (
-            <div></div>
-          )}
-        </div>
-
-        <div className="logIn_button">
-          <SurveySubtitle>
-            설문을 작성하시면 매장을 개선하는데 큰 도움이 돼요
-          </SurveySubtitle>
-
-          <AlertTostModal
-            text={'이미 답변한 설문입니다'}
-            bottom={'9rem'}
-            {...{ isToastOpen, setToastOpen }}
-            time={3000}
-          />
-
-          <LoginButton onClick={click} text={'설문 답변하기'} />
-        </div>
-      </StyledHomePage>
-    </>
-  );
-}

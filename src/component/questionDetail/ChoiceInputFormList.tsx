@@ -117,7 +117,7 @@ const StyledChoiceButton = styled.button`
 
 const StyledQuestionChoiceList = styled.ul`
   display: grid;
-  grid-gap: 1.2rem;
+  grid-gap: 1.6rem;
   grid-template-columns: auto;
   .choice_add_button {
     display: flex;
