@@ -9,7 +9,7 @@ const global = css`
 
   @font-face {
     font-family: 'SpoqaHanSansNeo';
-    font-weight: 300;
+    font-weight: 400;
     src: url('./font/SpoqaHanSansNeo/SpoqaHanSansNeo-Regular.ttf')
       format('truetype');
   }
