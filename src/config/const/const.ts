@@ -19,12 +19,21 @@ const contents = {
 };
 
 const targetList = [
-  { title: '모든 고객님', subtitle: '매장 동네 근처 모든 고객님' },
+  {
+    title: '모든 고객님',
+    subtitle: '매장 동네 근처 모든 고객님',
+    imgUrl: './../../img/target_all_Img.png',
+  },
   {
     title: '비즈프로필을 방문한 고객님',
-    subtitle: '사장님의 비즈프로필을 방문한 고객님',
+    subtitle: `사장님의 비즈프로필을\n 방문한 고객님`,
+    imgUrl: './../../img/target_visited_Img.png',
   },
-  { title: '단골', subtitle: '사장님의 비즈프로필을 단골로 추가한 고객님' },
+  {
+    title: '단골',
+    subtitle: `사장님의 비즈프로필을\n 단골로 추가한 고객님`,
+    imgUrl: './../../img/target_customer_Img.png',
+  },
 ];
 
 enum questionTypes {
