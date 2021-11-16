@@ -1,5 +1,5 @@
 // import { ChangeEvent, useEffect, useState } from 'react';
-import { useEffect, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 
 import styled from '@emotion/styled';
 import { useParams } from '@karrotframe/navigator';
@@ -10,7 +10,7 @@ import { responseListAtom } from '@src/atom/responseAtom';
 import { InputType } from '@src/page/AnswerDetailPage';
 
 import ResponseNextButton from '../common/button/ResponseNextButton';
-// import QuestionTitleInput from '../common/input/QuestionTitleInput';
+import QuestionTitleInput from '../common/input/QuestionTitleInput';
 
 const StyledTextInput = styled.section`
   display: flex;
@@ -34,11 +34,10 @@ export default function ResponseTextInput({
     : '';
 
   const [text, setText] = useState(initialText);
-  // eslint-disable-next-line no-console
-  console.log(setText);
-  // const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
-  //   setText(e.target.value);
-  // };
+
+  const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    setText(e.target.value);
+  };
 
   const handleNextClick = () => {
     setResponse({ answer: text });
@@ -60,13 +59,13 @@ export default function ResponseTextInput({
   }, [history]);
   return (
     <StyledTextInput>
-      {/* <QuestionTitleInput
+      <QuestionTitleInput
         value={text}
         onChange={handleChange}
         placeholder={'답변을 입력해주세요'}
         questionIndex={+questionNumber}
         row={1}
-      /> */}
+      />
 
       <ResponseNextButton
         disable={text === ''}

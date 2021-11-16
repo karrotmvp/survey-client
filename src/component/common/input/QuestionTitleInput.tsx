@@ -1,10 +1,9 @@
-import { useCallback, useEffect, useRef } from 'react';
+import { ChangeEvent, useCallback, useEffect, useRef } from 'react';
 
 import styled from '@emotion/styled';
-import { UseFormRegister } from 'react-hook-form';
 import { useSetRecoilState } from 'recoil';
 
-import { choiceType, questionValidationAtom } from '@src/atom/questionAtom';
+import { questionValidationAtom } from '@src/atom/questionAtom';
 
 const StyledTitleInput = styled.textarea<{
   inputBackground: string | undefined;
@@ -39,24 +38,27 @@ const StyledTitleInput = styled.textarea<{
   }
 `;
 
+export type InputType = {
+  value: string;
+  onChange: (e: ChangeEvent<HTMLTextAreaElement>) => void;
+  placeholder?: string;
+};
+
 export default function QuestionTitleInput({
   questionIndex,
+  onChange,
+  value,
   placeholder,
   row,
   backgroundColor,
   warning,
-  register,
 }: {
   placeholder?: string;
   questionIndex: number;
   row: number;
   backgroundColor?: string;
   warning?: boolean;
-  register: UseFormRegister<{
-    text: string;
-    choices?: choiceType[] | undefined;
-  }>;
-}): JSX.Element {
+} & InputType): JSX.Element {
   const ref = useRef<HTMLTextAreaElement>(null);
   const setQuestionValidation = useSetRecoilState(questionValidationAtom);
   useEffect(() => {
@@ -92,7 +94,8 @@ export default function QuestionTitleInput({
       placeholder={placeholder}
       warning={warning}
       data-list={questionIndex}
-      {...{ ...register('text', { required: true }), ref }}
+      onChange={onChange}
+      value={value}
     ></StyledTitleInput>
   );
 }
