@@ -83,11 +83,39 @@ export default function AnswerHome(): JSX.Element {
   const auth = useMiniAuth(process.env.REACT_APP_APP_ID || '');
   const fa = useAnalytics();
 
+  async function getResponseHomeData() {
+    const data = await getSurveyUserResponded();
+    const res = await getSurveyData();
+    console.log(isToastOpen);
+    if (data?.responded) {
+      setToastOpen(true);
+      fa.logEvent(`response_login_button_click_responded`, {
+        surveyId,
+      });
+      fa.logEvent(`${surveyId}_response_login_button_click_responded`);
+      return;
+    }
+
+    fa.logEvent(`response_login_button_click`, { surveyId });
+    fa.logEvent(`${surveyId}_response_login_button_click`);
+    if (!res) return;
+    const { questions } = res;
+    setQuestion(questions);
+    setToastOpen(false);
+    setCode('');
+    push(`/survey/${surveyId}/1`);
+  }
+
   const click = async () => {
     const resCode = await auth();
 
     if (resCode) {
       setCode(resCode);
+
+      console.log(code);
+      if (code === resCode) {
+        getResponseHomeData();
+      }
     }
   };
 
@@ -108,32 +136,8 @@ export default function AnswerHome(): JSX.Element {
   }, [briefData]);
 
   useEffect(() => {
-    console.log(code);
-    console.log(window.location.hash.split('/'));
-
     if (jwt.state === 'hasValue') {
-      (async function getResponseHomeData() {
-        const data = await getSurveyUserResponded();
-        const res = await getSurveyData();
-        console.log(isToastOpen);
-        if (data?.responded) {
-          setToastOpen(true);
-          fa.logEvent(`response_login_button_click_responded`, {
-            surveyId,
-          });
-          fa.logEvent(`${surveyId}_response_login_button_click_responded`);
-          return;
-        }
-
-        fa.logEvent(`response_login_button_click`, { surveyId });
-        fa.logEvent(`${surveyId}_response_login_button_click`);
-        if (!res) return;
-        const { questions } = res;
-        setQuestion(questions);
-        setToastOpen(false);
-        setCode('');
-        push(`/survey/${surveyId}/1`);
-      })();
+      getResponseHomeData();
     }
   }, [jwt]);
 
