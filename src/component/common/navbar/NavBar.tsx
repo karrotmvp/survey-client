@@ -49,7 +49,7 @@ const NavTitle = styled.span`
   margin-left: 1.6rem;
   color: #141414;
   font-size: 1.6rem;
-  font-weight: 600;
+  font-weight: ${({ theme }) => theme.fontWeight.regular};
   white-space: nowrap;
 `;
 
