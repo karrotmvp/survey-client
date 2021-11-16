@@ -32,6 +32,7 @@ export default function SurveyHome(): ReactElement {
   return (
     <StyledSurveyHomePage>
       <NavBar
+        reverse={true}
         type="CLOSE"
         appendCenter={
           <LogoWrapper>
