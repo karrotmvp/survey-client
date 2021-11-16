@@ -3,16 +3,22 @@ import { useState } from 'react';
 import styled from '@emotion/styled';
 import { useNavigator } from '@karrotframe/navigator';
 import { FieldError, useForm } from 'react-hook-form';
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 
 import NavBar from '@component/common/navbar/NavBar';
 import QuestionCardList from '@component/question/QuestionCardList';
 import StyledBasicPage from '@config/style/styledCompoent';
 import { useAnalytics } from '@src/analytics/faContext';
+import { authorizationBizSelector, bizCodeAtom } from '@src/api/authorization';
 import { choiceType, questionTarget } from '@src/atom/questionAtom';
 import Modal from '@src/component/common/modal/Modal';
 import { targetList } from '@src/config/const/const';
+import { useMiniBizAuth } from '@src/hook/useAuth';
+import useGet from '@src/hook/useGet';
+import useLogin from '@src/hook/useLogin';
 import useSubmit from '@src/hook/useSubmit';
+
+import { userType } from './HomePage';
 
 const CompleteButton = styled.button`
   background-color: transparent;
@@ -79,6 +85,21 @@ export default function QuestionPage(): JSX.Element {
   const submit = useSubmit('/surveys');
   const fa = useAnalytics();
 
+  const getData = useGet<userType>('/members/me');
+  const getBizId = useMiniBizAuth(process.env.REACT_APP_APP_ID || '');
+  const setCode = useSetRecoilState(bizCodeAtom);
+  const jwt = useLogin(authorizationBizSelector);
+
+  const handleClick = async () => {
+    const resBizId = await getBizId();
+    if (!resBizId) {
+      return;
+    }
+
+    setCode(resBizId);
+    console.log(jwt);
+  };
+
   const {
     handleSubmit,
     register,
@@ -129,6 +150,14 @@ export default function QuestionPage(): JSX.Element {
         }
       />
       <StyledBasicPage>
+        <button onClick={handleClick}>계정변경</button>
+        <button
+          onClick={() => {
+            getData().then(console.log);
+          }}
+        >
+          계정
+        </button>
         <form id="submitForm" onSubmit={handleSubmit(onSubmit)}>
           <QuestionCardList
             {...{
