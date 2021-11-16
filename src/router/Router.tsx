@@ -1,6 +1,5 @@
 import { Navigator, Screen, INavigatorTheme } from '@karrotframe/navigator';
 
-import HomePage from '@page/HomePage';
 import QuestionPage from '@page/QuestionPage';
 import AnswerComplete from '@src/page/AnswerComplete';
 import AnswerDetailPage from '@src/page/AnswerDetailPage';
@@ -8,6 +7,7 @@ import AnswerHome from '@src/page/AnswerHome';
 import EndPage from '@src/page/EndPage';
 import FeedBackPage from '@src/page/FeedBackPage';
 import GuidePage from '@src/page/GuidePage';
+import SurveyHome from '@src/page/SurveyHome';
 import TargetPage from '@src/page/TargetPage';
 
 export default function Router(): JSX.Element {
@@ -26,7 +26,7 @@ export default function Router(): JSX.Element {
   return (
     <Navigator theme={checkMobileType()}>
       <Screen path="/">
-        <HomePage />
+        <SurveyHome />
       </Screen>
       <Screen path="/guide">
         <GuidePage />

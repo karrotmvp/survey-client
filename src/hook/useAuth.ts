@@ -13,6 +13,8 @@ const useMiniAuth = (
   const getCodeAsync = useCallback(() => {
     const urlSearchParams = new URLSearchParams(location.search);
     const isPreload = urlSearchParams.get('preload');
+    // eslint-disable-next-line no-console
+    console.log(isPreload);
     if (urlSearchParams.has('code') || isPreload === 'true') {
       if (onClose) {
         onClose();
