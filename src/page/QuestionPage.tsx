@@ -10,6 +10,7 @@ import QuestionCardList from '@component/question/QuestionCardList';
 import StyledBasicPage from '@config/style/styledCompoent';
 import { useAnalytics } from '@src/analytics/faContext';
 import { choiceType, questionTarget } from '@src/atom/questionAtom';
+import { userSelector } from '@src/atom/userAtom';
 import Modal from '@src/component/common/modal/Modal';
 import { targetList } from '@src/config/const/const';
 import useSubmit from '@src/hook/useSubmit';
@@ -78,7 +79,7 @@ export default function QuestionPage(): JSX.Element {
   const { replace } = useNavigator();
   const submit = useSubmit('/surveys');
   const fa = useAnalytics();
-
+  const title = useRecoilValue(userSelector);
   const {
     handleSubmit,
     register,
@@ -99,7 +100,7 @@ export default function QuestionPage(): JSX.Element {
 
   const onSubmit = (data: submitType) => {
     setSubmitData({
-      title: 'example title',
+      title,
       target: targetIndex,
       questions: data.questions.map(res => {
         if (res.questionType === 2) {
