@@ -17,7 +17,7 @@ export default function SurveyHome(): ReactElement {
   const getBizId = useMiniBizAuth(process.env.REACT_APP_APP_ID || '');
 
   useEffect(() => {
-    (async function () {
+    (async function loadBizPrest() {
       const id = await getBizId();
       setCode(id);
     })();
@@ -25,6 +25,7 @@ export default function SurveyHome(): ReactElement {
 
   useEffect(() => {
     if (jwt.state === 'hasValue') {
+      // eslint-disable-next-line no-console
       console.log(jwt.contents);
     }
   }, [jwt]);
