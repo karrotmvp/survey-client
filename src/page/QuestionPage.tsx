@@ -7,11 +7,13 @@ import { useRecoilValue } from 'recoil';
 
 import NavBar from '@component/common/navbar/NavBar';
 import QuestionCardList from '@component/question/QuestionCardList';
+import { ReactComponent as ExpandIcon } from '@config/icon/expand_more.svg';
 import StyledBasicPage from '@config/style/styledCompoent';
 import { useAnalytics } from '@src/analytics/faContext';
 import { choiceType, questionTarget } from '@src/atom/questionAtom';
 import { userSelector } from '@src/atom/userAtom';
 import Modal from '@src/component/common/modal/Modal';
+import TargetList from '@src/component/common/target/TargetList';
 import { targetList } from '@src/config/const/const';
 import useSubmit from '@src/hook/useSubmit';
 
@@ -73,6 +75,7 @@ export function questionCheck(question: questionCardType[]): boolean {
 export default function QuestionPage(): JSX.Element {
   const targetIndex = useRecoilValue(questionTarget);
   const [isPopup, setPopup] = useState(false);
+  const [isTargetPopup, setTargetPopup] = useState(false);
   const [submitData, setSubmitData] = useState<
     (submitType & { title: string; target: number }) | undefined
   >(undefined);
@@ -90,12 +93,21 @@ export default function QuestionPage(): JSX.Element {
     clearErrors,
     formState: { errors },
   } = useForm<submitType>({
-    mode: 'onChange',
     defaultValues: {
-      questions: [{ text: '', questionType: 3, choices: [{ value: '' }] }],
+      questions: [
+        { text: '', questionType: 3, choices: [{ value: '' }, { value: '' }] },
+      ],
     },
   });
-
+  const TargetChangeModal = styled.div`
+    padding: 2rem 1.6rem 2.8rem 1.6rem;
+    .target_change_title {
+      font-size: 1.6rem;
+      font-weight: ${({ theme }) => theme.fontWeight.regular};
+      text-align: center;
+      margin-bottom: 2.4rem;
+    }
+  `;
   const questionList = watch('questions');
 
   const onSubmit = (data: submitType) => {
@@ -112,12 +124,27 @@ export default function QuestionPage(): JSX.Element {
 
     setPopup(true);
   };
+  const TargetModalButton = styled.button`
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 2.4rem 1.6rem;
+    .target_title {
+      font-size: 1.5rem;
+      line-height: 100%;
+      color: ${({ theme }) => theme.color.neutralBlack.main};
+      font-weight: ${({ theme }) => theme.fontWeight.regular};
+    }
+    background-color: transparent;
+    border-bottom: 1px solid #f4f4f4;
+    margin-top: 5.6rem;
+  `;
 
   return (
     <>
       <NavBar
         type="BACK"
-        title={`${targetList[targetIndex - 1].title} 대상 설문`}
+        title={`설문 만들기`}
         shadow
         appendRight={
           <CompleteButton
@@ -129,6 +156,12 @@ export default function QuestionPage(): JSX.Element {
           </CompleteButton>
         }
       />
+      <TargetModalButton onClick={() => setTargetPopup(true)}>
+        <h3 className="target_title">
+          {targetList[targetIndex - 1].title} 대상
+        </h3>
+        <ExpandIcon />
+      </TargetModalButton>
       <StyledBasicPage>
         <form id="submitForm" onSubmit={handleSubmit(onSubmit)}>
           <QuestionCardList
@@ -143,6 +176,14 @@ export default function QuestionPage(): JSX.Element {
           />
         </form>
       </StyledBasicPage>
+      {isTargetPopup && (
+        <Modal setPopup={setTargetPopup}>
+          <TargetChangeModal>
+            <h1 className="target_change_title">설문 대상 선택</h1>
+            <TargetList isKing={true} brief />
+          </TargetChangeModal>
+        </Modal>
+      )}
       {isPopup && (
         <Modal setPopup={setPopup}>
           <ConfirmModal>
