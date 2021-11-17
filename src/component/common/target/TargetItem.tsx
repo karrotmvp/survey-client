@@ -9,7 +9,10 @@ const StyledTargetItem = styled.button`
   border-radius: 8px;
   padding: 2rem 1.5rem;
   display: flex;
-
+  width: 100%;
+  :disabled {
+    opacity: 0.4;
+  }
   &[aria-selected='true'] {
     background: #fedecc;
   }
@@ -43,12 +46,14 @@ type TargetItemType = {
   subtitle: string;
   index: number;
   imgUrl: string;
+  disabled: boolean;
 };
 export default function TargetItem({
   title,
   subtitle,
   index,
   imgUrl,
+  disabled,
 }: TargetItemType): JSX.Element {
   const fa = useAnalytics();
   const [target, setTarget] = useRecoilState(questionTarget);
@@ -59,22 +64,45 @@ export default function TargetItem({
   };
 
   return (
-    <StyledTargetItem
-      onClick={handleClick}
-      aria-selected={target === index + 1}
-    >
-      <img className="target_img" src={imgUrl} />
-      <div className="target_text">
-        <TargetTitle>{title}</TargetTitle>
-        <TargetSubtitle>
-          {subtitle.split('\n').map(txt => (
-            <>
-              {txt}
-              <br />
-            </>
-          ))}
-        </TargetSubtitle>
-      </div>
-    </StyledTargetItem>
+    <div style={{ position: 'relative', width: '100%' }}>
+      <StyledTargetItem
+        disabled={disabled}
+        onClick={handleClick}
+        aria-selected={target === index + 1}
+      >
+        <img className="target_img" src={imgUrl} />
+        <div className="target_text">
+          <TargetTitle>{title}</TargetTitle>
+          <TargetSubtitle>
+            {subtitle.split('\n').map((txt, idx) => (
+              <SplitText key={idx} txt={txt} />
+            ))}
+          </TargetSubtitle>
+        </div>
+      </StyledTargetItem>
+      {index !== 0 && <CustomerKingTag>단골왕 사장님만</CustomerKingTag>}
+    </div>
+  );
+}
+
+const CustomerKingTag = styled.div`
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  border-bottom-right-radius: 4px;
+  padding: 0.8rem 0.6rem;
+  font-size: 1.2rem;
+  font-weight: ${({ theme }) => theme.fontWeight.medium};
+  color: ${({ theme }) => theme.color.primaryOrange};
+  background-color: ${({ theme }) => theme.color.primaryOrangeLight};
+  opacity: 1;
+`;
+
+function SplitText({ txt }: { txt: string }): JSX.Element {
+  return (
+    <>
+      {txt}
+      <br />
+    </>
   );
 }

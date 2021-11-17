@@ -1,12 +1,16 @@
 // import { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import styled from '@emotion/styled';
 import { useNavigator } from '@karrotframe/navigator';
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useRecoilValueLoadable } from 'recoil';
+
 // import { useHistory } from 'react-router-dom';
 
 import NavBar from '@component/common/navbar/NavBar';
+import { getBizprofile } from '@src/api/authorization';
 import { questionTarget } from '@src/atom/questionAtom';
+import Modal from '@src/component/common/modal/Modal';
 import TargetList from '@src/component/common/target/TargetList';
 
 // import mini from '@src/api/mini';
@@ -75,7 +79,8 @@ import TargetList from '@src/component/common/target/TargetList';
 //   margin: 0 auto;
 // `;
 export default function TargetPage(): JSX.Element {
-  // const [isPopup, setPopup] = useState(false);
+  const [isPopup, setPopup] = useState(false);
+  const userData = useRecoilValueLoadable(getBizprofile);
   // const history = useHistory();
   // const alarmPost = useSubmit('/notifications/chat');
   // useEffect(() => {
@@ -105,8 +110,13 @@ export default function TargetPage(): JSX.Element {
   // };
   const { push } = useNavigator();
   const target = useRecoilValue(questionTarget);
-  const isKing = true;
+  const isKing = false;
 
+  useEffect(() => {
+    if (userData.contents !== '' && userData.state === 'hasValue') {
+      console.log(userData.contents.name);
+    }
+  }, [userData]);
   return (
     <>
       <NavBar type="BACK" title="설문 대상 선택" />
@@ -121,10 +131,16 @@ export default function TargetPage(): JSX.Element {
               사장님, 우리 동네 이웃에게 <br /> 설문을 돌려보세요
             </TargetTitle>
           )}
-          <TargetKingButton>단골왕 혜택</TargetKingButton>
+          <TargetKingButton
+            onClick={() => {
+              setPopup(true);
+            }}
+          >
+            단골왕 혜택
+          </TargetKingButton>
         </div>
 
-        <TargetList />
+        <TargetList isKing={isKing} />
       </StyledTargetPage>
       <NextButton
         disabled={target === -1}
@@ -132,31 +148,81 @@ export default function TargetPage(): JSX.Element {
       >
         다음
       </NextButton>
-      {/* {isPopup && (
+      {isPopup && (
         <Modal setPopup={setPopup}>
-          <ModalTitle>나중에 채팅받기</ModalTitle>
-          <ModalImg src="./img/alarmImg.png" />
-          <ConfirmModal>
-            설문 내용이 떠오르지 않나요?
-            <br />
-            언제든 만들 수 있도록 링크를
-            <br />
-            채팅으로 보내드려요
-          </ConfirmModal>
-
-          <ModalButtons>
-            <CancelButton onClick={handleAlarmCancel}>
-              알림받지 않고 나가기
-            </CancelButton>
-            <ConfirmButton onClick={handleAlarmClose}>
-              나중에 채팅받기
-            </ConfirmButton>
-          </ModalButtons>
+          <StyledModal>
+            <h1 className="target_modal_title">단골왕 사장님이란?</h1>
+            <h3 className="target_modal_subtitle">
+              단골 수 100명 이상 사장님은 <br /> 단골왕이 될 수 있어요
+            </h3>
+            <TargetModalImg />
+            <h3 className="target_modal_subtitle subtitle_biz">
+              비즈프로필 소식을 쓰면 우리 매장 단골이 늘어요
+            </h3>
+            <button
+              onClick={() => {
+                window.location.href = userData.contents.profileUrl;
+              }}
+              className="target_modal_biz_button subtitle_biz target_modal_subtitle"
+            >
+              비즈프로필 소식 쓰러 가기
+            </button>
+          </StyledModal>
         </Modal>
-      )} */}
+      )}
     </>
   );
 }
+
+// const TargetKingSection = styled.section`
+// border-radius: 8px;
+// background-color: ${( { theme } ) => theme.color.primaryOrangeLight};
+
+// .target_modal_section_title {
+// font-family: ${( { theme } ) => theme.fontFamily.title};
+// font-size: 1.5rem;
+//     color: ${( { theme } ) => theme.color.primaryOrange};
+//     font-weight: ${( { theme } ) => theme.fontWeight.bold};
+// }
+// `
+
+const TargetModalImg = styled.section`
+  width: 100%;
+  height: 0;
+  padding-top: calc(224 / 264 * 100%);
+  background: url('../../img/targetKingImg.png') center center / cover no-repeat;
+  position: relative;
+  margin-bottom: 2.2rem;
+  margin-top: 2rem;
+  border-radius: 4px;
+`;
+
+const StyledModal = styled.div`
+  padding: 3.6rem 2.4rem 2.8rem 2.4rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  .target_modal_title {
+    font-size: 1.8rem;
+    color: ${({ theme }) => theme.color.neutralBlack.main};
+    font-weight: ${({ theme }) => theme.fontWeight.bold};
+    margin-bottom: 1.2rem;
+  }
+  .target_modal_subtitle {
+    font-size: 1.5rem;
+    color: ${({ theme }) => theme.color.neutralBlack.text};
+    font-weight: ${({ theme }) => theme.fontWeight.regular};
+  }
+  .subtitle_biz {
+    font-size: 1.3rem;
+    line-height: 160%;
+  }
+  .target_modal_biz_button {
+    text-decoration: underline;
+    background-color: transparent;
+    text-align: center;
+  }
+`;
 
 const StyledTargetPage = styled.section`
   background: #ffff;

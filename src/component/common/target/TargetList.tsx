@@ -10,11 +10,19 @@ const StyledTargetList = styled.section`
   grid-gap: 1.2rem;
 `;
 
-export default function TargetList(): JSX.Element {
+export default function TargetList({
+  isKing,
+}: {
+  isKing: boolean;
+}): JSX.Element {
   return (
     <StyledTargetList>
       {targetList.map(({ title, subtitle, imgUrl }, index) => (
-        <TargetItem key={index} {...{ imgUrl, title, subtitle, index }} />
+        <TargetItem
+          disabled={!isKing && index !== 0}
+          key={`target${index}`}
+          {...{ imgUrl, title, subtitle, index }}
+        />
       ))}
     </StyledTargetList>
   );

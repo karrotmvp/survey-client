@@ -34,6 +34,40 @@ const authorizationBizSelector = selector({
   },
 });
 
+type userType = {
+  data: {
+    daangnId: string;
+    name: string;
+    imageUrl: string;
+    role: string;
+    region: string;
+    profileUrl: string;
+  };
+};
+const getBizprofile = selector({
+  key: 'getBizprofile',
+  get: async ({ get }) => {
+    const jwt = await get(authorizationBizSelector);
+    const token = jwt.data;
+    axios.defaults.baseURL = process.env.REACT_APP_API_URL;
+
+    const Authorization = 'X-AUTH-TOKEN';
+    if (!token) return '';
+    axios.defaults.headers.common[Authorization] = token;
+    try {
+      const data: AxiosResponse<userType> = await axios.get<userType>(
+        `/members/me`,
+      );
+
+      return data.data.data;
+    } catch (e) {
+      // eslint-disable-next-line no-console
+      console.error(e);
+      return '';
+    }
+  },
+});
+
 const authorizationSelector = selector({
   key: 'authorizationSelector',
   get: async ({ get }) => {
@@ -60,4 +94,5 @@ export {
   bizCodeAtom,
   codeAtom,
   authorizationSelector,
+  getBizprofile,
 };
