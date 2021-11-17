@@ -62,6 +62,7 @@ const global = css`
     width: 100%;
     height: 100vh;
     font-size: 10px;
+    color: #141414;
   }
   button {
     border: none;

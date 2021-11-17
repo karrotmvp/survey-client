@@ -91,7 +91,7 @@ export default function QuestionCard({
 
         <InputForm
           register={register}
-          questionIndex={questionIndex}
+          path={`questions.${questionIndex}.text`}
           placeholder={contents.placeholder.TEXT}
           row={1}
           backgroundColor={'#F4F5F6'}

@@ -12,6 +12,7 @@ import StyledBasicPage from '@config/style/styledCompoent';
 import { useAnalytics } from '@src/analytics/faContext';
 import { choiceType, questionTarget } from '@src/atom/questionAtom';
 import { userSelector } from '@src/atom/userAtom';
+import QuestionTitleCard from '@src/component/common/card/QuestionTitleCard';
 import Modal from '@src/component/common/modal/Modal';
 import TargetList from '@src/component/common/target/TargetList';
 import { targetList } from '@src/config/const/const';
@@ -36,10 +37,12 @@ export type questionCardType = {
 };
 
 export type submitType = {
+  title: string;
   questions: questionCardType[];
 };
 
 export type errorsType = {
+  title?: FieldError | undefined;
   questions?:
     | {
         text?: FieldError | undefined;
@@ -94,9 +97,8 @@ export default function QuestionPage(): JSX.Element {
     formState: { errors },
   } = useForm<submitType>({
     defaultValues: {
-      questions: [
-        { text: '', questionType: 3, choices: [{ value: '' }, { value: '' }] },
-      ],
+      title: '',
+      questions: [],
     },
   });
   const TargetChangeModal = styled.div`
@@ -162,6 +164,7 @@ export default function QuestionPage(): JSX.Element {
         </h3>
         <ExpandIcon />
       </TargetModalButton>
+      <QuestionTitleCard {...{ register, watch }} />
       <StyledBasicPage>
         <form id="submitForm" onSubmit={handleSubmit(onSubmit)}>
           <QuestionCardList

@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef } from 'react';
 
 import styled from '@emotion/styled';
-import { UseFormRegister } from 'react-hook-form';
+import { FieldPath, UseFormRegister } from 'react-hook-form';
 
 import { submitType } from '@src/page/QuestionPage';
 
@@ -26,8 +26,8 @@ const StyledTitleInput = styled.textarea<{
   box-sizing: border-box;
   border-radius: 8px;
   border-color: ${({ warning }) => (warning ? '#FF0000' : '#c9c9c9')};
-  background-color: ${({ inputBackground, warning }) =>
-    warning ? '#FFF6F6' : inputBackground || 'transparent'};
+  background-color: ${({ inputBackground }) =>
+    inputBackground || 'transparent'};
   &::placeholder {
     color: #8b8b8b;
   }
@@ -44,21 +44,23 @@ export type InputType = {
 };
 
 export default function InputForm({
-  questionIndex,
+  path,
   placeholder,
   row,
   backgroundColor,
   register,
   warning,
+  handleFocus,
 }: InputType & {
-  questionIndex: number;
+  path: FieldPath<submitType>;
   row: number;
   backgroundColor?: string;
   warning?: boolean;
+  handleFocus?: () => void;
   register: UseFormRegister<submitType>;
 }): JSX.Element {
   const textRef = useRef<HTMLTextAreaElement | null>(null);
-  const { ref, ...rest } = register(`questions.${questionIndex}.text`, {
+  const { ref, ...rest } = register(path, {
     required: true,
   });
   useEffect(() => {
@@ -90,8 +92,8 @@ export default function InputForm({
       rows={row}
       inputBackground={backgroundColor}
       onInput={handleResizeHeight}
+      onFocus={handleFocus}
       placeholder={placeholder}
-      data-list={questionIndex}
       warning={warning}
       {...rest}
       ref={e => {
