@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef } from 'react';
 
 import styled from '@emotion/styled';
-import { UseFormRegister } from 'react-hook-form';
+import { FieldPath, UseFormRegister } from 'react-hook-form';
 
 import { submitType } from '@src/page/QuestionPage';
 
@@ -43,21 +43,23 @@ export type InputType = {
 };
 
 export default function InputForm({
-  questionIndex,
+  path,
   placeholder,
   row,
   backgroundColor,
   register,
   warning,
+  handleFocus,
 }: InputType & {
-  questionIndex: number;
+  path: FieldPath<submitType>;
   row: number;
   backgroundColor?: string;
   warning?: boolean;
+  handleFocus?: () => void;
   register: UseFormRegister<submitType>;
 }): JSX.Element {
   const textRef = useRef<HTMLTextAreaElement | null>(null);
-  const { ref, ...rest } = register(`questions.${questionIndex}.text`, {
+  const { ref, ...rest } = register(path, {
     required: true,
   });
   useEffect(() => {
@@ -89,8 +91,8 @@ export default function InputForm({
       rows={row}
       inputBackground={backgroundColor}
       onInput={handleResizeHeight}
+      onFocus={handleFocus}
       placeholder={placeholder}
-      data-list={questionIndex}
       warning={warning}
       {...rest}
       ref={e => {
