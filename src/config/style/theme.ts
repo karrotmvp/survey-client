@@ -33,9 +33,11 @@ const theme: Theme = {
     normal: 'SpoqaHanSansNeo',
   },
   fontWeight: {
-    normal: '400',
-    bold: '700',
-    bold2: '900',
+    thin: '100',
+    light: '200',
+    regular: '400',
+    medium: '600',
+    bold: '900',
   },
   color: {
     primaryOrange: '#FE7E35',

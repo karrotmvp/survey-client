@@ -26,16 +26,15 @@ const StyledTitleInput = styled.textarea<{
   box-sizing: border-box;
   border-radius: 8px;
   border-color: ${({ warning }) => (warning ? '#FF0000' : '#c9c9c9')};
-  background-color: ${({ inputBackground, warning }) =>
-    warning ? '#FFF6F6' : inputBackground || 'transparent'};
+  background-color: ${({ inputBackground }) =>
+    inputBackground || 'transparent'};
   &::placeholder {
     color: #8b8b8b;
   }
   &:focus {
     outline: none;
-    border-color: ${({ theme }) => theme.color.primaryOrange};
-    background-color: ${({ inputBackground }) =>
-      inputBackground ? '#FFF2EB' : 'transparent'};
+    border-color: ${({ theme, warning }) =>
+      warning ? '#FF0000' : theme.color.primaryOrange};
   }
 `;
 

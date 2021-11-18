@@ -7,9 +7,11 @@ declare module '@emotion/react' {
       normal: string;
     };
     fontWeight: {
-      normal: string;
+      thin: string;
+      light: string;
+      regular: string;
+      medium: string;
       bold: string;
-      bold2: string;
     };
     color: {
       primaryOrange: string;
