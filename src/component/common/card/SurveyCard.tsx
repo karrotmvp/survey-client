@@ -1,63 +1,73 @@
 import styled from '@emotion/styled';
+import { useNavigator } from '@karrotframe/navigator';
 
-import IconButton from '@component/common/button/IconButton';
-import { ReactComponent as TrashIcon } from '@config/icon/trash_can.svg';
-
-type SurveyCardType = {
-  title: string;
-  answer: number;
-  date: string;
-};
+import { surveyItemType } from '@src/page/SurveyHome';
 
 const StyledSurveyCard = styled.li`
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: 136px;
-  background-color: #fff;
-  border-radius: 20px;
-  padding: 1rem;
-  justify-content: space-between;
-`;
+  padding: 2.2rem 1.6rem;
+  border-bottom: 1px solid #f4f4f4;
+  .survey_card_column {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.8rem;
+    span {
+      display: block;
+      font-size: 1.2rem;
+    }
+    .column_create {
+      font-weight: ${({ theme }) => theme.fontWeight.medium};
+      color: #c9c9c9;
+    }
 
-const SurveyCardTitle = styled.span`
-  font-size: 18px;
-`;
-
-const SurveyCardSubtitle = styled.span`
-  font-size: 0.8rem;
-  display: flex;
-  align-items: center;
-`;
-
-const SurveyCardColumn = styled.div`
-  display: flex;
-  justify-content: space-between;
-  color: ${({ theme }) => theme.color.gray};
-  svg {
-    margin: 0 5px;
+    .column_target {
+      font-weight: ${({ theme }) => theme.fontWeight.bold};
+      color: ${({ theme }) => theme.color.primaryOrange};
+    }
   }
 `;
 
+const SurveyCardTitle = styled.span`
+  font-size: 1.6rem;
+  font-weight: ${({ theme }) => theme.fontWeight.regular};
+`;
+
+const SurveyCardSubtitle = styled.span`
+  font-size: 1.3rem;
+  margin-top: 0.8rem;
+  font-weight: ${({ theme }) => theme.fontWeight.regular};
+`;
+
 export default function SurveyCard({
+  createdAt,
+  responseCount,
+  surveyId,
+  target,
   title,
-  answer,
-  date,
-}: SurveyCardType): JSX.Element {
+}: surveyItemType): JSX.Element {
+  const { push } = useNavigator();
+
+  const convertDate = (date: string): string => {
+    const currentDate = new Date(date);
+    return `${currentDate.getMonth()}월 ${currentDate.getDate()}일`;
+  };
   return (
-    <StyledSurveyCard>
+    <StyledSurveyCard
+      onClick={() => {
+        push(`/survey/aggregation/${surveyId}`);
+      }}
+    >
+      <div className="survey_card_column">
+        <span className="column_target">{target}</span>
+        <span className="column_create">{convertDate(createdAt)}</span>
+      </div>
       <SurveyCardTitle>{title}</SurveyCardTitle>
-      <SurveyCardColumn>
-        <SurveyCardSubtitle>
-          답변 {answer} {date}
-        </SurveyCardSubtitle>
-        <IconButton
-          text="삭제"
-          buttonColor="WHITE"
-          buttonSize="SMALL"
-          icon={<TrashIcon />}
-        />
-      </SurveyCardColumn>
+
+      {responseCount !== 0 && (
+        <SurveyCardSubtitle>답변 {responseCount}</SurveyCardSubtitle>
+      )}
     </StyledSurveyCard>
   );
 }
