@@ -6,6 +6,7 @@ import { useSetRecoilState } from 'recoil';
 
 import { ReactComponent as ChoiceCircleIcon } from '@config/icon/choiceCircle.svg';
 import { ReactComponent as DeleteIcon } from '@config/icon/delete.svg';
+import { ReactComponent as WarningIcon } from '@config/icon/warning.svg';
 import { questionValidationAtom } from '@src/atom/questionAtom';
 import { submitType } from '@src/page/QuestionPage';
 
@@ -40,29 +41,54 @@ const ChoiceInputForm = forwardRef<HTMLTextAreaElement, questionChoiceType>(
         <div className="choice_circle_Icon">
           <ChoiceCircleIcon />
         </div>
-        <StyledChoiceInput
-          rows={1}
-          ref={e => {
-            ref(e);
-            choiceRef(e);
-          }}
-          {...rest}
-          placeholder={`객관식 선택지 ${index + 1}`}
-          data-list={index}
-          onInput={onInput}
-          onFocus={() => {
-            setFocus(true);
-            setQuestionValidation(false);
-          }}
-          onBlur={() => setFocus(false)}
-        />
-        {index !== 0 && <DeleteIcon onClick={onDelete} data-list={index} />}
+        <div>
+          <StyledChoiceInput
+            rows={1}
+            ref={e => {
+              ref(e);
+              choiceRef(e);
+            }}
+            {...rest}
+            placeholder={`객관식 선택지 ${index + 1}`}
+            data-list={index}
+            onInput={onInput}
+            onFocus={() => {
+              setFocus(true);
+              setQuestionValidation(false);
+            }}
+            onBlur={() => setFocus(false)}
+          />
+          {warning && (
+            <ErrorText>
+              <WarningIcon style={{ marginRight: '0.4rem' }} />
+              답변을 입력해주세요
+            </ErrorText>
+          )}
+        </div>
+        {index > 1 && (
+          <DeleteIcon
+            style={{ marginLeft: '0.8rem' }}
+            onClick={onDelete}
+            data-list={index}
+          />
+        )}
       </StyledQuestionChoice>
     );
   },
 );
 
 export default ChoiceInputForm;
+
+const ErrorText = styled.h6`
+  font-size: 1.3rem;
+  line-height: 100%;
+  display: flex;
+  align-items: center;
+  font-weight: ${({ theme }) => theme.fontWeight.regular};
+  color: #ff0000;
+  margin-top: 0.8rem;
+  padding-left: 0.8rem;
+`;
 
 const StyledChoiceInput = styled.textarea`
   resize: none;
@@ -101,5 +127,9 @@ const StyledQuestionChoice = styled.li<{
   }
   textarea {
     border-color: ${({ warning }) => (warning ? '#FF0000' : '#b1b2b2')};
+
+    :focus {
+      border-color: ${({ warning }) => (warning ? '#FF0000' : '##fe7e35 ')};
+    }
   }
 `;

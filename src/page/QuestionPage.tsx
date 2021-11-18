@@ -92,7 +92,9 @@ export default function QuestionPage(): JSX.Element {
   } = useForm<submitType>({
     mode: 'onChange',
     defaultValues: {
-      questions: [{ text: '', questionType: 3, choices: [{ value: '' }] }],
+      questions: [
+        { text: '', questionType: 3, choices: [{ value: '' }, { value: '' }] },
+      ],
     },
   });
 
