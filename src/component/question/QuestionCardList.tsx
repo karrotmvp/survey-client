@@ -48,10 +48,11 @@ export default function QuestionCardList({
     if ((e.currentTarget as HTMLButtonElement).ariaDisabled === 'true') {
       setContentToastOpen(true);
     } else if (questionList.length < 3) {
-      append(
-        { text: '', questionType: 3, choices: [{ value: '' }] },
-        { shouldFocus: false },
-      );
+      append({
+        text: '',
+        questionType: 3,
+        choices: [{ value: '' }, { value: '' }],
+      });
     }
   };
 

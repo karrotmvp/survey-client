@@ -8,6 +8,7 @@ import {
 } from 'react-hook-form';
 
 import { contents } from '@config/const/const';
+import { ReactComponent as WarningIcon } from '@config/icon/warning.svg';
 import ChoiceInputFormList from '@src/component/questionDetail/ChoiceInputFormList';
 import QuestionHeaderForm from '@src/component/questionDetail/QuestionHeaderForm';
 import { errorsType, submitType } from '@src/page/QuestionPage';
@@ -58,7 +59,9 @@ const Divider = styled.div`
 const ErrorText = styled.h6`
   font-size: 1.3rem;
   line-height: 100%;
-  font-weight: 400;
+  display: flex;
+  align-items: center;
+  font-weight: ${({ theme }) => theme.fontWeight.regular};
   color: #ff0000;
   padding-left: 1.6rem;
   margin-top: 0.8rem;
@@ -98,7 +101,10 @@ export default function QuestionCard({
           warning={Boolean(errors.questions?.[questionIndex]?.text)}
         />
         {errors.questions?.[questionIndex]?.text && (
-          <ErrorText>답변을 입력해주세요</ErrorText>
+          <ErrorText>
+            <WarningIcon style={{ marginRight: '0.4rem' }} />
+            질문을 적어주세요
+          </ErrorText>
         )}
 
         <StyledQuestionChoiceOrText>
