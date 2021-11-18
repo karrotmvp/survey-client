@@ -8,6 +8,7 @@ import { ReactComponent as ClearIcon } from '@config/icon/clear.svg';
 type NavBarType = {
   type: 'CLOSE' | 'BACK';
   appendRight?: React.ReactNode;
+  reverse?: boolean;
   title?: string;
   shadow?: boolean;
   transparent?: boolean;
@@ -15,7 +16,11 @@ type NavBarType = {
   appendCenter?: React.ReactNode;
 };
 
-const NavBarStyle = styled.div<{ shadow?: boolean; transparent?: boolean }>`
+const NavBarStyle = styled.div<{
+  shadow?: boolean;
+  transparent?: boolean;
+  reverse?: boolean;
+}>`
   display: flex;
   width: 100%;
   height: 5.6rem;
@@ -28,9 +33,15 @@ const NavBarStyle = styled.div<{ shadow?: boolean; transparent?: boolean }>`
     transparent ? 'transparent' : '#ffff'};
   padding: 1.6rem;
   z-index: 99999;
+  ${({ reverse }) => (reverse ? 'flex-direction: row-reverse;' : null)}
+
   ${({ shadow }) => (shadow ? 'border-bottom : 1px solid #E5E5E5;' : '')};
   .nav_last {
     justify-content: flex-end;
+  }
+
+  .nav {
+    ${({ reverse }) => (reverse ? 'flex-direction: row-reverse;' : null)}
   }
 `;
 
@@ -38,7 +49,7 @@ const NavTitle = styled.span`
   margin-left: 1.6rem;
   color: #141414;
   font-size: 1.6rem;
-  font-weight: 600;
+  font-weight: ${({ theme }) => theme.fontWeight.regular};
   white-space: nowrap;
 `;
 
@@ -51,6 +62,7 @@ const NavItem = styled.nav`
 
 export default function NavBar({
   type,
+  reverse,
   appendRight,
   appendCenter,
   title,
@@ -69,8 +81,8 @@ export default function NavBar({
   };
 
   return (
-    <NavBarStyle shadow={shadow} transparent={transparent}>
-      <NavItem>
+    <NavBarStyle {...{ shadow, transparent, reverse }}>
+      <NavItem className="nav">
         {type === 'CLOSE' ? (
           <StyledClearIcon onClick={close} white={white} />
         ) : (
@@ -78,8 +90,10 @@ export default function NavBar({
         )}
         {title && <NavTitle>{title}</NavTitle>}
       </NavItem>
-      {appendCenter && <NavItem>{appendCenter}</NavItem>}
-      <NavItem className={'nav_last'}>{appendRight}</NavItem>
+
+      {appendCenter && <NavItem className="nav">{appendCenter}</NavItem>}
+
+      <NavItem className={'nav nav_last'}>{appendRight}</NavItem>
     </NavBarStyle>
   );
 }

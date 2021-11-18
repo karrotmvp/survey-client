@@ -1,18 +1,15 @@
 import { useCallback } from 'react';
 
-import { useLocation } from 'react-router-dom';
-
 import mini from '@api/mini';
 
 const useMiniAuth = (
   appId: string,
   onClose?: () => void,
 ): (() => Promise<string>) => {
-  const location = useLocation();
-
   const getCodeAsync = useCallback(() => {
-    const urlSearchParams = new URLSearchParams(location.search);
+    const urlSearchParams = new URLSearchParams(window.location.search);
     const isPreload = urlSearchParams.get('preload');
+
     if (urlSearchParams.has('code') || isPreload === 'true') {
       if (onClose) {
         onClose();
@@ -37,7 +34,7 @@ const useMiniAuth = (
         onClose,
       });
     });
-  }, [appId, location.search, onClose]);
+  }, [appId, onClose]);
   return getCodeAsync;
 };
 
@@ -45,9 +42,12 @@ const useMiniBizAuth = (
   appId: string,
   onClose?: () => void,
 ): (() => Promise<string>) => {
-  const getCodeAsync = useCallback(
-    () =>
-      new Promise<string>((resolve, reject) => {
+  const getCodeAsync = useCallback(() => {
+    const urlSearchParams = new URLSearchParams(window.location.search);
+    const isPreload = urlSearchParams.get('preload');
+
+    if (isPreload !== 'true') {
+      return new Promise<string>((resolve, reject) => {
         mini.startPreset({
           preset: process.env.REACT_APP_PRESET_BIZ || '',
           params: {
@@ -63,9 +63,11 @@ const useMiniBizAuth = (
           },
           onClose,
         });
-      }),
-    [appId, onClose],
-  );
+      });
+    }
+    return Promise.resolve('');
+  }, [appId, onClose]);
+
   return getCodeAsync;
 };
 

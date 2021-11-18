@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 
 import styled from '@emotion/styled';
 
-const ModalWrapper = styled.div`
+const ModalWrapper = styled.div<{ paddingSide: string | undefined }>`
   display: flex;
   z-index: 2;
   position: fixed;
@@ -11,7 +11,8 @@ const ModalWrapper = styled.div`
   background-color: rgba(0, 0, 0, 0.6);
   justify-content: center;
   display: flex;
-
+  padding: ${({ paddingSide }) =>
+    paddingSide ? `0 ${paddingSide}` : '0 2.4rem'};
   align-items: center;
   bottom: 0;
   left: 0;
@@ -38,7 +39,7 @@ const ModalCover = styled.div<{ isOpen: boolean }>`
   display: flex;
   flex-direction: column;
   position: relative;
-  width: 80%;
+  width: 100%;
   border-radius: 12px;
   background-color: #ffff;
 
@@ -50,10 +51,12 @@ const ModalCover = styled.div<{ isOpen: boolean }>`
 
 export default function Modal({
   setPopup,
+  paddingSide,
   children,
 }: {
   setPopup: React.Dispatch<React.SetStateAction<boolean>>;
   children?: JSX.Element | JSX.Element[];
+  paddingSide?: string;
 }): JSX.Element {
   const [isOpen, setOpen] = useState(true);
   const handleClickOutside = (e: React.MouseEvent) => {
@@ -64,7 +67,7 @@ export default function Modal({
   }, [isOpen, setPopup]);
 
   return (
-    <ModalWrapper onMouseDown={handleClickOutside}>
+    <ModalWrapper onMouseDown={handleClickOutside} paddingSide={paddingSide}>
       <ModalCover onMouseDown={e => e.stopPropagation()} {...{ isOpen }}>
         {children}
       </ModalCover>

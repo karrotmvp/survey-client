@@ -10,6 +10,8 @@ const StyledTargetItem = styled.button`
   padding: 2rem 1.5rem;
   display: flex;
   width: 100%;
+  justify-content: space-between;
+  align-items: center;
   :disabled {
     opacity: 0.4;
   }
@@ -33,7 +35,7 @@ const TargetTitle = styled.h2`
   line-height: 120%;
   color: #141414;
   margin-bottom: 6px;
-  font-size: 1.6rem;
+  font-size: 1.5rem;
 `;
 const TargetSubtitle = styled.span`
   font-weight: ${({ theme }) => theme.fontWeight.regular};
@@ -45,22 +47,34 @@ type TargetItemType = {
   title: string;
   subtitle: string;
   index: number;
-  imgUrl: string;
   disabled: boolean;
 };
-export default function TargetItem({
+
+const RadioButton = styled.input`
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  background: url('./../../img/radio_unchecked.png') center center / cover
+    no-repeat;
+  &:checked {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 100%;
+    background: url('./../../img/radio_checked.png') center center / cover
+      no-repeat;
+  }
+`;
+export default function TargetBriefItem({
   title,
   subtitle,
   index,
-  imgUrl,
   disabled,
 }: TargetItemType): JSX.Element {
   const fa = useAnalytics();
   const [target, setTarget] = useRecoilState(questionTarget);
   const handleClick = () => {
     fa.logEvent('target_button_click', { target: index + 1 });
-    if (target === index + 1) setTarget(-1);
-    else setTarget(index + 1);
+    setTarget(index + 1);
   };
 
   return (
@@ -70,15 +84,11 @@ export default function TargetItem({
         onClick={handleClick}
         aria-selected={target === index + 1}
       >
-        <img className="target_img" src={imgUrl} />
         <div className="target_text">
           <TargetTitle>{title}</TargetTitle>
-          <TargetSubtitle>
-            {subtitle.split('\n').map((txt, idx) => (
-              <SplitText key={idx} txt={txt} />
-            ))}
-          </TargetSubtitle>
+          <TargetSubtitle>{subtitle}</TargetSubtitle>
         </div>
+        <RadioButton type="radio" checked={target === index + 1} />
       </StyledTargetItem>
       {index !== 0 && <CustomerKingTag>단골왕 사장님만</CustomerKingTag>}
     </div>
@@ -88,7 +98,7 @@ export default function TargetItem({
 const CustomerKingTag = styled.div`
   position: absolute;
   right: 0;
-  bottom: 0;
+  top: 0;
   border-bottom-right-radius: 4px;
   padding: 0.8rem 0.6rem;
   font-size: 1.2rem;
@@ -97,12 +107,3 @@ const CustomerKingTag = styled.div`
   background-color: ${({ theme }) => theme.color.primaryOrangeLight};
   opacity: 1;
 `;
-
-function SplitText({ txt }: { txt: string }): JSX.Element {
-  return (
-    <>
-      {txt}
-      <br />
-    </>
-  );
-}
