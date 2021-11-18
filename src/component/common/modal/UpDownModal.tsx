@@ -16,8 +16,8 @@ const ModalWrapper = styled.div`
   z-index: 999999999;
 `;
 
-const ModalCover = styled.div<{ isOpen: boolean }>`
-  @keyframes modalUp {
+const ModalCover = styled.div<{ isOpen: boolean; rect: boolean | undefined }>`
+  @keyframes modalupY {
     from {
       transform: translateY(+100%);
       opacity: 0;
@@ -27,7 +27,7 @@ const ModalCover = styled.div<{ isOpen: boolean }>`
       opacity: 1;
     }
   }
-  @keyframes modalDown {
+  @keyframes modaldownY {
     from {
       transform: translateY(0);
       opacity: 1;
@@ -42,18 +42,21 @@ const ModalCover = styled.div<{ isOpen: boolean }>`
   position: absolute;
   bottom: 0;
   animation: ${({ isOpen }) =>
-    isOpen ? `modalUp 0.6s ease-in` : `modalDown 0.6s ease-out`};
-  border-top-right-radius: 15px;
-  border-top-left-radius: 15px;
+    isOpen ? `modalupY 0.4s ease-in` : `modaldownY 0.4s ease-out`};
+  border-top-right-radius: ${({ rect }) => (rect ? '0' : '15px')};
+  border-top-left-radius: ${({ rect }) => (rect ? '0' : '15px')};
+
   background-color: white;
 `;
 
 export default function UpDownModal({
   setPopup,
   children,
+  rect,
 }: {
   setPopup: React.Dispatch<React.SetStateAction<boolean>>;
   children?: JSX.Element | JSX.Element[];
+  rect?: boolean;
 }): JSX.Element {
   const [isOpen, setOpen] = useState(true);
   const handleClickOutside = (e: React.MouseEvent) => {
@@ -65,7 +68,7 @@ export default function UpDownModal({
 
   return (
     <ModalWrapper onMouseDown={handleClickOutside}>
-      <ModalCover onMouseDown={e => e.stopPropagation()} {...{ isOpen }}>
+      <ModalCover onMouseDown={e => e.stopPropagation()} {...{ isOpen, rect }}>
         {children}
       </ModalCover>
     </ModalWrapper>

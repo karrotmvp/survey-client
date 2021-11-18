@@ -7,7 +7,8 @@ import AnswerHome from '@src/page/AnswerHome';
 import EndPage from '@src/page/EndPage';
 import FeedBackPage from '@src/page/FeedBackPage';
 import GuidePage from '@src/page/GuidePage';
-import SurveyHome from '@src/page/SurveyHome';
+import HomePage from '@src/page/HomePage';
+// import SurveyHome from '@src/page/SurveyHome';
 import TargetPage from '@src/page/TargetPage';
 
 export default function Router(): JSX.Element {
@@ -26,7 +27,7 @@ export default function Router(): JSX.Element {
   return (
     <Navigator theme={checkMobileType()}>
       <Screen path="/">
-        <SurveyHome />
+        <HomePage />
       </Screen>
       <Screen path="/guide">
         <GuidePage />

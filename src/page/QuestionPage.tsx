@@ -8,11 +8,8 @@ import { useRecoilValue } from 'recoil';
 import NavBar from '@component/common/navbar/NavBar';
 import QuestionCardList from '@component/question/QuestionCardList';
 import { ReactComponent as ExpandIcon } from '@config/icon/expand_more.svg';
-import StyledBasicPage from '@config/style/styledCompoent';
 import { useAnalytics } from '@src/analytics/faContext';
 import { choiceType, questionTarget } from '@src/atom/questionAtom';
-import { userSelector } from '@src/atom/userAtom';
-import QuestionTitleCard from '@src/component/common/card/QuestionTitleCard';
 import Modal from '@src/component/common/modal/Modal';
 import TargetList from '@src/component/common/target/TargetList';
 import { targetList } from '@src/config/const/const';
@@ -85,7 +82,6 @@ export default function QuestionPage(): JSX.Element {
   const { replace } = useNavigator();
   const submit = useSubmit('/surveys');
   const fa = useAnalytics();
-  const title = useRecoilValue(userSelector);
   const {
     handleSubmit,
     register,
@@ -112,18 +108,18 @@ export default function QuestionPage(): JSX.Element {
   `;
   const questionList = watch('questions');
 
-  const onSubmit = (data: submitType) => {
+  const onSubmit = ({ title, questions }: submitType) => {
     setSubmitData({
       title,
       target: targetIndex,
-      questions: data.questions.map(res => {
+      questions: questions.map(res => {
         if (res.questionType === 2) {
           return { text: res.text, questionType: res.questionType };
         }
         return res;
       }),
     });
-
+    console.log(submitData);
     setPopup(true);
   };
   const TargetModalButton = styled.button`
@@ -164,21 +160,20 @@ export default function QuestionPage(): JSX.Element {
         </h3>
         <ExpandIcon />
       </TargetModalButton>
-      <QuestionTitleCard {...{ register, watch }} />
-      <StyledBasicPage>
-        <form id="submitForm" onSubmit={handleSubmit(onSubmit)}>
-          <QuestionCardList
-            {...{
-              register,
-              control,
-              setValue,
-              watch,
-              unregister,
-              errors,
-            }}
-          />
-        </form>
-      </StyledBasicPage>
+
+      <form id="submitForm" onSubmit={handleSubmit(onSubmit)}>
+        <QuestionCardList
+          {...{
+            register,
+            control,
+            setValue,
+            watch,
+            unregister,
+            errors,
+          }}
+        />
+      </form>
+
       {isTargetPopup && (
         <Modal setPopup={setTargetPopup}>
           <TargetChangeModal>
