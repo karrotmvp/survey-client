@@ -16,6 +16,8 @@ import { ReactComponent as PlusIcon } from '@config/icon/plus.svg';
 import { log } from '@src/config/utils/util';
 import { errorsType, questionCheck, submitType } from '@src/page/QuestionPage';
 
+import QuestionTitleCard from '../common/card/QuestionTitleCard';
+
 type questionCardListType = {
   register: UseFormRegister<submitType>;
   control: Control<submitType>;
@@ -40,7 +42,6 @@ export default function QuestionCardList({
     control,
     name: 'questions',
   });
-
   const questionList = watch('questions');
 
   const handleAddQuestionButton = (e: MouseEvent) => {
@@ -48,11 +49,14 @@ export default function QuestionCardList({
     if ((e.currentTarget as HTMLButtonElement).ariaDisabled === 'true') {
       setContentToastOpen(true);
     } else if (questionList.length < 3) {
-      append({
-        text: '',
-        questionType: 3,
-        choices: [{ value: '' }, { value: '' }],
-      });
+      append(
+        {
+          text: '',
+          questionType: 3,
+          choices: [{ value: '' }, { value: '' }],
+        },
+        // { shouldFocus: false },
+      );
     }
   };
 
@@ -70,6 +74,7 @@ export default function QuestionCardList({
 
   return (
     <>
+      <QuestionTitleCard {...{ append, register, watch }} />
       <AlertToastModal
         text={'질문은 3개 이하까지 만들 수 있어요'}
         time={3000}
@@ -99,20 +104,26 @@ export default function QuestionCardList({
             />
           ))}
       </StyledQuestionCardList>
-
-      {fields.length < 3 && (
-        <AddQuestionButton
-          type="button"
-          className="complete"
-          aria-disabled={!questionCheck(questionList)}
-          onClick={handleAddQuestionButton}
-        >
-          <PlusIcon /> 질문 추가
-        </AddQuestionButton>
-      )}
+      <QuestionButtons>
+        {fields.length > 0 && fields.length < 3 && (
+          <AddQuestionButton
+            type="button"
+            className="complete"
+            aria-disabled={!questionCheck(questionList)}
+            onClick={handleAddQuestionButton}
+          >
+            <PlusIcon /> 질문 추가
+          </AddQuestionButton>
+        )}
+      </QuestionButtons>
+      )
     </>
   );
 }
+
+const QuestionButtons = styled.div`
+  padding: 0 1.6rem;
+`;
 
 const AddQuestionButton = styled.button`
   background-color: ${({ theme }) => theme.color.primaryOrange};
@@ -136,4 +147,5 @@ const AddQuestionButton = styled.button`
 const StyledQuestionCardList = styled.ul`
   display: grid;
   grid-template-columns: auto;
+  padding: 0 1.6rem;
 `;

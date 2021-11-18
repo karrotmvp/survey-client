@@ -1,7 +1,12 @@
 import { useCallback, useEffect, useRef } from 'react';
 
 import styled from '@emotion/styled';
-import { FieldPath, UseFormRegister } from 'react-hook-form';
+import {
+  FieldPath,
+  Message,
+  UseFormRegister,
+  ValidationRule,
+} from 'react-hook-form';
 
 import { submitType } from '@src/page/QuestionPage';
 
@@ -42,6 +47,15 @@ export type InputType = {
   placeholder?: string;
 };
 
+export type RegisterOptions = Partial<{
+  required: Message | ValidationRule<boolean>;
+  min: ValidationRule<number | string>;
+  max: ValidationRule<number | string>;
+  maxLength: ValidationRule<number | string>;
+  minLength: ValidationRule<number | string>;
+  pattern: ValidationRule<RegExp>;
+}>;
+
 export default function InputForm({
   path,
   placeholder,
@@ -49,19 +63,21 @@ export default function InputForm({
   backgroundColor,
   register,
   warning,
+  config,
+  maxLength,
   handleFocus,
 }: InputType & {
   path: FieldPath<submitType>;
   row: number;
   backgroundColor?: string;
   warning?: boolean;
+  maxLength?: number;
+  config?: RegisterOptions;
   handleFocus?: () => void;
   register: UseFormRegister<submitType>;
 }): JSX.Element {
   const textRef = useRef<HTMLTextAreaElement | null>(null);
-  const { ref, ...rest } = register(path, {
-    required: true,
-  });
+  const { ref, ...rest } = register(path, config);
   useEffect(() => {
     if (textRef === null || textRef.current === null) {
       return;
@@ -95,6 +111,7 @@ export default function InputForm({
       placeholder={placeholder}
       warning={warning}
       {...rest}
+      maxLength={maxLength}
       ref={e => {
         ref(e);
         textRef.current = e;

@@ -1,24 +1,49 @@
 import { useState } from 'react';
 
 import styled from '@emotion/styled';
-import { UseFormRegister, UseFormWatch } from 'react-hook-form';
+import {
+  FieldArrayMethodProps,
+  UseFormRegister,
+  UseFormWatch,
+} from 'react-hook-form';
 
-import { submitType } from '@src/page/QuestionPage';
+import { questionCardType, submitType } from '@src/page/QuestionPage';
 
 import InputForm from '../input/InputForm';
 import UpDownModal from '../modal/UpDownModal';
 
 type QuestionTitleCardType = {
+  append: (
+    value: Partial<questionCardType> | Partial<questionCardType>[],
+    options?: FieldArrayMethodProps | undefined,
+  ) => void;
   register: UseFormRegister<submitType>;
   watch: UseFormWatch<submitType>;
 };
 
 export default function QuestionTitleCard({
+  append,
   register,
   watch,
 }: QuestionTitleCardType): JSX.Element {
   const [isPopupOpen, setPopup] = useState(false);
   const title = watch('title');
+  const questions = watch('questions');
+
+  const handleNextButton = () => {
+    if (questions.length === 0 && title !== '') {
+      append(
+        {
+          text: '',
+          questionType: 3,
+          choices: [{ value: '' }, { value: '' }],
+        },
+        // { shouldFocus: false },
+      );
+    }
+
+    setPopup(false);
+  };
   return (
     <>
       <StyledQuestionTitleCard>
@@ -26,6 +51,7 @@ export default function QuestionTitleCard({
           설문 커버에 들어갈 설문 제목을 적어주세요
         </h1>
         <TitleFormButton
+          type="button"
           isValue={Boolean(title)}
           onClick={() => setPopup(true)}
         >
@@ -36,7 +62,7 @@ export default function QuestionTitleCard({
         </h3>
       </StyledQuestionTitleCard>
       {isPopupOpen && (
-        <UpDownModal setPopup={setPopup}>
+        <UpDownModal setPopup={setPopup} rect>
           <TitleModal>
             <section className="title_modal_section">
               <h1>설문 제목 작성</h1>
@@ -48,10 +74,14 @@ export default function QuestionTitleCard({
                 }
                 row={1}
                 backgroundColor={'#F4F5F6'}
+                maxLength={30}
+                config={{ required: true, maxLength: 30 }}
               />
             </section>
             <section className="title_modal_section_button">
-              <NextButton onClick={() => setPopup(false)}>작성 완료</NextButton>
+              <NextButton type="button" onClick={handleNextButton}>
+                작성 완료
+              </NextButton>
             </section>
           </TitleModal>
         </UpDownModal>

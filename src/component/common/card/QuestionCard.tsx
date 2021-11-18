@@ -35,8 +35,8 @@ const StyledQuestionCard = styled.li`
   display: flex;
   flex-direction: column;
   position: relative;
-  padding-bottom: 1.6rem;
-  padding-top: 1.6rem;
+  padding-bottom: 2.4rem;
+  padding-top: 1.2rem;
 `;
 
 const StyledQuestionInput = styled.span`
@@ -98,6 +98,7 @@ export default function QuestionCard({
           placeholder={contents.placeholder.TEXT}
           row={1}
           backgroundColor={'#F4F5F6'}
+          config={{ required: true }}
           warning={Boolean(errors.questions?.[questionIndex]?.text)}
         />
         {errors.questions?.[questionIndex]?.text && (
