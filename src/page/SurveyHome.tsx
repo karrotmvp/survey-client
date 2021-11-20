@@ -66,6 +66,8 @@ export default function SurveyHome(): ReactElement {
     border-top: 0.8rem solid #f4f4f4;
     margin: 0;
     padding: 0;
+    overflow-y: scroll;
+    height: 70vh;
   `;
 
   const BizAvaterImg = styled.img`
@@ -74,7 +76,7 @@ export default function SurveyHome(): ReactElement {
     border-radius: 50%;
   `;
   return (
-    <>
+    <div style={{ height: '100vh' }}>
       <StyledSurveyHomePage>
         <NavBar
           transparent
@@ -124,7 +126,7 @@ export default function SurveyHome(): ReactElement {
           <NextButton onClick={handleNextClick}>다음</NextButton>
         </UpDownModal>
       )}
-    </>
+    </div>
   );
 }
 

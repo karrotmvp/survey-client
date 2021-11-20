@@ -20,6 +20,23 @@ const handlers = [
     ),
   ),
 
+  rest.get(`http://dev.daangn-survey.com/api/v1/members/me`, (req, res, ctx) =>
+    res(
+      ctx.status(200),
+      ctx.json({
+        data: {
+          daangnId: 'string',
+          name: 'string',
+          imageUrl:
+            'https://s3.ap-northeast-2.amazonaws.com/elasticbeanstalk-ap-northeast-2-176213403491/media/magazine_img/magazine_280/5-3-%EC%8D%B8%EB%84%A4%EC%9D%BC.jpg',
+          role: 'string',
+          region: 'string',
+          profileUrl: 'string',
+        },
+      }),
+    ),
+  ),
+
   rest.get(
     `http://dev.daangn-survey.com/api/v1/surveys/:surveysId`,
     (req, res, ctx) =>
