@@ -1988,6 +1988,13 @@
     react-transition-group "^4.4.2"
     zenscroll "^4.0.2"
 
+"@karrotframe/tabs@^0.3.8":
+  version "0.3.8"
+  resolved "https://registry.yarnpkg.com/@karrotframe/tabs/-/tabs-0.3.8.tgz#a776b4c4f01bf98c3c0c0e80ed895d9996682312"
+  integrity sha512-maYfURAWQlsxrGA5rMVQ983nh2ckt3xoW9s9BbwUZIY7TRcrKLKDYvqwDazVqlZGgdpPwwifquE5MaYvzskJhw==
+  dependencies:
+    "@vanilla-extract/dynamic" "^2.0.0"
+
 "@karrotmarket/mini@^0.12.0":
   version "0.12.0"
   resolved "https://registry.yarnpkg.com/@karrotmarket/mini/-/mini-0.12.0.tgz#3afbecc667b4f2e6e45e8edea177abc74595d681"
