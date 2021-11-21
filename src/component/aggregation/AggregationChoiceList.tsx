@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 
 import { ReactComponent as ChoiceCircleIcon } from '@config/icon/choiceCircle.svg';
+import { ReactComponent as CheckedChoiceCircleIcon } from '@config/icon/radio_checked.svg';
 import { choiceType } from '@src/atom/questionAtom';
 
 const StyledChoiceInput = styled.span`
@@ -36,16 +37,25 @@ const StyledAggregationChoiceList = styled.ul`
 
 export default function AggregationChoiceList({
   choices,
+  answer,
 }: {
   choices: choiceType[] | undefined;
+  answer?: string;
 }): JSX.Element {
   return (
     <StyledAggregationChoiceList>
       {choices &&
         choices.map(({ value }, idx) => (
           <StyledQuestionChoice key={idx}>
-            <div className="choice_circle_Icon">
-              <ChoiceCircleIcon />
+            <div
+              className="choice_circle_Icon"
+              aria-checked={answer !== undefined && answer === value}
+            >
+              {answer !== undefined && answer === value ? (
+                <CheckedChoiceCircleIcon />
+              ) : (
+                <ChoiceCircleIcon />
+              )}
             </div>
             <StyledChoiceInput>{value}</StyledChoiceInput>
           </StyledQuestionChoice>

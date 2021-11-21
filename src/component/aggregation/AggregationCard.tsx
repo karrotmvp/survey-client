@@ -30,22 +30,45 @@ const StyledQuestionInput = styled.span`
   border-bottom: 1px solid #707070;
 `;
 
+const StyledQuestionInputResponse = styled.span`
+  font-size: 1.5rem;
+  font-weight: ${({ theme }) => theme.fontWeight.regular};
+
+  padding: 0.6rem 0;
+  width: 100%;
+  display: block;
+  border-bottom: 1px solid #c9c9c9;
+`;
+
 export default function AggregationCard({
   text,
   questionType,
   choices,
   questionIdx,
-}: questionCardType & { questionIdx: number }): JSX.Element {
+  response,
+}: questionCardType & {
+  questionIdx: number;
+  response?: { answer: string };
+}): JSX.Element {
+  console.log(response?.answer);
   return (
     <StyledAggregationCard>
       <h3 className="aggregation_card_title">질문 {questionIdx + 1}</h3>
       <span className="aggregation_card_text">{text}</span>
-
-      {questionType === 2 ? (
-        <StyledQuestionInput>주관식 답변...</StyledQuestionInput>
-      ) : (
-        <AggregationChoiceList {...{ choices }} />
-      )}
+      {response === undefined &&
+        (questionType === 2 ? (
+          <StyledQuestionInput>주관식 답변...</StyledQuestionInput>
+        ) : (
+          <AggregationChoiceList {...{ choices }} />
+        ))}
+      {response &&
+        (questionType === 2 ? (
+          <StyledQuestionInputResponse>
+            {response.answer}
+          </StyledQuestionInputResponse>
+        ) : (
+          <AggregationChoiceList {...{ choices }} answer={response.answer} />
+        ))}
     </StyledAggregationCard>
   );
 }

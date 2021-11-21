@@ -17,4 +17,9 @@ const responseUserAtom = atom<bizProfileType | null>({
   default: null,
 });
 
-export { responseUserAtom, responseListAtom };
+const responseIndividualAtom = atom({
+  key: 'responseIndividualAtom',
+  default: 0,
+});
+
+export { responseUserAtom, responseListAtom, responseIndividualAtom };

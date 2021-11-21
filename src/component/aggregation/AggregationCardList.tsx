@@ -27,4 +27,6 @@ const StyledAggregationCardList = styled.ul`
   grid-gap: 0.8rem;
   grid-template-columns: auto;
   background-color: #f8f8f8;
+  height: 100%;
+  overflow-y: scroll;
 `;
