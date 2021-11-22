@@ -1,5 +1,7 @@
+import { useEffect } from 'react';
+
 import styled from '@emotion/styled';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useResetRecoilState } from 'recoil';
 
 import { ReactComponent as ArrowLeft } from '@config/icon/arrow_left.svg';
 import { ReactComponent as ArrowRight } from '@config/icon/arrow_right.svg';
@@ -29,6 +31,7 @@ export default function AggregationIndividual({
   responseIdName: { responseId: number; name: string }[];
 }): JSX.Element {
   const [nameIdx, setNameIdx] = useRecoilState(responseIndividualAtom);
+  const resetNameIdx = useResetRecoilState(responseIndividualAtom);
   const getIndividualresponse = useLoadableGet<responsesType[]>(
     `aggregation/individual/${responseIdName[nameIdx].responseId}`,
   );
@@ -38,6 +41,14 @@ export default function AggregationIndividual({
   const handleRightClick = () => {
     setNameIdx(nameIdx + 1);
   };
+
+  useEffect(
+    () => () => {
+      resetNameIdx();
+    },
+    [],
+  );
+
   return (
     <>
       <IndividualNavigator>

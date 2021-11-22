@@ -36,10 +36,22 @@ const targetList = [
   },
 ];
 
+const COLORS = [
+  '#FE7E35',
+  '#F5D633',
+  '#4CE08C',
+  '#278AF5',
+  '#9E33F5',
+  '#B327F5',
+  '#FF5964',
+  '#ACACAC',
+  '#C4C4C4',
+];
+
 enum questionTypes {
   TITLETYPE = 1,
   TEXTTYPE,
   CHOICETYPE,
 }
 
-export { contents, targetList, questionTypes };
+export { contents, targetList, questionTypes, COLORS };

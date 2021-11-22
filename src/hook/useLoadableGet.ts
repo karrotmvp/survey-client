@@ -8,7 +8,7 @@ type Action<T> =
   | { type: 'FETCH_SUCCESS'; payload: T }
   | { type: 'FETCH_FAILURE'; payload: null };
 
-type StateType<T> = {
+export type StateType<T> = {
   isInit: boolean;
   isLoading: boolean;
   isSuccess: boolean;

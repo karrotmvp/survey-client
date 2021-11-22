@@ -17,7 +17,6 @@ export default function useGet<T>(
     axios.defaults.baseURL = process.env.REACT_APP_API_URL;
     const Authorization = 'X-AUTH-TOKEN';
     if (token) axios.defaults.headers.common[Authorization] = token;
-
     if (!initialUrl) throw new Error(`Error: URL IS NULL`);
     const res = await axios.get<fetchType<T>>(initialUrl);
     if (res.status !== 200) throw new Error(`Error`);

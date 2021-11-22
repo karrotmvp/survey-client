@@ -7,6 +7,7 @@ import AnswerHome from '@src/page/AnswerHome';
 import EndPage from '@src/page/EndPage';
 import FeedBackPage from '@src/page/FeedBackPage';
 import GuidePage from '@src/page/GuidePage';
+import ShowAllPage from '@src/page/ShowAllPage';
 import SurveyAggregationPage from '@src/page/SurveyAggregationPage';
 // import HomePage from '@src/page/HomePage';
 import SurveyHome from '@src/page/SurveyHome';
@@ -35,6 +36,9 @@ export default function Router(): JSX.Element {
       </Screen>
       <Screen path="/feedback">
         <FeedBackPage />
+      </Screen>
+      <Screen path="/survey/aggregation/:surveyId/:questionNumber">
+        <ShowAllPage />
       </Screen>
       <Screen path="/survey/aggregation/:surveyId">
         <SurveyAggregationPage />

@@ -1,6 +1,7 @@
 import axios, { AxiosResponse } from 'axios';
 import { atom, selector } from 'recoil';
 
+import { aggregationBriefType } from '@src/component/aggregation/AggregationBrief';
 import { questionDataType } from '@src/page/AnswerHome';
 
 const bizCodeAtom = atom({
@@ -100,6 +101,32 @@ const getBizSurveyList = selector({
   },
 });
 
+const getAggregationBrief = selector({
+  key: 'getAggregationBrief',
+  get: async ({ get }) => {
+    const jwt = await get(authorizationBizSelector);
+    const surveyId = get(surveyIdAtom);
+    const token = jwt.data;
+    axios.defaults.baseURL = process.env.REACT_APP_API_URL;
+
+    const Authorization = 'X-AUTH-TOKEN';
+    if (!token) return '';
+    axios.defaults.headers.common[Authorization] = token;
+    try {
+      const data: AxiosResponse<{ data: aggregationBriefType }> =
+        await axios.get<{
+          data: aggregationBriefType;
+        }>(`/aggregation/${surveyId}`);
+
+      return data.data.data;
+    } catch (e) {
+      // eslint-disable-next-line no-console
+      console.error(e);
+      return '';
+    }
+  },
+});
+
 const authorizationSelector = selector({
   key: 'authorizationSelector',
   get: async ({ get }) => {
@@ -129,4 +156,5 @@ export {
   codeAtom,
   authorizationSelector,
   getBizprofile,
+  getAggregationBrief,
 };

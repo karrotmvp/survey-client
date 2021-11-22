@@ -50,7 +50,6 @@ export default function AggregationCard({
   questionIdx: number;
   response?: { answer: string };
 }): JSX.Element {
-  console.log(response?.answer);
   return (
     <StyledAggregationCard>
       <h3 className="aggregation_card_title">질문 {questionIdx + 1}</h3>

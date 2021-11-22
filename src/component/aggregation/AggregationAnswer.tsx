@@ -1,35 +1,34 @@
-import { MouseEvent, useState } from 'react';
+import React, { MouseEvent, useEffect, useState } from 'react';
 
 import styled from '@emotion/styled';
-import { useRecoilValue } from 'recoil';
+import { useRecoilValueLoadable } from 'recoil';
 
-import { surveyIdAtom } from '@src/api/authorization';
-import useLoadableGet from '@src/hook/useLoadableGet';
+import { getAggregationBrief } from '@src/api/authorization';
 
 import LoadingCard from '../common/card/LoadingCard';
-import AggregationBrief, { aggregationBriefType } from './AggregationBrief';
+import AggregationBrief from './AggregationBrief';
 import AggregationIndividual from './AggregationIndividual';
 
-export default function AggregationAnswer({
+function AggregationAnswer({
   responseIds,
 }: {
   responseIds: number[];
 }): JSX.Element {
   const [tabKey, setTabKey] = useState('요약');
-  const surveyId = useRecoilValue(surveyIdAtom);
 
   const handleClick = (e: MouseEvent<HTMLButtonElement>) => {
     const target = e.target as HTMLButtonElement;
     setTabKey(target.ariaLabel);
   };
-  const getAggregationBrief = useLoadableGet<aggregationBriefType>(
-    `/aggregation/${surveyId}`,
-  );
+  const Aggregation = useRecoilValueLoadable(getAggregationBrief);
 
   const responseIdName = responseIds.map((data, idx) => ({
     name: `익명 ${idx + 1}`,
     responseId: data,
   }));
+  useEffect(() => {
+    console.log('re');
+  }, []);
 
   return (
     <>
@@ -51,18 +50,20 @@ export default function AggregationAnswer({
       </StyleAggregationAnswer>
 
       {tabKey === '요약' &&
-        (getAggregationBrief.isSuccess &&
-        getAggregationBrief.data !== undefined ? (
+        (Aggregation.state === 'hasValue' && Aggregation.contents !== '' ? (
           <AggregationBrief
             setTabKey={setTabKey}
-            questionAggregations={getAggregationBrief.data.questionAggregations}
+            questionAggregations={Aggregation.contents.questionAggregations}
           />
         ) : (
           <LoadingCard count={2} />
         ))}
-      {tabKey === '개별보기' && (
-        <AggregationIndividual responseIdName={responseIdName} />
-      )}
+      {tabKey === '개별보기' &&
+        (responseIds.length !== 0 ? (
+          <AggregationIndividual responseIdName={responseIdName} />
+        ) : (
+          <div></div>
+        ))}
     </>
   );
 }
@@ -83,3 +84,7 @@ const StyleAggregationButton = styled.button`
     font-weight: ${({ theme }) => theme.fontWeight.medium};
   }
 `;
+
+const MemoAggregationAnswer = React.memo(AggregationAnswer);
+
+export default MemoAggregationAnswer;
