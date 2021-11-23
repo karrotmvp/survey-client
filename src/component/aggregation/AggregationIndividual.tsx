@@ -131,8 +131,22 @@ export default function AggregationIndividual({
 
 const IndividualUL = styled.ul`
   max-height: 50rem;
-  overflow-y: scroll;
-  padding-top: 2.8rem;
+  overflow-y: overlay;
+
+  ::-webkit-scrollbar {
+    position: absolute;
+    left: 0;
+    width: 6px;
+    background-color: transparent;
+  }
+  ::-webkit-scrollbar-track {
+    background-color: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    height: 10%;
+    background-color: #c9c9c9;
+    border-radius: 13px;
+  }
 `;
 
 const IndividualButton = styled.button`
@@ -163,6 +177,7 @@ const StyleModalTitle = styled.h1`
   width: 100%;
   font-size: 1.6rem;
   font-weight: ${({ theme }) => theme.fontWeight.medium};
+  margin-bottom: 2.8rem;
 `;
 
 const IndividualNavigator = styled.div`

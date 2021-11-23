@@ -45,16 +45,21 @@ const TextList = styled.ul<{ showAll: boolean | undefined }>`
   grid-gap: 0.8rem;
   grid-template-columns: auto;
   ${({ showAll }) => (showAll ? '' : 'max-height: 28rem')};
-  overflow-y: scroll;
+  overflow-y: overlay;
   margin-top: 2rem;
-  -webkit-scrollbar {
-    display: block;
+  ::-webkit-scrollbar {
+    position: absolute;
+    left: 0;
     width: 6px;
+    background-color: transparent;
   }
-  -webkit-scrollbar-thumb {
-    height: 17%;
-    background-color: rgba(33, 133, 133, 1);
-    border-radius: 10px;
+  ::-webkit-scrollbar-track {
+    background-color: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    height: 5%;
+    background-color: #c9c9c9;
+    border-radius: 13px;
   }
 `;
 
