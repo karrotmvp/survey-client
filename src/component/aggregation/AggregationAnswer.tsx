@@ -29,7 +29,7 @@ function AggregationAnswer({
 
   return (
     <>
-      <StyleAggregationAnswer>
+      <StyleAggregationAnswer tabKey={tabKey}>
         <StyleAggregationButton
           onClick={handleClick}
           aria-label={'요약'}
@@ -65,9 +65,14 @@ function AggregationAnswer({
   );
 }
 
-const StyleAggregationAnswer = styled.div`
+const StyleAggregationAnswer = styled.div<{ tabKey: string }>`
   padding-top: 1.4rem;
   padding-left: 2.4rem;
+  ${({ tabKey }) =>
+    tabKey === '요약'
+      ? `box-shadow: 0px 2px 10px rgba(107, 80, 80, 0.08);
+  filter: drop-shadow(0px 2px 10px rgba(107, 80, 80, 0.06));`
+      : ''}
 `;
 
 const StyleAggregationButton = styled.button`

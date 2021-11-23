@@ -47,6 +47,15 @@ const TextList = styled.ul<{ showAll: boolean | undefined }>`
   ${({ showAll }) => (showAll ? '' : 'max-height: 28rem')};
   overflow-y: scroll;
   margin-top: 2rem;
+  -webkit-scrollbar {
+    display: block;
+    width: 6px;
+  }
+  -webkit-scrollbar-thumb {
+    height: 17%;
+    background-color: rgba(33, 133, 133, 1);
+    border-radius: 10px;
+  }
 `;
 
 const TextItem = styled.li`

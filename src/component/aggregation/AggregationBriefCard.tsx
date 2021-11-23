@@ -44,7 +44,6 @@ export default function AggregationBriefCard({
     const res = await push<number>(`survey/aggregation/${surveyId}/${order}`);
 
     if (res && setTabKey) {
-      console.log(res, setTabKey);
       setTabKey('개별보기');
     }
   };

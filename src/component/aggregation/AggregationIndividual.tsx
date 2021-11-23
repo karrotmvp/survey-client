@@ -133,14 +133,6 @@ const IndividualUL = styled.ul`
   max-height: 50rem;
   overflow-y: scroll;
   padding-top: 2.8rem;
-  -webkit-scrollbar {
-    width: 6px;
-  }
-  -webkit-scrollbar-thumb {
-    height: 17%;
-    background-color: rgba(33, 133, 133, 1);
-    border-radius: 10px;
-  }
 `;
 
 const IndividualButton = styled.button`
@@ -179,7 +171,8 @@ const IndividualNavigator = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.06);
+  box-shadow: 0px 4px 10px -4px rgba(107, 80, 80, 0.1);
+  filter: drop-shadow(0px 2px 10px rgba(107, 80, 80, 0.06));
   .individual_name {
     font-weight: ${({ theme }) => theme.fontWeight.medium};
     font-size: 1.5rem;

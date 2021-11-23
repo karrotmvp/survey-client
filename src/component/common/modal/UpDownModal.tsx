@@ -74,7 +74,6 @@ export default function UpDownModal({
 
   useEffect(() => {
     if (isClose !== undefined && isClose) {
-      console.log(isClose);
       setOpen(false);
     }
   }, [isClose]);

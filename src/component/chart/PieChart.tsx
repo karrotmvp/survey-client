@@ -27,6 +27,7 @@ export default function AggregationPieChart({
     animation-fill-mode: forwards; */
   `;
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const renderActiveShape = (props: any) => {
     const RADIAN = Math.PI / 180;
     const {

@@ -8,6 +8,9 @@ export default function ModalPortals({
   children: ReactChild;
 }): JSX.Element {
   const modalElement = document.querySelector('#modal');
-  return ReactDOM.createPortal(children, modalElement!);
+  if (!modalElement) throw new Error();
+
+  return ReactDOM.createPortal(children, modalElement);
+
   // createPortal(ModalPortals안에서 랜더링될 컴포넌트, 랜더링 시킬 상위 DOM Element)
 }
