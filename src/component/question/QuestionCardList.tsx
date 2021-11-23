@@ -78,11 +78,13 @@ export default function QuestionCardList({
       <AlertToastModal
         text={'질문은 3개 이하까지 만들 수 있어요'}
         time={3000}
+        bottom="3rem"
         {...{ isToastOpen, setToastOpen }}
       />
       <AlertToastModal
         text={'내용을 모두 입력하세요'}
         time={3000}
+        bottom="3rem"
         isToastOpen={isContentToastOpen}
         setToastOpen={setContentToastOpen}
       />

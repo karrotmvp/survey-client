@@ -46,9 +46,9 @@ export default function SurveyHome(): ReactElement {
   const userData = useRecoilValueLoadable(getBizprofile);
   const [isPopup, setPopup] = useState(false);
   const { push } = useNavigator();
-  const handleClick = () => {
-    setPopup(true);
-  };
+  // const handleClick = () => {
+  //   setPopup(true);
+  // };
 
   const handleNextClick = () => {
     push('/survey/create/target');
@@ -109,7 +109,6 @@ export default function SurveyHome(): ReactElement {
             )
           }
         />
-        <button onClick={handleClick}>ddd</button>
         <h1 className="survey_home_title">
           사장님, 만드신 <b>설문</b>과<br />
           <b>동네 이웃의 답변</b>을 확인해보세요 🙌

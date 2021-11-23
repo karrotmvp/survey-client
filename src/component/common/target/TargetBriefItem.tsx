@@ -90,7 +90,7 @@ export default function TargetBriefItem({
         </div>
         <RadioButton type="radio" checked={target === index + 1} />
       </StyledTargetItem>
-      {index !== 0 && <CustomerKingTag>단골왕 사장님만</CustomerKingTag>}
+      {index === -1 && <CustomerKingTag>단골왕 사장님만</CustomerKingTag>}
     </div>
   );
 }

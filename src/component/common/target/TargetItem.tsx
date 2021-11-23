@@ -80,7 +80,7 @@ export default function TargetItem({
           </TargetSubtitle>
         </div>
       </StyledTargetItem>
-      {index !== 0 && <CustomerKingTag>단골왕 사장님만</CustomerKingTag>}
+      {index === -1 && <CustomerKingTag>단골왕 사장님만</CustomerKingTag>}
     </div>
   );
 }

@@ -21,7 +21,7 @@ const ModalWrapper = styled.div<{ paddingSide: string | undefined }>`
   z-index: 999999999;
 `;
 
-const ModalCover = styled.div<{ isOpen: boolean }>`
+const ModalCover = styled.div<{ isOpen: boolean; transparent?: boolean }>`
   @keyframes modalUp {
     from {
       opacity: 0;
@@ -43,12 +43,15 @@ const ModalCover = styled.div<{ isOpen: boolean }>`
   position: relative;
   width: 100%;
   border-radius: 12px;
-  background-color: #ffff;
-
+  background-color: ${({ transparent }) =>
+    transparent ? 'transparent' : '#ffff'};
   animation: ${({ isOpen }) =>
     isOpen ? `modalUp 0.3s ease-in-out` : `modalDown 0.8s ease-in-out`};
-  -webkit-box-shadow: 0px 0px 23px 10px rgba(0, 0, 0, 0.2);
-  box-shadow: 0px 0px 23px 10px rgba(0, 0, 0, 0.2);
+  ${({ transparent }) =>
+    transparent
+      ? ''
+      : `  -webkit-box-shadow: 0px 0px 23px 10px rgba(0, 0, 0, 0.2);
+  box-shadow: 0px 0px 23px 10px rgba(0, 0, 0, 0.2);`};
 `;
 
 export default function Modal({
@@ -56,11 +59,13 @@ export default function Modal({
   paddingSide,
   children,
   close,
+  transparent,
 }: {
   setPopup: React.Dispatch<React.SetStateAction<boolean>>;
   children?: JSX.Element | JSX.Element[];
   paddingSide?: string;
   close?: boolean;
+  transparent?: boolean;
 }): JSX.Element {
   const [isOpen, setOpen] = useState(true);
   const handleClickOutside = (e: React.MouseEvent) => {
@@ -72,18 +77,25 @@ export default function Modal({
 
   return (
     <ModalWrapper onMouseDown={handleClickOutside} paddingSide={paddingSide}>
-      <ModalCover onMouseDown={e => e.stopPropagation()} {...{ isOpen }}>
-        {close && <ModalClose onClick={handleClickOutside} />}
+      <ModalCover
+        transparent={transparent}
+        onMouseDown={e => e.stopPropagation()}
+        {...{ isOpen }}
+      >
+        {close && (
+          <ModalClose transparent={transparent} onClick={handleClickOutside} />
+        )}
         {children}
       </ModalCover>
     </ModalWrapper>
   );
 }
 
-const ModalClose = styled(clearIcon)`
+const ModalClose = styled(clearIcon)<{ transparent?: boolean }>`
   position: absolute;
   top: 16px;
   right: 16px;
   font-size: 2rem;
   display: block;
+  color: ${({ transparent }) => (transparent ? '#ffff' : 'black')};
 `;

@@ -10,6 +10,8 @@ import {
 import { questionCardType, submitType } from '@src/page/QuestionPage';
 
 import InputForm from '../input/InputForm';
+import Modal from '../modal/Modal';
+import ModalPortals from '../modal/ModalPotal';
 import UpDownModal from '../modal/UpDownModal';
 
 type QuestionTitleCardType = {
@@ -28,6 +30,7 @@ export default function QuestionTitleCard({
 }: QuestionTitleCardType): JSX.Element {
   const [isPopupOpen, setPopup] = useState(false);
   const [isPopupClose, setPopupClose] = useState(false);
+  const [isOpen, setOpen] = useState(false);
   const title = watch('title');
   const questions = watch('questions');
 
@@ -45,13 +48,33 @@ export default function QuestionTitleCard({
 
     setPopupClose(true);
   };
+  const CompleteImg = styled.img`
+    width: 100%;
+  `;
 
+  const ExampleModalWrapper = styled.div`
+    padding: 2rem 3rem 3rem 3rem;
+    width: 100%;
+    position: relative;
+    .example_title {
+      color: white;
+      text-align: center;
+      margin-bottom: 2rem;
+      font-size: 2rem;
+    }
+  `;
   useEffect(() => {
     if (isPopupOpen === false && isPopupClose) {
       setPopupClose(false);
     }
   }, [isPopupClose, isPopupOpen]);
 
+  const ExampleBizImg = styled.img`
+    position: absolute;
+    right: 0rem;
+    top: 100px;
+    width: 21rem;
+  `;
   return (
     <>
       <StyledQuestionTitleCard>
@@ -69,6 +92,17 @@ export default function QuestionTitleCard({
           (ex. 밀키트 구입에 대한 의견을 듣고 싶어요)
         </h3>
       </StyledQuestionTitleCard>
+      {isOpen && (
+        <ModalPortals>
+          <Modal setPopup={setOpen} transparent close>
+            <ExampleModalWrapper>
+              <h1 className="example_title">이웃에게는 이렇게 보여져요</h1>
+              <ExampleBizImg src="./../../img/examplebizimg.png" />
+              <CompleteImg src="./../../img/exampleImg.png" />
+            </ExampleModalWrapper>
+          </Modal>
+        </ModalPortals>
+      )}
       {isPopupOpen && (
         <UpDownModal setPopup={setPopup} isClose={isPopupClose} rect close>
           <TitleModal>
@@ -93,7 +127,9 @@ export default function QuestionTitleCard({
             <section className="title_modal_section_button">
               <TitleCover>
                 <span>설문 제목이 이웃에게 이렇게 보여져요</span>
-                <ExampleButton>설문 커버 보기</ExampleButton>
+                <ExampleButton type="button" onClick={() => setOpen(true)}>
+                  설문 커버 보기
+                </ExampleButton>
               </TitleCover>
               <NextButton type="button" onClick={handleNextButton}>
                 작성 완료

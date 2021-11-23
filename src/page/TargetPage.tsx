@@ -126,16 +126,16 @@ export default function TargetPage(): JSX.Element {
               사장님, 우리 동네 이웃에게 <br /> 설문을 돌려보세요
             </TargetTitle>
           )}
-          <TargetKingButton
+          {/* <TargetKingButton
             onClick={() => {
               setPopup(true);
             }}
           >
             단골왕 혜택
-          </TargetKingButton>
+          </TargetKingButton> */}
         </div>
 
-        <TargetList isKing={isKing} />
+        <TargetList isKing={true} />
       </StyledTargetPage>
       <NextButton
         disabled={target === -1}
@@ -229,16 +229,16 @@ const StyledTargetPage = styled.section`
   padding: 8rem 1.6rem 4.8rem 1.6rem;
 `;
 
-const TargetKingButton = styled.button`
-  padding: 0.8rem 1rem;
-  color: ${({ theme }) => theme.color.neutralBlack.text};
-  border: 1px solid #d8d8d8;
-  font-size: 1.3rem;
-  line-height: 100%;
-  font-weight: ${({ theme }) => theme.fontWeight.regular};
-  border-radius: 2.1rem;
-  background-color: transparent;
-`;
+// const TargetKingButton = styled.button`
+//   padding: 0.8rem 1rem;
+//   color: ${({ theme }) => theme.color.neutralBlack.text};
+//   border: 1px solid #d8d8d8;
+//   font-size: 1.3rem;
+//   line-height: 100%;
+//   font-weight: ${({ theme }) => theme.fontWeight.regular};
+//   border-radius: 2.1rem;
+//   background-color: transparent;
+// `;
 
 const NextButton = styled.button`
   height: 5.6rem;
