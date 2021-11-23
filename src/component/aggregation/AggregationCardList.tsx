@@ -1,5 +1,7 @@
 import styled from '@emotion/styled';
+import { useRecoilValue } from 'recoil';
 
+import { TitleViewAtom } from '@src/atom/responseAtom';
 import { questionCardType } from '@src/page/QuestionPage';
 
 import AggregationCard from './AggregationCard';
@@ -9,8 +11,9 @@ export default function AggregationCardList({
 }: {
   questions: questionCardType[];
 }): JSX.Element {
+  const isTitleView = useRecoilValue(TitleViewAtom);
   return (
-    <StyledAggregationCardList>
+    <StyledAggregationCardList isTitleView={isTitleView}>
       {questions.map((question, questionIdx) => (
         <AggregationCard
           key={questionIdx}
@@ -22,11 +25,11 @@ export default function AggregationCardList({
   );
 }
 
-const StyledAggregationCardList = styled.ul`
+const StyledAggregationCardList = styled.ul<{ isTitleView: boolean }>`
   display: grid;
   grid-gap: 0.8rem;
   grid-template-columns: auto;
   background-color: #f8f8f8;
   height: 100%;
-  overflow-y: scroll;
+  overflow-y: ${({ isTitleView }) => (isTitleView ? 'hidden' : 'scroll')};
 `;

@@ -22,4 +22,14 @@ const responseIndividualAtom = atom({
   default: 0,
 });
 
-export { responseUserAtom, responseListAtom, responseIndividualAtom };
+const TitleViewAtom = atom({
+  key: 'TitleViewAtom',
+  default: false,
+});
+
+export {
+  TitleViewAtom,
+  responseUserAtom,
+  responseListAtom,
+  responseIndividualAtom,
+};

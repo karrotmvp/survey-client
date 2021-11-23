@@ -1,11 +1,16 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 
 import styled from '@emotion/styled';
 import { useParams } from '@karrotframe/navigator';
-import { useRecoilValueLoadable, useSetRecoilState } from 'recoil';
+import {
+  useRecoilState,
+  useRecoilValueLoadable,
+  useSetRecoilState,
+} from 'recoil';
 
 // // import { questionDataType } from './AnswerHome';
 import { getBizSurveyList, surveyIdAtom } from '@src/api/authorization';
+import { TitleViewAtom } from '@src/atom/responseAtom';
 import MemoAggregationTabs from '@src/component/aggregation/AggregationTabs';
 import ScrollNavBar from '@src/component/common/navbar/ScrollNavBar';
 import { targetList } from '@src/config/const/const';
@@ -18,7 +23,7 @@ export default function SurveyAggregationPage(): JSX.Element {
   const setSurveyId = useSetRecoilState(surveyIdAtom);
   const getSurveyList = useRecoilValueLoadable(getBizSurveyList);
   const ref = useRef<HTMLDivElement>(null);
-  const [isTitleView, setTitleView] = useState(true);
+  const [isTitleView, setTitleView] = useRecoilState(TitleViewAtom);
 
   setSurveyId(surveyId);
 
