@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 
 import styled from '@emotion/styled';
 
+import { ReactComponent as clearIcon } from '@config/icon/clear.svg';
+
 const ModalWrapper = styled.div`
   display: flex;
   z-index: 2;
@@ -53,10 +55,14 @@ export default function UpDownModal({
   setPopup,
   children,
   rect,
+  close,
+  isClose,
 }: {
   setPopup: React.Dispatch<React.SetStateAction<boolean>>;
   children?: JSX.Element | JSX.Element[];
   rect?: boolean;
+  close?: boolean;
+  isClose?: boolean;
 }): JSX.Element {
   const [isOpen, setOpen] = useState(true);
   const handleClickOutside = (e: React.MouseEvent) => {
@@ -66,11 +72,25 @@ export default function UpDownModal({
     if (isOpen === false) setTimeout(() => setPopup(false), 300);
   }, [isOpen, setPopup]);
 
+  useEffect(() => {
+    if (isClose !== undefined && isClose) {
+      setOpen(false);
+    }
+  }, [isClose]);
   return (
     <ModalWrapper onMouseDown={handleClickOutside}>
       <ModalCover onMouseDown={e => e.stopPropagation()} {...{ isOpen, rect }}>
+        {close && <ModalClose onClick={handleClickOutside} />}
         {children}
       </ModalCover>
     </ModalWrapper>
   );
 }
+
+const ModalClose = styled(clearIcon)`
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  font-size: 2rem;
+  display: block;
+`;

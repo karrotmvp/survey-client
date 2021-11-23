@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import styled from '@emotion/styled';
 import {
@@ -27,6 +27,7 @@ export default function QuestionTitleCard({
   watch,
 }: QuestionTitleCardType): JSX.Element {
   const [isPopupOpen, setPopup] = useState(false);
+  const [isPopupClose, setPopupClose] = useState(false);
   const title = watch('title');
   const questions = watch('questions');
 
@@ -42,8 +43,15 @@ export default function QuestionTitleCard({
       );
     }
 
-    setPopup(false);
+    setPopupClose(true);
   };
+
+  useEffect(() => {
+    if (isPopupOpen === false && isPopupClose) {
+      setPopupClose(false);
+    }
+  }, [isPopupClose, isPopupOpen]);
+
   return (
     <>
       <StyledQuestionTitleCard>
@@ -62,7 +70,7 @@ export default function QuestionTitleCard({
         </h3>
       </StyledQuestionTitleCard>
       {isPopupOpen && (
-        <UpDownModal setPopup={setPopup} rect>
+        <UpDownModal setPopup={setPopup} isClose={isPopupClose} rect close>
           <TitleModal>
             <section className="title_modal_section">
               <h1>설문 제목 작성</h1>
@@ -77,8 +85,16 @@ export default function QuestionTitleCard({
                 maxLength={30}
                 config={{ required: true, maxLength: 30 }}
               />
+              <h3 className="example_title_name">예시</h3>
+              {example.map(text => (
+                <ExampleText {...text} />
+              ))}
             </section>
             <section className="title_modal_section_button">
+              <TitleCover>
+                <span>설문 제목이 이웃에게 이렇게 보여져요</span>
+                <ExampleButton>설문 커버 보기</ExampleButton>
+              </TitleCover>
               <NextButton type="button" onClick={handleNextButton}>
                 작성 완료
               </NextButton>
@@ -87,6 +103,64 @@ export default function QuestionTitleCard({
         </UpDownModal>
       )}
     </>
+  );
+}
+
+const ExampleButton = styled.button`
+  background-color: #fff;
+  color: ${({ theme }) => theme.color.primaryOrange};
+  font-size: 1.3rem;
+  padding: 0.8rem 1rem;
+  border-radius: 18px;
+  font-weight: ${({ theme }) => theme.fontWeight.medium};
+`;
+
+const ExampleDot = styled.div`
+  width: 0.6rem;
+  height: 0.6rem;
+  margin-right: 0.8rem;
+  background-color: #c4c4c4;
+  border-radius: 50%;
+`;
+const StyledExampleText = styled.div`
+  display: flex;
+  flex-direction: column;
+  font-size: 1.5rem;
+  font-weight: ${({ theme }) => theme.fontWeight.regular};
+  .example_text_title {
+    display: flex;
+    align-items: center;
+    line-height: 140%;
+    color: #8b8b8b;
+    margin-bottom: 0.6rem;
+  }
+  .example_text_subtitle {
+    display: block;
+    margin-left: 1.6rem;
+    line-height: 120%;
+  }
+  margin: 1rem 0;
+`;
+const example = [
+  { title: '의견 조사', subtitle: '밀키트 구입에 대한 의견을 듣고 싶어요' },
+  { title: '신메뉴/서비스 추천', subtitle: 'OO떡볶이 신메뉴를 추천받아요' },
+  { title: '후기/피드백', subtitle: 'OO 헤어샵 서비스 후기가 궁금해요' },
+];
+
+function ExampleText({
+  title,
+  subtitle,
+}: {
+  title: string;
+  subtitle: string;
+}): JSX.Element {
+  return (
+    <StyledExampleText>
+      <div className="example_text_title">
+        <ExampleDot /> {title}
+      </div>
+      <span className="example_text_subtitle">{subtitle}</span>
+    </StyledExampleText>
   );
 }
 
@@ -125,6 +199,12 @@ const TitleModal = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+
+  .title_modal_section_button {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+  }
   .title_modal_section {
     padding: 2rem 1.6rem 0 1.6rem;
     h1 {
@@ -134,6 +214,26 @@ const TitleModal = styled.div`
       text-align: center;
       margin-bottom: 3.6rem;
     }
+    .example_title_name {
+      font-size: 1.6rem;
+      font-weight: ${({ theme }) => theme.fontWeight.medium};
+      margin-top: 2.8rem;
+    }
+  }
+`;
+
+const TitleCover = styled.div`
+  width: 100%;
+  padding: 0.9rem 1.6rem;
+  height: 4.7rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #fedecc;
+  span {
+    font-size: 1.3rem;
+    font-weight: ${({ theme }) => theme.fontWeight.medium};
+    color: #707070;
   }
 `;
 

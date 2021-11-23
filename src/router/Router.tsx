@@ -7,8 +7,10 @@ import AnswerHome from '@src/page/AnswerHome';
 import EndPage from '@src/page/EndPage';
 import FeedBackPage from '@src/page/FeedBackPage';
 import GuidePage from '@src/page/GuidePage';
-import HomePage from '@src/page/HomePage';
-// import SurveyHome from '@src/page/SurveyHome';
+import ShowAllPage from '@src/page/ShowAllPage';
+import SurveyAggregationPage from '@src/page/SurveyAggregationPage';
+// import HomePage from '@src/page/HomePage';
+import SurveyHome from '@src/page/SurveyHome';
 import TargetPage from '@src/page/TargetPage';
 
 export default function Router(): JSX.Element {
@@ -27,13 +29,19 @@ export default function Router(): JSX.Element {
   return (
     <Navigator theme={checkMobileType()}>
       <Screen path="/">
-        <HomePage />
+        <SurveyHome />
       </Screen>
       <Screen path="/guide">
         <GuidePage />
       </Screen>
       <Screen path="/feedback">
         <FeedBackPage />
+      </Screen>
+      <Screen path="/survey/aggregation/:surveyId/:questionNumber">
+        <ShowAllPage />
+      </Screen>
+      <Screen path="/survey/aggregation/:surveyId">
+        <SurveyAggregationPage />
       </Screen>
       <Screen path="/survey/create/target">
         <TargetPage />

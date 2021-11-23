@@ -32,7 +32,7 @@ const questionCategories = [
   '퀴즈 풀어봐요',
 ];
 
-type questionDataType = {
+export type questionDataType = {
   surveyId: number;
   title: string;
   description: string;

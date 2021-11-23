@@ -2,20 +2,41 @@ import { ReactElement, useEffect, useState } from 'react';
 
 import styled from '@emotion/styled';
 import { useNavigator } from '@karrotframe/navigator';
-import { useSetRecoilState } from 'recoil';
+import Skeleton from 'react-loading-skeleton';
+import { useRecoilValueLoadable, useSetRecoilState } from 'recoil';
 
-import { authorizationBizSelector, bizCodeAtom } from '@api/authorization';
+import {
+  authorizationBizSelector,
+  bizCodeAtom,
+  getBizprofile,
+} from '@api/authorization';
 import NavBar from '@component/common/navbar/NavBar';
 import { ReactComponent as LogoIcon } from '@config/icon/mudda_orange.svg';
 import { ReactComponent as MuddaIcon } from '@config/icon/mudda_textLogo.svg';
+import LoadingCard from '@src/component/common/card/LoadingCard';
+import SurveyCard from '@src/component/common/card/SurveyCard';
 import UpDownModal from '@src/component/common/modal/UpDownModal';
 import { useMiniBizAuth } from '@src/hook/useAuth';
+import useGet from '@src/hook/useGet';
 import useLogin from '@src/hook/useLogin';
+
+export type surveyItemType = {
+  createdAt: string;
+  responseCount: number;
+  surveyId: number;
+  target: string;
+  title: string;
+};
 
 export default function SurveyHome(): ReactElement {
   const jwt = useLogin(authorizationBizSelector);
   const setCode = useSetRecoilState(bizCodeAtom);
   const getBizId = useMiniBizAuth(process.env.REACT_APP_APP_ID || '');
+  const getList = useGet<surveyItemType[]>('/surveys');
+  const [surveyLists, setSurveyLists] = useState<surveyItemType[] | undefined>(
+    undefined,
+  );
+  const userData = useRecoilValueLoadable(getBizprofile);
   const [isPopup, setPopup] = useState(false);
   const { push } = useNavigator();
   const handleClick = () => {
@@ -34,23 +55,61 @@ export default function SurveyHome(): ReactElement {
 
   useEffect(() => {
     if (jwt.state === 'hasValue') {
-      // eslint-disable-next-line no-console
-      console.log(jwt.contents);
+      (async function getSurveysListsData() {
+        const res = await getList();
+        setSurveyLists(res);
+      })();
     }
   }, [jwt]);
-  return (
-    <StyledSurveyHomePage>
-      <NavBar
-        reverse={true}
-        type="CLOSE"
-        appendCenter={
-          <LogoWrapper>
-            <Logo />
-            <TitleLogo />
-          </LogoWrapper>
-        }
-      />
 
+  const SurveyCardLists = styled.ul`
+    border-top: 0.8rem solid #f4f4f4;
+    margin: 0;
+    padding: 0;
+    overflow-y: scroll;
+    height: 70vh;
+  `;
+
+  const BizAvaterImg = styled.img`
+    width: 2.8rem;
+    height: 2.8rem;
+    border-radius: 50%;
+  `;
+  return (
+    <div style={{ height: '100vh' }}>
+      <StyledSurveyHomePage>
+        <NavBar
+          transparent
+          type="CLOSE"
+          appendCenter={
+            <LogoWrapper>
+              <Logo />
+              <TitleLogo />
+            </LogoWrapper>
+          }
+          appendRight={
+            userData.state === 'hasValue' && userData.contents !== '' ? (
+              <BizAvaterImg src={userData.contents.imageUrl} />
+            ) : (
+              <Skeleton height="28px" width="28px" borderRadius="50%" />
+            )
+          }
+        />
+        <button onClick={handleClick}>ddd</button>
+        <h1 className="survey_home_title">
+          사장님, 만드신 <b>설문</b>과<br />
+          <b>동네 이웃의 답변</b>을 확인해보세요 🙌
+        </h1>
+      </StyledSurveyHomePage>
+      {surveyLists ? (
+        <SurveyCardLists>
+          {surveyLists.map(data => (
+            <SurveyCard key={data.surveyId} {...data} />
+          ))}
+        </SurveyCardLists>
+      ) : (
+        <LoadingCard count={3} />
+      )}
       {isPopup && (
         <UpDownModal setPopup={setPopup}>
           <GuideModal>
@@ -67,8 +126,7 @@ export default function SurveyHome(): ReactElement {
           <NextButton onClick={handleNextClick}>다음</NextButton>
         </UpDownModal>
       )}
-      <button onClick={handleClick}>설문 만들기</button>
-    </StyledSurveyHomePage>
+    </div>
   );
 }
 
@@ -86,13 +144,19 @@ const LogoWrapper = styled.div`
 `;
 
 const StyledSurveyHomePage = styled.section`
-  background: linear-gradient(360deg, #fff2eb 0%, rgba(255, 242, 235, 0) 92.5%);
+  background: linear-gradient(0deg, rgba(254, 222, 204, 0) 0%, #fedecc 100%);
   width: 100%;
-  height: 100vh;
-  padding: 8rem 1.6rem 1.6rem 1.6rem;
+  padding: 8rem 1.6rem 4rem 1.6rem;
   display: flex;
   justify-content: space-between;
   flex-direction: column;
+  border-bottom: 1px #c9c9c9 solid;
+
+  .survey_home_title {
+    font-size: 2rem;
+    font-weight: ${({ theme }) => theme.fontWeight.medium};
+    line-height: 150%;
+  }
 `;
 
 const GuideModal = styled.div`

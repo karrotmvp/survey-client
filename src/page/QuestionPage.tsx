@@ -119,9 +119,9 @@ export default function QuestionPage(): JSX.Element {
         return res;
       }),
     });
-    console.log(submitData);
     setPopup(true);
   };
+
   const TargetModalButton = styled.button`
     width: 100%;
     display: flex;

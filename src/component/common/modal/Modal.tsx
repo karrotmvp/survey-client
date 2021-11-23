@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 
 import styled from '@emotion/styled';
 
+import { ReactComponent as clearIcon } from '@config/icon/clear.svg';
+
 const ModalWrapper = styled.div<{ paddingSide: string | undefined }>`
   display: flex;
   z-index: 2;
@@ -53,10 +55,12 @@ export default function Modal({
   setPopup,
   paddingSide,
   children,
+  close,
 }: {
   setPopup: React.Dispatch<React.SetStateAction<boolean>>;
   children?: JSX.Element | JSX.Element[];
   paddingSide?: string;
+  close?: boolean;
 }): JSX.Element {
   const [isOpen, setOpen] = useState(true);
   const handleClickOutside = (e: React.MouseEvent) => {
@@ -69,8 +73,17 @@ export default function Modal({
   return (
     <ModalWrapper onMouseDown={handleClickOutside} paddingSide={paddingSide}>
       <ModalCover onMouseDown={e => e.stopPropagation()} {...{ isOpen }}>
+        {close && <ModalClose onClick={handleClickOutside} />}
         {children}
       </ModalCover>
     </ModalWrapper>
   );
 }
+
+const ModalClose = styled(clearIcon)`
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  font-size: 2rem;
+  display: block;
+`;

@@ -1,5 +1,5 @@
 // import { useEffect, useState } from 'react';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import styled from '@emotion/styled';
 import { useNavigator } from '@karrotframe/navigator';
@@ -112,11 +112,6 @@ export default function TargetPage(): JSX.Element {
   const target = useRecoilValue(questionTarget);
   const isKing = false;
 
-  useEffect(() => {
-    if (userData.contents !== '' && userData.state === 'hasValue') {
-      console.log(userData.contents.name);
-    }
-  }, [userData]);
   return (
     <>
       <NavBar type="BACK" title="설문 대상 선택" />
@@ -149,7 +144,7 @@ export default function TargetPage(): JSX.Element {
         다음
       </NextButton>
       {isPopup && (
-        <Modal setPopup={setPopup}>
+        <Modal setPopup={setPopup} close>
           <StyledModal>
             <h1 className="target_modal_title">단골왕 사장님이란?</h1>
             <h3 className="target_modal_subtitle">
