@@ -16,14 +16,16 @@ export default function ShowAllPage(): JSX.Element {
   return (
     <div style={{ paddingTop: '5.6rem' }}>
       <NavBar type="BACK" />
-      {question.state === 'hasValue' && question.contents !== '' ? (
-        <AggregationBriefCard
-          showAll
-          {...question.contents.questionAggregations[+questionNumber]}
-        />
-      ) : (
-        <></>
-      )}
+      <div style={{ marginBottom: '8rem' }}>
+        {question.state === 'hasValue' && question.contents !== '' ? (
+          <AggregationBriefCard
+            showAll
+            {...question.contents.questionAggregations[+questionNumber]}
+          />
+        ) : (
+          <></>
+        )}
+      </div>
     </div>
   );
 }

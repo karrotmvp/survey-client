@@ -4,7 +4,7 @@ import { questionCardType } from '@src/page/QuestionPage';
 
 import AggregationChoiceList from './AggregationChoiceList';
 
-const StyledAggregationCard = styled.div`
+const StyledAggregationCard = styled.div<{ isLast?: boolean }>`
   padding: 2.4rem 2rem;
   background-color: #fff;
   .aggregation_card_title {
@@ -20,6 +20,7 @@ const StyledAggregationCard = styled.div`
     font-weight: ${({ theme }) => theme.fontWeight.regular};
     margin-bottom: 2rem;
   }
+  ${({ isLast }) => isLast && 'padding-bottom: 8rem;'}
 `;
 
 const StyledQuestionInput = styled.span`
@@ -46,12 +47,14 @@ export default function AggregationCard({
   choices,
   questionIdx,
   response,
+  isLast,
 }: questionCardType & {
   questionIdx: number;
   response?: { answer: string };
+  isLast?: boolean;
 }): JSX.Element {
   return (
-    <StyledAggregationCard>
+    <StyledAggregationCard isLast={isLast}>
       <h3 className="aggregation_card_title">질문 {questionIdx + 1}</h3>
       <span className="aggregation_card_text">{text}</span>
       {response === undefined &&

@@ -62,11 +62,12 @@ export default function AggregationBrief({
 }
 
 const StyledAggregationBrief = styled.ul<{ isTitleView: boolean }>`
-  padding: 0.9rem 0;
+  padding: 0.9rem 0 8rem 0;
   background: #f8f8f8;
   display: grid;
   grid-gap: 0.8rem;
   grid-template-columns: auto;
+  margin-bottom: 8rem;
   overflow-y: ${({ isTitleView }) => (isTitleView ? 'hidden' : 'scroll')};
   height: calc(100% - 5.5rem);
 `;

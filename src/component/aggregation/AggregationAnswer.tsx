@@ -1,9 +1,10 @@
 import React, { MouseEvent, useState } from 'react';
 
 import styled from '@emotion/styled';
-import { useRecoilValueLoadable } from 'recoil';
+import { useRecoilValue, useRecoilValueLoadable } from 'recoil';
 
 import { getAggregationBrief } from '@src/api/authorization';
+import { TitleViewAtom } from '@src/atom/responseAtom';
 
 import LoadingCard from '../common/card/LoadingCard';
 import AggregationBrief from './AggregationBrief';
@@ -26,10 +27,10 @@ function AggregationAnswer({
     name: `익명 ${idx + 1}`,
     responseId: data,
   }));
-
+  const isTitleView = useRecoilValue(TitleViewAtom);
   return (
     <>
-      <StyleAggregationAnswer tabKey={tabKey}>
+      <StyleAggregationAnswer isTitleView={isTitleView} tabKey={tabKey}>
         <StyleAggregationButton
           onClick={handleClick}
           aria-label={'요약'}
@@ -65,14 +66,21 @@ function AggregationAnswer({
   );
 }
 
-const StyleAggregationAnswer = styled.div<{ tabKey: string }>`
+const StyleAggregationAnswer = styled.div<{
+  tabKey: string;
+  isTitleView: boolean;
+}>`
+  transition: 0.3s;
   padding-top: 1.4rem;
   padding-left: 2.4rem;
-  ${({ tabKey }) =>
-    tabKey === '요약'
+  ${({ tabKey, isTitleView }) => {
+    if (isTitleView) return '';
+
+    return tabKey === '요약'
       ? `box-shadow: 0px 2px 10px rgba(107, 80, 80, 0.08);
   filter: drop-shadow(0px 2px 10px rgba(107, 80, 80, 0.06));`
-      : ''}
+      : '';
+  }}
 `;
 
 const StyleAggregationButton = styled.button`

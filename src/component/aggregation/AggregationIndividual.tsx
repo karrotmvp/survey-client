@@ -16,7 +16,7 @@ import UpDownModal from '../common/modal/UpDownModal';
 import AggregationCard from './AggregationCard';
 
 type questionCardType = {
-  question: string;
+  text: string;
   choices?: choiceType[] | undefined;
   questionType: 2 | 3;
 };
@@ -73,7 +73,7 @@ export default function AggregationIndividual({
 
   return (
     <>
-      <IndividualNavigator>
+      <IndividualNavigator isTitleView={!isTitleView}>
         <IndividualButton onClick={handleLeftClick} disabled={nameIdx === 0}>
           <ArrowLeft />
         </IndividualButton>
@@ -94,9 +94,10 @@ export default function AggregationIndividual({
               <AggregationCard
                 key={questionIdx}
                 questionIdx={questionIdx}
-                text={question.question}
                 {...question}
                 response={response}
+                // eslint-disable-next-line
+                isLast={questionIdx === getIndividualResponse.data!.length - 1}
               />
             ),
           )
@@ -180,14 +181,18 @@ const StyleModalTitle = styled.h1`
   margin-bottom: 2.8rem;
 `;
 
-const IndividualNavigator = styled.div`
+const IndividualNavigator = styled.div<{ isTitleView: boolean }>`
   padding: 1.6rem 3.6rem;
   width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  box-shadow: 0px 4px 10px -4px rgba(107, 80, 80, 0.1);
-  filter: drop-shadow(0px 2px 10px rgba(107, 80, 80, 0.06));
+  ${({ isTitleView }) =>
+    isTitleView
+      ? `  box-shadow: 0px 4px 10px -4px rgba(107, 80, 80, 0.1);
+  filter: drop-shadow(0px 2px 10px rgba(107, 80, 80, 0.06));`
+      : ''}
+  transition: 0.3s;
   .individual_name {
     font-weight: ${({ theme }) => theme.fontWeight.medium};
     font-size: 1.5rem;

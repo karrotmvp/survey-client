@@ -18,6 +18,7 @@ export default function AggregationCardList({
         <AggregationCard
           key={questionIdx}
           questionIdx={questionIdx}
+          isLast={questions.length === questionIdx + 1}
           {...question}
         />
       ))}

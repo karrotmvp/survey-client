@@ -3,7 +3,7 @@ import { ReactElement, useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import { useNavigator } from '@karrotframe/navigator';
 import Skeleton from 'react-loading-skeleton';
-import { useRecoilValueLoadable, useSetRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValueLoadable } from 'recoil';
 
 import {
   authorizationBizSelector,
@@ -13,6 +13,7 @@ import {
 import NavBar from '@component/common/navbar/NavBar';
 import { ReactComponent as LogoIcon } from '@config/icon/mudda_orange.svg';
 import { ReactComponent as MuddaIcon } from '@config/icon/mudda_textLogo.svg';
+import mini from '@src/api/mini';
 import LoadingCard from '@src/component/common/card/LoadingCard';
 import SurveyCard from '@src/component/common/card/SurveyCard';
 import UpDownModal from '@src/component/common/modal/UpDownModal';
@@ -30,8 +31,14 @@ export type surveyItemType = {
 
 export default function SurveyHome(): ReactElement {
   const jwt = useLogin(authorizationBizSelector);
-  const setCode = useSetRecoilState(bizCodeAtom);
-  const getBizId = useMiniBizAuth(process.env.REACT_APP_APP_ID || '');
+  const [code, setCode] = useRecoilState(bizCodeAtom);
+  const [close, setClose] = useState(false);
+
+  const onClose = () => {
+    setClose(true);
+  };
+
+  const getBizId = useMiniBizAuth(process.env.REACT_APP_APP_ID || '', onClose);
   const getList = useGet<surveyItemType[]>('/surveys');
   const [surveyLists, setSurveyLists] = useState<surveyItemType[] | undefined>(
     undefined,
@@ -46,6 +53,13 @@ export default function SurveyHome(): ReactElement {
   const handleNextClick = () => {
     push('/survey/create/target');
   };
+
+  useEffect(() => {
+    if (close && code === '') {
+      mini.close();
+    }
+  }, [close, code]);
+
   useEffect(() => {
     (async function loadBizPrest() {
       const id = await getBizId();

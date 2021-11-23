@@ -47,6 +47,7 @@ const TextList = styled.ul<{ showAll: boolean | undefined }>`
   ${({ showAll }) => (showAll ? '' : 'max-height: 28rem')};
   overflow-y: overlay;
   margin-top: 2rem;
+
   ::-webkit-scrollbar {
     position: absolute;
     left: 0;
@@ -68,6 +69,9 @@ const TextItem = styled.li`
   background-color: #f8f8f8;
   font-size: 1.3rem;
   border-radius: 4px;
+  :hover {
+    background-color: #d8d8d8;
+  }
   span {
     display: block;
   }
