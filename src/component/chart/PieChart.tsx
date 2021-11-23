@@ -14,7 +14,7 @@ export default function AggregationPieChart({
   COLORS,
 }: AggregationPieChartType): JSX.Element {
   const StyledSector = styled(Sector)`
-    @keyframes chart {
+    /* @keyframes chart {
       from {
         transform: scale(1);
       }
@@ -24,7 +24,7 @@ export default function AggregationPieChart({
     }
     transform-origin: 200 200;
     animation: chart 0.2s ease-in;
-    animation-fill-mode: forwards;
+    animation-fill-mode: forwards; */
   `;
 
   const renderActiveShape = (props: any) => {
@@ -140,6 +140,8 @@ export default function AggregationPieChart({
           outerRadius={80}
           dataKey="value"
           onMouseEnter={onPieEnter}
+          startAngle={90}
+          endAngle={-270}
         >
           {data.map((e, index) => (
             <Cell fill={COLORS[index % COLORS.length]} />

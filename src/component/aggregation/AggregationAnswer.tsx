@@ -1,4 +1,4 @@
-import React, { MouseEvent, useEffect, useState } from 'react';
+import React, { MouseEvent, useState } from 'react';
 
 import styled from '@emotion/styled';
 import { useRecoilValueLoadable } from 'recoil';
@@ -26,9 +26,6 @@ function AggregationAnswer({
     name: `익명 ${idx + 1}`,
     responseId: data,
   }));
-  useEffect(() => {
-    console.log('re');
-  }, []);
 
   return (
     <>

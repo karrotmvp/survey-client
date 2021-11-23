@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import styled from '@emotion/styled';
 import {
@@ -27,6 +27,7 @@ export default function QuestionTitleCard({
   watch,
 }: QuestionTitleCardType): JSX.Element {
   const [isPopupOpen, setPopup] = useState(false);
+  const [isPopupClose, setPopupClose] = useState(false);
   const title = watch('title');
   const questions = watch('questions');
 
@@ -42,8 +43,15 @@ export default function QuestionTitleCard({
       );
     }
 
-    setPopup(false);
+    setPopupClose(true);
   };
+
+  useEffect(() => {
+    if (isPopupOpen === false && isPopupClose) {
+      setPopupClose(false);
+    }
+  }, [isPopupClose, isPopupOpen]);
+
   return (
     <>
       <StyledQuestionTitleCard>
@@ -62,7 +70,7 @@ export default function QuestionTitleCard({
         </h3>
       </StyledQuestionTitleCard>
       {isPopupOpen && (
-        <UpDownModal setPopup={setPopup} rect close>
+        <UpDownModal setPopup={setPopup} isClose={isPopupClose} rect close>
           <TitleModal>
             <section className="title_modal_section">
               <h1>설문 제목 작성</h1>

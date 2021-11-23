@@ -44,7 +44,7 @@ const TextList = styled.ul<{ showAll: boolean | undefined }>`
   display: grid;
   grid-gap: 0.8rem;
   grid-template-columns: auto;
-  ${({ showAll }) => (showAll ? '' : 'max-height: 38rem')};
+  ${({ showAll }) => (showAll ? '' : 'max-height: 28rem')};
   overflow-y: scroll;
   margin-top: 2rem;
 `;

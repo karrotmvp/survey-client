@@ -56,11 +56,13 @@ export default function UpDownModal({
   children,
   rect,
   close,
+  isClose,
 }: {
   setPopup: React.Dispatch<React.SetStateAction<boolean>>;
   children?: JSX.Element | JSX.Element[];
   rect?: boolean;
   close?: boolean;
+  isClose?: boolean;
 }): JSX.Element {
   const [isOpen, setOpen] = useState(true);
   const handleClickOutside = (e: React.MouseEvent) => {
@@ -70,6 +72,12 @@ export default function UpDownModal({
     if (isOpen === false) setTimeout(() => setPopup(false), 300);
   }, [isOpen, setPopup]);
 
+  useEffect(() => {
+    if (isClose !== undefined && isClose) {
+      console.log(isClose);
+      setOpen(false);
+    }
+  }, [isClose]);
   return (
     <ModalWrapper onMouseDown={handleClickOutside}>
       <ModalCover onMouseDown={e => e.stopPropagation()} {...{ isOpen, rect }}>

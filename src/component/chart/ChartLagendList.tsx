@@ -28,7 +28,11 @@ export default function ChartLegendList({
   return (
     <StyledChartLegendUl>
       {listData.map((ans, index) => (
-        <ChartLegend answer={ans} LegendColor={COLORS[index % COLORS.length]} />
+        <ChartLegend
+          key={index}
+          answer={ans}
+          LegendColor={COLORS[index % COLORS.length]}
+        />
       ))}
     </StyledChartLegendUl>
   );
