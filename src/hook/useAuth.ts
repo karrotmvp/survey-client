@@ -52,7 +52,7 @@ const useMiniBizAuth = (
       if (onClose) {
         onClose();
       }
-      return Promise.resolve<string>(urlSearchParams.get('code') || '');
+      return Promise.resolve<string>('');
     }
 
     return new Promise<string>((resolve, reject) => {
