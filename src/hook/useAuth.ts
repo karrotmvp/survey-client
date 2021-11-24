@@ -46,26 +46,30 @@ const useMiniBizAuth = (
     const urlSearchParams = new URLSearchParams(window.location.search);
     const isPreload = urlSearchParams.get('preload');
 
-    if (isPreload !== 'true') {
-      return new Promise<string>((resolve, reject) => {
-        mini.startPreset({
-          preset: process.env.REACT_APP_PRESET_BIZ || '',
-          params: {
-            appId,
-          },
-          onSuccess(result: { bizProfileId: string }) {
-            if (result && result.bizProfileId) {
-              resolve(result.bizProfileId);
-            }
-          },
-          onFailure() {
-            reject(new Error('fail'));
-          },
-          onClose,
-        });
-      });
+    if (urlSearchParams.has('code') || isPreload === 'true') {
+      if (onClose) {
+        onClose();
+      }
+      return Promise.resolve<string>(urlSearchParams.get('code') || '');
     }
-    return Promise.resolve('');
+
+    return new Promise<string>((resolve, reject) => {
+      mini.startPreset({
+        preset: process.env.REACT_APP_PRESET_BIZ || '',
+        params: {
+          appId,
+        },
+        onSuccess(result: { bizProfileId: string }) {
+          if (result && result.bizProfileId) {
+            resolve(result.bizProfileId);
+          }
+        },
+        onFailure() {
+          reject(new Error('fail'));
+        },
+        onClose,
+      });
+    });
   }, [appId, onClose]);
 
   return getCodeAsync;
