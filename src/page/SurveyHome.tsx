@@ -61,10 +61,11 @@ export default function SurveyHome(): ReactElement {
   }, [close, code]);
 
   useEffect(() => {
-    (async function loadBizPrest() {
+    const time = setTimeout(async () => {
       const id = await getBizId();
       setCode(id);
-    })();
+    }, 100);
+    return () => clearTimeout(time);
   }, []);
 
   useEffect(() => {
