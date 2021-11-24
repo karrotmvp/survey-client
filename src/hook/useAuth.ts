@@ -8,6 +8,7 @@ const useMiniAuth = (
   onClose?: () => void,
 ): (() => Promise<string>) => {
   const getCodeAsync = useCallback(() => {
+    console.log(window.location.search);
     const urlSearchParams = new URLSearchParams(window.location.search);
     const isPreload = urlSearchParams.get('preload');
 
