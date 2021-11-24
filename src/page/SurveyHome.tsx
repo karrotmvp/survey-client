@@ -64,7 +64,7 @@ export default function SurveyHome(): ReactElement {
     const time = setTimeout(async () => {
       const id = await getBizId();
       setCode(id);
-    }, 100);
+    }, 200);
     return () => clearTimeout(time);
   }, []);
 
