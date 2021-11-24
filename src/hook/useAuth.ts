@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { useCallback } from 'react';
 
 import mini from '@api/mini';
@@ -45,8 +46,9 @@ const useMiniBizAuth = (
   const getCodeAsync = useCallback(() => {
     const urlSearchParams = new URLSearchParams(window.location.search);
     const isPreload = urlSearchParams.get('preload');
-
+    console.log(isPreload, urlSearchParams.has('code'));
     if (urlSearchParams.has('code') || isPreload === 'true') {
+      console.log(isPreload, urlSearchParams.has('code'), 'in');
       if (onClose) {
         onClose();
       }
