@@ -91,11 +91,17 @@ const WithQuestionTab = (getSurveyList: Loadable<'' | questionDataType>) => {
 const WithAnswerTab = (answerBrief: StateType<answerBriefType>) => {
   if (answerBrief.isSuccess && answerBrief.data !== undefined) {
     const { responseIds } = answerBrief.data;
-    if (responseIds.length === 0) return () => <div>답변이 없어요</div>;
+    if (responseIds.length === 0) return () => <StyleNoAnswer></StyleNoAnswer>;
     return () => <MemoAggregationAnswer responseIds={responseIds} />;
   }
   return () => <LoadingCard count={2} />;
 };
+
+const StyleNoAnswer = styled.div`
+  background-color: #f8f8f8;
+  width: 100%;
+  height: 100%;
+`;
 
 const TabsWrapper = styled.div`
   .myTabs {
