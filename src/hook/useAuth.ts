@@ -47,11 +47,8 @@ const useMiniBizAuth = (
     const urlSearchParams = new URLSearchParams(window.location.search);
     const isPreload = urlSearchParams.get('preload');
     console.log(isPreload, urlSearchParams.has('code'));
-    if (urlSearchParams.has('code') || isPreload === 'true') {
+    if (isPreload === 'true') {
       console.log(isPreload, urlSearchParams.has('code'), 'in');
-      if (onClose) {
-        onClose();
-      }
       return Promise.resolve<string>('');
     }
 
