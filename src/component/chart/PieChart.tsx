@@ -130,7 +130,7 @@ export default function AggregationPieChart({
 
   return (
     <div style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
-      <PieChart width={250} height={265}>
+      <PieChart width={265} height={265}>
         <Pie
           activeIndex={activeIndex}
           activeShape={renderActiveShape}
