@@ -23,7 +23,7 @@ const TargetImg = styled.div`
   width: 100%;
   height: 0;
   padding-top: calc(228 / 328 * 100%);
-  background: url('../../img/targetImg.png') center center / cover no-repeat;
+  background: url('../../img/target.png') center center / cover no-repeat;
   position: relative;
   border-radius: 4px;
   margin-bottom: 3.2rem;
