@@ -3,7 +3,7 @@ const contents = {
     TEXT: '우리 동네 이웃에게 묻고 싶은 것을 적어주세요',
     DESCRIPTION: '질문에 덧붙일 것이 있다면 적어주세요 (옵션)',
     CHOICE: '객관식 답변',
-    FEEDBACK: '무띠에 자유롭게 의견을 남겨주세요!',
+    FEEDBACK: '무따에 자유롭게 의견을 남겨주세요!',
   },
   text: {
     feedback: {

@@ -157,11 +157,10 @@ export default function SurveyHome(): ReactElement {
 const FeedbackBanner = styled.button`
   background-color: #fff2eb;
   display: flex;
-  padding: 0 1.6rem;
+  padding: 1.6rem 0 1.6rem 1.6rem;
   position: fixed;
   bottom: 0;
   width: 100%;
-  height: 4.7rem;
   color: ${({ theme }) => theme.color.primaryOrange};
   align-items: center;
   span {

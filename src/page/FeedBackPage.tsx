@@ -140,7 +140,7 @@ const StyledTitleInput = styled.textarea`
   border: 1px solid #c9c9c9;
   box-sizing: border-box;
   border-radius: 7px;
-  padding: 0.8rem;
+  padding: 1.6rem;
   font-size: 1.6rem;
   ::placeholder {
     color: ${({ theme }) => theme.color.neutralBlack.placeholder};
