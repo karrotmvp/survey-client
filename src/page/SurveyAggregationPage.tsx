@@ -8,7 +8,6 @@ import {
   useSetRecoilState,
 } from 'recoil';
 
-// // import { questionDataType } from './AnswerHome';
 import { getBizSurveyList, surveyIdAtom } from '@src/api/authorization';
 import { TitleViewAtom } from '@src/atom/responseAtom';
 import MemoAggregationTabs from '@src/component/aggregation/AggregationTabs';
@@ -38,6 +37,11 @@ export default function SurveyAggregationPage(): JSX.Element {
     });
   };
 
+  const convertDate = (date: string): string => {
+    const currentDate = new Date(date);
+    return `${currentDate.getMonth()}월 ${currentDate.getDate()}일`;
+  };
+
   const observer = new IntersectionObserver(callback, options);
   useEffect(() => {
     if (ref.current) {
@@ -65,8 +69,10 @@ export default function SurveyAggregationPage(): JSX.Element {
         <span>
           {getSurveyList.state === 'hasValue' &&
             getSurveyList.contents !== '' &&
-            targetList[getSurveyList.contents.target - 1].title}{' '}
-          · 10월 21일
+            `${targetList[getSurveyList.contents.target - 1].title} · ${
+              // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+              convertDate(getSurveyList.contents.createdAt!)
+            }`}
         </span>
       </StyledSurveyTitleCard>
       <MemoAggregationTabs />

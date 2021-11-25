@@ -175,7 +175,7 @@ export default function QuestionPage(): JSX.Element {
       </form>
 
       {isTargetPopup && (
-        <Modal setPopup={setTargetPopup}>
+        <Modal setPopup={setTargetPopup} close>
           <TargetChangeModal>
             <h1 className="target_change_title">설문 대상 선택</h1>
             <TargetList isKing={true} brief />

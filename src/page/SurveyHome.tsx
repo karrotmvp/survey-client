@@ -11,6 +11,7 @@ import {
   getBizprofile,
 } from '@api/authorization';
 import NavBar from '@component/common/navbar/NavBar';
+import { ReactComponent as ArrowRight } from '@config/icon/arrow_right.svg';
 import { ReactComponent as LogoIcon } from '@config/icon/mudda_orange.svg';
 import { ReactComponent as MuddaIcon } from '@config/icon/mudda_textLogo.svg';
 import mini from '@src/api/mini';
@@ -75,7 +76,7 @@ export default function SurveyHome(): ReactElement {
   }, [jwt]);
 
   const SurveyCardLists = styled.ul`
-    border-top: 0.8rem solid #f4f4f4;
+    border-top: 0.8rem solid #f8f8f8;
     margin: 0;
     padding: 0;
     overflow-y: scroll;
@@ -112,6 +113,18 @@ export default function SurveyHome(): ReactElement {
           <b>동네 이웃의 답변</b>을 확인해보세요 🙌
         </h1>
       </StyledSurveyHomePage>
+      <FeedbackBanner
+        onClick={() => {
+          push('/feedback');
+        }}
+      >
+        <Logo />
+        <span>
+          <b>무따 서비스 피드백</b>을 남겨주시면 큰 도움이 돼요 💕
+        </span>
+
+        <ArrowRight />
+      </FeedbackBanner>
       {surveyLists ? (
         <SurveyCardLists>
           {surveyLists.map(data => (
@@ -141,6 +154,22 @@ export default function SurveyHome(): ReactElement {
   );
 }
 
+const FeedbackBanner = styled.button`
+  background-color: #fff2eb;
+  display: flex;
+  padding: 0 1.6rem;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  height: 4.7rem;
+  color: ${({ theme }) => theme.color.primaryOrange};
+  align-items: center;
+  span {
+    font-size: 1.3rem;
+    display: block;
+  }
+`;
+
 const Logo = styled(LogoIcon)`
   margin-right: 0.6rem;
 `;
@@ -161,7 +190,7 @@ const StyledSurveyHomePage = styled.section`
   display: flex;
   justify-content: space-between;
   flex-direction: column;
-  border-bottom: 1px #c9c9c9 solid;
+  border-bottom: 1px solid #f4f4f4;
 
   .survey_home_title {
     font-size: 2rem;

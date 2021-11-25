@@ -7,7 +7,7 @@ import AnswerHome from '@src/page/AnswerHome';
 import EndPage from '@src/page/EndPage';
 import FeedBackPage from '@src/page/FeedBackPage';
 import GuidePage from '@src/page/GuidePage';
-import HomePage from '@src/page/HomePage';
+// import HomePage from '@src/page/HomePage';
 import ShowAllPage from '@src/page/ShowAllPage';
 import SurveyAggregationPage from '@src/page/SurveyAggregationPage';
 import SurveyHome from '@src/page/SurveyHome';
@@ -29,7 +29,7 @@ export default function Router(): JSX.Element {
   return (
     <Navigator theme={checkMobileType()}>
       <Screen path="/">
-        <HomePage />
+        <SurveyHome />
       </Screen>
       <Screen path="/guide">
         <GuidePage />
