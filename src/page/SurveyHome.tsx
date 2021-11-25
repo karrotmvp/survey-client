@@ -46,13 +46,6 @@ export default function SurveyHome(): ReactElement {
   const userData = useRecoilValueLoadable(getBizprofile);
   const [isPopup, setPopup] = useState(false);
   const { push } = useNavigator();
-  // const handleClick = () => {
-  //   setPopup(true);
-  // };
-  const urlSearchParams = new URLSearchParams(window.location.search);
-  const isPreload = urlSearchParams.get('preload');
-  // eslint-disable-next-line no-console
-  console.log(isPreload);
 
   const handleNextClick = () => {
     push('/survey/create/target');
