@@ -97,5 +97,6 @@ const ModalClose = styled(clearIcon)<{ transparent?: boolean }>`
   right: 16px;
   font-size: 2rem;
   display: block;
+  z-index: 9999999;
   color: ${({ transparent }) => (transparent ? '#ffff' : 'black')};
 `;

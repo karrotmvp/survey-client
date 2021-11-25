@@ -15,17 +15,27 @@ export default function ShowAllPage(): JSX.Element {
 
   return (
     <div style={{ paddingTop: '5.6rem' }}>
-      <NavBar type="BACK" />
-      <div style={{ marginBottom: '8rem' }}>
-        {question.state === 'hasValue' && question.contents !== '' ? (
-          <AggregationBriefCard
-            showAll
-            {...question.contents.questionAggregations[+questionNumber]}
+      {question.state === 'hasValue' && question.contents !== '' ? (
+        <>
+          <NavBar
+            type="BACK"
+            title={
+              question.contents.questionAggregations[+questionNumber]
+                .questionType === 2
+                ? '주관식 답변'
+                : '객관식 답변'
+            }
           />
-        ) : (
-          <></>
-        )}
-      </div>
+          <div style={{ marginBottom: '8rem' }}>
+            <AggregationBriefCard
+              showAll
+              {...question.contents.questionAggregations[+questionNumber]}
+            />
+          </div>{' '}
+        </>
+      ) : (
+        <></>
+      )}
     </div>
   );
 }

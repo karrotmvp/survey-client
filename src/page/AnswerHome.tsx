@@ -38,6 +38,7 @@ export type questionDataType = {
   description: string;
   target: number;
   questions: questionAtomType[];
+  createdAt?: string;
 };
 
 type surveyBriefType = {
