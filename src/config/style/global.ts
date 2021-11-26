@@ -87,6 +87,7 @@ const global = css`
   li {
     padding: 0;
   }
+
   ul {
     padding: 0;
   }

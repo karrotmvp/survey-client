@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 import { useNavigator } from '@karrotframe/navigator';
 
+import { useAnalytics } from '@src/analytics/faContext';
 import { surveyItemType } from '@src/page/SurveyHome';
 
 const StyledSurveyCard = styled.li`
@@ -48,7 +49,7 @@ export default function SurveyCard({
   title,
 }: surveyItemType): JSX.Element {
   const { push } = useNavigator();
-
+  const fa = useAnalytics();
   const convertDate = (date: string): string => {
     const currentDate = new Date(date);
     return `${currentDate.getMonth()}월 ${currentDate.getDate()}일`;
@@ -56,6 +57,7 @@ export default function SurveyCard({
   return (
     <StyledSurveyCard
       onClick={() => {
+        fa.logEvent('surveyList_click');
         push(`/survey/aggregation/${surveyId}`);
       }}
     >

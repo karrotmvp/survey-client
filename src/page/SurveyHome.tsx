@@ -14,6 +14,7 @@ import NavBar from '@component/common/navbar/NavBar';
 import { ReactComponent as ArrowRight } from '@config/icon/arrow_right.svg';
 import { ReactComponent as LogoIcon } from '@config/icon/mudda_orange.svg';
 import { ReactComponent as MuddaIcon } from '@config/icon/mudda_textLogo.svg';
+import { useAnalytics } from '@src/analytics/faContext';
 import mini from '@src/api/mini';
 import LoadingCard from '@src/component/common/card/LoadingCard';
 import SurveyCard from '@src/component/common/card/SurveyCard';
@@ -34,6 +35,7 @@ export default function SurveyHome(): ReactElement {
   const jwt = useLogin(authorizationBizSelector);
   const [code, setCode] = useRecoilState(bizCodeAtom);
   const [close, setClose] = useState(false);
+  const fa = useAnalytics();
 
   const onClose = () => {
     setClose(true);
@@ -59,9 +61,11 @@ export default function SurveyHome(): ReactElement {
   }, [close, code]);
 
   useEffect(() => {
+    fa.logEvent('surveyList_onbard_show');
     const time = setTimeout(async () => {
       const id = await getBizId();
       setCode(id);
+      fa.setUserId(id);
     }, 300);
     return () => clearTimeout(time);
   }, []);
@@ -80,7 +84,7 @@ export default function SurveyHome(): ReactElement {
     margin: 0;
     padding: 0;
     overflow-y: scroll;
-    height: 70vh;
+    height: 66%;
   `;
 
   const BizAvaterImg = styled.img`
@@ -115,6 +119,7 @@ export default function SurveyHome(): ReactElement {
       </StyledSurveyHomePage>
       <FeedbackBanner
         onClick={() => {
+          fa.logEvent('surveyList_feedback_click');
           push('/feedback');
         }}
       >
@@ -159,6 +164,7 @@ const FeedbackBanner = styled.button`
   display: flex;
   padding: 1.6rem 0 1.6rem 1.6rem;
   position: fixed;
+  -webkit-transform: translate3d(0, 0, 0);
   bottom: 0;
   width: 100%;
   color: ${({ theme }) => theme.color.primaryOrange};

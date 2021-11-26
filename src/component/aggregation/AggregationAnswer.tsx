@@ -3,6 +3,7 @@ import React, { MouseEvent, useState } from 'react';
 import styled from '@emotion/styled';
 import { useRecoilValue, useRecoilValueLoadable } from 'recoil';
 
+import { useAnalytics } from '@src/analytics/faContext';
 import { getAggregationBrief } from '@src/api/authorization';
 import { TitleViewAtom } from '@src/atom/responseAtom';
 
@@ -15,11 +16,12 @@ function AggregationAnswer({
 }: {
   responseIds: number[];
 }): JSX.Element {
-  const [tabKey, setTabKey] = useState('요약');
-
+  const [tabKey, setTabKey] = useState('brief');
+  const fa = useAnalytics();
   const handleClick = (e: MouseEvent<HTMLButtonElement>) => {
     const target = e.target as HTMLButtonElement;
     setTabKey(target.ariaLabel);
+    fa.logEvent(`surveyAnswer_${target.ariaLabel}`);
   };
   const Aggregation = useRecoilValueLoadable(getAggregationBrief);
 
@@ -33,21 +35,21 @@ function AggregationAnswer({
       <StyleAggregationAnswer isTitleView={isTitleView} tabKey={tabKey}>
         <StyleAggregationButton
           onClick={handleClick}
-          aria-label={'요약'}
-          aria-checked={tabKey === '요약'}
+          aria-label={'brief'}
+          aria-checked={tabKey === 'brief'}
         >
           요약
         </StyleAggregationButton>
         <StyleAggregationButton
           onClick={handleClick}
-          aria-label={'개별보기'}
-          aria-checked={tabKey === '개별보기'}
+          aria-label={'individual'}
+          aria-checked={tabKey === 'individual'}
         >
           개별보기
         </StyleAggregationButton>
       </StyleAggregationAnswer>
 
-      {tabKey === '요약' &&
+      {tabKey === 'brief' &&
         (Aggregation.state === 'hasValue' && Aggregation.contents !== '' ? (
           <AggregationBrief
             setTabKey={setTabKey}
@@ -56,7 +58,7 @@ function AggregationAnswer({
         ) : (
           <LoadingCard count={2} />
         ))}
-      {tabKey === '개별보기' &&
+      {tabKey === 'individual' &&
         (responseIds.length !== 0 ? (
           <AggregationIndividual responseIdName={responseIdName} />
         ) : (
@@ -76,7 +78,7 @@ const StyleAggregationAnswer = styled.div<{
   ${({ tabKey, isTitleView }) => {
     if (isTitleView) return '';
 
-    return tabKey === '요약'
+    return tabKey === 'brief'
       ? `box-shadow: 0px 2px 10px rgba(107, 80, 80, 0.08);
   filter: drop-shadow(0px 2px 10px rgba(107, 80, 80, 0.06));`
       : '';

@@ -8,6 +8,7 @@ import {
   useSetRecoilState,
 } from 'recoil';
 
+import { useAnalytics } from '@src/analytics/faContext';
 import { getBizSurveyList, surveyIdAtom } from '@src/api/authorization';
 import { TitleViewAtom } from '@src/atom/responseAtom';
 import MemoAggregationTabs from '@src/component/aggregation/AggregationTabs';
@@ -18,7 +19,7 @@ export default function SurveyAggregationPage(): JSX.Element {
   const { surveyId } =
     useParams<{ surveyId?: string; questionNumber?: string }>();
   if (!surveyId) throw new Error('surveyId none');
-
+  const fa = useAnalytics();
   const setSurveyId = useSetRecoilState(surveyIdAtom);
   const getSurveyList = useRecoilValueLoadable(getBizSurveyList);
   const ref = useRef<HTMLDivElement>(null);
@@ -47,10 +48,11 @@ export default function SurveyAggregationPage(): JSX.Element {
     if (ref.current) {
       observer.observe(ref.current);
     }
+    fa.logEvent('surveyAggregation_show');
   }, []);
 
   return (
-    <Section>
+    <>
       <ScrollNavBar
         type="BACK"
         title={
@@ -60,23 +62,25 @@ export default function SurveyAggregationPage(): JSX.Element {
         }
         titleAppear={!isTitleView}
       />
-      <StyledSurveyTitleCard ref={ref}>
-        <SurveyTitle>
-          {getSurveyList.state === 'hasValue' &&
-            getSurveyList.contents !== '' &&
-            getSurveyList.contents.title}
-        </SurveyTitle>
-        <span>
-          {getSurveyList.state === 'hasValue' &&
-            getSurveyList.contents !== '' &&
-            `${targetList[getSurveyList.contents.target - 1].title} · ${
-              // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-              convertDate(getSurveyList.contents.createdAt!)
-            }`}
-        </span>
-      </StyledSurveyTitleCard>
-      <MemoAggregationTabs />
-    </Section>
+      <Section>
+        <StyledSurveyTitleCard ref={ref}>
+          <SurveyTitle>
+            {getSurveyList.state === 'hasValue' &&
+              getSurveyList.contents !== '' &&
+              getSurveyList.contents.title}
+          </SurveyTitle>
+          <span>
+            {getSurveyList.state === 'hasValue' &&
+              getSurveyList.contents !== '' &&
+              `${targetList[getSurveyList.contents.target - 1].title} · ${
+                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                convertDate(getSurveyList.contents.createdAt!)
+              }`}
+          </span>
+        </StyledSurveyTitleCard>
+        <MemoAggregationTabs />
+      </Section>
+    </>
   );
 }
 

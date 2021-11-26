@@ -7,6 +7,7 @@ import ModalPortals from '@component/common/modal/ModalPotal';
 import { ReactComponent as ArrowLeft } from '@config/icon/arrow_left.svg';
 import { ReactComponent as ArrowRight } from '@config/icon/arrow_right.svg';
 import { ReactComponent as IndividualCheck } from '@config/icon/individual_check.svg';
+import { useAnalytics } from '@src/analytics/faContext';
 import { choiceType } from '@src/atom/questionAtom';
 import { responseIndividualAtom, TitleViewAtom } from '@src/atom/responseAtom';
 import useLoadableGet from '@src/hook/useLoadableGet';
@@ -33,6 +34,7 @@ export default function AggregationIndividual({
 }: {
   responseIdName: { responseId: number; name: string }[];
 }): JSX.Element {
+  const fa = useAnalytics();
   const [nameIdx, setNameIdx] = useRecoilState(responseIndividualAtom);
   const [isPopupOpen, setPopup] = useState(false);
   const [isPopupClose, setPopupClose] = useState(false);
@@ -63,6 +65,7 @@ export default function AggregationIndividual({
   );
   const handleClick = () => {
     setPopup(true);
+    fa.logEvent('survey_Individual_listButton_click');
   };
 
   useEffect(() => {

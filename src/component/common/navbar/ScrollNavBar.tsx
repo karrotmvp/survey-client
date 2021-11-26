@@ -28,6 +28,7 @@ const NavBarStyle = styled.div<{
   align-items: center;
   justify-content: space-between;
   position: fixed;
+  -webkit-transform: translate3d(0, 0, 0);
   top: 0;
   left: 0;
   background-color: ${({ transparent }) =>

@@ -5,6 +5,7 @@ import { useParams, useQueryParams } from '@karrotframe/navigator';
 import { Tabs } from '@karrotframe/tabs';
 import { Loadable, useRecoilValueLoadable, useSetRecoilState } from 'recoil';
 
+import { useAnalytics } from '@src/analytics/faContext';
 import { getBizSurveyList, surveyIdAtom } from '@src/api/authorization';
 import { responseIndividualAtom } from '@src/atom/responseAtom';
 import useLoadableGet, { StateType } from '@src/hook/useLoadableGet';
@@ -31,7 +32,7 @@ function AggregationTabs(): JSX.Element {
     `/aggregation/${surveyId}/responses/brief`,
   );
   const setResponseId = useSetRecoilState(responseIndividualAtom);
-
+  const fa = useAnalytics();
   setSurveyId(surveyId);
   if (individual) {
     setResponseId(+individual);
@@ -73,6 +74,11 @@ function AggregationTabs(): JSX.Element {
           },
         ]}
         onTabChange={key => {
+          if (key === 'tab_1') {
+            fa.logEvent(`surveyAggregation_tab_question_click`);
+          } else {
+            fa.logEvent(`surveyAggregation_tab_answer_click_`);
+          }
           setActiveTabKey(key);
         }}
       />

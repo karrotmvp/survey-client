@@ -1,6 +1,8 @@
 import styled from '@emotion/styled';
 import { useNavigator } from '@karrotframe/navigator';
 
+import { useAnalytics } from '@src/analytics/faContext';
+
 import {
   aggregationCardType,
   answersChoiceType,
@@ -22,7 +24,7 @@ export default function AggregationBriefCard({
   setTabKey?: React.Dispatch<React.SetStateAction<string>>;
 }): JSX.Element {
   const { push } = useNavigator();
-
+  const fa = useAnalytics();
   const typeTextAnswer = (
     ans: answersTextType | answersChoiceType,
   ): answersTextType => {
@@ -37,14 +39,14 @@ export default function AggregationBriefCard({
       surveyResponseId: 0,
     };
   };
-  // const setResponseId = useSetRecoilState(responseIndividualAtom);
+
   const handleClick = async () => {
     const surveyId = window.location.hash.split('/')[3].split('?')[0];
-
+    fa.logEvent('surveyAggregation_showallbutton_click');
     const res = await push<number>(`survey/aggregation/${surveyId}/${order}`);
 
     if (res && setTabKey) {
-      setTabKey('개별보기');
+      setTabKey('individual');
     }
   };
 

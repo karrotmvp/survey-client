@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import { useNavigator } from '@karrotframe/navigator';
 import { useSetRecoilState } from 'recoil';
 
+import { useAnalytics } from '@src/analytics/faContext';
 import { responseIndividualAtom } from '@src/atom/responseAtom';
 
 import { answersTextType } from './AggregationBrief';
@@ -17,6 +18,7 @@ export default function AggregationBriefTextList({
 }): JSX.Element {
   const setResponseId = useSetRecoilState(responseIndividualAtom);
   const { pop } = useNavigator();
+  const fa = useAnalytics();
   return (
     <TextList showAll={showAll}>
       {answers.map(({ answer, surveyResponseId }, idx) => (
@@ -25,9 +27,11 @@ export default function AggregationBriefTextList({
           onClick={() => {
             setResponseId(idx);
             if (setTabKey) {
-              setTabKey('개별보기');
+              fa.logEvent('surveybreif_textList_click');
+              setTabKey('individual');
             }
             if (showAll) {
+              fa.logEvent('showall_textList_click');
               pop().send(idx);
             }
           }}
