@@ -114,7 +114,7 @@ export default function QuestionTitleCard({
                 placeholder={
                   '이웃들이 설문 목적을 알 수 있도록 설문 제목을 적어주세요'
                 }
-                row={1}
+                row={2}
                 backgroundColor={'#F4F5F6'}
                 maxLength={30}
                 config={{ required: true, maxLength: 30 }}

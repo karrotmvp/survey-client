@@ -95,6 +95,11 @@ const global = css`
     -webkit-appearance: none;
     -webkit-border-radius: 0;
   }
+
+  textarea {
+    -webkit-appearance: none;
+    -webkit-border-radius: 0;
+  }
 `;
 
 export default global;
