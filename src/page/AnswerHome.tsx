@@ -49,9 +49,9 @@ type surveyBriefType = {
   target: string;
   createdAt: string;
 };
-type respondedType = {
-  responded: string;
-};
+// type respondedType = {
+//   responded: string;
+// };
 
 export default function AnswerHome(): JSX.Element {
   const { push } = useNavigator();
@@ -73,9 +73,9 @@ export default function AnswerHome(): JSX.Element {
   const setQuestion = useSetRecoilState(questionListAtom);
 
   const getSurveyData = useGet<questionDataType>(`/surveys/${surveyId}`);
-  const getSurveyUserResponded = useGet<respondedType>(
-    `responses/surveys/${surveyId}/responded`,
-  );
+  // const getSurveyUserResponded = useGet<respondedType>(
+  //   `responses/surveys/${surveyId}/responded`,
+  // );
   const getSurveyBrief = useGet<surveyBriefType>(
     `/surveys/brief/${surveyId}`,
     true,
@@ -85,16 +85,16 @@ export default function AnswerHome(): JSX.Element {
   const fa = useAnalytics();
 
   async function getResponseHomeData() {
-    const data = await getSurveyUserResponded();
+    // const data = await getSurveyUserResponded();
     const res = await getSurveyData();
-    if (data?.responded) {
-      setToastOpen(true);
-      fa.logEvent(`response_login_button_click_responded`, {
-        surveyId,
-      });
-      fa.logEvent(`${surveyId}_response_login_button_click_responded`);
-      return;
-    }
+    // if (data?.responded) {
+    //   setToastOpen(true);
+    //   fa.logEvent(`response_login_button_click_responded`, {
+    //     surveyId,
+    //   });
+    //   fa.logEvent(`${surveyId}_response_login_button_click_responded`);
+    //   return;
+    // }
 
     fa.logEvent(`response_login_button_click`, { surveyId });
     fa.logEvent(`${surveyId}_response_login_button_click`);

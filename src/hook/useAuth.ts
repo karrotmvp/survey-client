@@ -8,8 +8,9 @@ import mini from '@api/mini';
 const useMiniAuth = (
   appId: string,
   onClose?: () => void,
-): (() => Promise<string>) => {
+): (() => Promise<string | undefined>) => {
   const location = useLocation();
+
   const getCodeAsync = useCallback(() => {
     const urlSearchParams = new URLSearchParams(location.search);
     const isPreload = urlSearchParams.get('preload');
@@ -22,21 +23,7 @@ const useMiniAuth = (
     }
 
     return new Promise<string>((resolve, reject) => {
-      mini.startPreset({
-        preset: process.env.REACT_APP_PRESET || '',
-        params: {
-          appId,
-        },
-        onSuccess(result: { code: string }) {
-          if (result && result.code) {
-            resolve(result.code);
-          }
-        },
-        onFailure() {
-          reject(new Error('fail'));
-        },
-        onClose,
-      });
+      resolve('general');
     });
   }, [appId, onClose]);
   return getCodeAsync;

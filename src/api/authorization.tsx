@@ -133,6 +133,13 @@ const authorizationSelector = selector({
     const code = get(codeAtom);
     if (code) {
       try {
+        if (code === 'general') {
+          const generalRes: AxiosResponse<{ data: string }> = await axios.get<{
+            data: string;
+          }>(`${process.env.REACT_APP_API_URL}/auth/general`);
+
+          return generalRes.data;
+        }
         const res: AxiosResponse<{ data: string }> = await axios.get<{
           data: string;
         }>(`${process.env.REACT_APP_API_URL}/auth/customer?code=${code}`);

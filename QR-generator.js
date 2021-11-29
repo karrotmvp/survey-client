@@ -11,7 +11,7 @@ const { exec } = require('child_process');
 async function generateQR(surveyId, questionType) {
   try {
     exec(
-      `karrot-mini open --url "https://d174a7300nswcc.cloutdfront.net/#/responses/${surveyId}?questionCategory=${questionType}&_si=0" --appId e82e6f0250714b29832b6c00fa07cd05 --production `,
+      `karrot-mini open --url "https://d174a7300nswcc.cloudfront.net/#/survey/${surveyId}?questionCategory=${questionType}&_si=0" --appId e82e6f0250714b29832b6c00fa07cd05 --production `,
       (error, stdout, stderr) => {
         // eslint-disable-next-line no-console
         console.log('========================================================');
