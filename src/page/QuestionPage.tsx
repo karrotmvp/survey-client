@@ -155,7 +155,12 @@ export default function QuestionPage(): JSX.Element {
           </CompleteButton>
         }
       />
-      <TargetModalButton onClick={() => setTargetPopup(true)}>
+      <TargetModalButton
+        onClick={() => {
+          fa.logEvent('question_target_change_click');
+          setTargetPopup(true);
+        }}
+      >
         <h3 className="target_title">
           {targetList[targetIndex - 1].title} 대상
         </h3>
