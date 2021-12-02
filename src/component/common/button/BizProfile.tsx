@@ -60,6 +60,7 @@ export type bizProfileType = {
   region: string;
   profileUrl: string;
   bizCategory: string;
+  coverImageUrls: string[];
 };
 
 export default function BizProfile({
