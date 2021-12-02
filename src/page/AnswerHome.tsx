@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 
 import styled from '@emotion/styled';
-import { useParams } from '@karrotframe/navigator';
+import { useNavigator, useParams } from '@karrotframe/navigator';
 import Slider, { Settings } from 'react-slick';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import { v4 as uuidv4 } from 'uuid';
@@ -10,8 +10,6 @@ import { v4 as uuidv4 } from 'uuid';
 import LoginButton from '@component/common/button/LogInButton';
 import AlertTostModal from '@component/common/modal/TostModal';
 import NavBar from '@component/common/navbar/NavBar';
-// import { ReactComponent as LogoIcon } from '@config/icon/mudda_orange.svg';
-// import { ReactComponent as MuddaIcon } from '@config/icon/mudda_textLogo.svg';
 import { useMiniAuth } from '@hook/useAuth';
 import { useAnalytics } from '@src/analytics/faContext';
 import { authorizationSelector, codeAtom } from '@src/api/authorization';
@@ -49,7 +47,7 @@ type surveyBriefType = {
 };
 
 export default function AnswerHome(): JSX.Element {
-  // const { push } = useNavigator();
+  const { push } = useNavigator();
   const { surveyId } =
     useParams<{ surveyId?: string; questionNumber?: string }>();
   if (!surveyId) throw new Error('surveyId none');
@@ -78,10 +76,9 @@ export default function AnswerHome(): JSX.Element {
     const { questions } = res;
     setQuestion(questions);
     setToastOpen(false);
-    setCode('');
+    push(`/survey/${surveyId}/1`);
   }
 
-  // push(`/survey/${surveyId}/1`);
   const click = async () => {
     fa.logEvent(`response_login_button_click`, { surveyId });
     fa.logEvent(`${surveyId}_response_login_button_click`);
