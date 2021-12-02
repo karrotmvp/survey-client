@@ -3,21 +3,15 @@ import { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import { useNavigator } from '@karrotframe/navigator';
 import Slider, { Settings } from 'react-slick';
-import {
-  useRecoilState,
-  useRecoilValueLoadable,
-  useSetRecoilState,
-} from 'recoil';
+import { useRecoilState, useRecoilValueLoadable } from 'recoil';
 
 import { authorizationBizSelector, bizCodeAtom } from '@api/authorization';
-import { userAtom } from '@atom/userAtom';
 import LogInButton from '@component/common/button/LogInButton';
 import NavBar from '@component/common/navbar/NavBar';
 import HomeBanner from '@component/home/HomeBanner';
 import { ReactComponent as BetaIcon } from '@config/icon/BETA.svg';
 import { ReactComponent as LogoIcon } from '@config/icon/logoIcon.svg';
 import { ReactComponent as MuddaIcon } from '@config/icon/mudda.svg';
-import useGet from '@hook/useGet';
 import { useAnalytics } from '@src/analytics/faContext';
 import UpDownModal from '@src/component/common/modal/UpDownModal';
 import { useMiniBizAuth } from '@src/hook/useAuth';
@@ -74,6 +68,7 @@ export type userType = {
   name: string;
   imageUrl: string;
   role: string;
+  followersCount: number;
 };
 
 const StyledCover = styled.div`
@@ -142,7 +137,6 @@ const settings: Settings = {
 
 export default function HomePage(): JSX.Element {
   const { push } = useNavigator();
-  const getData = useGet<userType>('/members/me');
   const [isPopup, setPopup] = useState(false);
   const [close, setClose] = useState(false);
 
@@ -154,7 +148,6 @@ export default function HomePage(): JSX.Element {
   const fa = useAnalytics();
   const getBizId = useMiniBizAuth(process.env.REACT_APP_APP_ID || '', onClose);
   const jwt = useRecoilValueLoadable(authorizationBizSelector);
-  const setUser = useSetRecoilState(userAtom);
 
   const handleClick = async () => {
     fa.logEvent('home_login_button_click');
@@ -190,20 +183,6 @@ export default function HomePage(): JSX.Element {
       sessionStorage.setItem('jwt', jwt.contents.data);
     }
   }, [code, jwt]);
-
-  useEffect(() => {
-    if (jwt.state === 'hasValue' && sessionStorage.getItem('jwt')) {
-      getData().then(data => {
-        if (data === undefined) return;
-
-        if (data.name) {
-          setUser({ nickName: '', storeName: data.name });
-          // setPopup(true)
-        }
-      });
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [jwt, sessionStorage]);
 
   return (
     <>

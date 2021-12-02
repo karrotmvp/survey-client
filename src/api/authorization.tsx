@@ -45,6 +45,7 @@ type userType = {
     role: string;
     region: string;
     profileUrl: string;
+    followersCount: number;
   };
 };
 const getBizprofile = selector({
@@ -80,6 +81,31 @@ const getBizSurveyList = selector({
   key: 'getBizSurveyList',
   get: async ({ get }) => {
     const jwt = await get(authorizationBizSelector);
+    const surveyId = get(surveyIdAtom);
+    const token = jwt.data;
+    axios.defaults.baseURL = process.env.REACT_APP_API_URL;
+
+    const Authorization = 'X-AUTH-TOKEN';
+    if (!token) return '';
+    axios.defaults.headers.common[Authorization] = token;
+    try {
+      const data: AxiosResponse<{ data: questionDataType }> = await axios.get<{
+        data: questionDataType;
+      }>(`/surveys/${surveyId}`);
+
+      return data.data.data;
+    } catch (e) {
+      // eslint-disable-next-line no-console
+      console.error(e);
+      return '';
+    }
+  },
+});
+
+const getSurveyListAtom = selector({
+  key: 'getSurveyListAtom',
+  get: async ({ get }) => {
+    const jwt = await get(authorizationSelector);
     const surveyId = get(surveyIdAtom);
     const token = jwt.data;
     axios.defaults.baseURL = process.env.REACT_APP_API_URL;
@@ -156,6 +182,7 @@ const authorizationSelector = selector({
 });
 
 export {
+  getSurveyListAtom,
   surveyIdAtom,
   getBizSurveyList,
   authorizationBizSelector,

@@ -1,14 +1,14 @@
 import { atom, selector } from 'recoil';
 
 type userAtomType = {
-  nickName: string;
+  followersCount: number;
   storeName: string;
 };
 
 const userAtom = atom<userAtomType>({
   key: 'userAtom',
   default: {
-    nickName: '',
+    followersCount: 0,
     storeName: '',
   },
 });

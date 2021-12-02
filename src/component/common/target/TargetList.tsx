@@ -23,13 +23,13 @@ export default function TargetList({
       {targetList.map(({ title, subtitle, imgUrl }, index) =>
         brief ? (
           <TargetBriefItem
-            disabled={!isKing && index !== 0}
+            disabled={isKing && index !== 0}
             key={`target${index}`}
             {...{ title, subtitle, index }}
           />
         ) : (
           <TargetItem
-            disabled={!isKing && index !== 0}
+            disabled={isKing && index !== 0}
             key={`target${index}`}
             {...{ imgUrl, title, subtitle, index }}
           />
