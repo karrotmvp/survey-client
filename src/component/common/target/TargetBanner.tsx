@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 
-import media from '@src/config/utils/util';
+import { media } from '@src/config/utils/util';
 
 const StyledTargetBanner = styled.div`
   font-size: 1.8rem;

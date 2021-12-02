@@ -28,6 +28,7 @@ jobs:
           PROD_APP_ID: ${{ secrets.PROD_APP_ID }}
           PROD_API_URL: ${{ secrets.PROD_API_URL }}
           PROD_PRESET_BIZ: ${{ secrets.PROD_PRESET_BIZ }}
+          PROD_PRESET: ${{ secrets.PROD_PRESET }}
           GA_KEY: ${{ secrets.TRACKING_ID }}
         run: |
           touch .env
@@ -58,7 +59,7 @@ jobs:
         uses: chetan/invalidate-cloudfront-action@v2
         env:
           DISTRIBUTION: ${{ secrets.DISTRIBUTION_ID }}
-          PATHS: '/index.html'
+          PATHS: '/*'
           AWS_REGION: ap-northeast-2
           AWS_ACCESS_KEY_ID: ${{ secrets.REACT_APP_AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.REACT_APP_AWS_SECRET_ACCESS_KEY }}

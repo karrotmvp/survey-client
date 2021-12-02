@@ -1,18 +1,33 @@
-import { ChangeEvent } from 'react';
-
 import styled from '@emotion/styled';
+import {
+  Control,
+  UseFormRegister,
+  UseFormSetValue,
+  UseFormUnregister,
+  UseFormWatch,
+} from 'react-hook-form';
 
-import QuestionTitleInput from '@component/common/input/QuestionTitleInput';
-import QuestionDetailHeader from '@component/questionDetail/QuestionDetailHeader';
-import contents from '@config/const/const';
-import QuestionChoiceList from '@src/component/questionDetail/QuestionChoiceList';
+import { contents } from '@config/const/const';
+import { ReactComponent as WarningIcon } from '@config/icon/warning.svg';
+import ChoiceInputFormList from '@src/component/questionDetail/ChoiceInputFormList';
+import QuestionHeaderForm from '@src/component/questionDetail/QuestionHeaderForm';
+import { errorsType, submitType } from '@src/page/QuestionPage';
+
+import InputForm from '../input/InputForm';
+
+export type formConfigType = {
+  watch: UseFormWatch<submitType>;
+  setValue: UseFormSetValue<submitType>;
+  register: UseFormRegister<submitType>;
+  control: Control<submitType>;
+  remove: (index?: number | number[] | undefined) => void;
+  unregister: UseFormUnregister<submitType>;
+  errors: errorsType;
+};
 
 type QuestionCardType = {
-  title: string;
-  questionType: 2 | 3;
   questionIndex: number;
-  handleChange: (e: ChangeEvent) => void;
-};
+} & formConfigType;
 
 const StyledQuestionCard = styled.li`
   width: 100%;
@@ -20,8 +35,8 @@ const StyledQuestionCard = styled.li`
   display: flex;
   flex-direction: column;
   position: relative;
-  padding-bottom: 1.6rem;
-  padding-top: 1.6rem;
+  padding-bottom: 2.4rem;
+  padding-top: 1.2rem;
 `;
 
 const StyledQuestionInput = styled.span`
@@ -41,31 +56,71 @@ const Divider = styled.div`
   background-color: #f4f4f4;
 `;
 
+const ErrorText = styled.h6`
+  font-size: 1.3rem;
+  line-height: 100%;
+  display: flex;
+  align-items: center;
+  font-weight: ${({ theme }) => theme.fontWeight.regular};
+  color: #ff0000;
+  padding-left: 1.6rem;
+  margin-top: 0.8rem;
+`;
+
 export default function QuestionCard({
-  title,
   questionIndex,
-  questionType,
-  handleChange,
+  watch,
+  setValue,
+  remove,
+  register,
+  unregister,
+  control,
+  errors,
 }: QuestionCardType): JSX.Element {
+  const questionType = watch(`questions.${questionIndex}.questionType`);
   return (
     <>
       {questionIndex !== 0 && <Divider />}
       <StyledQuestionCard>
-        <QuestionDetailHeader {...{ questionIndex, questionType }} />
-        <QuestionTitleInput
-          questionIndex={questionIndex}
-          onChange={handleChange}
-          placeholder={contents.placeholder.TEXT}
-          value={title}
-          row={2}
-          backgroundColor={'#F4F5F6'}
+        <QuestionHeaderForm
+          {...{
+            questionIndex,
+            watch,
+            setValue,
+            remove,
+            unregister,
+          }}
         />
+
+        <InputForm
+          register={register}
+          path={`questions.${questionIndex}.text`}
+          placeholder={contents.placeholder.TEXT}
+          row={1}
+          backgroundColor={'#F4F5F6'}
+          config={{ required: true }}
+          warning={Boolean(errors.questions?.[questionIndex]?.text)}
+        />
+        {errors.questions?.[questionIndex]?.text && (
+          <ErrorText>
+            <WarningIcon style={{ marginRight: '0.4rem' }} />
+            질문을 적어주세요
+          </ErrorText>
+        )}
 
         <StyledQuestionChoiceOrText>
           {questionType === 2 ? (
             <StyledQuestionInput>주관식 답변...</StyledQuestionInput>
           ) : (
-            <QuestionChoiceList questionIndex={questionIndex} />
+            <ChoiceInputFormList
+              {...{
+                errors,
+                register,
+                control,
+                questionIndex,
+                unregister,
+              }}
+            />
           )}
         </StyledQuestionChoiceOrText>
       </StyledQuestionCard>

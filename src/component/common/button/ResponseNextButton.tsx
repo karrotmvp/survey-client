@@ -13,7 +13,7 @@ const NextButton = styled.button`
   width: 100%;
   background-color: ${({ theme }) => theme.color.primaryOrange};
   color: #fff;
-  font-size: 1%.4rem;
+  font-size: 1.4rem;
   font-weight: 400;
   padding: 1.6rem 0;
   border-radius: 8px;
@@ -34,9 +34,9 @@ export default function ResponseNextButton({
   handleNextClick,
   disable,
 }: ResponseNextButton): JSX.Element {
-  const { responsesId } =
-    useParams<{ responsesId?: string; questionNumber?: string }>();
-  if (!responsesId) throw new Error('questionNumber or responsesId none');
+  const { surveyId } =
+    useParams<{ surveyId?: string; questionNumber?: string }>();
+  if (!surveyId) throw new Error('questionNumber or surveyId none');
   const fa = useAnalytics();
   const responsePost = useSubmit('/responses');
   const { push } = useNavigator();
@@ -44,12 +44,12 @@ export default function ResponseNextButton({
   const question = useRecoilValue(questionListAtom);
   const [isSubmit, setSubmit] = useState(false);
   const handleLastClick = (e: React.MouseEvent) => {
-    handleNextClick(e);
     fa.logEvent(`response_question_complete_button_click`, {
-      responsesId,
+      surveyId,
     });
-    fa.logEvent(`${responsesId}_response_question_complete_button_click`);
+    fa.logEvent(`${surveyId}_response_question_complete_button_click`);
     setSubmit(true);
+    handleNextClick(e);
   };
 
   useEffect(() => {
@@ -61,11 +61,11 @@ export default function ResponseNextButton({
       }));
 
       responsePost({
-        surveyId: +responsesId,
+        surveyId: +surveyId,
         responses,
       });
       setSubmit(false);
-      push(`/responses/${responsesId}/complete`);
+      push(`/survey/${surveyId}/complete`);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isSubmit, responseState]);

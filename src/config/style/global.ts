@@ -9,7 +9,7 @@ const global = css`
 
   @font-face {
     font-family: 'SpoqaHanSansNeo';
-    font-weight: 300;
+    font-weight: 400;
     src: url('./font/SpoqaHanSansNeo/SpoqaHanSansNeo-Regular.ttf')
       format('truetype');
   }
@@ -62,6 +62,7 @@ const global = css`
     width: 100%;
     height: 100vh;
     font-size: 10px;
+    color: #141414;
   }
   button {
     border: none;
@@ -86,11 +87,17 @@ const global = css`
   li {
     padding: 0;
   }
+
   ul {
     padding: 0;
   }
 
   input {
+    -webkit-appearance: none;
+    -webkit-border-radius: 0;
+  }
+
+  textarea {
     -webkit-appearance: none;
     -webkit-border-radius: 0;
   }

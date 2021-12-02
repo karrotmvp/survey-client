@@ -1,12 +1,16 @@
 import { Navigator, Screen, INavigatorTheme } from '@karrotframe/navigator';
 
-import HomePage from '@page/HomePage';
 import QuestionPage from '@page/QuestionPage';
 import AnswerComplete from '@src/page/AnswerComplete';
 import AnswerDetailPage from '@src/page/AnswerDetailPage';
 import AnswerHome from '@src/page/AnswerHome';
 import EndPage from '@src/page/EndPage';
 import FeedBackPage from '@src/page/FeedBackPage';
+import GuidePage from '@src/page/GuidePage';
+import HomePage from '@src/page/HomePage';
+import ShowAllPage from '@src/page/ShowAllPage';
+import SurveyAggregationPage from '@src/page/SurveyAggregationPage';
+import SurveyHome from '@src/page/SurveyHome';
 import TargetPage from '@src/page/TargetPage';
 
 export default function Router(): JSX.Element {
@@ -27,14 +31,20 @@ export default function Router(): JSX.Element {
       <Screen path="/">
         <HomePage />
       </Screen>
-      <Screen path="/responses/:responsesId/complete">
-        <AnswerComplete />
+      <Screen path="/guide">
+        <GuidePage />
       </Screen>
-      <Screen path="/responses/:responsesId">
-        <AnswerHome />
+      <Screen path="/feedback">
+        <FeedBackPage />
       </Screen>
-      <Screen path="/responses/:responsesId/:questionTypes">
-        <AnswerDetailPage />
+      <Screen path="/survey/aggregation/:surveyId/:questionNumber">
+        <ShowAllPage />
+      </Screen>
+      <Screen path="/survey/aggregation/:surveyId">
+        <SurveyAggregationPage />
+      </Screen>
+      <Screen path="/survey/aggregation">
+        <SurveyHome />
       </Screen>
       <Screen path="/survey/create/target">
         <TargetPage />
@@ -42,11 +52,17 @@ export default function Router(): JSX.Element {
       <Screen path="/survey/create/question">
         <QuestionPage />
       </Screen>
-      <Screen path="/survey/create/feedback">
-        <FeedBackPage />
-      </Screen>
       <Screen path="/survey/create/complete">
         <EndPage />
+      </Screen>
+      <Screen path="/survey/:surveyId/complete">
+        <AnswerComplete />
+      </Screen>
+      <Screen path="/survey/:surveyId">
+        <AnswerHome />
+      </Screen>
+      <Screen path="/survey/:surveyId/:questionTypes">
+        <AnswerDetailPage />
       </Screen>
     </Navigator>
   );

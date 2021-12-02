@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 
 import styled from '@emotion/styled';
-import { useParams } from '@karrotframe/navigator';
+import { useNavigator, useParams } from '@karrotframe/navigator';
 import { useHistory } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 
@@ -13,12 +13,20 @@ import NavBar from '@src/component/common/navbar/NavBar';
 
 export default function AnswerComplete(): JSX.Element {
   const history = useHistory();
-
-  const { responsesId } = useParams<{ responsesId?: string }>();
-  if (!responsesId) throw new Error('questionNumber or responsesId none');
+  const { push } = useNavigator();
+  const { surveyId } = useParams<{ surveyId?: string }>();
+  if (!surveyId) throw new Error('questionNumber or surveyId none');
 
   const fa = useAnalytics();
   const bizProfile = useRecoilValue(responseUserAtom);
+
+  useEffect(() => {
+    fa.logEvent(`response_complete_page_show`, {
+      surveyId,
+    });
+    fa.logEvent(`${surveyId}_response_complete_page_show`);
+  }, []);
+
   useEffect(() => {
     const unblock = history.block((location, action) => {
       if (action === 'POP') {
@@ -38,9 +46,9 @@ export default function AnswerComplete(): JSX.Element {
       return;
     }
     fa.logEvent(`response_complete_bizprofile_click`, {
-      responsesId,
+      surveyId,
     });
-    fa.logEvent(`${responsesId}_response_complete_bizprofile_click`);
+    fa.logEvent(`${surveyId}_response_complete_bizprofile_click`);
     window.location.href = bizProfile.profileUrl;
   };
 
@@ -57,9 +65,16 @@ export default function AnswerComplete(): JSX.Element {
       </div>
 
       <div className="answer_complete_page">
-        <LoginButton text="나가기" onClick={() => mini.close()} />
-        <BizProfileVisit onClick={handleVisitBizProfile}>
-          {bizProfile?.name}비즈 프로필 방문하기
+        <LoginButton
+          text="사장님 비즈프로필 방문하기"
+          onClick={handleVisitBizProfile}
+        />
+        <BizProfileVisit
+          onClick={() => {
+            push('/feedback');
+          }}
+        >
+          무따 서비스 피드백 남기기
         </BizProfileVisit>
       </div>
     </StyledAnswerComplete>

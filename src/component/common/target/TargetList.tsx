@@ -1,29 +1,40 @@
 import styled from '@emotion/styled';
 
+import { targetList } from '@src/config/const/const';
+
+import TargetBriefItem from './TargetBriefItem';
 import TargetItem from './TargetItem';
 
-const StyledTargetList = styled.section`
+const StyledTargetList = styled.section<{ brief: boolean | undefined }>`
   display: grid;
   grid-template-columns: auto;
-  grid-gap: 1.2rem;
-  height: 40vh;
+  grid-gap: ${({ brief }) => (brief ? ' 1.6rem' : '1.2rem')};
 `;
 
-const targetList = [
-  { title: '모든 고객님', subtitle: '매장 동네 근처 모든 고객님' },
-  {
-    title: '비즈 프로필을 방문한 고객님',
-    subtitle: '사장님의 비즈 프로필을 방문한 고객님',
-  },
-  { title: '단골', subtitle: '사장님의 비즈 프로필을 단골로 추가한 고객님' },
-];
-
-export default function TargetList(): JSX.Element {
+export default function TargetList({
+  isKing,
+  brief,
+}: {
+  isKing: boolean;
+  brief?: boolean;
+}): JSX.Element {
   return (
-    <StyledTargetList>
-      {targetList.map(({ title, subtitle }, index) => (
-        <TargetItem key={index} {...{ title, subtitle, index }} />
-      ))}
+    <StyledTargetList brief={brief}>
+      {targetList.map(({ title, subtitle, imgUrl }, index) =>
+        brief ? (
+          <TargetBriefItem
+            disabled={!isKing && index !== 0}
+            key={`target${index}`}
+            {...{ title, subtitle, index }}
+          />
+        ) : (
+          <TargetItem
+            disabled={!isKing && index !== 0}
+            key={`target${index}`}
+            {...{ imgUrl, title, subtitle, index }}
+          />
+        ),
+      )}
     </StyledTargetList>
   );
 }

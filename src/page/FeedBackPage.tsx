@@ -4,12 +4,13 @@ import styled from '@emotion/styled';
 import { useRecoilState } from 'recoil';
 
 import AlertTostModal from '@component/common/modal/TostModal';
+import { ReactComponent as LogoIcon } from '@config/icon/mudda_orange.svg';
 import { useAnalytics } from '@src/analytics/faContext';
 import mini from '@src/api/mini';
 import { questionFeedBack } from '@src/atom/questionAtom';
 import Modal from '@src/component/common/modal/Modal';
 import NavBar from '@src/component/common/navbar/NavBar';
-import contents from '@src/config/const/const';
+import { contents } from '@src/config/const/const';
 import useSubmit from '@src/hook/useSubmit';
 
 export default function FeedBackPage(): JSX.Element {
@@ -52,7 +53,9 @@ export default function FeedBackPage(): JSX.Element {
       />
       <StyledFeedBackPage>
         <FeedbackTitle>무따는 더 좋은 설문 서비스가</FeedbackTitle>
-        <FeedbackTitle>되고 싶어요</FeedbackTitle>
+        <FeedbackTitle>
+          되고 싶어요 <LogoIcon />
+        </FeedbackTitle>
         <FeedbackSubtitle>{contents.text.feedback.SUBTITLE}</FeedbackSubtitle>
         <StyledTitleInput
           value={feedback.answer}
@@ -102,6 +105,8 @@ const FeedbackTitle = styled.h1`
   color: #fe7e35;
   line-height: 140%;
   white-space: pre-wrap;
+  display: flex;
+  align-items: center;
 `;
 
 const CompleteButton = styled.button`
@@ -117,9 +122,8 @@ const CompleteButton = styled.button`
 `;
 
 const FeedbackSubtitle = styled.h4`
-  font-style: normal;
-  font-weight: normal;
-  font-size: 1.6rem;
+  font-weight: ${({ theme }) => theme.fontWeight.regular};
+  font-size: 1.5rem;
   line-height: 140%;
   margin-top: 1.6rem;
   margin-bottom: 1.6rem;
@@ -136,10 +140,10 @@ const StyledTitleInput = styled.textarea`
   border: 1px solid #c9c9c9;
   box-sizing: border-box;
   border-radius: 7px;
-  padding: 0.8rem;
+  padding: 1.6rem;
   font-size: 1.6rem;
   ::placeholder {
-    color: #c9c9c9;
+    color: ${({ theme }) => theme.color.neutralBlack.placeholder};
   }
 `;
 

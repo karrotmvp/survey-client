@@ -1,41 +1,19 @@
-import { MouseEvent, useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import styled from '@emotion/styled';
 import { useNavigator } from '@karrotframe/navigator';
-import { useRecoilState, useRecoilValue, useResetRecoilState } from 'recoil';
+import { FieldError, useForm } from 'react-hook-form';
+import { useRecoilValue } from 'recoil';
 
-import AlertToastModal from '@component/common/modal/TostModal';
 import NavBar from '@component/common/navbar/NavBar';
 import QuestionCardList from '@component/question/QuestionCardList';
-import { ReactComponent as PlusIcon } from '@config/icon/plus.svg';
-import StyledBasicPage from '@config/style/styledCompoent';
+import { ReactComponent as ExpandIcon } from '@config/icon/expand_more.svg';
 import { useAnalytics } from '@src/analytics/faContext';
-import {
-  questionListAtom,
-  questionListSelector,
-  questionSelector,
-} from '@src/atom/questionAtom';
+import { choiceType, questionTarget } from '@src/atom/questionAtom';
 import Modal from '@src/component/common/modal/Modal';
+import TargetList from '@src/component/common/target/TargetList';
+import { targetList } from '@src/config/const/const';
 import useSubmit from '@src/hook/useSubmit';
-
-const AddQuestionButton = styled.button`
-  background-color: ${({ theme }) => theme.color.primaryOrange};
-  padding: 0.8rem;
-  border-radius: 8px;
-  font-size: 1.3rem;
-  font-weight: 700;
-  color: #ffff;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  svg {
-    margin-right: 8px;
-  }
-  &[aria-disabled='true'] {
-    background-color: #c9c9c9;
-  }
-  margin-left: auto;
-`;
 
 const CompleteButton = styled.button`
   background-color: transparent;
@@ -49,143 +27,167 @@ const CompleteButton = styled.button`
   }
 `;
 
+export type questionCardType = {
+  text: string;
+  choices?: choiceType[];
+  questionType: number;
+};
+
+export type submitType = {
+  title: string;
+  questions: questionCardType[];
+};
+
+export type errorsType = {
+  title?: FieldError | undefined;
+  questions?:
+    | {
+        text?: FieldError | undefined;
+        questionType?: FieldError | undefined;
+        choices?:
+          | {
+              value?: FieldError | undefined;
+              choiceId?: FieldError | undefined;
+            }[]
+          | undefined;
+      }[]
+    | undefined;
+};
+
+export function questionCheck(question: questionCardType[]): boolean {
+  const check = question.every(({ text }) => text);
+  const choicesCheck = question.map(({ questionType, choices }) => {
+    if (choices === undefined) {
+      return true;
+    }
+
+    return choices.every(({ value }) => {
+      if (questionType === 2) {
+        return true;
+      }
+      return value;
+    });
+  });
+
+  return check && choicesCheck.every(value => value);
+}
+
 export default function QuestionPage(): JSX.Element {
-  const [questionList, setQuestionList] = useRecoilState(questionListAtom);
-  const [isToastOpen, setToastOpen] = useState(false);
-  const [isContentToastOpen, setContentToastOpen] = useState(false);
+  const targetIndex = useRecoilValue(questionTarget);
   const [isPopup, setPopup] = useState(false);
-  const restQuestion = useResetRecoilState(questionListAtom);
-  const listValueState = useRecoilValue(questionListSelector);
-  const submitData = useRecoilValue(questionSelector);
+  const [isTargetPopup, setTargetPopup] = useState(false);
+  const [submitData, setSubmitData] = useState<
+    (submitType & { title: string; target: number }) | undefined
+  >(undefined);
   const { replace } = useNavigator();
   const submit = useSubmit('/surveys');
   const fa = useAnalytics();
-
-  const handleAddQuestionButton = (e: MouseEvent) => {
-    if ((e.currentTarget as HTMLButtonElement).ariaDisabled === 'true') {
-      setContentToastOpen(true);
-      fa.logEvent('question_add_button_active_click');
-    } else if (questionList.length < 3) {
-      fa.logEvent('question_add_button_disable_click');
-      setQuestionList([
-        ...questionList,
-        {
-          questionType: 3,
-          text: '',
-          choices: [{ value: '' }],
-        },
-      ]);
+  const {
+    handleSubmit,
+    register,
+    control,
+    setValue,
+    watch,
+    unregister,
+    clearErrors,
+    formState: { errors },
+  } = useForm<submitType>({
+    defaultValues: {
+      title: '',
+      questions: [],
+    },
+  });
+  const TargetChangeModal = styled.div`
+    padding: 2rem 1.6rem 2.8rem 1.6rem;
+    .target_change_title {
+      font-size: 1.6rem;
+      font-weight: ${({ theme }) => theme.fontWeight.regular};
+      text-align: center;
+      margin-bottom: 2.4rem;
     }
+  `;
+  const questionList = watch('questions');
+
+  const onSubmit = ({ title, questions }: submitType) => {
+    fa.logEvent('question_complete_button_active_click');
+    setSubmitData({
+      title,
+      target: targetIndex,
+      questions: questions.map(res => {
+        if (res.questionType === 2) {
+          return { text: res.text, questionType: res.questionType };
+        }
+        return res;
+      }),
+    });
+    setPopup(true);
   };
 
-  const handleComplete = (e: MouseEvent) => {
-    if ((e.currentTarget as HTMLButtonElement).ariaDisabled === 'true') {
-      fa.logEvent('question_complete_button_disable_click');
-      setContentToastOpen(true);
-    } else {
-      fa.logEvent('question_complete_button_active_click');
-      setPopup(true);
-    }
-  };
-
-  useEffect(() => {
-    setTimeout(() => {
-      setToastOpen(true);
-    }, 1000);
-  }, []);
-
-  useEffect(() => {
-    if (questionList.length === 3) {
-      setToastOpen(true);
-    }
-  }, [questionList.length]);
-
-  const ConfirmModal = styled.div`
+  const TargetModalButton = styled.button`
     width: 100%;
-    font-size: 16px;
-    font-weight: 400;
-    font-size: 16px;
-    line-height: 150%;
-    text-align: center;
-    color: #242424;
-    padding: 0 24px;
-    height: 124px;
-    align-items: center;
     display: flex;
-    justify-content: center;
-  `;
-
-  const CancelButton = styled.button`
-    font-weight: 400;
-    font-size: 14px;
-    line-height: 140%;
-    width: 50%;
-    height: 51px;
-    background-color: #ffff;
-    color: #141414;
-    border-top: 1px solid #e8e8e8;
-    border-right: 1px solid #e8e8e8;
-    :focus {
-      background-color: #f4f5f6;
+    justify-content: space-between;
+    padding: 2.4rem 1.6rem;
+    .target_title {
+      font-size: 1.5rem;
+      line-height: 100%;
+      color: ${({ theme }) => theme.color.neutralBlack.main};
+      font-weight: ${({ theme }) => theme.fontWeight.regular};
     }
-    border-bottom-left-radius: 12px;
-  `;
-
-  const ConfirmButton = styled.button`
-    font-weight: 600;
-    font-size: 14px;
-    line-height: 140%;
-    width: 50%;
-    height: 52px;
-    background-color: #ffff;
-    color: #141414;
-    border-top: 1px solid #e8e8e8;
-    :focus {
-      background-color: #f4f5f6;
-    }
-    border-bottom-right-radius: 12px;
+    background-color: transparent;
+    border-bottom: 1px solid #f4f4f4;
+    margin-top: 5.6rem;
   `;
 
   return (
     <>
       <NavBar
         type="BACK"
-        title="질문 작성"
+        title={`설문 만들기`}
         shadow
         appendRight={
           <CompleteButton
-            aria-disabled={!listValueState.check}
-            onClick={handleComplete}
+            aria-disabled={!questionCheck(questionList)}
+            form="submitForm"
+            type="submit"
           >
             완료
           </CompleteButton>
         }
       />
-      <StyledBasicPage>
-        <AlertToastModal
-          text={'질문은 3개 이하까지 만들 수 있어요'}
-          time={3000}
-          {...{ isToastOpen, setToastOpen }}
-        />
+      <TargetModalButton
+        onClick={() => {
+          fa.logEvent('question_target_change_click');
+          setTargetPopup(true);
+        }}
+      >
+        <h3 className="target_title">
+          {targetList[targetIndex - 1].title} 대상
+        </h3>
+        <ExpandIcon />
+      </TargetModalButton>
 
-        <AlertToastModal
-          text={'내용을 모두 입력하세요'}
-          time={3000}
-          isToastOpen={isContentToastOpen}
-          setToastOpen={setContentToastOpen}
+      <form id="submitForm" onSubmit={handleSubmit(onSubmit)}>
+        <QuestionCardList
+          {...{
+            register,
+            control,
+            setValue,
+            watch,
+            unregister,
+            errors,
+          }}
         />
+      </form>
 
-        <QuestionCardList />
-        {questionList.length < 3 && (
-          <AddQuestionButton
-            className="complete"
-            aria-disabled={!listValueState.check || listValueState.len === 3}
-            onClick={handleAddQuestionButton}
-          >
-            <PlusIcon /> 질문 추가
-          </AddQuestionButton>
-        )}
-      </StyledBasicPage>
+      {isTargetPopup && (
+        <Modal setPopup={setTargetPopup} close>
+          <TargetChangeModal>
+            <h1 className="target_change_title">설문 대상 선택</h1>
+            <TargetList isKing={true} brief />
+          </TargetChangeModal>
+        </Modal>
+      )}
       {isPopup && (
         <Modal setPopup={setPopup}>
           <ConfirmModal>
@@ -198,6 +200,7 @@ export default function QuestionPage(): JSX.Element {
           <div>
             <CancelButton
               onClick={() => {
+                clearErrors('questions');
                 setPopup(false);
                 fa.logEvent('question_modal_complete_button_cancel');
               }}
@@ -206,17 +209,8 @@ export default function QuestionPage(): JSX.Element {
             </CancelButton>
             <ConfirmButton
               onClick={() => {
-                fa.logEvent('question_modal_complete_button_click', {
-                  questionlen: questionList.length,
-                  textlen: questionList.filter(
-                    ({ questionType }) => questionType === 2,
-                  ).length,
-                  choicelen: questionList.filter(
-                    ({ questionType }) => questionType === 3,
-                  ).length,
-                });
+                fa.logEvent('question_modal_complete_button_click');
                 submit(submitData);
-                restQuestion();
                 replace('/survey/create/complete');
               }}
             >
@@ -228,3 +222,49 @@ export default function QuestionPage(): JSX.Element {
     </>
   );
 }
+
+const ConfirmModal = styled.div`
+  width: 100%;
+  font-size: 16px;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 150%;
+  text-align: center;
+  color: #242424;
+  padding: 0 24px;
+  height: 124px;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+`;
+
+const CancelButton = styled.button`
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 140%;
+  width: 50%;
+  height: 51px;
+  background-color: #ffff;
+  color: #141414;
+  border-top: 1px solid #e8e8e8;
+  border-right: 1px solid #e8e8e8;
+  :focus {
+    background-color: #f4f5f6;
+  }
+  border-bottom-left-radius: 12px;
+`;
+
+const ConfirmButton = styled.button`
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 140%;
+  width: 50%;
+  height: 52px;
+  background-color: #ffff;
+  color: #141414;
+  border-top: 1px solid #e8e8e8;
+  :focus {
+    background-color: #f4f5f6;
+  }
+  border-bottom-right-radius: 12px;
+`;

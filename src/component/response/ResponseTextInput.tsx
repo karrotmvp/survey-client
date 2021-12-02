@@ -1,3 +1,4 @@
+// import { ChangeEvent, useEffect, useState } from 'react';
 import { ChangeEvent, useEffect, useState } from 'react';
 
 import styled from '@emotion/styled';
@@ -21,10 +22,10 @@ export default function ResponseTextInput({
   isLast,
   setResponse,
 }: InputType): JSX.Element {
-  const { questionTypes, responsesId } =
-    useParams<{ responsesId?: string; questionTypes?: string }>();
-  if (!questionTypes || !responsesId)
-    throw new Error('questionNumber or responsesId none');
+  const { questionTypes, surveyId } =
+    useParams<{ surveyId?: string; questionTypes?: string }>();
+  if (!questionTypes || !surveyId)
+    throw new Error('questionNumber or surveyId none');
 
   const questionNumber = Number.isNaN(+questionTypes) ? 1 : +questionTypes;
   const response = useRecoilValue(responseListAtom);

@@ -33,9 +33,11 @@ const theme: Theme = {
     normal: 'SpoqaHanSansNeo',
   },
   fontWeight: {
-    normal: '400',
-    bold: '700',
-    bold2: '900',
+    thin: '100',
+    light: '200',
+    regular: '400',
+    medium: '600',
+    bold: '900',
   },
   color: {
     primaryOrange: '#FE7E35',
@@ -47,6 +49,18 @@ const theme: Theme = {
     whiteGray: 'CACBD1',
     darkWhite: '#F4F3F8',
     white: '#F4F5F6',
+    warningRedLight: '#FFF6F6',
+    primaryOrangeLight: '#FFF2EB',
+    primaryOrangePressed: '#E55300',
+    neutralBlack: {
+      main: '#141414',
+      text: '#707070',
+      placeholder: '#8b8b8b',
+      disabled: '#c9c9c9',
+      button: '#f4f3f8',
+      tag: '#f4f5f6',
+      line: '#f4f4f4',
+    },
   },
   fontSize: {
     XXL: '2.2rem', // 22px

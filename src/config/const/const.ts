@@ -1,9 +1,9 @@
 const contents = {
   placeholder: {
-    TEXT: '고객님 의견이 필요하거나 질문하고 싶은 것을 적어주세요',
+    TEXT: '우리 동네 이웃에게 묻고 싶은 것을 적어주세요',
     DESCRIPTION: '질문에 덧붙일 것이 있다면 적어주세요 (옵션)',
     CHOICE: '객관식 답변',
-    FEEDBACK: '자유롭게 의견을 남겨주세요!',
+    FEEDBACK: '무따에 자유롭게 의견을 남겨주세요!',
   },
   text: {
     feedback: {
@@ -18,4 +18,40 @@ const contents = {
   },
 };
 
-export default contents;
+const targetList = [
+  {
+    title: '모든 이웃',
+    subtitle: '매장 동네 근처 모든 이웃',
+    imgUrl: './../../img/target_all_Img.png',
+  },
+  {
+    title: '비즈프로필을 방문한 이웃',
+    subtitle: `사장님의 비즈프로필을\n 방문한 이웃`,
+    imgUrl: './../../img/target_visited_Img.png',
+  },
+  {
+    title: '단골',
+    subtitle: `사장님의 비즈프로필을\n 단골로 추가한 이웃`,
+    imgUrl: './../../img/target_customer_Img.png',
+  },
+];
+
+const COLORS = [
+  '#FE7E35',
+  '#F5D633',
+  '#4CE08C',
+  '#278AF5',
+  '#9E33F5',
+  '#B327F5',
+  '#FF5964',
+  '#ACACAC',
+  '#C4C4C4',
+];
+
+enum questionTypes {
+  TITLETYPE = 1,
+  TEXTTYPE,
+  CHOICETYPE,
+}
+
+export { contents, targetList, questionTypes, COLORS };

@@ -4,6 +4,8 @@ import { RecoilRoot } from 'recoil';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import '@karrotframe/navigator/index.css';
+import '@karrotframe/tabs/index.css';
+import 'react-loading-skeleton/dist/skeleton.css';
 
 import fa from './analytics/analytics';
 import { AnalyticsContext } from './analytics/faContext';
@@ -13,14 +15,14 @@ import Router from './router/Router';
 
 function App(): JSX.Element {
   return (
-    <ThemeProvider theme={theme}>
-      <RecoilRoot>
-        <AnalyticsContext.Provider value={fa}>
+    <AnalyticsContext.Provider value={fa}>
+      <ThemeProvider theme={theme}>
+        <RecoilRoot>
           <Global styles={global} />
           <Router />
-        </AnalyticsContext.Provider>
-      </RecoilRoot>
-    </ThemeProvider>
+        </RecoilRoot>
+      </ThemeProvider>
+    </AnalyticsContext.Provider>
   );
 }
 

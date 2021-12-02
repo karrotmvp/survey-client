@@ -9,4 +9,11 @@ const media = {
   mobile: customMediaQuery(500),
 };
 
-export default media;
+const log = (message: unknown): void => {
+  if (process.env.NODE_ENV === 'development') {
+    // eslint-disable-next-line no-console
+    console.log(message);
+  }
+};
+
+export { media, log };
