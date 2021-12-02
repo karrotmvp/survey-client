@@ -15,14 +15,14 @@ import Router from './router/Router';
 
 function App(): JSX.Element {
   return (
-    <ThemeProvider theme={theme}>
-      <RecoilRoot>
-        <AnalyticsContext.Provider value={fa}>
+    <AnalyticsContext.Provider value={fa}>
+      <ThemeProvider theme={theme}>
+        <RecoilRoot>
           <Global styles={global} />
           <Router />
-        </AnalyticsContext.Provider>
-      </RecoilRoot>
-    </ThemeProvider>
+        </RecoilRoot>
+      </ThemeProvider>
+    </AnalyticsContext.Provider>
   );
 }
 

@@ -22,7 +22,6 @@ export default function useGet<T>(
     if (!initialUrl) throw new Error(`Error: URL IS NULL`);
     const res = await axios.get<fetchType<T>>(initialUrl);
     if (res.status !== 200) throw new Error(`Error`);
-    // eslint-disable-next-line consistent-return
     return res.data.data;
   }, [initialUrl]);
 

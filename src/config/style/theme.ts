@@ -51,6 +51,7 @@ const theme: Theme = {
     white: '#F4F5F6',
     warningRedLight: '#FFF6F6',
     primaryOrangeLight: '#FFF2EB',
+    primaryOrangePressed: '#E55300',
     neutralBlack: {
       main: '#141414',
       text: '#707070',

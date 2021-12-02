@@ -7,6 +7,7 @@ import {
   UseFormWatch,
 } from 'react-hook-form';
 
+import { useAnalytics } from '@src/analytics/faContext';
 import { questionCardType, submitType } from '@src/page/QuestionPage';
 
 import InputForm from '../input/InputForm';
@@ -33,8 +34,9 @@ export default function QuestionTitleCard({
   const [isOpen, setOpen] = useState(false);
   const title = watch('title');
   const questions = watch('questions');
-
+  const fa = useAnalytics();
   const handleNextButton = () => {
+    fa.logEvent('question_title_complete_button_click');
     if (questions.length === 0 && title !== '') {
       append(
         {
@@ -84,7 +86,10 @@ export default function QuestionTitleCard({
         <TitleFormButton
           type="button"
           isValue={Boolean(title)}
-          onClick={() => setPopup(true)}
+          onClick={() => {
+            fa.logEvent('question_title_button_click');
+            setPopup(true);
+          }}
         >
           {title || '이웃들이 설문 목적을 알 수 있도록 설문 제목을 적어주세요'}
         </TitleFormButton>
@@ -127,7 +132,13 @@ export default function QuestionTitleCard({
             <section className="title_modal_section_button">
               <TitleCover>
                 <span>설문 제목이 이웃에게 이렇게 보여져요</span>
-                <ExampleButton type="button" onClick={() => setOpen(true)}>
+                <ExampleButton
+                  type="button"
+                  onClick={() => {
+                    fa.logEvent('question_coverExample_button_click');
+                    setOpen(true);
+                  }}
+                >
                   설문 커버 보기
                 </ExampleButton>
               </TitleCover>

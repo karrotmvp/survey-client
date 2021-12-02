@@ -24,6 +24,7 @@ declare module '@emotion/react' {
       darkWhite: string;
       white: string;
       warningRedLight: string;
+      primaryOrangePressed: string;
       primaryOrangeLight: string;
       neutralBlack: {
         main: string;

@@ -157,6 +157,7 @@ export default function HomePage(): JSX.Element {
   const setUser = useSetRecoilState(userAtom);
 
   const handleClick = async () => {
+    fa.logEvent('home_login_button_click');
     const resBizId = await getBizId();
     if (!resBizId) {
       return;
@@ -165,13 +166,18 @@ export default function HomePage(): JSX.Element {
       setPopup(true);
     }
     fa.setUserId(resBizId);
-    fa.logEvent('home_login_button_click');
+
     setCode(resBizId);
   };
 
   const handleNextClick = () => {
+    fa.logEvent('home_onboarding_next_button_click');
     push('/survey/create/target');
   };
+
+  useEffect(() => {
+    fa.logEvent('home_onboarding_show');
+  }, []);
 
   useEffect(() => {
     if (close && code) {
@@ -290,4 +296,7 @@ const NextButton = styled.button`
   justify-content: center;
   background-color: ${({ theme }) => theme.color.primaryOrange};
   color: #ffff;
+  &:focus {
+    background-color: ${({ theme }) => theme.color.primaryOrangePressed};
+  }
 `;

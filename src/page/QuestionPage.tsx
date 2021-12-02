@@ -109,6 +109,7 @@ export default function QuestionPage(): JSX.Element {
   const questionList = watch('questions');
 
   const onSubmit = ({ title, questions }: submitType) => {
+    fa.logEvent('question_complete_button_active_click');
     setSubmitData({
       title,
       target: targetIndex,
