@@ -119,7 +119,7 @@ export default function AnswerHome(): JSX.Element {
       <NavBar
         type="CLOSE"
         transparent
-        title={IsCoverImgUrls ? `${briefData?.bizProfile.name} 설문` : ''}
+        title={IsCoverImgUrls ? '' : `${briefData?.bizProfile.name} 설문`}
         white={IsCoverImgUrls}
       />
       <StyledHomePage>
