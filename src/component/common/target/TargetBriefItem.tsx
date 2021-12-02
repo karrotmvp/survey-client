@@ -90,7 +90,7 @@ export default function TargetBriefItem({
         </div>
         <RadioButton type="radio" checked={target === index + 1} />
       </StyledTargetItem>
-      {index === -1 && <CustomerKingTag>단골왕 사장님만</CustomerKingTag>}
+      {index !== 0 && <CustomerKingTag>단골왕 사장님만</CustomerKingTag>}
     </div>
   );
 }
@@ -99,9 +99,9 @@ const CustomerKingTag = styled.div`
   position: absolute;
   right: 0;
   top: 0;
-  border-bottom-right-radius: 4px;
-  padding: 0.8rem 0.6rem;
-  font-size: 1.2rem;
+  border-top-right-radius: 4px;
+  padding: 0.5rem 0.5rem;
+  font-size: 1.1rem;
   font-weight: ${({ theme }) => theme.fontWeight.medium};
   color: ${({ theme }) => theme.color.primaryOrange};
   background-color: ${({ theme }) => theme.color.primaryOrangeLight};

@@ -99,5 +99,5 @@ export default function NavBar({
 }
 
 const StyledClearIcon = styled(ClearIcon)<{ white: boolean | undefined }>`
-  color: ${({ white }) => (white ? 'white' : '')};
+  color: ${({ white }) => (white ? '#fff' : '')};
 `;
