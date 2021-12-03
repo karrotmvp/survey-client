@@ -169,6 +169,7 @@ const ExampleDot = styled.div`
   background-color: #c4c4c4;
   border-radius: 50%;
 `;
+
 const StyledExampleText = styled.div`
   display: flex;
   flex-direction: column;
@@ -188,6 +189,7 @@ const StyledExampleText = styled.div`
   }
   margin: 1rem 0;
 `;
+
 const example = [
   { title: '의견 조사', subtitle: '밀키트 구입에 대한 의견을 듣고 싶어요' },
   { title: '신메뉴/서비스 추천', subtitle: 'OO떡볶이 신메뉴를 추천받아요' },
@@ -286,6 +288,7 @@ const TitleCover = styled.div`
 
 const StyledQuestionTitleCard = styled.div`
   width: 100%;
+  margin-top: 8rem;
   background-color: #ffff;
   display: flex;
   flex-direction: column;

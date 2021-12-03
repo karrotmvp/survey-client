@@ -3,18 +3,17 @@ import { useState } from 'react';
 import styled from '@emotion/styled';
 import { useNavigator } from '@karrotframe/navigator';
 import { FieldError, useForm } from 'react-hook-form';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 
 import NavBar from '@component/common/navbar/NavBar';
 import QuestionCardList from '@component/question/QuestionCardList';
-import { ReactComponent as ExpandIcon } from '@config/icon/expand_more.svg';
+// import { ReactComponent as ExpandIcon } from '@config/icon/expand_more.svg';
 import { useAnalytics } from '@src/analytics/faContext';
-import { surveyIdAtom } from '@src/api/authorization';
+import { surveyIdAtom, surveyListTrigger } from '@src/api/authorization';
 import { choiceType, questionTarget } from '@src/atom/questionAtom';
 import Modal from '@src/component/common/modal/Modal';
-import TargetList from '@src/component/common/target/TargetList';
-import { targetList } from '@src/config/const/const';
-// import useSubmit from '@src/hook/useSubmit';
+// import TargetList from '@src/component/common/target/TargetList';
+// import { targetList } from '@src/config/const/const';
 import useSubmitReturn from '@src/hook/useSubmitReturn';
 
 const CompleteButton = styled.button`
@@ -77,13 +76,14 @@ export function questionCheck(question: questionCardType[]): boolean {
 export default function QuestionPage(): JSX.Element {
   const targetIndex = useRecoilValue(questionTarget);
   const [isPopup, setPopup] = useState(false);
-  const [isTargetPopup, setTargetPopup] = useState(false);
+  // const [isTargetPopup, setTargetPopup] = useState(false);
   const setSurveyId = useSetRecoilState(surveyIdAtom);
   const [submitData, setSubmitData] = useState<
     (submitType & { title: string; target: number }) | undefined
   >(undefined);
   const { replace } = useNavigator();
   const submit = useSubmitReturn<number>('/surveys');
+  const [trigger, setTrigger] = useRecoilState(surveyListTrigger);
   const fa = useAnalytics();
   const {
     handleSubmit,
@@ -100,15 +100,15 @@ export default function QuestionPage(): JSX.Element {
       questions: [],
     },
   });
-  const TargetChangeModal = styled.div`
-    padding: 2rem 1.6rem 2.8rem 1.6rem;
-    .target_change_title {
-      font-size: 1.6rem;
-      font-weight: ${({ theme }) => theme.fontWeight.regular};
-      text-align: center;
-      margin-bottom: 2.4rem;
-    }
-  `;
+  // const TargetChangeModal = styled.div`
+  //   padding: 2rem 1.6rem 2.8rem 1.6rem;
+  //   .target_change_title {
+  //     font-size: 1.6rem;
+  //     font-weight: ${({ theme }) => theme.fontWeight.regular};
+  //     text-align: center;
+  //     margin-bottom: 2.4rem;
+  //   }
+  // `;
   const questionList = watch('questions');
 
   const onSubmit = ({ title, questions }: submitType) => {
@@ -126,21 +126,21 @@ export default function QuestionPage(): JSX.Element {
     setPopup(true);
   };
 
-  const TargetModalButton = styled.button`
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    padding: 2.4rem 1.6rem;
-    .target_title {
-      font-size: 1.5rem;
-      line-height: 100%;
-      color: ${({ theme }) => theme.color.neutralBlack.main};
-      font-weight: ${({ theme }) => theme.fontWeight.regular};
-    }
-    background-color: transparent;
-    border-bottom: 1px solid #f4f4f4;
-    margin-top: 5.6rem;
-  `;
+  // const TargetModalButton = styled.button`
+  //   width: 100%;
+  //   display: flex;
+  //   justify-content: space-between;
+  //   padding: 2.4rem 1.6rem;
+  //   .target_title {
+  //     font-size: 1.5rem;
+  //     line-height: 100%;
+  //     color: ${({ theme }) => theme.color.neutralBlack.main};
+  //     font-weight: ${({ theme }) => theme.fontWeight.regular};
+  //   }
+  //   background-color: transparent;
+  //   border-bottom: 1px solid #f4f4f4;
+  //   margin-top: 5.6rem;
+  // `;
 
   return (
     <>
@@ -158,7 +158,7 @@ export default function QuestionPage(): JSX.Element {
           </CompleteButton>
         }
       />
-      <TargetModalButton
+      {/* <TargetModalButton
         onClick={() => {
           fa.logEvent('question_target_change_click');
           setTargetPopup(true);
@@ -168,7 +168,7 @@ export default function QuestionPage(): JSX.Element {
           {targetList[targetIndex - 1].title} 대상
         </h3>
         <ExpandIcon />
-      </TargetModalButton>
+      </TargetModalButton> */}
 
       <form id="submitForm" onSubmit={handleSubmit(onSubmit)}>
         <QuestionCardList
@@ -183,14 +183,14 @@ export default function QuestionPage(): JSX.Element {
         />
       </form>
 
-      {isTargetPopup && (
+      {/* {isTargetPopup && (
         <Modal setPopup={setTargetPopup} close>
           <TargetChangeModal>
             <h1 className="target_change_title">설문 대상 선택</h1>
             <TargetList isKing={true} brief />
           </TargetChangeModal>
         </Modal>
-      )}
+      )} */}
       {isPopup && (
         <Modal setPopup={setPopup}>
           <ConfirmModal>
@@ -214,6 +214,7 @@ export default function QuestionPage(): JSX.Element {
               onClick={async () => {
                 fa.logEvent('question_modal_complete_button_click');
                 const result = await submit(submitData);
+                setTrigger(trigger + 1);
                 if (result) {
                   setSurveyId(`${result}`);
                   replace('/survey/create/complete');

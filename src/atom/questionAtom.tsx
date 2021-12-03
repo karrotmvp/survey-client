@@ -81,7 +81,7 @@ const questionFeedBack = atom<questionFeedBackType>({
 
 const questionTarget = atom<number>({
   key: 'questionTarget',
-  default: -1,
+  default: 1,
 });
 
 const questionSelector = selector({

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 import styled from '@emotion/styled';
 import { useNavigator } from '@karrotframe/navigator';
@@ -17,7 +17,7 @@ const StyledEndPage = styled.section`
   background-color: #ffff;
   width: 100%;
   height: 100vh;
-  padding: 13.6rem 1.6rem 1.6rem 1.6rem;
+  padding: 7.7rem 1.6rem 1.6rem 1.6rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -49,10 +49,16 @@ const EndButton = styled.button`
   font-weight: bold;
   font-size: 1.6rem;
   line-height: 120%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   padding: 15px 0;
   background-color: ${({ theme }) => theme.color.primaryOrange};
   color: #fff;
   border-radius: 8px;
+  svg {
+    margin-right: 0.4rem;
+  }
 `;
 
 const FeedBackButton = styled.button`
@@ -68,43 +74,27 @@ const FeedBackButton = styled.button`
   border-radius: 8px;
 `;
 
-const ShareButton = styled.button`
-  color: ${({ theme }) => theme.color.primaryOrange};
-  font-size: 1.6rem;
-  font-weight: ${({ theme }) => theme.fontWeight.regular};
-  padding: 0.4rem;
-  background-color: transparent;
-  display: flex;
-  align-items: center;
-  svg {
-    margin-right: 0.4rem;
-  }
-`;
+// const ShareButton = styled.button`
+//   color: ${({ theme }) => theme.color.primaryOrange};
+//   font-size: 1.6rem;
+//   font-weight: ${({ theme }) => theme.fontWeight.regular};
+//   padding: 0.4rem;
+//   background-color: transparent;
+//   display: flex;
+//   align-items: center;
+//   svg {
+//     margin-right: 0.4rem;
+//   }
+// `;
 
 const CompleteImg = styled.img`
   width: 100%;
-`;
-
-const TooltipBackground = styled.div`
-  background-color: transparent;
-  height: 100vh;
-  width: 100%;
-  position: fixed;
-  z-index: 9;
-`;
-
-const Tools = styled.img`
-  position: absolute;
-  width: 80%;
-  top: 5.6rem;
-  left: 5rem;
 `;
 
 export default function EndPage(): JSX.Element {
   const { replace } = useNavigator();
   const fa = useAnalytics();
   const history = useHistory();
-  const [tooltip, setTooltip] = useState(true);
   const url = useRecoilValueLoadable(getBriefUrls);
   const userData = useRecoilValueLoadable(getBizprofile);
   const goFeedBack = () => {
@@ -127,10 +117,10 @@ export default function EndPage(): JSX.Element {
     }
   };
 
-  const closeMini = () => {
-    fa.logEvent('complete_like_button_click');
-    mini.close();
-  };
+  // const closeMini = () => {
+  //   fa.logEvent('complete_like_button_click');
+  //   mini.close();
+  // };
 
   useEffect(
     () => () => {
@@ -143,22 +133,9 @@ export default function EndPage(): JSX.Element {
 
   return (
     <>
-      {tooltip && (
-        <TooltipBackground onClick={() => setTooltip(false)}>
-          <Tools src="./../../img/share_alert.png" />
-        </TooltipBackground>
-      )}
       <StyledEndPage>
         <section>
-          <NavBar
-            type="CLOSE"
-            appendRight={
-              <ShareButton onClick={handleShareClick}>
-                <ShareIcon />
-                공유하기
-              </ShareButton>
-            }
-          />
+          <NavBar type="BACK" />
           <CompleteImg src="./../../img/surveyComplete.png" />
           <EndTitle>설문 제작 완료 🎉</EndTitle>
 
@@ -169,7 +146,10 @@ export default function EndPage(): JSX.Element {
           </EndText>
         </section>
         <section>
-          <EndButton onClick={closeMini}>좋아요</EndButton>
+          <EndButton onClick={handleShareClick}>
+            <ShareIcon />
+            공유하기
+          </EndButton>
           <FeedBackButton onClick={goFeedBack}>
             무따 서비스 피드백 남기기
           </FeedBackButton>

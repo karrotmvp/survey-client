@@ -78,6 +78,7 @@ export default function QuestionCard({
   errors,
 }: QuestionCardType): JSX.Element {
   const questionType = watch(`questions.${questionIndex}.questionType`);
+
   return (
     <>
       {questionIndex !== 0 && <Divider />}
