@@ -12,7 +12,7 @@ import { useAnalytics } from '@src/analytics/faContext';
 import { surveyIdAtom, surveyListTrigger } from '@src/api/authorization';
 import { choiceType, questionTarget } from '@src/atom/questionAtom';
 import Modal from '@src/component/common/modal/Modal';
-import TargetList from '@src/component/common/target/TargetList';
+// import TargetList from '@src/component/common/target/TargetList';
 // import { targetList } from '@src/config/const/const';
 import useSubmitReturn from '@src/hook/useSubmitReturn';
 
@@ -76,7 +76,7 @@ export function questionCheck(question: questionCardType[]): boolean {
 export default function QuestionPage(): JSX.Element {
   const targetIndex = useRecoilValue(questionTarget);
   const [isPopup, setPopup] = useState(false);
-  const [isTargetPopup, setTargetPopup] = useState(false);
+  // const [isTargetPopup, setTargetPopup] = useState(false);
   const setSurveyId = useSetRecoilState(surveyIdAtom);
   const [submitData, setSubmitData] = useState<
     (submitType & { title: string; target: number }) | undefined
@@ -100,15 +100,15 @@ export default function QuestionPage(): JSX.Element {
       questions: [],
     },
   });
-  const TargetChangeModal = styled.div`
-    padding: 2rem 1.6rem 2.8rem 1.6rem;
-    .target_change_title {
-      font-size: 1.6rem;
-      font-weight: ${({ theme }) => theme.fontWeight.regular};
-      text-align: center;
-      margin-bottom: 2.4rem;
-    }
-  `;
+  // const TargetChangeModal = styled.div`
+  //   padding: 2rem 1.6rem 2.8rem 1.6rem;
+  //   .target_change_title {
+  //     font-size: 1.6rem;
+  //     font-weight: ${({ theme }) => theme.fontWeight.regular};
+  //     text-align: center;
+  //     margin-bottom: 2.4rem;
+  //   }
+  // `;
   const questionList = watch('questions');
 
   const onSubmit = ({ title, questions }: submitType) => {
@@ -183,14 +183,14 @@ export default function QuestionPage(): JSX.Element {
         />
       </form>
 
-      {isTargetPopup && (
+      {/* {isTargetPopup && (
         <Modal setPopup={setTargetPopup} close>
           <TargetChangeModal>
             <h1 className="target_change_title">설문 대상 선택</h1>
             <TargetList isKing={true} brief />
           </TargetChangeModal>
         </Modal>
-      )}
+      )} */}
       {isPopup && (
         <Modal setPopup={setPopup}>
           <ConfirmModal>
