@@ -127,6 +127,37 @@ const getSurveyListAtom = selector({
   },
 });
 
+type getBriefUrlsType = {
+  shortUrl: string;
+  originUrl: string;
+};
+
+const getBriefUrls = selector({
+  key: 'getBriefUrls',
+  // eslint-disable-next-line consistent-return
+  get: async ({ get }) => {
+    const jwt = await get(authorizationBizSelector);
+    const surveyId = get(surveyIdAtom);
+    const token = jwt.data;
+    axios.defaults.baseURL = process.env.REACT_APP_API_URL;
+
+    const Authorization = 'X-AUTH-TOKEN';
+    if (!token) return;
+    axios.defaults.headers.common[Authorization] = token;
+    try {
+      const data: AxiosResponse<{ data: getBriefUrlsType }> = await axios.get<{
+        data: getBriefUrlsType;
+      }>(`/url/surveys/${surveyId}`);
+
+      // eslint-disable-next-line consistent-return
+      return data.data.data;
+    } catch (e) {
+      // eslint-disable-next-line no-console
+      console.error(e);
+    }
+  },
+});
+
 const getAggregationBrief = selector({
   key: 'getAggregationBrief',
   get: async ({ get }) => {
@@ -182,6 +213,7 @@ const authorizationSelector = selector({
 });
 
 export {
+  getBriefUrls,
   getSurveyListAtom,
   surveyIdAtom,
   getBizSurveyList,
