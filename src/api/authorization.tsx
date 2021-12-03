@@ -3,6 +3,7 @@ import { atom, selector } from 'recoil';
 
 import { aggregationBriefType } from '@src/component/aggregation/AggregationBrief';
 import { questionDataType } from '@src/page/AnswerHome';
+import { surveyItemType } from '@src/page/SurveyHome';
 
 const bizCodeAtom = atom({
   key: 'bizCodeAtom',
@@ -72,6 +73,36 @@ const getBizprofile = selector({
   },
 });
 
+const surveyListTrigger = atom({
+  key: 'surveyListTrigger',
+  default: 0,
+});
+
+const getSurveyList = selector({
+  key: 'getSurveyList',
+  get: async ({ get }) => {
+    get(surveyListTrigger);
+    const jwt = await get(authorizationBizSelector);
+    const token = jwt.data;
+    axios.defaults.baseURL = process.env.REACT_APP_API_URL;
+
+    const Authorization = 'X-AUTH-TOKEN';
+    if (!token) return;
+    axios.defaults.headers.common[Authorization] = token;
+    try {
+      const data: AxiosResponse<{ data: surveyItemType[] }> = await axios.get<{
+        data: surveyItemType[];
+      }>(`/surveys`);
+
+      // eslint-disable-next-line consistent-return
+      return data.data.data;
+    } catch (e) {
+      // eslint-disable-next-line no-console
+      console.error(e);
+    }
+  },
+});
+
 const surveyIdAtom = atom({
   key: 'surveyIdAtom',
   default: '',
@@ -81,31 +112,6 @@ const getBizSurveyList = selector({
   key: 'getBizSurveyList',
   get: async ({ get }) => {
     const jwt = await get(authorizationBizSelector);
-    const surveyId = get(surveyIdAtom);
-    const token = jwt.data;
-    axios.defaults.baseURL = process.env.REACT_APP_API_URL;
-
-    const Authorization = 'X-AUTH-TOKEN';
-    if (!token) return '';
-    axios.defaults.headers.common[Authorization] = token;
-    try {
-      const data: AxiosResponse<{ data: questionDataType }> = await axios.get<{
-        data: questionDataType;
-      }>(`/surveys/${surveyId}`);
-
-      return data.data.data;
-    } catch (e) {
-      // eslint-disable-next-line no-console
-      console.error(e);
-      return '';
-    }
-  },
-});
-
-const getSurveyListAtom = selector({
-  key: 'getSurveyListAtom',
-  get: async ({ get }) => {
-    const jwt = await get(authorizationSelector);
     const surveyId = get(surveyIdAtom);
     const token = jwt.data;
     axios.defaults.baseURL = process.env.REACT_APP_API_URL;
@@ -213,8 +219,9 @@ const authorizationSelector = selector({
 });
 
 export {
+  getSurveyList,
+  surveyListTrigger,
   getBriefUrls,
-  getSurveyListAtom,
   surveyIdAtom,
   getBizSurveyList,
   authorizationBizSelector,

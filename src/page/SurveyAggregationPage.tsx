@@ -85,7 +85,7 @@ export default function SurveyAggregationPage(): JSX.Element {
     ) {
       mini.share({
         url: url.contents.shortUrl,
-        text: `${userData.contents.name} 사장님이 설문을 만드셨어요! 여러분의 의견이 매장 개선에 큰 도움이 되요 😊`,
+        text: `${userData.contents.name} 사장님이 설문을 만드셨어요! 여러분의 의견이 매장 개선에 큰 도움이 돼요 😊`,
       });
     }
   };

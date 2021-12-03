@@ -1,6 +1,7 @@
 import { MouseEvent, useEffect, useState } from 'react';
 
 import styled from '@emotion/styled';
+import { useNavigator } from '@karrotframe/navigator';
 import {
   Control,
   useFieldArray,
@@ -13,7 +14,7 @@ import {
 import QuestionCard from '@component/common/card/QuestionCard';
 import AlertToastModal from '@component/common/modal/TostModal';
 import { ReactComponent as PlusIcon } from '@config/icon/plus.svg';
-import { log } from '@src/config/utils/util';
+import { useAnalytics } from '@src/analytics/faContext';
 import { errorsType, questionCheck, submitType } from '@src/page/QuestionPage';
 
 import QuestionTitleCard from '../common/card/QuestionTitleCard';
@@ -43,9 +44,9 @@ export default function QuestionCardList({
     name: 'questions',
   });
   const questionList = watch('questions');
-
+  const fa = useAnalytics();
+  const { push } = useNavigator();
   const handleAddQuestionButton = (e: MouseEvent) => {
-    log(questionList);
     if ((e.currentTarget as HTMLButtonElement).ariaDisabled === 'true') {
       setContentToastOpen(true);
     } else if (questionList.length < 3) {
@@ -119,12 +120,54 @@ export default function QuestionCardList({
         )}
       </QuestionButtons>
       )
+      {fields.length > 0 && (
+        <QuestionBottomBar>
+          <span>설문 예시가 떠오르지 않나요?</span>
+          <ExampleButton
+            type="button"
+            onClick={() => {
+              push('/guide');
+              fa.logEvent('question_example_button_click');
+            }}
+          >
+            설문 예시 보기
+          </ExampleButton>
+        </QuestionBottomBar>
+      )}
     </>
   );
 }
 
+const ExampleButton = styled.button`
+  background-color: #fff;
+  color: ${({ theme }) => theme.color.primaryOrange};
+  font-size: 1.3rem;
+  padding: 0.8rem 1rem;
+  border-radius: 18px;
+  font-weight: ${({ theme }) => theme.fontWeight.medium};
+`;
+
+const QuestionBottomBar = styled.div`
+  width: 100%;
+  padding: 0.9rem 1.6rem;
+  height: 4.7rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #fedecc;
+  position: fixed;
+  bottom: 0;
+  -webkit-transform: translate3d(0, 0, 0);
+  span {
+    font-size: 1.3rem;
+    font-weight: ${({ theme }) => theme.fontWeight.medium};
+    color: #707070;
+  }
+`;
+
 const QuestionButtons = styled.div`
   padding: 0 1.6rem;
+  margin-bottom: 7rem;
 `;
 
 const AddQuestionButton = styled.button`
