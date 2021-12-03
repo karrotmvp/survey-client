@@ -2,10 +2,13 @@
 import { useEffect, useState } from 'react';
 
 import styled from '@emotion/styled';
-import { useNavigator, useParams } from '@karrotframe/navigator';
+import {
+  useNavigator,
+  useParams,
+  useQueryParams,
+} from '@karrotframe/navigator';
 import Slider, { Settings } from 'react-slick';
 import { useRecoilState, useSetRecoilState } from 'recoil';
-import { v4 as uuidv4 } from 'uuid';
 
 import LoginButton from '@component/common/button/LogInButton';
 import AlertTostModal from '@component/common/modal/TostModal';
@@ -51,7 +54,7 @@ export default function AnswerHome(): JSX.Element {
   const { surveyId } =
     useParams<{ surveyId?: string; questionNumber?: string }>();
   if (!surveyId) throw new Error('surveyId none');
-
+  const { ref } = useQueryParams<{ ref?: string }>();
   const jwt = useLogin(authorizationSelector);
   const [isToastOpen, setToastOpen] = useState(false);
   const [briefData, setBrief] = useState<surveyBriefType | null>(null);
@@ -67,7 +70,7 @@ export default function AnswerHome(): JSX.Element {
     `/surveys/brief/${surveyId}`,
     true,
   );
-
+  console.log(ref);
   const auth = useMiniAuth(process.env.REACT_APP_APP_ID || '');
 
   async function getResponseHomeData() {
@@ -103,7 +106,6 @@ export default function AnswerHome(): JSX.Element {
     }
     fa.logEvent(`response_onboard_show`, { surveyId });
     fa.logEvent(`${surveyId}_response_onboard_show`);
-    fa.setUserId(uuidv4());
   }, [briefData]);
 
   useEffect(() => {
