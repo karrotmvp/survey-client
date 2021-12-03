@@ -143,15 +143,17 @@ export default function SurveyHome(): ReactElement {
       {isPopup && (
         <UpDownModal setPopup={setPopup}>
           <GuideModal>
-            <h1 className="guideModal_title">
-              우리 동네 이웃에게
-              <br /> 이렇게 보여요
-            </h1>
+            <h1 className="guideModal_title">설문을 만들고 공유해봐요</h1>
             <h3 className="guideModal_subtitle">
-              당근마켓 내 피드에서 사장님의 설문이 <br /> 우리 동네 이웃분에게
-              보여져요
+              사장님의 설문을 <b>비즈프로필 소식</b>에 공유해 <br /> 보세요!
+              우리 동네 이웃분에게 보여져요.
             </h3>
-            <GuideModalImg />
+            <GuideModalImg imgUrl="./../../img/guideModalImg.png" />
+            <h3 className="guideModal_subtitle">
+              또는 <b>SNS에 공유</b>해서 더 많은 분의 의견을 <br />
+              들어볼 수 있어요.
+            </h3>
+            <GuideModalImg imgUrl={'./../../img/guideModalImg2.png'} />
           </GuideModal>
           <NextButton onClick={handleNextClick}>다음</NextButton>
         </UpDownModal>
@@ -224,7 +226,7 @@ const StyledSurveyHomePage = styled.section`
 `;
 
 const GuideModal = styled.div`
-  padding: 4rem 1.6rem 0 1.6rem;
+  padding: 4rem 1.6rem 1.6rem 1.6rem;
   .guideModal_title {
     font-size: 2.2rem;
     line-height: 140%;
@@ -237,18 +239,17 @@ const GuideModal = styled.div`
     font-size: 1.6rem;
     line-height: 140%;
     font-weight: ${({ theme }) => theme.fontWeight.regular};
-    color: ${({ theme }) => theme.color.neutralBlack.main};
+    color: #4b4b4b;
   }
 `;
 
-const GuideModalImg = styled.div`
+const GuideModalImg = styled.div<{ imgUrl: string }>`
   width: 100%;
   height: 0;
-  padding-top: calc(244 / 328 * 100%);
-  background: url('../../img/guideModalImg.png') center center / cover no-repeat;
+  padding-top: calc(152 / 324 * 100%);
+  background: url(${({ imgUrl }) => imgUrl}) center center / cover no-repeat;
   position: relative;
-  margin-bottom: 2.4rem;
-  margin-top: 4.7rem;
+  margin: 1.2rem 0;
   border-radius: 4px;
 `;
 
