@@ -1,7 +1,11 @@
 import { useEffect } from 'react';
 
 import styled from '@emotion/styled';
-import { useNavigator, useParams } from '@karrotframe/navigator';
+import {
+  useNavigator,
+  useParams,
+  useQueryParams,
+} from '@karrotframe/navigator';
 import { useRecoilState, useRecoilValue } from 'recoil';
 
 import ResponseTextInput from '@component/response/ResponseTextInput';
@@ -35,6 +39,8 @@ export default function AnswerDetailPage(): JSX.Element {
   const [response, setResponseState] = useRecoilState(responseListAtom);
 
   const { push } = useNavigator();
+  const query = useQueryParams<{ ref?: string }>();
+  const ref = query.ref || 'app';
 
   const setResponse = (
     responseInput: { choiceId: number } | { answer: string },
@@ -49,9 +55,11 @@ export default function AnswerDetailPage(): JSX.Element {
     if (!isLast) {
       fa.logEvent(`response_question_${questionNumber}_next_button_click`, {
         surveyId,
+        ref,
       });
       fa.logEvent(
         `${surveyId}_response_question_${questionNumber}_next_button_click`,
+        { ref },
       );
       push(`/survey/${surveyId}/${+questionNumber + 1}`);
     }
@@ -61,9 +69,11 @@ export default function AnswerDetailPage(): JSX.Element {
     fa.logEvent(`response_question_${questionNumber}_show`, {
       surveyId,
       questionLength,
+      ref,
     });
     fa.logEvent(`${surveyId}_response_question_${questionNumber}_show`, {
       questionLength,
+      ref,
     });
   }, []);
 

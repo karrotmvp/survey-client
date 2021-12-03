@@ -1,7 +1,11 @@
 import { useEffect, useState } from 'react';
 
 import styled from '@emotion/styled';
-import { useNavigator, useParams } from '@karrotframe/navigator';
+import {
+  useNavigator,
+  useParams,
+  useQueryParams,
+} from '@karrotframe/navigator';
 import { useRecoilValue } from 'recoil';
 
 import { useAnalytics } from '@src/analytics/faContext';
@@ -43,11 +47,15 @@ export default function ResponseNextButton({
   const responseState = useRecoilValue(responseListAtom);
   const question = useRecoilValue(questionListAtom);
   const [isSubmit, setSubmit] = useState(false);
+  const query = useQueryParams<{ ref?: string }>();
+  const ref = query.ref || 'app';
+
   const handleLastClick = (e: React.MouseEvent) => {
     fa.logEvent(`response_question_complete_button_click`, {
       surveyId,
+      ref,
     });
-    fa.logEvent(`${surveyId}_response_question_complete_button_click`);
+    fa.logEvent(`${surveyId}_response_question_complete_button_click`, { ref });
     setSubmit(true);
     handleNextClick(e);
   };
