@@ -1,7 +1,11 @@
 import { useEffect } from 'react';
 
 import styled from '@emotion/styled';
-import { useNavigator, useParams } from '@karrotframe/navigator';
+import {
+  useNavigator,
+  useParams,
+  useQueryParams,
+} from '@karrotframe/navigator';
 import { useHistory } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 
@@ -19,12 +23,15 @@ export default function AnswerComplete(): JSX.Element {
 
   const fa = useAnalytics();
   const bizProfile = useRecoilValue(responseUserAtom);
+  const query = useQueryParams<{ ref?: string }>();
+  const ref = query.ref || 'app';
 
   useEffect(() => {
     fa.logEvent(`response_complete_page_show`, {
       surveyId,
+      ref,
     });
-    fa.logEvent(`${surveyId}_response_complete_page_show`);
+    fa.logEvent(`${surveyId}_response_complete_page_show`, { ref });
   }, []);
 
   useEffect(() => {
@@ -47,8 +54,9 @@ export default function AnswerComplete(): JSX.Element {
     }
     fa.logEvent(`response_complete_bizprofile_click`, {
       surveyId,
+      ref,
     });
-    fa.logEvent(`${surveyId}_response_complete_bizprofile_click`);
+    fa.logEvent(`${surveyId}_response_complete_bizprofile_click`, { ref });
     window.location.href = bizProfile.profileUrl;
   };
 

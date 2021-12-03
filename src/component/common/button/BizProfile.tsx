@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { useParams } from '@karrotframe/navigator';
+import { useParams, useQueryParams } from '@karrotframe/navigator';
 
 // import { ReactComponent as ArrowRight } from '@config/icon/arrow_right_24.svg';
 import { useAnalytics } from '@src/analytics/faContext';
@@ -69,12 +69,14 @@ export default function BizProfile({
 }: bizProfileType): JSX.Element {
   const { surveyId } = useParams<{ surveyId?: string }>();
   if (!surveyId) throw new Error('questionNumber or surveyId none');
+  const query = useQueryParams<{ ref?: string }>();
+  const ref = query.ref || 'app';
 
   const fa = useAnalytics();
 
   const handleClickProfile = () => {
-    fa.logEvent(`response_home_bizprofile_click`, { surveyId });
-    fa.logEvent(`${surveyId}_response_home_bizprofile_click`);
+    fa.logEvent(`response_home_bizprofile_click`, { surveyId, ref });
+    fa.logEvent(`${surveyId}_response_home_bizprofile_click`, { ref });
     window.location.href = profileUrl;
   };
   const shortenRegin = region.split(' ');

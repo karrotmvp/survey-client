@@ -54,7 +54,9 @@ export default function AnswerHome(): JSX.Element {
   const { surveyId } =
     useParams<{ surveyId?: string; questionNumber?: string }>();
   if (!surveyId) throw new Error('surveyId none');
-  const { ref } = useQueryParams<{ ref?: string }>();
+  const query = useQueryParams<{ ref?: string }>();
+  const ref = query.ref || 'app';
+
   const jwt = useLogin(authorizationSelector);
   const [isToastOpen, setToastOpen] = useState(false);
   const [briefData, setBrief] = useState<surveyBriefType | null>(null);
@@ -70,7 +72,7 @@ export default function AnswerHome(): JSX.Element {
     `/surveys/brief/${surveyId}`,
     true,
   );
-  console.log(ref);
+
   const auth = useMiniAuth(process.env.REACT_APP_APP_ID || '');
 
   async function getResponseHomeData() {
@@ -83,8 +85,8 @@ export default function AnswerHome(): JSX.Element {
   }
 
   const click = async () => {
-    fa.logEvent(`response_login_button_click`, { surveyId });
-    fa.logEvent(`${surveyId}_response_login_button_click`);
+    fa.logEvent(`response_login_button_click`, { surveyId, ref });
+    fa.logEvent(`${surveyId}_response_login_button_click`, { ref });
     const resCode = await auth();
     if (resCode) {
       setCode(resCode);
@@ -104,8 +106,8 @@ export default function AnswerHome(): JSX.Element {
         }
       })();
     }
-    fa.logEvent(`response_onboard_show`, { surveyId });
-    fa.logEvent(`${surveyId}_response_onboard_show`);
+    fa.logEvent(`response_onboard_show`, { surveyId, ref });
+    fa.logEvent(`${surveyId}_response_onboard_show`, { ref });
   }, [briefData]);
 
   useEffect(() => {
