@@ -71,12 +71,6 @@ export default function QuestionTitleCard({
     }
   }, [isPopupClose, isPopupOpen]);
 
-  const ExampleBizImg = styled.img`
-    position: absolute;
-    right: 0rem;
-    top: 100px;
-    width: 21rem;
-  `;
   return (
     <>
       <StyledQuestionTitleCard>
@@ -168,6 +162,13 @@ const ExampleDot = styled.div`
   margin-right: 0.8rem;
   background-color: #c4c4c4;
   border-radius: 50%;
+`;
+
+const ExampleBizImg = styled.img`
+  position: absolute;
+  right: 0rem;
+  top: 100px;
+  width: 21rem;
 `;
 
 const StyledExampleText = styled.div`
