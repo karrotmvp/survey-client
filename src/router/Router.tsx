@@ -43,9 +43,9 @@ export default function Router(): JSX.Element {
       <Screen path="/survey/aggregation/:surveyId">
         <SurveyAggregationPage />
       </Screen>
-      {/* <Screen path="/survey/aggregation">
+      <Screen path="/survey/aggregation">
         <SurveyHome />
-      </Screen> */}
+      </Screen>
       <Screen path="/survey/create/target">
         <TargetPage />
       </Screen>

@@ -166,8 +166,7 @@ const QuestionBottomBar = styled.div`
 `;
 
 const QuestionButtons = styled.div`
-  padding: 0 1.6rem;
-  margin-bottom: 7rem;
+  padding: 0 1.6rem 5rem 1.6rem;
 `;
 
 const AddQuestionButton = styled.button`
