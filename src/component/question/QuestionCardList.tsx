@@ -47,6 +47,7 @@ export default function QuestionCardList({
   const fa = useAnalytics();
   const { push } = useNavigator();
   const handleAddQuestionButton = (e: MouseEvent) => {
+    fa.logEvent('question_add_button_click');
     if ((e.currentTarget as HTMLButtonElement).ariaDisabled === 'true') {
       setContentToastOpen(true);
     } else if (questionList.length < 3) {
@@ -126,8 +127,8 @@ export default function QuestionCardList({
           <ExampleButton
             type="button"
             onClick={() => {
-              push('/guide');
               fa.logEvent('question_example_button_click');
+              push('/guide');
             }}
           >
             설문 예시 보기

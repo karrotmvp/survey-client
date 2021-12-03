@@ -72,11 +72,12 @@ export default function SurveyAggregationPage(): JSX.Element {
   `;
 
   const handleShareModalClick = () => {
+    fa.logEvent('aggregation_share_modal_button_click');
     setPopup(true);
   };
 
   const handleShareClick = () => {
-    fa.logEvent('complete_share_button_click');
+    fa.logEvent('aggregation_share_button_click');
     if (
       url.state === 'hasValue' &&
       url.contents &&
