@@ -111,17 +111,20 @@ export default function AnswerHome(): JSX.Element {
       getResponseHomeData();
     }
   }, [jwt]);
-  const IsCoverImgUrls = briefData
-    ? Boolean(briefData.bizProfile.coverImageUrls)
-    : false;
+  const IsCoverImgUrls =
+    briefData && briefData.bizProfile
+      ? Boolean(briefData.bizProfile.coverImageUrls)
+      : false;
   return (
     <>
-      <NavBar
-        type="CLOSE"
-        transparent
-        title={IsCoverImgUrls ? '' : `${briefData?.bizProfile.name} 설문`}
-        white={IsCoverImgUrls}
-      />
+      {briefData && (
+        <NavBar
+          type="CLOSE"
+          transparent
+          title={IsCoverImgUrls ? '' : `${briefData.bizProfile.name} 설문`}
+          white={IsCoverImgUrls}
+        />
+      )}
       <StyledHomePage>
         <div className="response_home_center">
           {briefData ? (

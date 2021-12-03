@@ -3,17 +3,19 @@ import { useState } from 'react';
 import styled from '@emotion/styled';
 import { useNavigator } from '@karrotframe/navigator';
 import { FieldError, useForm } from 'react-hook-form';
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 
 import NavBar from '@component/common/navbar/NavBar';
 import QuestionCardList from '@component/question/QuestionCardList';
 import { ReactComponent as ExpandIcon } from '@config/icon/expand_more.svg';
 import { useAnalytics } from '@src/analytics/faContext';
+import { surveyIdAtom } from '@src/api/authorization';
 import { choiceType, questionTarget } from '@src/atom/questionAtom';
 import Modal from '@src/component/common/modal/Modal';
 import TargetList from '@src/component/common/target/TargetList';
 import { targetList } from '@src/config/const/const';
-import useSubmit from '@src/hook/useSubmit';
+// import useSubmit from '@src/hook/useSubmit';
+import useSubmitReturn from '@src/hook/useSubmitReturn';
 
 const CompleteButton = styled.button`
   background-color: transparent;
@@ -76,11 +78,12 @@ export default function QuestionPage(): JSX.Element {
   const targetIndex = useRecoilValue(questionTarget);
   const [isPopup, setPopup] = useState(false);
   const [isTargetPopup, setTargetPopup] = useState(false);
+  const setSurveyId = useSetRecoilState(surveyIdAtom);
   const [submitData, setSubmitData] = useState<
     (submitType & { title: string; target: number }) | undefined
   >(undefined);
   const { replace } = useNavigator();
-  const submit = useSubmit('/surveys');
+  const submit = useSubmitReturn<number>('/surveys');
   const fa = useAnalytics();
   const {
     handleSubmit,
@@ -208,10 +211,13 @@ export default function QuestionPage(): JSX.Element {
               수정
             </CancelButton>
             <ConfirmButton
-              onClick={() => {
+              onClick={async () => {
                 fa.logEvent('question_modal_complete_button_click');
-                submit(submitData);
-                replace('/survey/create/complete');
+                const result = await submit(submitData);
+                if (result) {
+                  setSurveyId(`${result}`);
+                  replace('/survey/create/complete');
+                }
               }}
             >
               확인
