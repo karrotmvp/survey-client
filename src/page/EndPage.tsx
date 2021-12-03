@@ -1,38 +1,46 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import styled from '@emotion/styled';
 import { useNavigator } from '@karrotframe/navigator';
 import { useHistory } from 'react-router-dom';
+import { useRecoilValueLoadable } from 'recoil';
 
+import { ReactComponent as ShareIcon } from '@config/icon/share.svg';
 import { useAnalytics } from '@src/analytics/faContext';
+import { getBizprofile, getBriefUrls } from '@src/api/authorization';
 import mini from '@src/api/mini';
 import NavBar from '@src/component/common/navbar/NavBar';
+
+// import useLoadableGet from '@src/hook/useLoadableGet';
 
 const StyledEndPage = styled.section`
   background-color: #ffff;
   width: 100%;
   height: 100vh;
-  padding: 8rem 1.6rem 1.6rem 1.6rem;
+  padding: 13.6rem 1.6rem 1.6rem 1.6rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 `;
 
 const EndTitle = styled.h1`
-  font-size: 2.4rem;
-  font-weight: 700;
-  font-family: ${({ theme }) => theme.fontFamily.title};
+  font-size: 2rem;
+  font-weight: ${({ theme }) => theme.fontWeight.bold};
   color: ${({ theme }) => theme.color.primaryOrange};
-
+  text-align: center;
   line-height: 140%;
-  margin-bottom: 1.6rem;
+  margin-bottom: 2rem;
+  margin-top: 3.2rem;
 `;
 
 const EndText = styled.span`
-  color: #141414;
-  font-weight: 400;
+  color: #707070;
+  font-weight: ${({ theme }) => theme.fontWeight.regular};
   line-height: 160%;
-  font-size: 1.6rem;
+  font-size: 1.5rem;
+  display: flex;
+  justify-content: center;
+  text-align: center;
 `;
 
 const EndButton = styled.button`
@@ -60,13 +68,63 @@ const FeedBackButton = styled.button`
   border-radius: 8px;
 `;
 
+const ShareButton = styled.button`
+  color: ${({ theme }) => theme.color.primaryOrange};
+  font-size: 1.6rem;
+  font-weight: ${({ theme }) => theme.fontWeight.regular};
+  padding: 0.4rem;
+  background-color: transparent;
+  display: flex;
+  align-items: center;
+  svg {
+    margin-right: 0.4rem;
+  }
+`;
+
+const CompleteImg = styled.img`
+  width: 100%;
+`;
+
+const TooltipBackground = styled.div`
+  background-color: transparent;
+  height: 100vh;
+  width: 100%;
+  position: fixed;
+  z-index: 9;
+`;
+
+const Tools = styled.img`
+  position: absolute;
+  width: 80%;
+  top: 5.6rem;
+  left: 5rem;
+`;
+
 export default function EndPage(): JSX.Element {
   const { replace } = useNavigator();
   const fa = useAnalytics();
   const history = useHistory();
+  const [tooltip, setTooltip] = useState(true);
+  const url = useRecoilValueLoadable(getBriefUrls);
+  const userData = useRecoilValueLoadable(getBizprofile);
   const goFeedBack = () => {
     fa.logEvent('complete_gofeedback_button_click');
     replace('/feedback');
+  };
+
+  const handleShareClick = () => {
+    fa.logEvent('complete_share_button_click');
+    if (
+      url.state === 'hasValue' &&
+      url.contents &&
+      userData.state === 'hasValue' &&
+      userData.contents !== ''
+    ) {
+      mini.share({
+        url: url.contents.shortUrl,
+        text: `${userData.contents.name} 사장님이 설문을 만드셨어요! 여러분의 의견이 매장 개선에 큰 도움이 되요 😊`,
+      });
+    }
   };
 
   const closeMini = () => {
@@ -82,24 +140,41 @@ export default function EndPage(): JSX.Element {
     },
     [history],
   );
-  return (
-    <StyledEndPage>
-      <section>
-        <NavBar type="CLOSE" />
-        <EndTitle>설문 제작 완료 🎉</EndTitle>
 
-        <EndText>
-          만드신 설문은 고객님께 실제 발행될 예정이에요!
-          <br />
-          답변이 충분히 모이면 알림을 보내드릴게요.🔥
-        </EndText>
-      </section>
-      <section>
-        <EndButton onClick={closeMini}>좋아요</EndButton>
-        <FeedBackButton onClick={goFeedBack}>
-          무따 서비스 피드백 남기기
-        </FeedBackButton>
-      </section>
-    </StyledEndPage>
+  return (
+    <>
+      {tooltip && (
+        <TooltipBackground onClick={() => setTooltip(false)}>
+          <Tools src="./../../img/share_alert.png" />
+        </TooltipBackground>
+      )}
+      <StyledEndPage>
+        <section>
+          <NavBar
+            type="CLOSE"
+            appendRight={
+              <ShareButton onClick={handleShareClick}>
+                <ShareIcon />
+                공유하기
+              </ShareButton>
+            }
+          />
+          <CompleteImg src="./../../img/surveyComplete.png" />
+          <EndTitle>설문 제작 완료 🎉</EndTitle>
+
+          <EndText>
+            만드신 설문은 고객님께 발행될 예정이에요!
+            <br />
+            답변이 충분히 모이면 무따가 알림을 보내드릴게요.
+          </EndText>
+        </section>
+        <section>
+          <EndButton onClick={closeMini}>좋아요</EndButton>
+          <FeedBackButton onClick={goFeedBack}>
+            무따 서비스 피드백 남기기
+          </FeedBackButton>
+        </section>
+      </StyledEndPage>
+    </>
   );
 }

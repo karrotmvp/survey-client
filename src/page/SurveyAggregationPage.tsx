@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import styled from '@emotion/styled';
 import { useParams } from '@karrotframe/navigator';
@@ -8,10 +8,18 @@ import {
   useSetRecoilState,
 } from 'recoil';
 
+import { ReactComponent as TrailingIcon } from '@config/icon/trailing.svg';
 import { useAnalytics } from '@src/analytics/faContext';
-import { getBizSurveyList, surveyIdAtom } from '@src/api/authorization';
+import {
+  getBizprofile,
+  getBizSurveyList,
+  getBriefUrls,
+  surveyIdAtom,
+} from '@src/api/authorization';
+import mini from '@src/api/mini';
 import { TitleViewAtom } from '@src/atom/responseAtom';
 import MemoAggregationTabs from '@src/component/aggregation/AggregationTabs';
+import UpDownModal from '@src/component/common/modal/UpDownModal';
 import ScrollNavBar from '@src/component/common/navbar/ScrollNavBar';
 import { targetList } from '@src/config/const/const';
 
@@ -22,9 +30,11 @@ export default function SurveyAggregationPage(): JSX.Element {
   const fa = useAnalytics();
   const setSurveyId = useSetRecoilState(surveyIdAtom);
   const getSurveyList = useRecoilValueLoadable(getBizSurveyList);
+  const url = useRecoilValueLoadable(getBriefUrls);
+  const userData = useRecoilValueLoadable(getBizprofile);
   const ref = useRef<HTMLDivElement>(null);
   const [isTitleView, setTitleView] = useRecoilState(TitleViewAtom);
-
+  const [isPopupOpen, setPopup] = useState(false);
   setSurveyId(surveyId);
 
   const options = {
@@ -51,6 +61,34 @@ export default function SurveyAggregationPage(): JSX.Element {
     fa.logEvent('surveyAggregation_show');
   }, []);
 
+  const ShareButton = styled.button`
+    width: 100%;
+    color: ${({ theme }) => theme.color.primaryOrange};
+    font-weight: ${({ theme }) => theme.fontWeight.medium};
+    display: flex;
+    justify-content: center;
+    font-size: 1.6rem;
+    padding: 1.6rem 0;
+  `;
+
+  const handleShareModalClick = () => {
+    setPopup(true);
+  };
+
+  const handleShareClick = () => {
+    fa.logEvent('complete_share_button_click');
+    if (
+      url.state === 'hasValue' &&
+      url.contents &&
+      userData.state === 'hasValue' &&
+      userData.contents !== ''
+    ) {
+      mini.share({
+        url: url.contents.shortUrl,
+        text: `${userData.contents.name} 사장님이 설문을 만드셨어요! 여러분의 의견이 매장 개선에 큰 도움이 되요 😊`,
+      });
+    }
+  };
   return (
     <>
       <ScrollNavBar
@@ -61,7 +99,13 @@ export default function SurveyAggregationPage(): JSX.Element {
             : undefined
         }
         titleAppear={!isTitleView}
+        appendRight={<TrailingIcon onClick={handleShareModalClick} />}
       />
+      {isPopupOpen && (
+        <UpDownModal setPopup={setPopup} rect>
+          <ShareButton onClick={handleShareClick}>설문 공유하기</ShareButton>
+        </UpDownModal>
+      )}
       <Section>
         <StyledSurveyTitleCard ref={ref}>
           <SurveyTitle>
