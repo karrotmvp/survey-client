@@ -9,18 +9,19 @@ import {
   authorizationBizSelector,
   bizCodeAtom,
   getBizprofile,
+  getSurveyList,
 } from '@api/authorization';
 import NavBar from '@component/common/navbar/NavBar';
 import { ReactComponent as ArrowRight } from '@config/icon/arrow_right.svg';
 import { ReactComponent as LogoIcon } from '@config/icon/mudda_orange.svg';
 import { ReactComponent as MuddaIcon } from '@config/icon/mudda_textLogo.svg';
+import { ReactComponent as PlusIcon } from '@config/icon/plus.svg';
 import { useAnalytics } from '@src/analytics/faContext';
 import mini from '@src/api/mini';
 import LoadingCard from '@src/component/common/card/LoadingCard';
 import SurveyCard from '@src/component/common/card/SurveyCard';
 import UpDownModal from '@src/component/common/modal/UpDownModal';
 import { useMiniBizAuth } from '@src/hook/useAuth';
-import useGet from '@src/hook/useGet';
 import useLogin from '@src/hook/useLogin';
 
 export type surveyItemType = {
@@ -42,16 +43,15 @@ export default function SurveyHome(): ReactElement {
   };
 
   const getBizId = useMiniBizAuth(process.env.REACT_APP_APP_ID || '', onClose);
-  const getList = useGet<surveyItemType[]>('/surveys');
-  const [surveyLists, setSurveyLists] = useState<surveyItemType[] | undefined>(
-    undefined,
-  );
+  const getList = useRecoilValueLoadable(getSurveyList);
   const userData = useRecoilValueLoadable(getBizprofile);
   const [isPopup, setPopup] = useState(false);
   const { push } = useNavigator();
 
   const handleNextClick = () => {
-    push('/survey/create/target');
+    fa.logEvent('surveyList_next_button_click');
+    setPopup(false);
+    push('/survey/create/question');
   };
 
   useEffect(() => {
@@ -70,15 +70,10 @@ export default function SurveyHome(): ReactElement {
     return () => clearTimeout(time);
   }, []);
 
-  useEffect(() => {
-    if (jwt.state === 'hasValue') {
-      (async function getSurveysListsData() {
-        const res = await getList();
-        setSurveyLists(res);
-      })();
-    }
-  }, [jwt]);
-
+  const handleCreateSurveyButtonClick = () => {
+    fa.logEvent('surveyList_create_survey_button_click');
+    setPopup(true);
+  };
   const SurveyCardLists = styled.ul`
     border-top: 0.8rem solid #f8f8f8;
     margin: 0;
@@ -130,15 +125,21 @@ export default function SurveyHome(): ReactElement {
 
         <ArrowRight />
       </FeedbackBanner>
-      {surveyLists ? (
+      {jwt.state === 'hasValue' &&
+      getList.state === 'hasValue' &&
+      getList.contents ? (
         <SurveyCardLists>
-          {surveyLists.map(data => (
+          {getList.contents.map(data => (
             <SurveyCard key={data.surveyId} {...data} />
           ))}
         </SurveyCardLists>
       ) : (
         <LoadingCard count={3} />
       )}
+      <CreateSurveyButton onClick={handleCreateSurveyButtonClick}>
+        <PlusIcon />
+        설문 만들기
+      </CreateSurveyButton>
       {isPopup && (
         <UpDownModal setPopup={setPopup}>
           <GuideModal>
@@ -188,6 +189,25 @@ const LogoWrapper = styled.div`
   width: 100%;
 `;
 
+const CreateSurveyButton = styled.button`
+  position: fixed;
+  font-size: 1.5rem;
+  font-weight: ${({ theme }) => theme.fontWeight.bold};
+  background-color: ${({ theme }) => theme.color.primaryOrange};
+  color: #fff;
+  bottom: 7.9rem;
+  right: 1.6rem;
+  padding: 1.2rem;
+  border-radius: 34px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.15);
+  svg {
+    margin-right: 0.4rem;
+  }
+`;
+
 const StyledSurveyHomePage = styled.section`
   background: linear-gradient(0deg, rgba(254, 222, 204, 0) 0%, #fedecc 100%);
   width: 100%;
@@ -196,7 +216,6 @@ const StyledSurveyHomePage = styled.section`
   justify-content: space-between;
   flex-direction: column;
   border-bottom: 1px solid #f4f4f4;
-
   .survey_home_title {
     font-size: 2rem;
     font-weight: ${({ theme }) => theme.fontWeight.medium};

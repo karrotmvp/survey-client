@@ -119,6 +119,7 @@ export default function AggregationIndividual({
                   <IndividualList
                     aria-label={`${idx}`}
                     onClick={handleListClick}
+                    key={idx}
                   >
                     {name}
                     {nameIdx === idx && <IndividualCheck />}
