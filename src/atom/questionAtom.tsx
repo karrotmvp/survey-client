@@ -102,7 +102,13 @@ const questionSelector = selector({
   },
 });
 
+const questionTitleModalOpen = atom({
+  key: 'questionTitleModalOpen',
+  default: false,
+});
+
 export {
+  questionTitleModalOpen,
   questionSelector,
   questionAtom,
   questionFeedBack,

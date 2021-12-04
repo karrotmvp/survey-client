@@ -13,6 +13,7 @@ type NavBarType = {
   shadow?: boolean;
   transparent?: boolean;
   white?: boolean;
+  disappear?: boolean;
   appendCenter?: React.ReactNode;
 };
 
@@ -20,8 +21,10 @@ const NavBarStyle = styled.div<{
   shadow?: boolean;
   transparent?: boolean;
   reverse?: boolean;
+  disappear?: boolean;
 }>`
   display: flex;
+  display: ${({ disappear }) => (disappear ? 'none' : 'flex')};
   width: 100%;
   height: 5.6rem;
   align-items: center;
@@ -69,6 +72,7 @@ export default function NavBar({
   transparent,
   shadow,
   white,
+  disappear,
 }: NavBarType): JSX.Element {
   const { pop } = useNavigator();
 
@@ -81,7 +85,7 @@ export default function NavBar({
   };
 
   return (
-    <NavBarStyle {...{ shadow, transparent, reverse }}>
+    <NavBarStyle {...{ shadow, transparent, reverse, disappear }}>
       <NavItem className="nav">
         {type === 'CLOSE' ? (
           <StyledClearIcon onClick={close} white={white} />

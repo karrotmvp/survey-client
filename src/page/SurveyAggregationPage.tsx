@@ -157,4 +157,6 @@ const StyledSurveyTitleCard = styled.div`
 `;
 const Section = styled.section`
   position: relative;
+  height: 100vh;
+  overflow: scroll;
 `;
