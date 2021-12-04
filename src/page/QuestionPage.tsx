@@ -10,7 +10,11 @@ import QuestionCardList from '@component/question/QuestionCardList';
 // import { ReactComponent as ExpandIcon } from '@config/icon/expand_more.svg';
 import { useAnalytics } from '@src/analytics/faContext';
 import { surveyIdAtom, surveyListTrigger } from '@src/api/authorization';
-import { choiceType, questionTarget } from '@src/atom/questionAtom';
+import {
+  choiceType,
+  questionTarget,
+  questionTitleModalOpen,
+} from '@src/atom/questionAtom';
 import Modal from '@src/component/common/modal/Modal';
 // import TargetList from '@src/component/common/target/TargetList';
 // import { targetList } from '@src/config/const/const';
@@ -110,7 +114,7 @@ export default function QuestionPage(): JSX.Element {
   //   }
   // `;
   const questionList = watch('questions');
-
+  const isTitleModalOpen = useRecoilValue(questionTitleModalOpen);
   const onSubmit = ({ title, questions }: submitType) => {
     fa.logEvent('question_complete_button_active_click');
     setSubmitData({
@@ -148,6 +152,7 @@ export default function QuestionPage(): JSX.Element {
         type="BACK"
         title={`설문 만들기`}
         shadow
+        disappear={isTitleModalOpen}
         appendRight={
           <CompleteButton
             aria-disabled={!questionCheck(questionList)}
@@ -170,7 +175,7 @@ export default function QuestionPage(): JSX.Element {
         <ExpandIcon />
       </TargetModalButton> */}
 
-      <form id="submitForm" onSubmit={handleSubmit(onSubmit)}>
+      <StyledForm id="submitForm" onSubmit={handleSubmit(onSubmit)}>
         <QuestionCardList
           {...{
             register,
@@ -181,7 +186,7 @@ export default function QuestionPage(): JSX.Element {
             errors,
           }}
         />
-      </form>
+      </StyledForm>
 
       {/* {isTargetPopup && (
         <Modal setPopup={setTargetPopup} close>
@@ -229,6 +234,12 @@ export default function QuestionPage(): JSX.Element {
     </>
   );
 }
+
+const StyledForm = styled.form`
+  overflow: scroll;
+  position: relative;
+  height: 100vh;
+`;
 
 const ConfirmModal = styled.div`
   width: 100%;

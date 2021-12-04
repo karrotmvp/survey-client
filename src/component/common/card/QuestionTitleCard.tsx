@@ -6,8 +6,10 @@ import {
   UseFormRegister,
   UseFormWatch,
 } from 'react-hook-form';
+import { useRecoilState } from 'recoil';
 
 import { useAnalytics } from '@src/analytics/faContext';
+import { questionTitleModalOpen } from '@src/atom/questionAtom';
 import { questionCardType, submitType } from '@src/page/QuestionPage';
 
 import InputForm from '../input/InputForm';
@@ -29,7 +31,7 @@ export default function QuestionTitleCard({
   register,
   watch,
 }: QuestionTitleCardType): JSX.Element {
-  const [isPopupOpen, setPopup] = useState(false);
+  const [isPopupOpen, setPopup] = useRecoilState(questionTitleModalOpen);
   const [isPopupClose, setPopupClose] = useState(false);
   const [isOpen, setOpen] = useState(false);
   const title = watch('title');
@@ -110,6 +112,7 @@ export default function QuestionTitleCard({
               <InputForm
                 register={register}
                 path={`title`}
+                key={'title'}
                 placeholder={
                   '이웃들이 설문 목적을 알 수 있도록 설문 제목을 적어주세요'
                 }
