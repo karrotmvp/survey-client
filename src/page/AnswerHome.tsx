@@ -9,6 +9,7 @@ import {
 } from '@karrotframe/navigator';
 import Slider, { Settings } from 'react-slick';
 import { useRecoilState, useSetRecoilState } from 'recoil';
+import { v4 as uuidv4 } from 'uuid';
 
 import LoginButton from '@component/common/button/LogInButton';
 import AlertTostModal from '@component/common/modal/TostModal';
@@ -81,16 +82,18 @@ export default function AnswerHome(): JSX.Element {
     const { questions } = res;
     setQuestion(questions);
     setToastOpen(false);
+    fa.logEvent(`response_login_button_click`, { surveyId, ref });
+    fa.logEvent(`${surveyId}_response_login_button_click`, { ref });
     push(`/survey/${surveyId}/1`);
   }
 
   const click = async () => {
-    fa.logEvent(`response_login_button_click`, { surveyId, ref });
-    fa.logEvent(`${surveyId}_response_login_button_click`, { ref });
     const resCode = await auth();
     if (resCode) {
       setCode(resCode);
       if (code === resCode) {
+        getResponseHomeData();
+      } else if (jwt.state === 'hasValue') {
         getResponseHomeData();
       }
     }
@@ -106,15 +109,16 @@ export default function AnswerHome(): JSX.Element {
         }
       })();
     }
-    fa.logEvent(`response_onboard_show`, { surveyId, ref });
-    fa.logEvent(`${surveyId}_response_onboard_show`, { ref });
   }, [briefData]);
 
   useEffect(() => {
-    if (jwt.state === 'hasValue') {
-      getResponseHomeData();
-    }
-  }, [jwt]);
+    fa.logEvent(`response_onboard_show`, { surveyId, ref });
+    fa.logEvent(`${surveyId}_response_onboard_show`, { ref });
+  }, [window.location]);
+
+  useEffect(() => {
+    fa.setUserId(uuidv4());
+  }, []);
   const IsCoverImgUrls =
     briefData && briefData.bizProfile
       ? Boolean(briefData.bizProfile.coverImageUrls)
