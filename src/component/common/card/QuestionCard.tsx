@@ -1,3 +1,5 @@
+import { ChangeEvent, FocusEvent } from 'react';
+
 import styled from '@emotion/styled';
 import {
   Control,
@@ -6,9 +8,11 @@ import {
   UseFormUnregister,
   UseFormWatch,
 } from 'react-hook-form';
+import { useSetRecoilState } from 'recoil';
 
 import { contents } from '@config/const/const';
 import { ReactComponent as WarningIcon } from '@config/icon/warning.svg';
+import { focusAtom } from '@src/atom/questionAtom';
 import ChoiceInputFormList from '@src/component/questionDetail/ChoiceInputFormList';
 import QuestionHeaderForm from '@src/component/questionDetail/QuestionHeaderForm';
 import { errorsType, submitType } from '@src/page/QuestionPage';
@@ -78,6 +82,15 @@ export default function QuestionCard({
   errors,
 }: QuestionCardType): JSX.Element {
   const questionType = watch(`questions.${questionIndex}.questionType`);
+  const setFocus = useSetRecoilState(focusAtom);
+
+  const handleFocus = (e: FocusEvent<HTMLTextAreaElement>) => {
+    setFocus(true);
+  };
+
+  const handleBlur = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    setFocus(false);
+  };
 
   return (
     <>
@@ -100,6 +113,8 @@ export default function QuestionCard({
           row={1}
           backgroundColor={'#F4F5F6'}
           config={{ required: true }}
+          Blur={handleBlur}
+          handleFocus={handleFocus}
           warning={Boolean(errors.questions?.[questionIndex]?.text)}
         />
         {errors.questions?.[questionIndex]?.text && (

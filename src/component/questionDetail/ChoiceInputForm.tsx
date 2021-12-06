@@ -1,13 +1,13 @@
-import { FormEvent, forwardRef, useState } from 'react';
+import { FormEvent, forwardRef } from 'react';
 
 import styled from '@emotion/styled';
 import { UseFormRegister } from 'react-hook-form';
-import { useSetRecoilState } from 'recoil';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 
 import { ReactComponent as ChoiceCircleIcon } from '@config/icon/choiceCircle.svg';
 import { ReactComponent as DeleteIcon } from '@config/icon/delete.svg';
 import { ReactComponent as WarningIcon } from '@config/icon/warning.svg';
-import { questionValidationAtom } from '@src/atom/questionAtom';
+import { focusAtom, questionValidationAtom } from '@src/atom/questionAtom';
 import { submitType } from '@src/page/QuestionPage';
 
 type questionChoiceType = {
@@ -22,7 +22,7 @@ type questionChoiceType = {
 
 const ChoiceInputForm = forwardRef<HTMLTextAreaElement, questionChoiceType>(
   ({ index, onInput, remove, register, warning, choiceRef, questionIndex }) => {
-    const [isFocus, setFocus] = useState(false);
+    const [isFocus, setFocus] = useRecoilState(focusAtom);
     const { ref, ...rest } = register(
       `questions.${questionIndex}.choices.${index}.value`,
       { required: true },
@@ -32,6 +32,7 @@ const ChoiceInputForm = forwardRef<HTMLTextAreaElement, questionChoiceType>(
     const onDelete = () => {
       remove(index);
     };
+
     return (
       <StyledQuestionChoice
         data-list={index}
