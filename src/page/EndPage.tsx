@@ -14,7 +14,7 @@ import NavBar from '@src/component/common/navbar/NavBar';
 // import useLoadableGet from '@src/hook/useLoadableGet';
 
 const StyledEndPage = styled.section`
-  background-color: #ffff;
+  background-color: #f2f2f2;
   width: 100%;
   height: 100vh;
   padding: 7.7rem 1.6rem 1.6rem 1.6rem;
@@ -30,7 +30,7 @@ const EndTitle = styled.h1`
   text-align: center;
   line-height: 140%;
   margin-bottom: 2rem;
-  margin-top: 3.2rem;
+  margin-top: 5.6rem;
 `;
 
 const EndText = styled.span`
@@ -52,7 +52,7 @@ const EndButton = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 15px 0;
+  padding: 16px 0;
   background-color: ${({ theme }) => theme.color.primaryOrange};
   color: #fff;
   border-radius: 8px;
@@ -64,7 +64,7 @@ const EndButton = styled.button`
 const FeedBackButton = styled.button`
   width: 100%;
   padding: 1.6rem;
-  font-size: 1.6rem;
+  font-size: 1.4rem;
   line-height: 120%;
   text-align: center;
   background-color: transparent;
@@ -135,14 +135,13 @@ export default function EndPage(): JSX.Element {
     <>
       <StyledEndPage>
         <section>
-          <NavBar type="BACK" />
+          <NavBar type="BACK" transparent />
           <CompleteImg src="./../../img/surveyComplete.png" />
           <EndTitle>설문 제작 완료 🎉</EndTitle>
 
           <EndText>
-            만드신 설문은 고객님께 발행될 예정이에요!
-            <br />
-            답변이 충분히 모이면 무따가 알림을 보내드릴게요.
+            설문 링크를 공유하여 많은 분들에게 <br />
+            답변을 받아보세요!
           </EndText>
         </section>
         <section>
