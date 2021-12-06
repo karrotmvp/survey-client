@@ -184,7 +184,6 @@ const QuestionBottomBar = styled.div<{ isFocus: boolean }>`
   animation: ${({ isFocus }) =>
     isFocus ? `down 0.1s ease-in` : `up 0.4s ease-out`};
   animation-fill-mode: ${({ isFocus }) => (isFocus ? `forwards` : `backwards`)};
-  /* animation-delay: 1s; */
   -webkit-transform: translate3d(0, 0, 0);
   span {
     font-size: 1.3rem;

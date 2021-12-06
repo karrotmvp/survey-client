@@ -153,7 +153,7 @@ export default function SurveyHome(): ReactElement {
               또는 <b>SNS에 공유</b>해서 더 많은 분의 의견을 <br />
               들어볼 수 있어요.
             </h3>
-            <GuideModalImg imgUrl={'./../../img/guideModalImg2.png'} />
+            <GuideModalImg2 imgUrl={'./../../img/guideModalImg2.png'} />
           </GuideModal>
           <NextButton onClick={handleNextClick}>다음</NextButton>
         </UpDownModal>
@@ -230,13 +230,13 @@ const GuideModal = styled.div`
   .guideModal_title {
     font-size: 2.2rem;
     line-height: 140%;
-    font-weight: ${({ theme }) => theme.fontWeight.medium};
+    font-weight: ${({ theme }) => theme.fontWeight.bold};
     color: ${({ theme }) => theme.color.neutralBlack.main};
     margin-bottom: 1.6rem;
   }
 
   .guideModal_subtitle {
-    font-size: 1.6rem;
+    font-size: 1.5rem;
     line-height: 140%;
     font-weight: ${({ theme }) => theme.fontWeight.regular};
     color: #4b4b4b;
@@ -246,10 +246,22 @@ const GuideModal = styled.div`
 const GuideModalImg = styled.div<{ imgUrl: string }>`
   width: 100%;
   height: 0;
-  padding-top: calc(152 / 324 * 100%);
+  padding-top: calc(152 / 328 * 100%);
   background: url(${({ imgUrl }) => imgUrl}) center center / cover no-repeat;
   position: relative;
-  margin: 1.2rem 0;
+  margin-top: 1.6rem;
+  margin-bottom: 2.4rem;
+  border-radius: 4px;
+`;
+
+const GuideModalImg2 = styled.div<{ imgUrl: string }>`
+  width: 100%;
+  height: 0;
+  padding-top: calc(142 / 328 * 100%);
+  background: url(${({ imgUrl }) => imgUrl}) center center / cover no-repeat;
+  position: relative;
+  margin-top: 1.6rem;
+  margin-bottom: 2.9rem;
   border-radius: 4px;
 `;
 
