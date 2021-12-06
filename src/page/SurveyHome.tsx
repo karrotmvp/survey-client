@@ -62,12 +62,12 @@ export default function SurveyHome(): ReactElement {
 
   useEffect(() => {
     fa.logEvent('surveyList_onbard_show');
-    const time = setTimeout(async () => {
+    // eslint-disable-next-line no-unused-expressions
+    async () => {
       const id = await getBizId();
       setCode(id);
       fa.setUserId(id);
-    }, 300);
-    return () => clearTimeout(time);
+    };
   }, []);
 
   const handleCreateSurveyButtonClick = () => {
