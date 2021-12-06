@@ -122,8 +122,8 @@ export default function QuestionTitleCard({
                 config={{ required: true, maxLength: 30 }}
               />
               <h3 className="example_title_name">예시</h3>
-              {example.map(text => (
-                <ExampleText {...text} />
+              {example.map((text, idx) => (
+                <ExampleText key={idx} {...text} />
               ))}
             </section>
             <section className="title_modal_section_button">
