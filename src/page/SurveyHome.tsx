@@ -62,11 +62,12 @@ export default function SurveyHome(): ReactElement {
   }, [close, code]);
 
   useEffect(() => {
-    (async () => {
+    const login = setTimeout(async () => {
       const id = await getBizId();
       setCode(id);
       fa.setUserId(id);
-    })();
+    }, 500);
+    return () => clearTimeout(login);
   }, []);
 
   const handleCreateSurveyButtonClick = () => {
