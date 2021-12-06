@@ -13,7 +13,6 @@ const useMiniAuth = (
   const getCodeAsync = useCallback(() => {
     const urlSearchParams = new URLSearchParams(location.search);
     // eslint-disable-next-line no-alert
-    alert(urlSearchParams.get('code'));
     if (urlSearchParams.has('code')) {
       if (onClose) {
         onClose();
