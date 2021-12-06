@@ -1,18 +1,14 @@
 /* eslint-disable no-console */
 import { useCallback } from 'react';
 
-import { useLocation } from 'react-router-dom';
-
 import mini from '@api/mini';
 
 const useMiniAuth = (
   appId: string,
   onClose?: () => void,
 ): (() => Promise<string | undefined>) => {
-  const location = useLocation();
-
   const getCodeAsync = useCallback(() => {
-    const urlSearchParams = new URLSearchParams(location.search);
+    const urlSearchParams = new URLSearchParams(window.location.search);
     const isPreload = urlSearchParams.get('preload');
 
     if (urlSearchParams.has('code') || isPreload === 'true') {
@@ -33,12 +29,11 @@ const useMiniBizAuth = (
   appId: string,
   onClose?: () => void,
 ): (() => Promise<string>) => {
-  const location = useLocation();
   const getCodeAsync = useCallback(() => {
-    const urlSearchParams = new URLSearchParams(location.search);
+    const urlSearchParams = new URLSearchParams(window.location.search);
     const isPreload = urlSearchParams.get('preload');
-    console.log(isPreload, urlSearchParams.has('code'), location);
-    if (isPreload === 'true') {
+
+    if (isPreload) {
       console.log(isPreload, urlSearchParams.has('code'), 'in');
       return Promise.resolve<string>('');
     }
