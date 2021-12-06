@@ -10,11 +10,13 @@ import {
   UseFormUnregister,
   UseFormWatch,
 } from 'react-hook-form';
+import { useRecoilValue } from 'recoil';
 
 import QuestionCard from '@component/common/card/QuestionCard';
 import AlertToastModal from '@component/common/modal/TostModal';
 import { ReactComponent as PlusIcon } from '@config/icon/plus.svg';
 import { useAnalytics } from '@src/analytics/faContext';
+import { focusAtom } from '@src/atom/questionAtom';
 import { errorsType, questionCheck, submitType } from '@src/page/QuestionPage';
 
 import QuestionTitleCard from '../common/card/QuestionTitleCard';
@@ -46,6 +48,7 @@ export default function QuestionCardList({
   const questionList = watch('questions');
   const fa = useAnalytics();
   const { push } = useNavigator();
+  const isFocus = useRecoilValue(focusAtom);
   const handleAddQuestionButton = (e: MouseEvent) => {
     fa.logEvent('question_add_button_click');
     if ((e.currentTarget as HTMLButtonElement).ariaDisabled === 'true') {
@@ -122,7 +125,7 @@ export default function QuestionCardList({
       </QuestionButtons>
       )
       {fields.length > 0 && (
-        <QuestionBottomBar>
+        <QuestionBottomBar isFocus={isFocus}>
           <span>설문 예시가 떠오르지 않나요?</span>
           <ExampleButton
             type="button"
@@ -148,7 +151,27 @@ const ExampleButton = styled.button`
   font-weight: ${({ theme }) => theme.fontWeight.medium};
 `;
 
-const QuestionBottomBar = styled.div`
+const QuestionBottomBar = styled.div<{ isFocus: boolean }>`
+  @keyframes up {
+    from {
+      transform: translateY(+100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+  @keyframes down {
+    from {
+      transform: translateY(0);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(+100%);
+      opacity: 0;
+    }
+  }
   width: 100%;
   padding: 0.9rem 1.6rem;
   height: 4.7rem;
@@ -158,6 +181,10 @@ const QuestionBottomBar = styled.div`
   background-color: #fedecc;
   position: fixed;
   bottom: 0;
+  animation: ${({ isFocus }) =>
+    isFocus ? `down 0.1s ease-in` : `up 0.4s ease-out`};
+  animation-fill-mode: ${({ isFocus }) => (isFocus ? `forwards` : `backwards`)};
+  /* animation-delay: 1s; */
   -webkit-transform: translate3d(0, 0, 0);
   span {
     font-size: 1.3rem;

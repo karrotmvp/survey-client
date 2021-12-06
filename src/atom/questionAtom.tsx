@@ -107,7 +107,13 @@ const questionTitleModalOpen = atom({
   default: false,
 });
 
+const focusAtom = atom({
+  key: 'focusAtom',
+  default: false,
+});
+
 export {
+  focusAtom,
   questionTitleModalOpen,
   questionSelector,
   questionAtom,
