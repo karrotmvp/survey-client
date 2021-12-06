@@ -14,6 +14,7 @@ import mini from '@src/api/mini';
 import { responseUserAtom } from '@src/atom/responseAtom';
 import LoginButton from '@src/component/common/button/LogInButton';
 import NavBar from '@src/component/common/navbar/NavBar';
+import { useResponseShowEvent } from '@src/hook/useShowEvent';
 
 export default function AnswerComplete(): JSX.Element {
   const history = useHistory();
@@ -25,14 +26,7 @@ export default function AnswerComplete(): JSX.Element {
   const bizProfile = useRecoilValue(responseUserAtom);
   const query = useQueryParams<{ ref?: string }>();
   const ref = query.ref || 'app';
-
-  useEffect(() => {
-    fa.logEvent(`response_complete_page_show`, {
-      surveyId,
-      ref,
-    });
-    fa.logEvent(`${surveyId}_response_complete_page_show`, { ref });
-  }, []);
+  useResponseShowEvent(`response_complete_page_show`, surveyId, ref);
 
   useEffect(() => {
     const unblock = history.block((location, action) => {

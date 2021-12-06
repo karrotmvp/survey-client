@@ -81,10 +81,7 @@ export default function BizProfile({
   };
   const shortenRegin = region.split(' ');
   return (
-    <StyledBizProfile
-      onClick={handleClickProfile}
-      coverImageUrls={Boolean(coverImageUrls)}
-    >
+    <StyledBizProfile coverImageUrls={Boolean(coverImageUrls)}>
       <BizProfileImg src={imageUrl} onClick={handleClickProfile} />
       <div className="biz_profile_left_text">
         <BizProfileTitle>

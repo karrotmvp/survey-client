@@ -10,6 +10,7 @@ import { useAnalytics } from '@src/analytics/faContext';
 import { getBizprofile, getBriefUrls } from '@src/api/authorization';
 import mini from '@src/api/mini';
 import NavBar from '@src/component/common/navbar/NavBar';
+import { useShowEvent } from '@src/hook/useShowEvent';
 
 // import useLoadableGet from '@src/hook/useLoadableGet';
 
@@ -101,7 +102,7 @@ export default function EndPage(): JSX.Element {
     fa.logEvent('complete_gofeedback_button_click');
     replace('/feedback');
   };
-
+  useShowEvent('complete_survey_show');
   const handleShareClick = () => {
     fa.logEvent('complete_share_button_click');
     if (

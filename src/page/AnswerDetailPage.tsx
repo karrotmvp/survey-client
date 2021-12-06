@@ -1,5 +1,3 @@
-import { useEffect } from 'react';
-
 import styled from '@emotion/styled';
 import {
   useNavigator,
@@ -15,6 +13,7 @@ import { responseListAtom } from '@src/atom/responseAtom';
 import NavBar from '@src/component/common/navbar/NavBar';
 import QuestionDot from '@src/component/questionDetail/QuestionDot';
 import ResponseChoiceInput from '@src/component/response/ResponseChoiceInput';
+import { useResponseShowEvent } from '@src/hook/useShowEvent';
 
 export type InputType = {
   setResponse: (
@@ -41,7 +40,11 @@ export default function AnswerDetailPage(): JSX.Element {
   const { push } = useNavigator();
   const query = useQueryParams<{ ref?: string }>();
   const ref = query.ref || 'app';
-
+  useResponseShowEvent(
+    `response_question_${questionNumber}_show`,
+    surveyId,
+    ref,
+  );
   const setResponse = (
     responseInput: { choiceId: number } | { answer: string },
   ) => {
@@ -64,18 +67,6 @@ export default function AnswerDetailPage(): JSX.Element {
       push(`/survey/${surveyId}/${+questionNumber + 1}`);
     }
   };
-
-  useEffect(() => {
-    fa.logEvent(`response_question_${questionNumber}_show`, {
-      surveyId,
-      questionLength,
-      ref,
-    });
-    fa.logEvent(`${surveyId}_response_question_${questionNumber}_show`, {
-      questionLength,
-      ref,
-    });
-  }, []);
 
   return (
     <>

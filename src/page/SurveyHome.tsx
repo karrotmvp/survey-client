@@ -23,6 +23,7 @@ import SurveyCard from '@src/component/common/card/SurveyCard';
 import UpDownModal from '@src/component/common/modal/UpDownModal';
 import { useMiniBizAuth } from '@src/hook/useAuth';
 import useLogin from '@src/hook/useLogin';
+import { useShowEvent } from '@src/hook/useShowEvent';
 
 export type surveyItemType = {
   createdAt: string;
@@ -37,7 +38,7 @@ export default function SurveyHome(): ReactElement {
   const [code, setCode] = useRecoilState(bizCodeAtom);
   const [close, setClose] = useState(false);
   const fa = useAnalytics();
-
+  useShowEvent('surveyList_onbard_show');
   const onClose = () => {
     setClose(true);
   };
@@ -61,8 +62,6 @@ export default function SurveyHome(): ReactElement {
   }, [close, code]);
 
   useEffect(() => {
-    fa.logEvent('surveyList_onbard_show');
-    // eslint-disable-next-line no-unused-expressions
     (async () => {
       const id = await getBizId();
       setCode(id);

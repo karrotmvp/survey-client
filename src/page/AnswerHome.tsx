@@ -24,6 +24,7 @@ import BizProfile, {
 } from '@src/component/common/button/BizProfile';
 import useGet from '@src/hook/useGet';
 import useLogin from '@src/hook/useLogin';
+import { useResponseShowEvent } from '@src/hook/useShowEvent';
 
 // const questionCategories = [
 //   '의견을 알려주세요',
@@ -61,7 +62,6 @@ export default function AnswerHome(): JSX.Element {
   const jwt = useLogin(authorizationSelector);
   const [isToastOpen, setToastOpen] = useState(false);
   const [briefData, setBrief] = useState<surveyBriefType | null>(null);
-
   const [code, setCode] = useRecoilState(codeAtom);
   const setBizUser = useSetRecoilState(responseUserAtom);
   const setQuestion = useSetRecoilState(questionListAtom);
@@ -73,6 +73,8 @@ export default function AnswerHome(): JSX.Element {
     `/surveys/brief/${surveyId}`,
     true,
   );
+
+  useResponseShowEvent('response_onboard_show', surveyId, ref);
 
   const auth = useMiniAuth(process.env.REACT_APP_APP_ID || '');
 
@@ -110,11 +112,6 @@ export default function AnswerHome(): JSX.Element {
       })();
     }
   }, [briefData]);
-
-  useEffect(() => {
-    fa.logEvent(`response_onboard_show`, { surveyId, ref });
-    fa.logEvent(`${surveyId}_response_onboard_show`, { ref });
-  }, [window.location]);
 
   useEffect(() => {
     fa.setUserId(uuidv4());
