@@ -18,6 +18,7 @@ import {
 import Modal from '@src/component/common/modal/Modal';
 // import TargetList from '@src/component/common/target/TargetList';
 // import { targetList } from '@src/config/const/const';
+import { useShowEvent } from '@src/hook/useShowEvent';
 import useSubmitReturn from '@src/hook/useSubmitReturn';
 
 const CompleteButton = styled.button`
@@ -85,6 +86,7 @@ export default function QuestionPage(): JSX.Element {
   const [submitData, setSubmitData] = useState<
     (submitType & { title: string; target: number }) | undefined
   >(undefined);
+
   const { replace } = useNavigator();
   const submit = useSubmitReturn<number>('/surveys');
   const [trigger, setTrigger] = useRecoilState(surveyListTrigger);
@@ -104,6 +106,7 @@ export default function QuestionPage(): JSX.Element {
       questions: [],
     },
   });
+  useShowEvent('survey_create_question_show');
   // const TargetChangeModal = styled.div`
   //   padding: 2rem 1.6rem 2.8rem 1.6rem;
   //   .target_change_title {
@@ -115,6 +118,7 @@ export default function QuestionPage(): JSX.Element {
   // `;
   const questionList = watch('questions');
   const isTitleModalOpen = useRecoilValue(questionTitleModalOpen);
+
   const onSubmit = ({ title, questions }: submitType) => {
     fa.logEvent('question_complete_button_active_click');
     setSubmitData({
