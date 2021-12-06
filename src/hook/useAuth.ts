@@ -9,9 +9,9 @@ const useMiniAuth = (
 ): (() => Promise<string | undefined>) => {
   const getCodeAsync = useCallback(() => {
     const urlSearchParams = new URLSearchParams(window.location.search);
-    const isPreload = urlSearchParams.get('preload');
-
-    if (urlSearchParams.has('code') || isPreload === 'true') {
+    // eslint-disable-next-line no-alert
+    alert(urlSearchParams.get('code'));
+    if (urlSearchParams.has('code')) {
       if (onClose) {
         onClose();
       }
