@@ -63,30 +63,18 @@ export default function SurveyHome(): ReactElement {
   useEffect(() => {
     fa.logEvent('surveyList_onbard_show');
     // eslint-disable-next-line no-unused-expressions
-    async () => {
+    (async () => {
       const id = await getBizId();
       setCode(id);
       fa.setUserId(id);
-    };
+    })();
   }, []);
 
   const handleCreateSurveyButtonClick = () => {
     fa.logEvent('surveyList_create_survey_button_click');
     setPopup(true);
   };
-  const SurveyCardLists = styled.ul`
-    border-top: 0.8rem solid #f8f8f8;
-    margin: 0;
-    padding: 0;
-    overflow-y: scroll;
-    height: 66%;
-  `;
 
-  const BizAvaterImg = styled.img`
-    width: 2.8rem;
-    height: 2.8rem;
-    border-radius: 50%;
-  `;
   return (
     <div style={{ height: '100vh' }}>
       <StyledSurveyHomePage>
@@ -161,6 +149,20 @@ export default function SurveyHome(): ReactElement {
     </div>
   );
 }
+
+const SurveyCardLists = styled.ul`
+  border-top: 0.8rem solid #f8f8f8;
+  margin: 0;
+  padding: 0;
+  overflow-y: scroll;
+  height: 66%;
+`;
+
+const BizAvaterImg = styled.img`
+  width: 2.8rem;
+  height: 2.8rem;
+  border-radius: 50%;
+`;
 
 const FeedbackBanner = styled.button`
   background-color: #fff2eb;
