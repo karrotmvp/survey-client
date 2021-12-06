@@ -255,7 +255,7 @@ const CoverSlider = styled(Slider)`
   }
   .slick-dots {
     top: 1.2rem;
-    bottom: none;
+    bottom: auto;
     li.slick-active button:before {
       color: white !important;
     }

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 
 import styled from '@emotion/styled';
 import { useParams } from '@karrotframe/navigator';
@@ -8,7 +8,7 @@ import {
   useSetRecoilState,
 } from 'recoil';
 
-import { ReactComponent as TrailingIcon } from '@config/icon/trailing.svg';
+import { ReactComponent as ShareIcon } from '@config/icon/share_black.svg';
 import { useAnalytics } from '@src/analytics/faContext';
 import {
   getBizprofile,
@@ -19,7 +19,6 @@ import {
 import mini from '@src/api/mini';
 import { TitleViewAtom } from '@src/atom/responseAtom';
 import MemoAggregationTabs from '@src/component/aggregation/AggregationTabs';
-import UpDownModal from '@src/component/common/modal/UpDownModal';
 import ScrollNavBar from '@src/component/common/navbar/ScrollNavBar';
 import { targetList } from '@src/config/const/const';
 
@@ -34,7 +33,7 @@ export default function SurveyAggregationPage(): JSX.Element {
   const userData = useRecoilValueLoadable(getBizprofile);
   const ref = useRef<HTMLDivElement>(null);
   const [isTitleView, setTitleView] = useRecoilState(TitleViewAtom);
-  const [isPopupOpen, setPopup] = useState(false);
+
   setSurveyId(surveyId);
 
   const options = {
@@ -61,21 +60,6 @@ export default function SurveyAggregationPage(): JSX.Element {
     fa.logEvent('surveyAggregation_show');
   }, []);
 
-  const ShareButton = styled.button`
-    width: 100%;
-    color: ${({ theme }) => theme.color.primaryOrange};
-    font-weight: ${({ theme }) => theme.fontWeight.medium};
-    display: flex;
-    justify-content: center;
-    font-size: 1.6rem;
-    padding: 1.6rem 0;
-  `;
-
-  const handleShareModalClick = () => {
-    fa.logEvent('aggregation_share_modal_button_click');
-    setPopup(true);
-  };
-
   const handleShareClick = () => {
     fa.logEvent('aggregation_share_button_click');
     if (
@@ -90,6 +74,7 @@ export default function SurveyAggregationPage(): JSX.Element {
       });
     }
   };
+
   return (
     <>
       <ScrollNavBar
@@ -100,13 +85,9 @@ export default function SurveyAggregationPage(): JSX.Element {
             : undefined
         }
         titleAppear={!isTitleView}
-        appendRight={<TrailingIcon onClick={handleShareModalClick} />}
+        appendRight={<ShareIcon onClick={handleShareClick} />}
       />
-      {isPopupOpen && (
-        <UpDownModal setPopup={setPopup} rect>
-          <ShareButton onClick={handleShareClick}>설문 공유하기</ShareButton>
-        </UpDownModal>
-      )}
+
       <Section>
         <StyledSurveyTitleCard ref={ref}>
           <SurveyTitle>
@@ -123,7 +104,7 @@ export default function SurveyAggregationPage(): JSX.Element {
               }`}
           </span>
         </StyledSurveyTitleCard>
-        <MemoAggregationTabs />
+        <MemoAggregationTabs handleShareClick={handleShareClick} />
       </Section>
     </>
   );
