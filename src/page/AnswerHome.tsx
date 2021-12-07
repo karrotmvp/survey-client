@@ -115,6 +115,7 @@ export default function AnswerHome(): JSX.Element {
 
   useEffect(() => {
     fa.setUserId(uuidv4());
+    fa.setUserProperties({ ref, surveyId });
   }, []);
   const IsCoverImgUrls =
     briefData && briefData.bizProfile

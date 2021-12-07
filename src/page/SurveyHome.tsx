@@ -43,7 +43,7 @@ export default function SurveyHome(): ReactElement {
   const urlSearchParams = new URLSearchParams(location.search);
   const isCode = urlSearchParams.has('code');
 
-  useShowEvent('surveyList_onbard_show', isCode);
+  useShowEvent('surveyList_onbard_show');
 
   const onClose = () => {
     setClose(true);
@@ -58,7 +58,7 @@ export default function SurveyHome(): ReactElement {
   const { push } = useNavigator();
 
   const handleNextClick = () => {
-    fa.logEvent('surveyList_next_button_click', { isCode });
+    fa.logEvent('surveyList_next_button_click');
     setPopup(false);
     push('/survey/create/question');
   };
@@ -78,6 +78,7 @@ export default function SurveyHome(): ReactElement {
       const id = await getBizId();
       setCode(id);
       fa.setUserId(id);
+      fa.setUserProperties({ isCode });
       if (isCode) {
         setIntroPopup(true);
       }
@@ -91,7 +92,7 @@ export default function SurveyHome(): ReactElement {
   }, [isClosePopup, isIntroPopup]);
 
   const handleCreateSurveyButtonClick = () => {
-    fa.logEvent('surveyList_create_survey_button_click', { isCode });
+    fa.logEvent('surveyList_create_survey_button_click');
     if (isCode) {
       push('/survey/create/question');
     } else setPopup(true);
@@ -124,7 +125,7 @@ export default function SurveyHome(): ReactElement {
       </StyledSurveyHomePage>
       <FeedbackBanner
         onClick={() => {
-          fa.logEvent('surveyList_feedback_click', { isCode });
+          fa.logEvent('surveyList_feedback_click');
           push('/feedback');
         }}
       >
