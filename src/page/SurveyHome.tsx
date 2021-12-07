@@ -40,10 +40,16 @@ export default function SurveyHome(): ReactElement {
   const [code, setCode] = useRecoilState(bizCodeAtom);
   const [close, setClose] = useState(false);
   const fa = useAnalytics();
-  const urlSearchParams = new URLSearchParams(location.search);
+  const urlSearchParams = new URLSearchParams(window.location.search);
   const isCode = urlSearchParams.has('code');
   // eslint-disable-next-line no-console
-  console.log(isCode, location.search, window.location.search);
+  console.log(
+    isCode,
+    'uselocation.search',
+    location.search,
+    'window.location.search',
+    window.location.search,
+  );
   useShowEvent('surveyList_onbard_show');
 
   const onClose = () => {
