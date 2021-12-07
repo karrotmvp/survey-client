@@ -64,7 +64,7 @@ export default function AnswerDetailPage(): JSX.Element {
         `${surveyId}_response_question_${questionNumber}_next_button_click`,
         { ref },
       );
-      push(`/survey/${surveyId}/${+questionNumber + 1}`);
+      push(`/survey/${surveyId}/${+questionNumber + 1}?ref=${ref}`);
     }
   };
 

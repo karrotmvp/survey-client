@@ -73,7 +73,7 @@ export default function AnswerComplete(): JSX.Element {
         />
         <BizProfileVisit
           onClick={() => {
-            push('/feedback');
+            push(`/feedback?ref=${ref}`);
           }}
         >
           무따 서비스 피드백 남기기
