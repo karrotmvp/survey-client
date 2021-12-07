@@ -3,6 +3,7 @@ import { ReactElement, useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import { useNavigator } from '@karrotframe/navigator';
 import Skeleton from 'react-loading-skeleton';
+import { useLocation } from 'react-router-dom';
 import { useRecoilState, useRecoilValueLoadable } from 'recoil';
 
 import {
@@ -35,10 +36,15 @@ export type surveyItemType = {
 
 export default function SurveyHome(): ReactElement {
   const jwt = useLogin(authorizationBizSelector);
+  const location = useLocation();
   const [code, setCode] = useRecoilState(bizCodeAtom);
   const [close, setClose] = useState(false);
   const fa = useAnalytics();
-  useShowEvent('surveyList_onbard_show');
+  const urlSearchParams = new URLSearchParams(location.search);
+  const isCode = urlSearchParams.has('code');
+
+  useShowEvent('surveyList_onbard_show', isCode);
+
   const onClose = () => {
     setClose(true);
   };
@@ -47,12 +53,18 @@ export default function SurveyHome(): ReactElement {
   const getList = useRecoilValueLoadable(getSurveyList);
   const userData = useRecoilValueLoadable(getBizprofile);
   const [isPopup, setPopup] = useState(false);
+  const [isIntroPopup, setIntroPopup] = useState(false);
+  const [isClosePopup, setClosePopup] = useState(false);
   const { push } = useNavigator();
 
   const handleNextClick = () => {
-    fa.logEvent('surveyList_next_button_click');
+    fa.logEvent('surveyList_next_button_click', { isCode });
     setPopup(false);
     push('/survey/create/question');
+  };
+
+  const handleCloseModalClick = () => {
+    setClosePopup(true);
   };
 
   useEffect(() => {
@@ -66,12 +78,23 @@ export default function SurveyHome(): ReactElement {
       const id = await getBizId();
       setCode(id);
       fa.setUserId(id);
+      if (isCode) {
+        setIntroPopup(true);
+      }
     })();
   }, []);
 
+  useEffect(() => {
+    if (!isIntroPopup && isClosePopup) {
+      setClosePopup(false);
+    }
+  }, [isClosePopup, isIntroPopup]);
+
   const handleCreateSurveyButtonClick = () => {
-    fa.logEvent('surveyList_create_survey_button_click');
-    setPopup(true);
+    fa.logEvent('surveyList_create_survey_button_click', { isCode });
+    if (isCode) {
+      push('/survey/create/question');
+    } else setPopup(true);
   };
 
   return (
@@ -101,7 +124,7 @@ export default function SurveyHome(): ReactElement {
       </StyledSurveyHomePage>
       <FeedbackBanner
         onClick={() => {
-          fa.logEvent('surveyList_feedback_click');
+          fa.logEvent('surveyList_feedback_click', { isCode });
           push('/feedback');
         }}
       >
@@ -135,14 +158,48 @@ export default function SurveyHome(): ReactElement {
               사장님의 설문을 <b>비즈프로필 소식</b>에 공유해 <br /> 보세요!
               우리 동네 이웃분에게 보여져요.
             </h3>
-            <GuideModalImg imgUrl="./../../img/guideModalImg.png" />
-            <h3 className="guideModal_subtitle">
+            <GuideModalImg
+              className="guideModal_img"
+              imgUrl="./../../img/guideModalImg.png"
+              imgWidth={152 / 328}
+            />
+            <h3 className="guideModal_subtitle ">
               또는 <b>SNS에 공유</b>해서 더 많은 분의 의견을 <br />
               들어볼 수 있어요.
             </h3>
-            <GuideModalImg2 imgUrl={'./../../img/guideModalImg2.png'} />
+            <GuideModalImg
+              className="guideModal_img"
+              imgUrl="./../../img/guideModalImg2.png"
+              imgWidth={142 / 328}
+            />
           </GuideModal>
           <NextButton onClick={handleNextClick}>다음</NextButton>
+        </UpDownModal>
+      )}
+
+      {isIntroPopup && (
+        <UpDownModal setPopup={setIntroPopup} isClose={isClosePopup}>
+          <GuideModal>
+            <h1 className="guideModal_title">
+              아쉽지만 설문이 더 이상 동네 이웃 홈피드에 보이지 않아요 😢
+            </h1>
+            <h3 className="guideModal_subtitle">
+              베타 서비스와는 달리 이웃 홈피드에 노출하지
+              <br /> 않게 되었어요.
+              <br />
+              그러나, 사장님의 <b>비즈프로필 소식</b>이나 <b>SNS</b>에<br />
+              <b>링크를 공유하</b>면 더 많은 답변을 받을 수 있어요!
+            </h3>
+            <GuideModalImg
+              imgUrl="./../../img/guideModalImg.png"
+              imgWidth={152 / 328}
+            />
+            <GuideModalImg
+              imgUrl="./../../img/guideModalImg2.png"
+              imgWidth={142 / 328}
+            />
+          </GuideModal>
+          <NextButton onClick={handleCloseModalClick}>네! 알겠어요</NextButton>
         </UpDownModal>
       )}
     </div>
@@ -241,29 +298,31 @@ const GuideModal = styled.div`
     line-height: 140%;
     font-weight: ${({ theme }) => theme.fontWeight.regular};
     color: #4b4b4b;
+
+    margin-bottom: 1.6rem;
+  }
+  .guideModal_img {
+    margin-bottom: 2.4rem;
   }
 `;
 
-const GuideModalImg = styled.div<{ imgUrl: string }>`
-  width: 100%;
-  height: 0;
-  padding-top: calc(152 / 328 * 100%);
-  background: url(${({ imgUrl }) => imgUrl}) center center / cover no-repeat;
-  position: relative;
-  margin-top: 1.6rem;
-  margin-bottom: 2.4rem;
-  border-radius: 4px;
-`;
+// const GuideModalImg = styled.div<{ imgUrl: string }>`
+//   width: 100%;
+//   height: 0;
+//   padding-top: calc(152 / 328 * 100%);
+//   background: url(${({ imgUrl }) => imgUrl}) center center / cover no-repeat;
+//   position: relative;
+//   margin-top: 1.6rem;
+//   margin-bottom: 2.4rem;
+//   border-radius: 4px;
+// `;
 
-const GuideModalImg2 = styled.div<{ imgUrl: string }>`
+const GuideModalImg = styled.div<{ imgUrl: string; imgWidth: number }>`
   width: 100%;
   height: 0;
-  padding-top: calc(142 / 328 * 100%);
+  padding-top: ${({ imgWidth }) => `calc( ${imgWidth} * 100%)`};
   background: url(${({ imgUrl }) => imgUrl}) center center / cover no-repeat;
   position: relative;
-  margin-top: 1.6rem;
-  margin-bottom: 2.9rem;
-  border-radius: 4px;
 `;
 
 const NextButton = styled.button`

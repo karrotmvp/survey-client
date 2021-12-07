@@ -20,13 +20,13 @@ function useResponseShowEvent(
   }, [isTop]);
 }
 
-function useShowEvent(text: string): void {
+function useShowEvent(text: string, isCode?: boolean): void {
   const { isTop } = useCurrentScreen();
   const fa = useAnalytics();
 
   useEffect(() => {
     if (isTop) {
-      fa.logEvent(text);
+      fa.logEvent(text, { isCode });
     }
   }, [isTop]);
 }
