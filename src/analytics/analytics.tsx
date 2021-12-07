@@ -3,6 +3,8 @@ import {
   setUserId,
   logEvent,
   AnalyticsCallOptions,
+  setUserProperties,
+  CustomParams,
 } from 'firebase/analytics';
 import { initializeApp } from 'firebase/app';
 
@@ -22,9 +24,13 @@ const firebaseConfig = {
   measurementId: 'G-YL9DD0GKN8',
 };
 
-interface Analytics {
+export interface Analytics {
   logEvent(eventName: string, params?: Record<string, unknown>): void;
   setUserId(id: string, options?: AnalyticsCallOptions): void;
+  setUserProperties(
+    properties: CustomParams,
+    options?: AnalyticsCallOptions,
+  ): void;
 }
 
 // Initialize Firebase
@@ -36,6 +42,9 @@ const fa: Analytics = {
   },
   setUserId(id, options) {
     setUserId(analytics, id, options);
+  },
+  setUserProperties(properties, options) {
+    setUserProperties(analytics, properties, options);
   },
 };
 
