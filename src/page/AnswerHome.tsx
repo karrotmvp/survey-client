@@ -89,15 +89,10 @@ export default function AnswerHome(): JSX.Element {
     push(`/survey/${surveyId}/1?ref=${ref}`);
   }
 
-  const click = async () => {
-    const resCode = await auth();
-    if (resCode) {
-      setCode(resCode);
-      if (code === resCode) {
-        getResponseHomeData();
-      } else if (jwt.state === 'hasValue') {
-        getResponseHomeData();
-      }
+  const click = () => {
+    console.log(code);
+    if (jwt.state === 'hasValue') {
+      getResponseHomeData();
     }
   };
 
@@ -116,6 +111,12 @@ export default function AnswerHome(): JSX.Element {
   useEffect(() => {
     fa.setUserId(uuidv4());
     fa.setUserProperties({ ref, surveyId });
+    (async function getCode() {
+      const resCode = await auth();
+      if (resCode) {
+        setCode(resCode);
+      }
+    })();
   }, []);
   const IsCoverImgUrls =
     briefData && briefData.bizProfile
