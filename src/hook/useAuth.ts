@@ -1,18 +1,16 @@
 /* eslint-disable no-console */
 import { useCallback } from 'react';
 
-import { useLocation } from 'react-router-dom';
-
 import mini from '@api/mini';
 
 const useMiniAuth = (
   appId: string,
   onClose?: () => void,
 ): (() => Promise<string | undefined>) => {
-  const location = useLocation();
   const getCodeAsync = useCallback(() => {
-    const urlSearchParams = new URLSearchParams(location.search);
+    const urlSearchParams = new URLSearchParams(window.location.search);
     // eslint-disable-next-line no-alert
+    console.log(urlSearchParams.has('code'), window.location.search);
     if (urlSearchParams.has('code')) {
       if (onClose) {
         onClose();

@@ -73,7 +73,7 @@ export default function ResponseNextButton({
         responses,
       });
       setSubmit(false);
-      push(`/survey/${surveyId}/complete`);
+      push(`/survey/${surveyId}/complete?ref=${ref}`);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isSubmit, responseState]);

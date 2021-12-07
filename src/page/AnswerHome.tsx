@@ -86,7 +86,7 @@ export default function AnswerHome(): JSX.Element {
     setToastOpen(false);
     fa.logEvent(`response_login_button_click`, { surveyId, ref });
     fa.logEvent(`${surveyId}_response_login_button_click`, { ref });
-    push(`/survey/${surveyId}/1`);
+    push(`/survey/${surveyId}/1?ref=${ref}`);
   }
 
   const click = async () => {
