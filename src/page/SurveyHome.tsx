@@ -3,7 +3,6 @@ import { ReactElement, useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import { useNavigator } from '@karrotframe/navigator';
 import Skeleton from 'react-loading-skeleton';
-import { useLocation } from 'react-router-dom';
 import { useRecoilState, useRecoilValueLoadable } from 'recoil';
 
 import {
@@ -36,20 +35,11 @@ export type surveyItemType = {
 
 export default function SurveyHome(): ReactElement {
   const jwt = useLogin(authorizationBizSelector);
-  const location = useLocation();
   const [code, setCode] = useRecoilState(bizCodeAtom);
   const [close, setClose] = useState(false);
   const fa = useAnalytics();
   const urlSearchParams = new URLSearchParams(window.location.search);
   const isCode = urlSearchParams.has('code');
-  // eslint-disable-next-line no-console
-  console.log(
-    isCode,
-    'uselocation.search',
-    location.search,
-    'window.location.search',
-    window.location.search,
-  );
   useShowEvent('surveyList_onbard_show');
 
   const onClose = () => {
