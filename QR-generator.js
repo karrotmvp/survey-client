@@ -11,7 +11,7 @@ const { exec } = require('child_process');
 async function generateQR(surveyId, questionType) {
   try {
     exec(
-      `karrot-mini open --url "https://d174a7300nswcc.cloudfront.net/#/survey/${surveyId}?questionCategory=${questionType}&_si=0" --appId e82e6f0250714b29832b6c00fa07cd05 --production `,
+      `karrot-mini open --url "https://d174a7300nswcc.cloudfront.net/?#/survey/${surveyId}?ref=app" --appId e82e6f0250714b29832b6c00fa07cd05 --production `,
       (error, stdout, stderr) => {
         // eslint-disable-next-line no-console
         console.log('========================================================');
@@ -25,7 +25,7 @@ async function generateQR(surveyId, questionType) {
     console.log(e);
   }
 }
-
+// `karrot-mini open --url "https://dz146mc75ni1z.cloudfront.net/?#/survey/166?ref=url&_si=0" --appId fb99011798b247888a6d4603cb7297dd`
 async function processLineByLine() {
   const fileStream = fs.createReadStream('input.txt');
 

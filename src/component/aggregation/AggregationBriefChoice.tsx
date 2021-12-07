@@ -11,6 +11,7 @@ export default function AggregationBriefChoice({
   answers: answersChoiceType[];
   showAll?: boolean;
 }): JSX.Element {
+  answers.sort((a, b) => b.count - a.count);
   const data = answers.map(({ value, count }) => ({
     name: value,
     value: count,
