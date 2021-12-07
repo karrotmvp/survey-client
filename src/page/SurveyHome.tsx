@@ -42,7 +42,8 @@ export default function SurveyHome(): ReactElement {
   const fa = useAnalytics();
   const urlSearchParams = new URLSearchParams(location.search);
   const isCode = urlSearchParams.has('code');
-
+  // eslint-disable-next-line no-console
+  console.log(isCode, location.search, window.location.search);
   useShowEvent('surveyList_onbard_show');
 
   const onClose = () => {
