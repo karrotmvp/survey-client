@@ -3,8 +3,7 @@ import { atom } from 'recoil';
 import { bizProfileType } from '@src/component/common/button/BizProfile';
 
 export type responseType = {
-  choiceId?: number;
-  answer?: string;
+  value: string;
 };
 
 const responseListAtom = atom<responseType[]>({

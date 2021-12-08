@@ -8,6 +8,7 @@ import { ReactComponent as ArrowLeft } from '@config/icon/arrow_left.svg';
 import { ReactComponent as ArrowRight } from '@config/icon/arrow_right.svg';
 import { ReactComponent as IndividualCheck } from '@config/icon/individual_check.svg';
 import { useAnalytics } from '@src/analytics/faContext';
+import { surveyIdAtom } from '@src/api/authorization';
 import { choiceType } from '@src/atom/questionAtom';
 import { responseIndividualAtom, TitleViewAtom } from '@src/atom/responseAtom';
 import useLoadableGet from '@src/hook/useLoadableGet';
@@ -24,9 +25,8 @@ type questionCardType = {
 
 type responsesType = {
   question: questionCardType;
-  response: {
-    answer: string;
-  };
+  questionId: number;
+  answer: { [key: string]: string }[];
 };
 
 export default function AggregationIndividual({
@@ -39,9 +39,10 @@ export default function AggregationIndividual({
   const [isPopupOpen, setPopup] = useState(false);
   const [isPopupClose, setPopupClose] = useState(false);
   const resetNameIdx = useResetRecoilState(responseIndividualAtom);
+  const surveyId = useRecoilValue(surveyIdAtom);
   const isTitleView = useRecoilValue(TitleViewAtom);
   const getIndividualResponse = useLoadableGet<responsesType[]>(
-    `aggregation/individual/${responseIdName[nameIdx].responseId}`,
+    `mongo/surveys/${surveyId}/individual/${responseIdName[nameIdx].responseId}`,
   );
   const handleLeftClick = () => {
     setNameIdx(nameIdx - 1);
@@ -93,12 +94,12 @@ export default function AggregationIndividual({
       <AggregationIndividualList isTitleView={isTitleView}>
         {getIndividualResponse.data ? (
           getIndividualResponse.data.map(
-            ({ question, response }, questionIdx) => (
+            ({ question, answer }, questionIdx) => (
               <AggregationCard
                 key={questionIdx}
                 questionIdx={questionIdx}
                 {...question}
-                response={response}
+                response={answer}
                 // eslint-disable-next-line
                 isLast={questionIdx === getIndividualResponse.data!.length - 1}
               />
