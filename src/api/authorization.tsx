@@ -92,7 +92,7 @@ const getSurveyList = selector({
     try {
       const data: AxiosResponse<{ data: surveyItemType[] }> = await axios.get<{
         data: surveyItemType[];
-      }>(`/surveys`);
+      }>(`mongo/survey`);
 
       // eslint-disable-next-line consistent-return
       return data.data.data;
@@ -122,7 +122,7 @@ const getBizSurveyList = selector({
     try {
       const data: AxiosResponse<{ data: questionDataType }> = await axios.get<{
         data: questionDataType;
-      }>(`/surveys/${surveyId}`);
+      }>(`/mongo/survey/${surveyId}`);
 
       return data.data.data;
     } catch (e) {
@@ -149,6 +149,7 @@ const getBriefUrls = selector({
 
     const Authorization = 'X-AUTH-TOKEN';
     if (!token) return;
+    if (!surveyId) return;
     axios.defaults.headers.common[Authorization] = token;
     try {
       const data: AxiosResponse<{ data: getBriefUrlsType }> = await axios.get<{
@@ -179,7 +180,7 @@ const getAggregationBrief = selector({
       const data: AxiosResponse<{ data: aggregationBriefType }> =
         await axios.get<{
           data: aggregationBriefType;
-        }>(`/aggregation/${surveyId}`);
+        }>(`mongo/aggregate/${surveyId}`);
 
       return data.data.data;
     } catch (e) {

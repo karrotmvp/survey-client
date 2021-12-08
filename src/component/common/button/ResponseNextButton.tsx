@@ -42,7 +42,7 @@ export default function ResponseNextButton({
     useParams<{ surveyId?: string; questionNumber?: string }>();
   if (!surveyId) throw new Error('questionNumber or surveyId none');
   const fa = useAnalytics();
-  const responsePost = useSubmit('/responses');
+  const responsePost = useSubmit('/mongo/response');
   const { push } = useNavigator();
   const responseState = useRecoilValue(responseListAtom);
   const question = useRecoilValue(questionListAtom);
@@ -62,15 +62,21 @@ export default function ResponseNextButton({
 
   useEffect(() => {
     if (isSubmit && responseState.length === question.length) {
-      const responses = question.map(({ questionType, questionId }, idx) => ({
-        questionType,
-        questionId,
-        ...responseState[idx],
-      }));
+      const answers = question.map(({ questionId, questionType }, idx) => {
+        const value =
+          questionType === 2
+            ? { text: responseState[idx].value }
+            : { choice: responseState[idx].value };
+
+        return {
+          questionId,
+          ...value,
+        };
+      });
 
       responsePost({
         surveyId: +surveyId,
-        responses,
+        answers,
       });
       setSubmit(false);
       push(`/survey/${surveyId}/complete?ref=${ref}`);

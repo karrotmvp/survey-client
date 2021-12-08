@@ -8,7 +8,7 @@ import {
   useQueryParams,
 } from '@karrotframe/navigator';
 import Slider, { Settings } from 'react-slick';
-import { useRecoilState, useSetRecoilState } from 'recoil';
+import { useSetRecoilState } from 'recoil';
 import { v4 as uuidv4 } from 'uuid';
 
 import LoginButton from '@component/common/button/LogInButton';
@@ -33,7 +33,7 @@ import { useResponseShowEvent } from '@src/hook/useShowEvent';
 // ];
 
 export type questionDataType = {
-  surveyId: number;
+  surveyId?: number;
   title: string;
   description: string;
   target: number;
@@ -62,15 +62,15 @@ export default function AnswerHome(): JSX.Element {
   const jwt = useLogin(authorizationSelector);
   const [isToastOpen, setToastOpen] = useState(false);
   const [briefData, setBrief] = useState<surveyBriefType | null>(null);
-  const [code, setCode] = useRecoilState(codeAtom);
+  const setCode = useSetRecoilState(codeAtom);
   const setBizUser = useSetRecoilState(responseUserAtom);
   const setQuestion = useSetRecoilState(questionListAtom);
   const fa = useAnalytics();
 
-  const getSurveyData = useGet<questionDataType>(`/surveys/${surveyId}`);
+  const getSurveyData = useGet<questionDataType>(`mongo/survey/${surveyId}`);
 
   const getSurveyBrief = useGet<surveyBriefType>(
-    `/surveys/brief/${surveyId}`,
+    `/mongo/brief/${surveyId}`,
     true,
   );
 
@@ -90,7 +90,6 @@ export default function AnswerHome(): JSX.Element {
   }
 
   const click = () => {
-    console.log(code);
     if (jwt.state === 'hasValue') {
       getResponseHomeData();
     }

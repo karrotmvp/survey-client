@@ -9,16 +9,14 @@ import { useRecoilState, useRecoilValue } from 'recoil';
 import ResponseTextInput from '@component/response/ResponseTextInput';
 import { useAnalytics } from '@src/analytics/faContext';
 import { questionListAtom } from '@src/atom/questionAtom';
-import { responseListAtom } from '@src/atom/responseAtom';
+import { responseListAtom, responseType } from '@src/atom/responseAtom';
 import NavBar from '@src/component/common/navbar/NavBar';
 import QuestionDot from '@src/component/questionDetail/QuestionDot';
 import ResponseChoiceInput from '@src/component/response/ResponseChoiceInput';
 import { useResponseShowEvent } from '@src/hook/useShowEvent';
 
 export type InputType = {
-  setResponse: (
-    responseInput: { choiceId: number } | { answer: string },
-  ) => void;
+  setResponse: (responseInput: responseType) => void;
   isLast: boolean;
 };
 
@@ -45,9 +43,7 @@ export default function AnswerDetailPage(): JSX.Element {
     surveyId,
     ref,
   );
-  const setResponse = (
-    responseInput: { choiceId: number } | { answer: string },
-  ) => {
+  const setResponse = (responseInput: responseType) => {
     const newRes = [
       ...response.slice(0, +questionNumber - 1),
       responseInput,

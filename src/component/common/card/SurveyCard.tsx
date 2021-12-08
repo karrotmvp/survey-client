@@ -49,6 +49,7 @@ export default function SurveyCard({
   title,
 }: surveyItemType): JSX.Element {
   const { push } = useNavigator();
+  const targetList = ['모든 이웃', '비즈프로필 이웃', '단골'];
   const fa = useAnalytics();
   const convertDate = (date: string): string => {
     const currentDate = new Date(date);
@@ -62,7 +63,7 @@ export default function SurveyCard({
       }}
     >
       <div className="survey_card_column">
-        <span className="column_target">{target}</span>
+        <span className="column_target">{targetList[+target - 1]}</span>
         <span className="column_create">{convertDate(createdAt)}</span>
       </div>
       <SurveyCardTitle>{title}</SurveyCardTitle>

@@ -2,18 +2,19 @@ import { COLORS } from '@src/config/const/const';
 
 import ChartLegendList from '../chart/ChartLagendList';
 import AggregationPieChart from '../chart/PieChart';
-import { answersChoiceType } from './AggregationBrief';
+import { answerChoiceType } from './AggregationBriefCard';
 
 export default function AggregationBriefChoice({
   answers,
   showAll,
 }: {
-  answers: answersChoiceType[];
+  answers: answerChoiceType[];
   showAll?: boolean;
 }): JSX.Element {
   answers.sort((a, b) => b.count - a.count);
-  const data = answers.map(({ value, count }) => ({
-    name: value,
+
+  const data = answers.map(({ choice, count }) => ({
+    name: choice,
     value: count,
   }));
 
