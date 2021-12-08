@@ -30,7 +30,7 @@ export default function ResponseTextInput({
   const questionNumber = Number.isNaN(+questionTypes) ? 1 : +questionTypes;
   const response = useRecoilValue(responseListAtom);
   const initialText = response[+questionNumber - 1]
-    ? response[+questionNumber - 1].answer || ''
+    ? response[+questionNumber - 1].value
     : '';
 
   const [text, setText] = useState(initialText);
@@ -40,14 +40,14 @@ export default function ResponseTextInput({
   };
 
   const handleNextClick = () => {
-    setResponse({ answer: text });
+    setResponse({ value: text });
   };
   const history = useHistory();
 
   useEffect(() => {
     const unblock = history.block((location, action) => {
       if (action === 'POP' && isLast) {
-        setResponse({ answer: text });
+        setResponse({ value: text });
       }
       return undefined;
     });

@@ -3,13 +3,13 @@ import styled from '@emotion/styled';
 
 import { COLORS } from '@src/config/const/const';
 
-import { answersChoiceType } from '../aggregation/AggregationBrief';
+import { answerChoiceType } from '../aggregation/AggregationBriefCard';
 
 export default function ChartLegendList({
   answers,
   showAll,
 }: {
-  answers: answersChoiceType[];
+  answers: answerChoiceType[];
   showAll?: boolean;
 }): JSX.Element {
   const sum = answers.reduce((acc, cur) => {
@@ -17,8 +17,8 @@ export default function ChartLegendList({
     return acc;
   }, 0);
 
-  const data = answers.map(({ value, count }) => ({
-    value,
+  const data = answers.map(({ choice, count }) => ({
+    value: choice,
     count,
     percent: Math.floor((count / sum) * 100),
   }));
@@ -44,7 +44,7 @@ const StyledChartLegendUl = styled.ul`
   grid-gap: 2rem;
 `;
 
-type dataType = answersChoiceType & { percent: number };
+type dataType = { value: string; count: number; percent: number };
 
 const StyledChartLegend = styled.li`
   display: flex;

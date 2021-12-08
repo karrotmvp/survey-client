@@ -33,7 +33,7 @@ function AggregationTabs({
   const initialTab = individual ? 'tab_2' : 'tab_1';
   const [activeTabKey, setActiveTabKey] = useState<string>(initialTab);
   const answerBrief = useLoadableGet<answerBriefType>(
-    `/aggregation/${surveyId}/responses/brief`,
+    `/mongo/${surveyId}/responses/brief`,
   );
   const setResponseId = useSetRecoilState(responseIndividualAtom);
   const fa = useAnalytics();

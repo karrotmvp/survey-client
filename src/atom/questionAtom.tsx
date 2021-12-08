@@ -4,7 +4,6 @@ import { userSelector } from './userAtom';
 // post 보내는 것과 get 받는 것의 type 이 다르다.
 export type choiceType = {
   value: string;
-  choiceId?: number;
 };
 
 export type questionAtomType = {

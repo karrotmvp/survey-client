@@ -1,7 +1,6 @@
 import styled from '@emotion/styled';
 
 import { ReactComponent as CheckIcon } from '@config/icon/check.svg';
-import { choiceType } from '@src/atom/questionAtom';
 
 const StyledResponseChoice = styled.li`
   padding: 0.8rem 1.6rem;
@@ -31,19 +30,23 @@ const StyledResponseChoice = styled.li`
   align-items: center;
 `;
 
+// post 보내는 것과 get 받는 것의 type 이 다르다.
+type choiceType = {
+  value: string;
+};
+
 export default function ResponseChoiceItem({
-  choiceId,
   value,
   handleClick,
-  selectedChoiceId,
+  selectedChoice,
 }: choiceType & {
   handleClick: (e: React.MouseEvent<HTMLLIElement>) => void;
-  selectedChoiceId: number;
+  selectedChoice: string;
 }): JSX.Element {
   return (
     <StyledResponseChoice
-      aria-checked={selectedChoiceId === choiceId}
-      data-list={choiceId}
+      aria-checked={selectedChoice === value}
+      data-list={value}
       onClick={handleClick}
     >
       <span>{value}</span>

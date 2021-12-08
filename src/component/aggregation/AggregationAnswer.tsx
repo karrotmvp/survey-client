@@ -24,7 +24,6 @@ function AggregationAnswer({
     fa.logEvent(`surveyAnswer_${target.ariaLabel}`);
   };
   const Aggregation = useRecoilValueLoadable(getAggregationBrief);
-
   const responseIdName = responseIds.map((data, idx) => ({
     name: `익명 ${idx + 1}`,
     responseId: data,
@@ -53,7 +52,7 @@ function AggregationAnswer({
         (Aggregation.state === 'hasValue' && Aggregation.contents !== '' ? (
           <AggregationBrief
             setTabKey={setTabKey}
-            questionAggregations={Aggregation.contents.questionAggregations}
+            questionAggregations={Aggregation.contents}
           />
         ) : (
           <LoadingCard count={2} />
