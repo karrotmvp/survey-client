@@ -2,9 +2,9 @@ import { useState } from 'react';
 
 import axios from 'axios';
 
-export default function useSubmit(
+export default function useSubmit<T>(
   initialUrl: string,
-): (bodyData: unknown) => Promise<void> {
+): (bodyData: T) => Promise<void> {
   const [url] = useState(initialUrl);
 
   const token = sessionStorage.getItem('jwt');

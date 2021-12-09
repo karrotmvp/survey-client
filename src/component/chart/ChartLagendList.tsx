@@ -17,8 +17,8 @@ export default function ChartLegendList({
     return acc;
   }, 0);
 
-  const data = answers.map(({ choice, count }) => ({
-    value: choice,
+  const data = answers.map(({ value, count }) => ({
+    value,
     count,
     percent: Math.floor((count / sum) * 100),
   }));

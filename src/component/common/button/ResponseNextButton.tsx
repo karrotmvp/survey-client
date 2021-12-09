@@ -33,6 +33,11 @@ type ResponseNextButton = {
   handleNextClick: (e: React.MouseEvent) => void;
 };
 
+type responsePostBodyType = {
+  surveyId: number;
+  answers: { questionId: number; value: string }[];
+};
+
 export default function ResponseNextButton({
   isLast,
   handleNextClick,
@@ -42,7 +47,7 @@ export default function ResponseNextButton({
     useParams<{ surveyId?: string; questionNumber?: string }>();
   if (!surveyId) throw new Error('questionNumber or surveyId none');
   const fa = useAnalytics();
-  const responsePost = useSubmit('/mongo/responses');
+  const responsePost = useSubmit<responsePostBodyType>('/mongo/responses');
   const { push } = useNavigator();
   const responseState = useRecoilValue(responseListAtom);
   const question = useRecoilValue(questionListAtom);
@@ -62,17 +67,11 @@ export default function ResponseNextButton({
 
   useEffect(() => {
     if (isSubmit && responseState.length === question.length) {
-      const answers = question.map(({ questionId, questionType }, idx) => {
-        const value =
-          questionType === 2
-            ? { text: responseState[idx].value }
-            : { choice: responseState[idx].value };
-
-        return {
-          questionId,
-          ...value,
-        };
-      });
+      const answers = question.map(({ questionId }, idx) => ({
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        questionId: questionId!,
+        value: responseState[idx].value,
+      }));
 
       responsePost({
         surveyId: +surveyId,
