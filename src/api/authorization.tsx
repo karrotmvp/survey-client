@@ -92,7 +92,7 @@ const getSurveyList = selector({
     try {
       const data: AxiosResponse<{ data: surveyItemType[] }> = await axios.get<{
         data: surveyItemType[];
-      }>(`mongo/survey`);
+      }>(`mongo/surveys`);
 
       // eslint-disable-next-line consistent-return
       return data.data.data;
@@ -122,7 +122,7 @@ const getBizSurveyList = selector({
     try {
       const data: AxiosResponse<{ data: questionDataType }> = await axios.get<{
         data: questionDataType;
-      }>(`/mongo/survey/${surveyId}`);
+      }>(`/mongo/surveys/${surveyId}`);
 
       return data.data.data;
     } catch (e) {
@@ -180,7 +180,7 @@ const getAggregationBrief = selector({
       const data: AxiosResponse<{ data: aggregationBriefType }> =
         await axios.get<{
           data: aggregationBriefType;
-        }>(`mongo/aggregate/${surveyId}`);
+        }>(`mongo/aggregate/surveys/${surveyId}`);
 
       return data.data.data;
     } catch (e) {

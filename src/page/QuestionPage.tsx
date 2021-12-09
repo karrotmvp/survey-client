@@ -88,7 +88,7 @@ export default function QuestionPage(): JSX.Element {
   >(undefined);
 
   const { replace } = useNavigator();
-  const submit = useSubmitReturn<number>('/mongo/survey');
+  const submit = useSubmitReturn<number>('/mongo/surveys');
   const [trigger, setTrigger] = useRecoilState(surveyListTrigger);
   const fa = useAnalytics();
   const {
