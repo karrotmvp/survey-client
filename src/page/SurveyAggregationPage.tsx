@@ -8,8 +8,15 @@ import {
   useSetRecoilState,
 } from 'recoil';
 
+import { ReactComponent as ShareIcon } from '@config/icon/share_black.svg';
 import { useAnalytics } from '@src/analytics/faContext';
-import { getBizSurveyList, surveyIdAtom } from '@src/api/authorization';
+import {
+  getBizprofile,
+  getBizSurveyList,
+  getBriefUrls,
+  surveyIdAtom,
+} from '@src/api/authorization';
+import mini from '@src/api/mini';
 import { TitleViewAtom } from '@src/atom/responseAtom';
 import MemoAggregationTabs from '@src/component/aggregation/AggregationTabs';
 import ScrollNavBar from '@src/component/common/navbar/ScrollNavBar';
@@ -22,6 +29,8 @@ export default function SurveyAggregationPage(): JSX.Element {
   const fa = useAnalytics();
   const setSurveyId = useSetRecoilState(surveyIdAtom);
   const getSurveyList = useRecoilValueLoadable(getBizSurveyList);
+  const url = useRecoilValueLoadable(getBriefUrls);
+  const userData = useRecoilValueLoadable(getBizprofile);
   const ref = useRef<HTMLDivElement>(null);
   const [isTitleView, setTitleView] = useRecoilState(TitleViewAtom);
 
@@ -51,6 +60,21 @@ export default function SurveyAggregationPage(): JSX.Element {
     fa.logEvent('surveyAggregation_show');
   }, []);
 
+  const handleShareClick = () => {
+    fa.logEvent('aggregation_share_button_click');
+    if (
+      url.state === 'hasValue' &&
+      url.contents &&
+      userData.state === 'hasValue' &&
+      userData.contents !== ''
+    ) {
+      mini.share({
+        url: url.contents.shortUrl,
+        text: `${userData.contents.name} 사장님이 설문을 만드셨어요! \n여러분의 의견이 매장 개선에 큰 도움이 돼요 😊 \n \n(당근 마켓 어플이 있어야 답변하실 수 있어요)\n`,
+      });
+    }
+  };
+
   return (
     <>
       <ScrollNavBar
@@ -61,7 +85,9 @@ export default function SurveyAggregationPage(): JSX.Element {
             : undefined
         }
         titleAppear={!isTitleView}
+        appendRight={<ShareIcon onClick={handleShareClick} />}
       />
+
       <Section>
         <StyledSurveyTitleCard ref={ref}>
           <SurveyTitle>
@@ -78,7 +104,7 @@ export default function SurveyAggregationPage(): JSX.Element {
               }`}
           </span>
         </StyledSurveyTitleCard>
-        <MemoAggregationTabs />
+        <MemoAggregationTabs handleShareClick={handleShareClick} />
       </Section>
     </>
   );
@@ -112,4 +138,6 @@ const StyledSurveyTitleCard = styled.div`
 `;
 const Section = styled.section`
   position: relative;
+  height: 100vh;
+  overflow: scroll;
 `;

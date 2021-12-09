@@ -1,26 +1,24 @@
 import styled from '@emotion/styled';
-import { useParams } from '@karrotframe/navigator';
+import { useParams, useQueryParams } from '@karrotframe/navigator';
 
-import { ReactComponent as ArrowRight } from '@config/icon/arrow_right_24.svg';
+// import { ReactComponent as ArrowRight } from '@config/icon/arrow_right_24.svg';
 import { useAnalytics } from '@src/analytics/faContext';
 
-const StyledBizProfile = styled.div`
+const StyledBizProfile = styled.div<{ coverImageUrls?: boolean }>`
   display: flex;
   align-items: center;
-  justify-content: space-between;
   padding: 1.6rem;
-  border: 1px solid #c9c9c9;
+  position: ${({ coverImageUrls }) => (coverImageUrls ? 'absolute' : 'none')};
+  bottom: 0;
   width: 100%;
-  border-radius: 8px;
-  .biz_profile_left {
-    display: flex;
-    height: 4rem;
-    .biz_profile_left_text {
-      margin-left: 1.6rem;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    }
+  display: flex;
+
+  ${({ coverImageUrls }) =>
+    coverImageUrls ? '' : 'border: 1px solid #f4f4f4; margin-top: 5.6rem;'};
+
+  .biz_profile_left_text {
+    margin-left: 1.6rem;
+    color: ${({ coverImageUrls }) => (coverImageUrls ? '#fff' : '#141414')};
   }
 `;
 const Dot = styled.div`
@@ -32,25 +30,23 @@ const Dot = styled.div`
 `;
 
 const BizProfileTitle = styled.h3`
-  color: #141414;
   font-weight: 600;
   display: flex;
   align-items: center;
-  font-size: 1.4rem;
+  font-size: 1.6rem;
   line-height: 100%;
-  color: #141414;
   margin-bottom: 0.8rem;
+  font-weight: ${({ theme }) => theme.fontWeight.medium};
 `;
 
 const BizProfileSubtitle = styled.h3`
-  color: #707070;
-  font-size: 1.2rem;
+  font-size: 1.4rem;
   line-height: 100%;
-  font-weight: 400;
+  font-weight: ${({ theme }) => theme.fontWeight.medium};
 `;
 const BizProfileImg = styled.img`
-  width: 4rem;
-  height: 4rem;
+  width: 6.4rem;
+  height: 6.4rem;
   border-radius: 50%;
 `;
 
@@ -60,6 +56,7 @@ export type bizProfileType = {
   region: string;
   profileUrl: string;
   bizCategory: string;
+  coverImageUrls?: string[];
 };
 
 export default function BizProfile({
@@ -68,33 +65,33 @@ export default function BizProfile({
   bizCategory,
   profileUrl,
   imageUrl,
+  coverImageUrls,
 }: bizProfileType): JSX.Element {
   const { surveyId } = useParams<{ surveyId?: string }>();
   if (!surveyId) throw new Error('questionNumber or surveyId none');
+  const query = useQueryParams<{ ref?: string }>();
+  const ref = query.ref || 'app';
 
   const fa = useAnalytics();
 
   const handleClickProfile = () => {
-    fa.logEvent(`response_home_bizprofile_click`, { surveyId });
-    fa.logEvent(`${surveyId}_response_home_bizprofile_click`);
+    fa.logEvent(`response_home_bizprofile_click`, { surveyId, ref });
+    fa.logEvent(`${surveyId}_response_home_bizprofile_click`, { ref });
     window.location.href = profileUrl;
   };
   const shortenRegin = region.split(' ');
   return (
-    <StyledBizProfile onClick={handleClickProfile}>
-      <div className="biz_profile_left">
-        <BizProfileImg src={imageUrl} />
-        <div className="biz_profile_left_text">
-          <BizProfileTitle>
-            {`${shortenRegin[shortenRegin.length - 2]} ${
-              shortenRegin[shortenRegin.length - 1]
-            }`}{' '}
-            <Dot /> {bizCategory}
-          </BizProfileTitle>
-          <BizProfileSubtitle>{name}</BizProfileSubtitle>
-        </div>
+    <StyledBizProfile coverImageUrls={Boolean(coverImageUrls)}>
+      <BizProfileImg src={imageUrl} onClick={handleClickProfile} />
+      <div className="biz_profile_left_text">
+        <BizProfileTitle>
+          {`${shortenRegin[shortenRegin.length - 2]} ${
+            shortenRegin[shortenRegin.length - 1]
+          }`}{' '}
+          <Dot /> {bizCategory}
+        </BizProfileTitle>
+        <BizProfileSubtitle>{name}</BizProfileSubtitle>
       </div>
-      <ArrowRight />
     </StyledBizProfile>
   );
 }

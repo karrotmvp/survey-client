@@ -37,10 +37,10 @@ const StyledAggregationChoiceList = styled.ul`
 
 export default function AggregationChoiceList({
   choices,
-  answer,
+  answers,
 }: {
   choices: choiceType[] | undefined;
-  answer?: string;
+  answers?: { value: string }[];
 }): JSX.Element {
   return (
     <StyledAggregationChoiceList>
@@ -49,9 +49,13 @@ export default function AggregationChoiceList({
           <StyledQuestionChoice key={idx}>
             <div
               className="choice_circle_Icon"
-              aria-checked={answer !== undefined && answer === value}
+              aria-checked={
+                answers !== undefined &&
+                answers.some(answer => answer.value === value)
+              }
             >
-              {answer !== undefined && answer === value ? (
+              {answers !== undefined &&
+              answers.some(answer => answer.value === value) ? (
                 <CheckedChoiceCircleIcon />
               ) : (
                 <ChoiceCircleIcon />

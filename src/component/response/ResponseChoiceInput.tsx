@@ -36,21 +36,21 @@ export default function ResponseChoiceInput({
   const questionNumber = Number.isNaN(+questionTypes) ? 1 : +questionTypes;
   const response = useRecoilValue(responseListAtom);
 
-  const initialId = response[questionNumber - 1]
-    ? response[questionNumber - 1].choiceId || -1
-    : -1;
+  const initialChoice = response[questionNumber - 1]
+    ? response[questionNumber - 1].value || ''
+    : '';
 
-  const [selectedChoiceId, setChoiceId] = useState(initialId);
+  const [selectedChoice, setChoice] = useState(initialChoice);
 
   const handleNextClick = () => {
-    setResponse({ choiceId: selectedChoiceId });
+    setResponse({ value: selectedChoice });
   };
   const history = useHistory();
 
   useEffect(() => {
     const unblock = history.block((location, action) => {
       if (action === 'POP' && isLast) {
-        setResponse({ choiceId: selectedChoiceId });
+        setResponse({ value: selectedChoice });
       }
       return undefined;
     });
@@ -62,12 +62,10 @@ export default function ResponseChoiceInput({
   }, [history]);
   return (
     <StyledTextInput>
-      <ResponseChoiceList
-        {...{ questionChoice, setChoiceId, selectedChoiceId }}
-      />
+      <ResponseChoiceList {...{ questionChoice, setChoice, selectedChoice }} />
       <div className="button_wrapper">
         <ResponseNextButton
-          disable={selectedChoiceId === -1}
+          disable={selectedChoice === ''}
           {...{ handleNextClick, isLast }}
         />
       </div>

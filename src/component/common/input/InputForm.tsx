@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef } from 'react';
+import { ChangeEvent, FocusEvent, useCallback, useEffect, useRef } from 'react';
 
 import styled from '@emotion/styled';
 import {
@@ -51,8 +51,8 @@ export type RegisterOptions = Partial<{
   required: Message | ValidationRule<boolean>;
   min: ValidationRule<number | string>;
   max: ValidationRule<number | string>;
-  maxLength: ValidationRule<number | string>;
-  minLength: ValidationRule<number | string>;
+  maxLength: ValidationRule<number>;
+  minLength: ValidationRule<number>;
   pattern: ValidationRule<RegExp>;
 }>;
 
@@ -66,6 +66,7 @@ export default function InputForm({
   config,
   maxLength,
   handleFocus,
+  Blur,
 }: InputType & {
   path: FieldPath<submitType>;
   row: number;
@@ -73,11 +74,19 @@ export default function InputForm({
   warning?: boolean;
   maxLength?: number;
   config?: RegisterOptions;
-  handleFocus?: () => void;
+  handleFocus?: (e: FocusEvent<HTMLTextAreaElement>) => void;
+  Blur?: (e: ChangeEvent<HTMLTextAreaElement>) => void;
   register: UseFormRegister<submitType>;
 }): JSX.Element {
   const textRef = useRef<HTMLTextAreaElement | null>(null);
-  const { ref, ...rest } = register(path, config);
+  const { ref, onBlur, ...rest } = register(path, config);
+  const handleBlur = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    onBlur(e);
+    if (Blur) {
+      Blur(e);
+    }
+  };
+
   useEffect(() => {
     if (textRef === null || textRef.current === null) {
       return;
@@ -110,6 +119,7 @@ export default function InputForm({
       onFocus={handleFocus}
       placeholder={placeholder}
       warning={warning}
+      onBlur={handleBlur}
       {...rest}
       maxLength={maxLength}
       ref={e => {

@@ -13,28 +13,28 @@ const StyledResponseChoiceList = styled.ul`
 
 type ResponseChoiceListType = {
   questionChoice: choiceType[];
-  setChoiceId: React.Dispatch<React.SetStateAction<number>>;
-  selectedChoiceId: number;
+  setChoice: React.Dispatch<React.SetStateAction<string>>;
+  selectedChoice: string;
 };
 
 export default function ResponseChoiceList({
   questionChoice,
-  setChoiceId,
-  selectedChoiceId,
+  setChoice,
+  selectedChoice,
 }: ResponseChoiceListType): JSX.Element {
   const handleClick = (e: React.MouseEvent<HTMLLIElement>) => {
-    const selectId = e.currentTarget.dataset.list || '-1';
-    if (+selectId === selectedChoiceId) setChoiceId(-1);
-    else setChoiceId(+selectId);
+    const selectId = e.currentTarget.dataset.list || '';
+    if (selectId === selectedChoice) setChoice('');
+    else setChoice(selectId);
   };
 
   return (
     <StyledResponseChoiceList>
       {questionChoice &&
-        questionChoice.map(({ value, choiceId }) => (
+        questionChoice.map(({ value }, idx) => (
           <ResponseChoiceItem
-            key={choiceId}
-            {...{ selectedChoiceId, value, choiceId, handleClick }}
+            key={idx}
+            {...{ selectedChoice, value, handleClick }}
           />
         ))}
     </StyledResponseChoiceList>

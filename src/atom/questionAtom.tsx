@@ -4,7 +4,6 @@ import { userSelector } from './userAtom';
 // post 보내는 것과 get 받는 것의 type 이 다르다.
 export type choiceType = {
   value: string;
-  choiceId?: number;
 };
 
 export type questionAtomType = {
@@ -81,7 +80,7 @@ const questionFeedBack = atom<questionFeedBackType>({
 
 const questionTarget = atom<number>({
   key: 'questionTarget',
-  default: -1,
+  default: 1,
 });
 
 const questionSelector = selector({
@@ -102,7 +101,19 @@ const questionSelector = selector({
   },
 });
 
+const questionTitleModalOpen = atom({
+  key: 'questionTitleModalOpen',
+  default: false,
+});
+
+const focusAtom = atom({
+  key: 'focusAtom',
+  default: false,
+});
+
 export {
+  focusAtom,
+  questionTitleModalOpen,
   questionSelector,
   questionAtom,
   questionFeedBack,

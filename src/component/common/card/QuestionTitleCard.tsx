@@ -6,8 +6,10 @@ import {
   UseFormRegister,
   UseFormWatch,
 } from 'react-hook-form';
+import { useRecoilState } from 'recoil';
 
 import { useAnalytics } from '@src/analytics/faContext';
+import { questionTitleModalOpen } from '@src/atom/questionAtom';
 import { questionCardType, submitType } from '@src/page/QuestionPage';
 
 import InputForm from '../input/InputForm';
@@ -29,7 +31,7 @@ export default function QuestionTitleCard({
   register,
   watch,
 }: QuestionTitleCardType): JSX.Element {
-  const [isPopupOpen, setPopup] = useState(false);
+  const [isPopupOpen, setPopup] = useRecoilState(questionTitleModalOpen);
   const [isPopupClose, setPopupClose] = useState(false);
   const [isOpen, setOpen] = useState(false);
   const title = watch('title');
@@ -71,12 +73,6 @@ export default function QuestionTitleCard({
     }
   }, [isPopupClose, isPopupOpen]);
 
-  const ExampleBizImg = styled.img`
-    position: absolute;
-    right: 0rem;
-    top: 100px;
-    width: 21rem;
-  `;
   return (
     <>
       <StyledQuestionTitleCard>
@@ -116,6 +112,7 @@ export default function QuestionTitleCard({
               <InputForm
                 register={register}
                 path={`title`}
+                key={'title'}
                 placeholder={
                   '이웃들이 설문 목적을 알 수 있도록 설문 제목을 적어주세요'
                 }
@@ -125,8 +122,8 @@ export default function QuestionTitleCard({
                 config={{ required: true, maxLength: 30 }}
               />
               <h3 className="example_title_name">예시</h3>
-              {example.map(text => (
-                <ExampleText {...text} />
+              {example.map((text, idx) => (
+                <ExampleText key={idx} {...text} />
               ))}
             </section>
             <section className="title_modal_section_button">
@@ -169,6 +166,14 @@ const ExampleDot = styled.div`
   background-color: #c4c4c4;
   border-radius: 50%;
 `;
+
+const ExampleBizImg = styled.img`
+  position: absolute;
+  right: 0rem;
+  top: 100px;
+  width: 21rem;
+`;
+
 const StyledExampleText = styled.div`
   display: flex;
   flex-direction: column;
@@ -188,6 +193,7 @@ const StyledExampleText = styled.div`
   }
   margin: 1rem 0;
 `;
+
 const example = [
   { title: '의견 조사', subtitle: '밀키트 구입에 대한 의견을 듣고 싶어요' },
   { title: '신메뉴/서비스 추천', subtitle: 'OO떡볶이 신메뉴를 추천받아요' },
@@ -286,6 +292,7 @@ const TitleCover = styled.div`
 
 const StyledQuestionTitleCard = styled.div`
   width: 100%;
+  margin-top: 8rem;
   background-color: #ffff;
   display: flex;
   flex-direction: column;

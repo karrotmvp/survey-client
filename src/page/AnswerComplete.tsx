@@ -1,7 +1,11 @@
 import { useEffect } from 'react';
 
 import styled from '@emotion/styled';
-import { useNavigator, useParams } from '@karrotframe/navigator';
+import {
+  useNavigator,
+  useParams,
+  useQueryParams,
+} from '@karrotframe/navigator';
 import { useHistory } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 
@@ -10,6 +14,7 @@ import mini from '@src/api/mini';
 import { responseUserAtom } from '@src/atom/responseAtom';
 import LoginButton from '@src/component/common/button/LogInButton';
 import NavBar from '@src/component/common/navbar/NavBar';
+import { useResponseShowEvent } from '@src/hook/useShowEvent';
 
 export default function AnswerComplete(): JSX.Element {
   const history = useHistory();
@@ -19,13 +24,9 @@ export default function AnswerComplete(): JSX.Element {
 
   const fa = useAnalytics();
   const bizProfile = useRecoilValue(responseUserAtom);
-
-  useEffect(() => {
-    fa.logEvent(`response_complete_page_show`, {
-      surveyId,
-    });
-    fa.logEvent(`${surveyId}_response_complete_page_show`);
-  }, []);
+  const query = useQueryParams<{ ref?: string }>();
+  const ref = query.ref || 'app';
+  useResponseShowEvent(`response_complete_page_show`, surveyId, ref);
 
   useEffect(() => {
     const unblock = history.block((location, action) => {
@@ -47,8 +48,9 @@ export default function AnswerComplete(): JSX.Element {
     }
     fa.logEvent(`response_complete_bizprofile_click`, {
       surveyId,
+      ref,
     });
-    fa.logEvent(`${surveyId}_response_complete_bizprofile_click`);
+    fa.logEvent(`${surveyId}_response_complete_bizprofile_click`, { ref });
     window.location.href = bizProfile.profileUrl;
   };
 
@@ -71,7 +73,7 @@ export default function AnswerComplete(): JSX.Element {
         />
         <BizProfileVisit
           onClick={() => {
-            push('/feedback');
+            push(`/feedback?ref=${ref}`);
           }}
         >
           무따 서비스 피드백 남기기

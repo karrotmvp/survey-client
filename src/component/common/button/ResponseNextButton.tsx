@@ -1,7 +1,11 @@
 import { useEffect, useState } from 'react';
 
 import styled from '@emotion/styled';
-import { useNavigator, useParams } from '@karrotframe/navigator';
+import {
+  useNavigator,
+  useParams,
+  useQueryParams,
+} from '@karrotframe/navigator';
 import { useRecoilValue } from 'recoil';
 
 import { useAnalytics } from '@src/analytics/faContext';
@@ -29,6 +33,11 @@ type ResponseNextButton = {
   handleNextClick: (e: React.MouseEvent) => void;
 };
 
+type responsePostBodyType = {
+  surveyId: number;
+  answers: { questionId: number; value: string }[];
+};
+
 export default function ResponseNextButton({
   isLast,
   handleNextClick,
@@ -38,34 +47,38 @@ export default function ResponseNextButton({
     useParams<{ surveyId?: string; questionNumber?: string }>();
   if (!surveyId) throw new Error('questionNumber or surveyId none');
   const fa = useAnalytics();
-  const responsePost = useSubmit('/responses');
+  const responsePost = useSubmit<responsePostBodyType>('/mongo/responses');
   const { push } = useNavigator();
   const responseState = useRecoilValue(responseListAtom);
   const question = useRecoilValue(questionListAtom);
   const [isSubmit, setSubmit] = useState(false);
+  const query = useQueryParams<{ ref?: string }>();
+  const ref = query.ref || 'app';
+
   const handleLastClick = (e: React.MouseEvent) => {
     fa.logEvent(`response_question_complete_button_click`, {
       surveyId,
+      ref,
     });
-    fa.logEvent(`${surveyId}_response_question_complete_button_click`);
+    fa.logEvent(`${surveyId}_response_question_complete_button_click`, { ref });
     setSubmit(true);
     handleNextClick(e);
   };
 
   useEffect(() => {
     if (isSubmit && responseState.length === question.length) {
-      const responses = question.map(({ questionType, questionId }, idx) => ({
-        questionType,
-        questionId,
-        ...responseState[idx],
+      const answers = question.map(({ questionId }, idx) => ({
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        questionId: questionId!,
+        value: responseState[idx].value,
       }));
 
       responsePost({
         surveyId: +surveyId,
-        responses,
+        answers,
       });
       setSubmit(false);
-      push(`/survey/${surveyId}/complete`);
+      push(`/survey/${surveyId}/complete?ref=${ref}`);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isSubmit, responseState]);

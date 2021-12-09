@@ -3,42 +3,34 @@ import { useNavigator } from '@karrotframe/navigator';
 
 import { useAnalytics } from '@src/analytics/faContext';
 
-import {
-  aggregationCardType,
-  answersChoiceType,
-  answersTextType,
-} from './AggregationBrief';
+import { aggregationCardType } from './AggregationBrief';
 import AggregationBriefChoice from './AggregationBriefChoice';
 import AggregationBriefTextList from './AggregationBriefTextList';
 
+export type answerTextType = {
+  value: string;
+  responseId: number;
+};
+
+export type answerChoiceType = {
+  value: string;
+  count: number;
+};
+
 export default function AggregationBriefCard({
-  questionId,
-  order,
   question,
   questionType,
   answers,
   showAll,
   setTabKey,
+  order,
 }: aggregationCardType & {
   showAll?: boolean;
   setTabKey?: React.Dispatch<React.SetStateAction<string>>;
+  order: number;
 }): JSX.Element {
   const { push } = useNavigator();
   const fa = useAnalytics();
-  const typeTextAnswer = (
-    ans: answersTextType | answersChoiceType,
-  ): answersTextType => {
-    if (ans.surveyResponseId !== undefined && ans.answer !== undefined) {
-      return {
-        answer: ans.answer,
-        surveyResponseId: ans.surveyResponseId,
-      };
-    }
-    return {
-      answer: '',
-      surveyResponseId: 0,
-    };
-  };
 
   const handleClick = async () => {
     const surveyId = window.location.hash.split('/')[3].split('?')[0];
@@ -50,35 +42,20 @@ export default function AggregationBriefCard({
     }
   };
 
-  const typeChoiceAnswer = (
-    ans: answersTextType | answersChoiceType,
-  ): answersChoiceType => {
-    if (ans.count !== undefined && ans.value !== undefined) {
-      return {
-        value: ans.value,
-        count: ans.count,
-      };
-    }
-    return {
-      value: '',
-      count: 0,
-    };
-  };
-
   return (
     <StyledAggregationCard>
       <h3 className="aggregation_card_title">질문 {order + 1}</h3>
       <span className="aggregation_card_text">{question}</span>
-      {questionType === 2 && answers[0].answer !== undefined ? (
+      {questionType === 2 ? (
         <AggregationBriefTextList
           setTabKey={setTabKey}
-          answers={answers.map(ans => typeTextAnswer(ans))}
+          answers={answers.map(ans => ans as answerTextType)}
           showAll={showAll}
         />
       ) : (
         <AggregationBriefChoice
           showAll={showAll}
-          answers={answers.map(ans => typeChoiceAnswer(ans))}
+          answers={answers.map(ans => ans as answerChoiceType)}
         />
       )}
       {!showAll && (

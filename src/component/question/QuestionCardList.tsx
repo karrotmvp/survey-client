@@ -1,6 +1,7 @@
 import { MouseEvent, useEffect, useState } from 'react';
 
 import styled from '@emotion/styled';
+import { useNavigator } from '@karrotframe/navigator';
 import {
   Control,
   useFieldArray,
@@ -9,11 +10,13 @@ import {
   UseFormUnregister,
   UseFormWatch,
 } from 'react-hook-form';
+import { useRecoilValue } from 'recoil';
 
 import QuestionCard from '@component/common/card/QuestionCard';
 import AlertToastModal from '@component/common/modal/TostModal';
 import { ReactComponent as PlusIcon } from '@config/icon/plus.svg';
-import { log } from '@src/config/utils/util';
+import { useAnalytics } from '@src/analytics/faContext';
+import { focusAtom } from '@src/atom/questionAtom';
 import { errorsType, questionCheck, submitType } from '@src/page/QuestionPage';
 
 import QuestionTitleCard from '../common/card/QuestionTitleCard';
@@ -43,9 +46,11 @@ export default function QuestionCardList({
     name: 'questions',
   });
   const questionList = watch('questions');
-
+  const fa = useAnalytics();
+  const { push } = useNavigator();
+  const isFocus = useRecoilValue(focusAtom);
   const handleAddQuestionButton = (e: MouseEvent) => {
-    log(questionList);
+    fa.logEvent('question_add_button_click');
     if ((e.currentTarget as HTMLButtonElement).ariaDisabled === 'true') {
       setContentToastOpen(true);
     } else if (questionList.length < 3) {
@@ -119,12 +124,76 @@ export default function QuestionCardList({
         )}
       </QuestionButtons>
       )
+      {fields.length > 0 && (
+        <QuestionBottomBar isFocus={isFocus}>
+          <span>설문 예시가 떠오르지 않나요?</span>
+          <ExampleButton
+            type="button"
+            onClick={() => {
+              fa.logEvent('question_example_button_click');
+              push('/guide');
+            }}
+          >
+            설문 예시 보기
+          </ExampleButton>
+        </QuestionBottomBar>
+      )}
     </>
   );
 }
 
+const ExampleButton = styled.button`
+  background-color: #fff;
+  color: ${({ theme }) => theme.color.primaryOrange};
+  font-size: 1.3rem;
+  padding: 0.8rem 1rem;
+  border-radius: 18px;
+  font-weight: ${({ theme }) => theme.fontWeight.medium};
+`;
+
+const QuestionBottomBar = styled.div<{ isFocus: boolean }>`
+  @keyframes up {
+    from {
+      transform: translateY(+100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+  @keyframes down {
+    from {
+      transform: translateY(0);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(+100%);
+      opacity: 0;
+    }
+  }
+  width: 100%;
+  padding: 0.9rem 1.6rem;
+  height: 4.7rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #fedecc;
+  position: fixed;
+  bottom: 0;
+  animation: ${({ isFocus }) =>
+    isFocus ? `down 0.1s ease-in` : `up 0.4s ease-out`};
+  animation-fill-mode: ${({ isFocus }) => (isFocus ? `forwards` : `backwards`)};
+  -webkit-transform: translate3d(0, 0, 0);
+  span {
+    font-size: 1.3rem;
+    font-weight: ${({ theme }) => theme.fontWeight.medium};
+    color: #707070;
+  }
+`;
+
 const QuestionButtons = styled.div`
-  padding: 0 1.6rem;
+  padding: 0 1.6rem 5rem 1.6rem;
 `;
 
 const AddQuestionButton = styled.button`

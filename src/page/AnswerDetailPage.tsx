@@ -1,21 +1,22 @@
-import { useEffect } from 'react';
-
 import styled from '@emotion/styled';
-import { useNavigator, useParams } from '@karrotframe/navigator';
+import {
+  useNavigator,
+  useParams,
+  useQueryParams,
+} from '@karrotframe/navigator';
 import { useRecoilState, useRecoilValue } from 'recoil';
 
 import ResponseTextInput from '@component/response/ResponseTextInput';
 import { useAnalytics } from '@src/analytics/faContext';
 import { questionListAtom } from '@src/atom/questionAtom';
-import { responseListAtom } from '@src/atom/responseAtom';
+import { responseListAtom, responseType } from '@src/atom/responseAtom';
 import NavBar from '@src/component/common/navbar/NavBar';
 import QuestionDot from '@src/component/questionDetail/QuestionDot';
 import ResponseChoiceInput from '@src/component/response/ResponseChoiceInput';
+import { useResponseShowEvent } from '@src/hook/useShowEvent';
 
 export type InputType = {
-  setResponse: (
-    responseInput: { choiceId: number } | { answer: string },
-  ) => void;
+  setResponse: (responseInput: responseType) => void;
   isLast: boolean;
 };
 
@@ -35,10 +36,14 @@ export default function AnswerDetailPage(): JSX.Element {
   const [response, setResponseState] = useRecoilState(responseListAtom);
 
   const { push } = useNavigator();
-
-  const setResponse = (
-    responseInput: { choiceId: number } | { answer: string },
-  ) => {
+  const query = useQueryParams<{ ref?: string }>();
+  const ref = query.ref || 'app';
+  useResponseShowEvent(
+    `response_question_${questionNumber}_show`,
+    surveyId,
+    ref,
+  );
+  const setResponse = (responseInput: responseType) => {
     const newRes = [
       ...response.slice(0, +questionNumber - 1),
       responseInput,
@@ -49,23 +54,15 @@ export default function AnswerDetailPage(): JSX.Element {
     if (!isLast) {
       fa.logEvent(`response_question_${questionNumber}_next_button_click`, {
         surveyId,
+        ref,
       });
       fa.logEvent(
         `${surveyId}_response_question_${questionNumber}_next_button_click`,
+        { ref },
       );
-      push(`/survey/${surveyId}/${+questionNumber + 1}`);
+      push(`/survey/${surveyId}/${+questionNumber + 1}?ref=${ref}`);
     }
   };
-
-  useEffect(() => {
-    fa.logEvent(`response_question_${questionNumber}_show`, {
-      surveyId,
-      questionLength,
-    });
-    fa.logEvent(`${surveyId}_response_question_${questionNumber}_show`, {
-      questionLength,
-    });
-  }, []);
 
   return (
     <>

@@ -5,40 +5,17 @@ import { TitleViewAtom } from '@src/atom/responseAtom';
 
 import AggregationBriefCard from './AggregationBriefCard';
 
-export type answersChoiceType = {
-  answer?: string;
-  surveyResponseId?: number;
-  value: string;
-  count: number;
+export type answersType = {
+  [key: string]: string | number;
 };
 
-export type answersTextType = {
-  answer: string;
-  surveyResponseId: number;
-  value?: string;
-  count?: number;
+export type aggregationCardType = {
+  answers: answersType[];
+  question: string;
+  questionType: 2 | 3;
 };
 
-export type aggregationCardType =
-  | {
-      answers: answersTextType[];
-      order: number;
-      question: string;
-      questionId: number;
-      questionType: 2;
-    }
-  | {
-      answers: answersChoiceType[];
-      order: number;
-      question: string;
-      questionId: number;
-      questionType: 3;
-    };
-
-export type aggregationBriefType = {
-  surveyId: number;
-  questionAggregations: aggregationCardType[];
-};
+export type aggregationBriefType = aggregationCardType[];
 
 export default function AggregationBrief({
   questionAggregations,
@@ -50,13 +27,15 @@ export default function AggregationBrief({
   const isTitleView = useRecoilValue(TitleViewAtom);
   return (
     <StyledAggregationBrief isTitleView={isTitleView}>
-      {questionAggregations.map(data => (
-        <AggregationBriefCard
-          setTabKey={setTabKey}
-          key={data.questionId}
-          {...data}
-        />
-      ))}
+      {questionAggregations &&
+        questionAggregations.map((data, idx) => (
+          <AggregationBriefCard
+            setTabKey={setTabKey}
+            key={idx}
+            order={idx}
+            {...data}
+          />
+        ))}
     </StyledAggregationBrief>
   );
 }

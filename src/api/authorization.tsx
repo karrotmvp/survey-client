@@ -1,8 +1,10 @@
+/* eslint-disable consistent-return */
 import axios, { AxiosResponse } from 'axios';
 import { atom, selector } from 'recoil';
 
 import { aggregationBriefType } from '@src/component/aggregation/AggregationBrief';
 import { questionDataType } from '@src/page/AnswerHome';
+import { surveyItemType } from '@src/page/SurveyHome';
 
 const bizCodeAtom = atom({
   key: 'bizCodeAtom',
@@ -45,6 +47,7 @@ type userType = {
     role: string;
     region: string;
     profileUrl: string;
+    followersCount: number;
   };
 };
 const getBizprofile = selector({
@@ -71,6 +74,36 @@ const getBizprofile = selector({
   },
 });
 
+const surveyListTrigger = atom({
+  key: 'surveyListTrigger',
+  default: 0,
+});
+
+const getSurveyList = selector({
+  key: 'getSurveyList',
+  get: async ({ get }) => {
+    get(surveyListTrigger);
+    const jwt = await get(authorizationBizSelector);
+    const token = jwt.data;
+    axios.defaults.baseURL = process.env.REACT_APP_API_URL;
+
+    const Authorization = 'X-AUTH-TOKEN';
+    if (!token) return;
+    axios.defaults.headers.common[Authorization] = token;
+    try {
+      const data: AxiosResponse<{ data: surveyItemType[] }> = await axios.get<{
+        data: surveyItemType[];
+      }>(`mongo/surveys`);
+
+      if (data.data.data === undefined) return [];
+      return data.data.data;
+    } catch (e) {
+      // eslint-disable-next-line no-console
+      console.error(e);
+    }
+  },
+});
+
 const surveyIdAtom = atom({
   key: 'surveyIdAtom',
   default: '',
@@ -90,13 +123,45 @@ const getBizSurveyList = selector({
     try {
       const data: AxiosResponse<{ data: questionDataType }> = await axios.get<{
         data: questionDataType;
-      }>(`/surveys/${surveyId}`);
+      }>(`/mongo/surveys/${surveyId}`);
 
       return data.data.data;
     } catch (e) {
       // eslint-disable-next-line no-console
       console.error(e);
       return '';
+    }
+  },
+});
+
+type getBriefUrlsType = {
+  shortUrl: string;
+  originUrl: string;
+};
+
+const getBriefUrls = selector({
+  key: 'getBriefUrls',
+  // eslint-disable-next-line consistent-return
+  get: async ({ get }) => {
+    const jwt = await get(authorizationBizSelector);
+    const surveyId = get(surveyIdAtom);
+    const token = jwt.data;
+    axios.defaults.baseURL = process.env.REACT_APP_API_URL;
+
+    const Authorization = 'X-AUTH-TOKEN';
+    if (!token) return;
+    if (!surveyId) return;
+    axios.defaults.headers.common[Authorization] = token;
+    try {
+      const data: AxiosResponse<{ data: getBriefUrlsType }> = await axios.get<{
+        data: getBriefUrlsType;
+      }>(`/url/surveys/${surveyId}`);
+
+      // eslint-disable-next-line consistent-return
+      return data.data.data;
+    } catch (e) {
+      // eslint-disable-next-line no-console
+      console.error(e);
     }
   },
 });
@@ -116,7 +181,7 @@ const getAggregationBrief = selector({
       const data: AxiosResponse<{ data: aggregationBriefType }> =
         await axios.get<{
           data: aggregationBriefType;
-        }>(`/aggregation/${surveyId}`);
+        }>(`mongo/aggregate/surveys/${surveyId}`);
 
       return data.data.data;
     } catch (e) {
@@ -156,6 +221,9 @@ const authorizationSelector = selector({
 });
 
 export {
+  getSurveyList,
+  surveyListTrigger,
+  getBriefUrls,
   surveyIdAtom,
   getBizSurveyList,
   authorizationBizSelector,

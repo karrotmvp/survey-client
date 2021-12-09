@@ -5,14 +5,14 @@ import { useSetRecoilState } from 'recoil';
 import { useAnalytics } from '@src/analytics/faContext';
 import { responseIndividualAtom } from '@src/atom/responseAtom';
 
-import { answersTextType } from './AggregationBrief';
+import { answerTextType } from './AggregationBriefCard';
 
 export default function AggregationBriefTextList({
   answers,
   showAll,
   setTabKey,
 }: {
-  answers: answersTextType[];
+  answers: answerTextType[];
   showAll?: boolean;
   setTabKey?: React.Dispatch<React.SetStateAction<string>>;
 }): JSX.Element {
@@ -21,9 +21,9 @@ export default function AggregationBriefTextList({
   const fa = useAnalytics();
   return (
     <TextList showAll={showAll}>
-      {answers.map(({ answer, surveyResponseId }, idx) => (
+      {answers.map(({ responseId, value }, idx) => (
         <TextItem
-          key={surveyResponseId}
+          key={responseId}
           onClick={() => {
             setResponseId(idx);
             if (setTabKey) {
@@ -37,7 +37,7 @@ export default function AggregationBriefTextList({
           }}
         >
           <span className="answers_text_title">{`익명 ${idx + 1}`}</span>
-          <span className="answers_text_subtitle">{answer}</span>
+          <span className="answers_text_subtitle">{value}</span>
         </TextItem>
       ))}
     </TextList>

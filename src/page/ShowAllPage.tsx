@@ -33,8 +33,7 @@ export default function ShowAllPage(): JSX.Element {
           <NavBar
             type="BACK"
             title={
-              question.contents.questionAggregations[+questionNumber]
-                .questionType === 2
+              question.contents[+questionNumber].questionType === 2
                 ? '주관식 답변'
                 : '객관식 답변'
             }
@@ -42,7 +41,8 @@ export default function ShowAllPage(): JSX.Element {
           <div style={{ marginBottom: '8rem' }}>
             <AggregationBriefCard
               showAll
-              {...question.contents.questionAggregations[+questionNumber]}
+              order={+questionNumber}
+              {...question.contents[+questionNumber]}
             />
           </div>{' '}
         </>

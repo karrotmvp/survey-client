@@ -19,7 +19,11 @@ type answerBriefType = {
   count: number;
   responseIds: number[];
 };
-function AggregationTabs(): JSX.Element {
+function AggregationTabs({
+  handleShareClick,
+}: {
+  handleShareClick: () => void;
+}): JSX.Element {
   const { surveyId } =
     useParams<{ surveyId?: string; questionNumber?: string }>();
   if (!surveyId) throw new Error('surveyId none');
@@ -29,7 +33,7 @@ function AggregationTabs(): JSX.Element {
   const initialTab = individual ? 'tab_2' : 'tab_1';
   const [activeTabKey, setActiveTabKey] = useState<string>(initialTab);
   const answerBrief = useLoadableGet<answerBriefType>(
-    `/aggregation/${surveyId}/responses/brief`,
+    `/mongo/surveys/${surveyId}/responses/brief`,
   );
   const setResponseId = useSetRecoilState(responseIndividualAtom);
   const fa = useAnalytics();
@@ -70,7 +74,7 @@ function AggregationTabs(): JSX.Element {
                 </AnswerTab>
               </>
             ),
-            render: WithAnswerTab(answerBrief),
+            render: WithAnswerTab(answerBrief, handleShareClick),
           },
         ]}
         onTabChange={key => {
@@ -94,10 +98,26 @@ const WithQuestionTab = (getSurveyList: Loadable<'' | questionDataType>) => {
   return () => <LoadingCard count={2} />;
 };
 
-const WithAnswerTab = (answerBrief: StateType<answerBriefType>) => {
+const WithAnswerTab = (
+  answerBrief: StateType<answerBriefType>,
+  handleShareClick: () => void,
+) => {
   if (answerBrief.isSuccess && answerBrief.data !== undefined) {
     const { responseIds } = answerBrief.data;
-    if (responseIds.length === 0) return () => <StyleNoAnswer></StyleNoAnswer>;
+    if (responseIds.length === 0)
+      return () => (
+        <StyleNoAnswer>
+          <span className="no_answer_text">
+            아직 답변이 없어요!
+            <br />
+            <b>비즈프로필 소식</b>이나 <b>SNS에 공유</b> 하고 <br />
+            답변을 받아보세요
+          </span>
+          <button className="no_answer_share_button" onClick={handleShareClick}>
+            공유하기
+          </button>
+        </StyleNoAnswer>
+      );
     return () => <MemoAggregationAnswer responseIds={responseIds} />;
   }
   return () => <LoadingCard count={2} />;
@@ -107,6 +127,28 @@ const StyleNoAnswer = styled.div`
   background-color: #f8f8f8;
   width: 100%;
   height: 100%;
+  display: flex;
+  padding-top: 40%;
+  flex-direction: column;
+  align-items: center;
+  .no_answer_text {
+    line-height: 140%;
+    text-align: center;
+    color: #8b8b8b;
+    font-size: 1.5rem;
+    font-weight: ${({ theme }) => theme.fontWeight.regular};
+    display: block;
+    margin-bottom: 2.4rem;
+  }
+  .no_answer_share_button {
+    width: 27.6rem;
+    background-color: ${({ theme }) => theme.color.primaryOrange};
+    border-radius: 0.8rem;
+    padding: 1.6rem;
+    font-size: 1.6rem;
+    color: #ffff;
+    font-weight: ${({ theme }) => theme.fontWeight.medium};
+  }
 `;
 
 const TabsWrapper = styled.div`
