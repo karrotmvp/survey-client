@@ -108,6 +108,7 @@ export default function AnswerHome(): JSX.Element {
   }, [briefData]);
 
   useEffect(() => {
+    console.log(document.referrer);
     fa.setUserId(uuidv4());
     fa.setUserProperties({ ref, surveyId });
     (async function getCode() {
