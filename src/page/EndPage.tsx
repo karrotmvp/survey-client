@@ -113,7 +113,7 @@ export default function EndPage(): JSX.Element {
     ) {
       mini.share({
         url: url.contents.shortUrl,
-        text: `${userData.contents.name} 사장님이 설문을 만드셨어요! \n 여러분의 의견이 매장 개선에 큰 도움이 돼요 😊 \n (당근 마켓 어플이 있어야 답변하실 수 있어요)`,
+        text: `${userData.contents.name} 사장님이 설문을 만드셨어요! \n여러분의 의견이 매장 개선에 큰 도움이 돼요 😊 \n \n(당근 마켓 어플이 있어야 답변하실 수 있어요)\n`,
       });
     }
   };
