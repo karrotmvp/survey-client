@@ -26,7 +26,7 @@ type questionCardType = {
 type responsesType = {
   question: questionCardType;
   questionId: number;
-  answer: { [key: string]: string }[];
+  answer: { value: string }[];
 };
 
 export default function AggregationIndividual({

@@ -50,7 +50,7 @@ export default function AggregationCard({
   isLast,
 }: questionCardType & {
   questionIdx: number;
-  response?: { [key: string]: string }[];
+  response?: { value: string }[];
   isLast?: boolean;
 }): JSX.Element {
   return (
@@ -66,13 +66,10 @@ export default function AggregationCard({
       {response &&
         (questionType === 2 ? (
           <StyledQuestionInputResponse>
-            {response[0].text}
+            {response[0].value}
           </StyledQuestionInputResponse>
         ) : (
-          <AggregationChoiceList
-            {...{ choices }}
-            answer={response as { choice: string }[]}
-          />
+          <AggregationChoiceList {...{ choices }} answers={response} />
         ))}
     </StyledAggregationCard>
   );
