@@ -14,6 +14,8 @@ import theme from './config/style/theme';
 import Router from './router/Router';
 
 function App(): JSX.Element {
+  // eslint-disable-next-line no-alert
+  alert(document.referrer);
   return (
     <AnalyticsContext.Provider value={fa}>
       <ThemeProvider theme={theme}>
