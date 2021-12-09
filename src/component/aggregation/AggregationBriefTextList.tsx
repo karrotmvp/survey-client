@@ -21,7 +21,7 @@ export default function AggregationBriefTextList({
   const fa = useAnalytics();
   return (
     <TextList showAll={showAll}>
-      {answers.map(({ responseId, text }, idx) => (
+      {answers.map(({ responseId, value }, idx) => (
         <TextItem
           key={responseId}
           onClick={() => {
@@ -37,7 +37,7 @@ export default function AggregationBriefTextList({
           }}
         >
           <span className="answers_text_title">{`익명 ${idx + 1}`}</span>
-          <span className="answers_text_subtitle">{text}</span>
+          <span className="answers_text_subtitle">{value}</span>
         </TextItem>
       ))}
     </TextList>

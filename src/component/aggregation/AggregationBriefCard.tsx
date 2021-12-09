@@ -8,12 +8,12 @@ import AggregationBriefChoice from './AggregationBriefChoice';
 import AggregationBriefTextList from './AggregationBriefTextList';
 
 export type answerTextType = {
+  value: string;
   responseId: number;
-  text: string;
 };
 
 export type answerChoiceType = {
-  choice: string;
+  value: string;
   count: number;
 };
 
