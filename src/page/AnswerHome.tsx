@@ -67,10 +67,10 @@ export default function AnswerHome(): JSX.Element {
   const setQuestion = useSetRecoilState(questionListAtom);
   const fa = useAnalytics();
 
-  const getSurveyData = useGet<questionDataType>(`mongo/survey/${surveyId}`);
+  const getSurveyData = useGet<questionDataType>(`mongo/surveys/${surveyId}`);
 
   const getSurveyBrief = useGet<surveyBriefType>(
-    `/mongo/brief/${surveyId}`,
+    `/mongo/surveys/brief/${surveyId}`,
     true,
   );
 

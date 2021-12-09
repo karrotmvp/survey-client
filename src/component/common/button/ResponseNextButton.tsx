@@ -42,7 +42,7 @@ export default function ResponseNextButton({
     useParams<{ surveyId?: string; questionNumber?: string }>();
   if (!surveyId) throw new Error('questionNumber or surveyId none');
   const fa = useAnalytics();
-  const responsePost = useSubmit('/mongo/response');
+  const responsePost = useSubmit('/mongo/responses');
   const { push } = useNavigator();
   const responseState = useRecoilValue(responseListAtom);
   const question = useRecoilValue(questionListAtom);
