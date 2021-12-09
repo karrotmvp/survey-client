@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 import axios, { AxiosResponse } from 'axios';
 import { atom, selector } from 'recoil';
 
@@ -94,7 +95,7 @@ const getSurveyList = selector({
         data: surveyItemType[];
       }>(`mongo/surveys`);
 
-      // eslint-disable-next-line consistent-return
+      if (data.data.data === undefined) return [];
       return data.data.data;
     } catch (e) {
       // eslint-disable-next-line no-console

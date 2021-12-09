@@ -3,7 +3,7 @@ import { ReactElement, useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import { useNavigator } from '@karrotframe/navigator';
 import Skeleton from 'react-loading-skeleton';
-import { useRecoilState, useRecoilValueLoadable } from 'recoil';
+import { Loadable, useRecoilState, useRecoilValueLoadable } from 'recoil';
 
 import {
   authorizationBizSelector,
@@ -21,6 +21,7 @@ import mini from '@src/api/mini';
 import LoadingCard from '@src/component/common/card/LoadingCard';
 import SurveyCard from '@src/component/common/card/SurveyCard';
 import UpDownModal from '@src/component/common/modal/UpDownModal';
+import NoSurveyList from '@src/component/home/NoSurveyList';
 import { useMiniBizAuth } from '@src/hook/useAuth';
 import useLogin from '@src/hook/useLogin';
 import { useShowEvent } from '@src/hook/useShowEvent';
@@ -134,20 +135,8 @@ export default function SurveyHome(): ReactElement {
         <ArrowRight />
       </FeedbackBanner>
       {jwt.state === 'hasValue' &&
-      getList.state === 'hasValue' &&
-      getList.contents ? (
-        <SurveyCardLists>
-          {getList.contents.map(data => (
-            <SurveyCard key={data.surveyId} {...data} />
-          ))}
-        </SurveyCardLists>
-      ) : (
-        <LoadingCard count={3} />
-      )}
-      <CreateSurveyButton onClick={handleCreateSurveyButtonClick}>
-        <PlusIcon />
-        설문 만들기
-      </CreateSurveyButton>
+        WithSurveyListTab(getList, handleCreateSurveyButtonClick)}
+
       {isPopup && (
         <UpDownModal setPopup={setPopup}>
           <GuideModal>
@@ -203,6 +192,31 @@ export default function SurveyHome(): ReactElement {
     </div>
   );
 }
+// 타입 설게 state 가 value 가 있고  list === 0 일때
+const WithSurveyListTab = (
+  getList: Loadable<surveyItemType[] | undefined>,
+  handleCreateClick: () => void,
+) => {
+  if (getList.state === 'hasValue' && getList.contents !== undefined) {
+    if (getList.contents.length === 0)
+      return <NoSurveyList handleCreateClick={handleCreateClick} />;
+
+    return (
+      <>
+        <SurveyCardLists>
+          {getList.contents.map(data => (
+            <SurveyCard key={data.surveyId} {...data} />
+          ))}
+        </SurveyCardLists>
+        <CreateSurveyButton onClick={handleCreateClick}>
+          <PlusIcon />
+          설문 만들기
+        </CreateSurveyButton>
+      </>
+    );
+  }
+  return <LoadingCard count={3} />;
+};
 
 const SurveyCardLists = styled.ul`
   border-top: 0.8rem solid #f8f8f8;
