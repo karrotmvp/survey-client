@@ -25,32 +25,11 @@ export default function QuestionDot({
   number,
   questionNumber,
 }: QuestionType): JSX.Element {
-  switch (number) {
-    case 1:
-      return (
-        <StyledQuestionDot>
-          <Dot active />
-          <Dot />
-          {questionNumber === 2 ? null : <Dot />}
-        </StyledQuestionDot>
-      );
-    case 2:
-      return (
-        <StyledQuestionDot>
-          <Dot active />
-          <Dot active />
-          {questionNumber === 2 ? null : <Dot />}
-        </StyledQuestionDot>
-      );
-    case 3:
-      return (
-        <StyledQuestionDot>
-          <Dot active />
-          <Dot active />
-          <Dot active />
-        </StyledQuestionDot>
-      );
-    default:
-      return <></>;
-  }
+  const arr = new Array(questionNumber).fill(0);
+  if (questionNumber === 1) return <></>;
+  return (
+    <StyledQuestionDot>
+      {arr.map((res, idx) => (idx < number ? <Dot active /> : <Dot />))}
+    </StyledQuestionDot>
+  );
 }
