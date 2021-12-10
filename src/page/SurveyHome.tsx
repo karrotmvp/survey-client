@@ -35,25 +35,27 @@ export type surveyItemType = {
 };
 
 export default function SurveyHome(): ReactElement {
-  const jwt = useLogin(authorizationBizSelector);
-  const [code, setCode] = useRecoilState(bizCodeAtom);
-  const [close, setClose] = useState(false);
+  const { push } = useNavigator();
   const fa = useAnalytics();
   const urlSearchParams = new URLSearchParams(window.location.search);
   const isCode = urlSearchParams.has('code');
+
   useShowEvent('surveyList_onbard_show');
 
   const onClose = () => {
     setClose(true);
   };
+  const jwt = useLogin(authorizationBizSelector);
 
   const getBizId = useMiniBizAuth(process.env.REACT_APP_APP_ID || '', onClose);
   const getList = useRecoilValueLoadable(getSurveyList);
   const userData = useRecoilValueLoadable(getBizprofile);
+  const [code, setCode] = useRecoilState(bizCodeAtom);
+
+  const [close, setClose] = useState(false);
   const [isPopup, setPopup] = useState(false);
   const [isIntroPopup, setIntroPopup] = useState(false);
   const [isClosePopup, setClosePopup] = useState(false);
-  const { push } = useNavigator();
 
   const handleNextClick = () => {
     fa.logEvent('surveyList_next_button_click');
@@ -63,6 +65,13 @@ export default function SurveyHome(): ReactElement {
 
   const handleCloseModalClick = () => {
     setClosePopup(true);
+  };
+
+  const handleCreateSurveyButtonClick = () => {
+    fa.logEvent('surveyList_create_survey_button_click');
+    if (isCode) {
+      push('/survey/create/question');
+    } else setPopup(true);
   };
 
   useEffect(() => {
@@ -88,13 +97,6 @@ export default function SurveyHome(): ReactElement {
       setClosePopup(false);
     }
   }, [isClosePopup, isIntroPopup]);
-
-  const handleCreateSurveyButtonClick = () => {
-    fa.logEvent('surveyList_create_survey_button_click');
-    if (isCode) {
-      push('/survey/create/question');
-    } else setPopup(true);
-  };
 
   return (
     <div style={{ height: '100vh' }}>
