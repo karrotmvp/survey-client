@@ -3,7 +3,6 @@ import { ReactElement, useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import { useNavigator } from '@karrotframe/navigator';
 import Skeleton from 'react-loading-skeleton';
-import { useLocation } from 'react-router-dom';
 import { Loadable, useRecoilState, useRecoilValueLoadable } from 'recoil';
 
 import {
@@ -38,11 +37,8 @@ export type surveyItemType = {
 export default function SurveyHome(): ReactElement {
   const { push } = useNavigator();
   const fa = useAnalytics();
-  const location = useLocation();
   const urlSearchParams = new URLSearchParams(window.location.search);
-  const urlSearchParamsLocation = new URLSearchParams(location.search);
-  const isCode =
-    urlSearchParams.has('code') || urlSearchParamsLocation.has('code');
+  const isCode = urlSearchParams.has('code');
 
   useShowEvent('surveyList_onbard_show');
 
