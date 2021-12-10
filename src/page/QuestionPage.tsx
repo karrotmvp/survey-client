@@ -31,6 +31,10 @@ const CompleteButton = styled.button`
   &[aria-disabled='true'] {
     color: #c9c9c9;
   }
+
+  :disabled {
+    color: #c9c9c9;
+  }
 `;
 
 export type questionCardType = {
@@ -117,6 +121,7 @@ export default function QuestionPage(): JSX.Element {
   //   }
   // `;
   const questionList = watch('questions');
+  const titleWatch = watch('title');
   const isTitleModalOpen = useRecoilValue(questionTitleModalOpen);
 
   const onSubmit = ({ title, questions }: submitType) => {
@@ -159,7 +164,7 @@ export default function QuestionPage(): JSX.Element {
         disappear={isTitleModalOpen}
         appendRight={
           <CompleteButton
-            aria-disabled={!questionCheck(questionList)}
+            disabled={!questionCheck(questionList) || titleWatch === ''}
             form="submitForm"
             type="submit"
           >
