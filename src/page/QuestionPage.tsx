@@ -103,6 +103,7 @@ export default function QuestionPage(): JSX.Element {
     watch,
     unregister,
     clearErrors,
+    setError,
     formState: { errors },
   } = useForm<submitType>({
     defaultValues: {
@@ -126,17 +127,24 @@ export default function QuestionPage(): JSX.Element {
 
   const onSubmit = ({ title, questions }: submitType) => {
     fa.logEvent('question_complete_button_active_click');
-    setSubmitData({
-      title,
-      target: targetIndex,
-      questions: questions.map(res => {
-        if (res.questionType === 2) {
-          return { text: res.text, questionType: res.questionType };
-        }
-        return res;
-      }),
-    });
-    setPopup(true);
+    if (title === '') {
+      setError('title', {
+        type: 'manual',
+        message: '제목을 입력해주세요',
+      });
+    } else {
+      setSubmitData({
+        title,
+        target: targetIndex,
+        questions: questions.map(res => {
+          if (res.questionType === 2) {
+            return { text: res.text, questionType: res.questionType };
+          }
+          return res;
+        }),
+      });
+      setPopup(true);
+    }
   };
 
   // const TargetModalButton = styled.button`
@@ -164,7 +172,7 @@ export default function QuestionPage(): JSX.Element {
         disappear={isTitleModalOpen}
         appendRight={
           <CompleteButton
-            disabled={!questionCheck(questionList) || titleWatch === ''}
+            aria-disabled={!questionCheck(questionList) || titleWatch === ''}
             form="submitForm"
             type="submit"
           >
