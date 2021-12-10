@@ -8,9 +8,14 @@ import {
 } from 'react-hook-form';
 import { useRecoilState } from 'recoil';
 
+import AlertToastModal from '@component/common/modal/TostModal';
 import { useAnalytics } from '@src/analytics/faContext';
 import { questionTitleModalOpen } from '@src/atom/questionAtom';
-import { questionCardType, submitType } from '@src/page/QuestionPage';
+import {
+  errorsType,
+  questionCardType,
+  submitType,
+} from '@src/page/QuestionPage';
 
 import InputForm from '../input/InputForm';
 import Modal from '../modal/Modal';
@@ -24,16 +29,19 @@ type QuestionTitleCardType = {
   ) => void;
   register: UseFormRegister<submitType>;
   watch: UseFormWatch<submitType>;
+  errors: errorsType;
 };
 
 export default function QuestionTitleCard({
   append,
   register,
   watch,
+  errors,
 }: QuestionTitleCardType): JSX.Element {
   const [isPopupOpen, setPopup] = useRecoilState(questionTitleModalOpen);
   const [isPopupClose, setPopupClose] = useState(false);
   const [isOpen, setOpen] = useState(false);
+  const [isContentToastOpen, setContentToastOpen] = useState(false);
   const title = watch('title');
   const questions = watch('questions');
   const fa = useAnalytics();
@@ -52,6 +60,13 @@ export default function QuestionTitleCard({
 
     setPopupClose(true);
   };
+
+  useEffect(() => {
+    if (errors.title) {
+      setPopup(true);
+      setContentToastOpen(true);
+    }
+  }, [errors]);
   const CompleteImg = styled.img`
     width: 100%;
   `;
@@ -106,6 +121,13 @@ export default function QuestionTitleCard({
       )}
       {isPopupOpen && (
         <UpDownModal setPopup={setPopup} isClose={isPopupClose} rect close>
+          <AlertToastModal
+            text={'제목을 입력해주세요'}
+            time={4000}
+            bottom="3rem"
+            isToastOpen={isContentToastOpen}
+            setToastOpen={setContentToastOpen}
+          />
           <TitleModal>
             <section className="title_modal_section">
               <h1>설문 제목 작성</h1>

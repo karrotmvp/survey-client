@@ -65,7 +65,7 @@ export default function QuestionCardList({
 
   return (
     <>
-      <QuestionTitleCard {...{ append, register, watch }} />
+      <QuestionTitleCard {...{ errors, append, register, watch }} />
       <AlertToastModal
         text={'내용을 모두 입력하세요'}
         time={3000}
