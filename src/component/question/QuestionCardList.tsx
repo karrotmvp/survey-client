@@ -104,20 +104,18 @@ export default function QuestionCardList({
         )}
       </QuestionButtons>
       )
-      {fields.length > 0 && (
-        <QuestionBottomBar isFocus={isFocus}>
-          <span>설문 예시가 떠오르지 않나요?</span>
-          <ExampleButton
-            type="button"
-            onClick={() => {
-              fa.logEvent('question_example_button_click');
-              push('/guide');
-            }}
-          >
-            설문 예시 보기
-          </ExampleButton>
-        </QuestionBottomBar>
-      )}
+      <QuestionBottomBar isFocus={isFocus}>
+        <span>설문 예시가 떠오르지 않나요?</span>
+        <ExampleButton
+          type="button"
+          onClick={() => {
+            fa.logEvent('question_example_button_click');
+            push('/guide');
+          }}
+        >
+          설문 예시 보기
+        </ExampleButton>
+      </QuestionBottomBar>
     </>
   );
 }
