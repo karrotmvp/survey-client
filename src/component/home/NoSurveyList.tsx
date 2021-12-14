@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 import { ReactComponent as PlusIcon } from '@config/icon/plus.svg';
 
 export default function NoSurveyList({
-  handleCreateClick,
+  handleCreateClick, // onMakeSurvey()
 }: {
   handleCreateClick: () => void;
 }): JSX.Element {
@@ -37,6 +37,7 @@ const StyleNoSurvey = styled.div`
     font-weight: ${({ theme }) => theme.fontWeight.regular};
     display: block;
     margin-bottom: 2.4rem;
+    mar
   }
   .no_survey_create_button {
     width: 27.6rem;
