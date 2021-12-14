@@ -40,7 +40,7 @@ export default function ShowAllPage(): JSX.Element {
             <AggregationBriefCard
               showAll
               order={+questionNumber}
-              {...question.contents[+questionNumber]}
+              aggregationData={question.contents[+questionNumber]}
             />
           </div>{' '}
         </>

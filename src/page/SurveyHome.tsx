@@ -1,4 +1,4 @@
-import { ReactElement, useEffect, useState } from 'react';
+import { ReactElement, useEffect, useState, FC } from 'react';
 
 import styled from '@emotion/styled';
 import { useNavigator } from '@karrotframe/navigator';
@@ -8,7 +8,7 @@ import { Loadable, useRecoilState, useRecoilValueLoadable } from 'recoil';
 import {
   authorizationBizSelector,
   bizCodeAtom,
-  getBizprofile,
+  getBizProfile,
   getSurveyList,
 } from '@api/authorization';
 import NavBar from '@component/common/navbar/NavBar';
@@ -39,7 +39,7 @@ export default function SurveyHome(): ReactElement {
   const fa = useAnalytics();
   const urlSearchParams = new URLSearchParams(window.location.search);
   const isCode = urlSearchParams.has('code');
-
+  const isVisited = localStorage.getItem('visited');
   useShowEvent('surveyList_onbard_show');
 
   const onClose = () => {
@@ -49,7 +49,7 @@ export default function SurveyHome(): ReactElement {
 
   const getBizId = useMiniBizAuth(process.env.REACT_APP_APP_ID || '', onClose);
   const getList = useRecoilValueLoadable(getSurveyList);
-  const userData = useRecoilValueLoadable(getBizprofile);
+  const userData = useRecoilValueLoadable(getBizProfile);
   const [code, setCode] = useRecoilState(bizCodeAtom);
 
   const [close, setClose] = useState(false);
@@ -61,6 +61,10 @@ export default function SurveyHome(): ReactElement {
     fa.logEvent('surveyList_next_button_click');
     setPopup(false);
     push('/survey/create/question');
+  };
+
+  const onBennerClick = () => {
+    push('/guide');
   };
 
   const handleCloseModalClick = () => {
@@ -82,12 +86,14 @@ export default function SurveyHome(): ReactElement {
 
   useEffect(() => {
     (async () => {
+      if (sessionStorage.getItem('jwt')) return;
       const id = await getBizId();
       setCode(id);
       fa.setUserId(id);
       fa.setUserProperties({ isCode });
-      if (isCode) {
+      if (isCode && !isVisited) {
         setIntroPopup(true);
+        localStorage.setItem('visited', 'true');
       }
     })();
   }, []);
@@ -99,29 +105,32 @@ export default function SurveyHome(): ReactElement {
   }, [isClosePopup, isIntroPopup]);
 
   return (
-    <div style={{ height: '100vh' }}>
-      <StyledSurveyHomePage>
-        <NavBar
-          transparent
-          type="CLOSE"
-          appendCenter={
-            <LogoWrapper>
-              <Logo />
-              <TitleLogo />
-            </LogoWrapper>
-          }
-          appendRight={
-            userData.state === 'hasValue' && userData.contents !== '' ? (
-              <BizAvaterImg src={userData.contents.imageUrl} />
-            ) : (
-              <Skeleton height="28px" width="28px" borderRadius="50%" />
-            )
-          }
-        />
+    <div style={{ height: '100vh', paddingTop: '5.6rem' }}>
+      <NavBar
+        type="CLOSE"
+        appendCenter={
+          <LogoWrapper>
+            <Logo />
+            <TitleLogo />
+          </LogoWrapper>
+        }
+        appendRight={
+          userData.state === 'hasValue' && userData.contents !== '' ? (
+            <BizAvatarImg src={userData.contents.imageUrl} />
+          ) : (
+            <Skeleton height="28px" width="28px" borderRadius="50%" />
+          )
+        }
+      />
+      <StyledSurveyHomePage onClick={onBennerClick}>
         <h1 className="survey_home_title">
-          사장님, 만드신 <b>설문</b>과<br />
-          <b>동네 이웃의 답변</b>을 확인해보세요 🙌
+          무따로 설문을 만들고
+          <br />
+          우리 동네 주민 의견을 들어봐요
         </h1>
+        <span>
+          무따 사용법 보기 <ArrowRight />
+        </span>
       </StyledSurveyHomePage>
       <FeedbackBanner
         onClick={() => {
@@ -136,9 +145,12 @@ export default function SurveyHome(): ReactElement {
 
         <ArrowRight />
       </FeedbackBanner>
-      {jwt.state === 'hasValue' &&
-        WithSurveyListTab(getList, handleCreateSurveyButtonClick)}
-
+      {jwt.state === 'hasValue' && (
+        <WithSurveyListTab
+          getList={getList}
+          handleCreateClick={handleCreateSurveyButtonClick}
+        />
+      )}
       {isPopup && (
         <UpDownModal setPopup={setPopup}>
           <GuideModal>
@@ -194,11 +206,12 @@ export default function SurveyHome(): ReactElement {
     </div>
   );
 }
+
 // 타입 설게 state 가 value 가 있고  list === 0 일때
-const WithSurveyListTab = (
-  getList: Loadable<surveyItemType[] | undefined>,
-  handleCreateClick: () => void,
-) => {
+const WithSurveyListTab: FC<{
+  getList: Loadable<surveyItemType[] | undefined>;
+  handleCreateClick: () => void;
+}> = ({ getList, handleCreateClick }) => {
   if (getList.state === 'hasValue' && getList.contents !== undefined) {
     if (getList.contents.length === 0)
       return <NoSurveyList handleCreateClick={handleCreateClick} />;
@@ -228,7 +241,7 @@ const SurveyCardLists = styled.ul`
   height: 66%;
 `;
 
-const BizAvaterImg = styled.img`
+const BizAvatarImg = styled.img`
   width: 2.8rem;
   height: 2.8rem;
   border-radius: 50%;
@@ -283,17 +296,26 @@ const CreateSurveyButton = styled.button`
 `;
 
 const StyledSurveyHomePage = styled.section`
-  background: linear-gradient(0deg, rgba(254, 222, 204, 0) 0%, #fedecc 100%);
+  background: url('./../../img/homeBanner.png') center / cover no-repeat;
   width: 100%;
-  padding: 8rem 1.6rem 4rem 1.6rem;
+  padding: 2.4rem 1.6rem 2.4rem 1.6rem;
   display: flex;
   justify-content: space-between;
   flex-direction: column;
   border-bottom: 1px solid #f4f4f4;
   .survey_home_title {
     font-size: 2rem;
-    font-weight: ${({ theme }) => theme.fontWeight.medium};
+    font-weight: ${({ theme }) => theme.fontWeight.regular};
     line-height: 150%;
+    color: #e55300;
+  }
+  span {
+    display: flex;
+    align-items: center;
+    margin-top: 1rem;
+    font-size: 1.3rem;
+    font-weight: ${({ theme }) => theme.fontWeight.regular};
+    color: ${({ theme }) => theme.color.neutralBlack.text};
   }
 `;
 
@@ -319,17 +341,6 @@ const GuideModal = styled.div`
     margin-bottom: 2.4rem;
   }
 `;
-
-// const GuideModalImg = styled.div<{ imgUrl: string }>`
-//   width: 100%;
-//   height: 0;
-//   padding-top: calc(152 / 328 * 100%);
-//   background: url(${({ imgUrl }) => imgUrl}) center center / cover no-repeat;
-//   position: relative;
-//   margin-top: 1.6rem;
-//   margin-bottom: 2.4rem;
-//   border-radius: 4px;
-// `;
 
 const GuideModalImg = styled.div<{ imgUrl: string; imgWidth: number }>`
   width: 100%;
