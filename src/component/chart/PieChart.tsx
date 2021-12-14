@@ -45,8 +45,6 @@ export default function AggregationPieChart({
     } = props;
     const sin = Math.sin(-RADIAN * midAngle);
     const cos = Math.cos(-RADIAN * midAngle);
-    const mx = cx + (outerRadius - 8) * cos;
-    const my = cy + (outerRadius - 4) * sin;
     const ex = cx + outerRadius * 1.2 * cos;
     const ey = cy + outerRadius * 1.2 * sin;
     const textAnchor = cos >= 0 ? 'start' : 'end';
@@ -143,6 +141,8 @@ export default function AggregationPieChart({
           onMouseEnter={onPieEnter}
           startAngle={90}
           endAngle={-270}
+          paddingAngle={0}
+          stroke={'none'}
         >
           {data.map((e, index) => (
             <Cell fill={COLORS[index % COLORS.length]} />
