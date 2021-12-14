@@ -8,6 +8,7 @@ import {
 } from '@karrotframe/navigator';
 import { useRecoilValue } from 'recoil';
 
+import AlertToastModal from '@component/common/modal/TostModal';
 import { useAnalytics } from '@src/analytics/faContext';
 import { questionListAtom } from '@src/atom/questionAtom';
 import { responseListAtom } from '@src/atom/responseAtom';
@@ -29,7 +30,7 @@ const NextButton = styled.button`
 
 type ResponseNextButton = {
   isLast: boolean;
-  disable: boolean;
+  disable?: boolean;
   handleNextClick: (e: React.MouseEvent) => void;
 };
 
@@ -54,15 +55,16 @@ export default function ResponseNextButton({
   const [isSubmit, setSubmit] = useState(false);
   const query = useQueryParams<{ ref?: string }>();
   const ref = query.ref || 'app';
-
+  const [isToastOpen, setToastOpen] = useState(false);
+  const answerCheck = responseState.every(({ value }) => value === '');
   const handleLastClick = (e: React.MouseEvent) => {
     fa.logEvent(`response_question_complete_button_click`, {
       surveyId,
       ref,
     });
     fa.logEvent(`${surveyId}_response_question_complete_button_click`, { ref });
-    setSubmit(true);
     handleNextClick(e);
+    setSubmit(true);
   };
 
   useEffect(() => {
@@ -73,18 +75,30 @@ export default function ResponseNextButton({
         value: responseState[idx].value,
       }));
 
-      responsePost({
-        surveyId: +surveyId,
-        answers,
-      });
       setSubmit(false);
-      push(`/survey/${surveyId}/complete?ref=${ref}`);
+      if (!answerCheck) {
+        responsePost({
+          surveyId: +surveyId,
+          answers,
+        });
+        push(`/survey/${surveyId}/complete?ref=${ref}`);
+      } else {
+        setToastOpen(true);
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isSubmit, responseState]);
+  }, [isSubmit, responseState, answerCheck]);
 
   return (
     <>
+      <AlertToastModal
+        text={'하나 이상의 질문에 답해주세요!'}
+        time={3000}
+        bottom="3rem"
+        isToastOpen={isToastOpen}
+        setToastOpen={setToastOpen}
+      />
+
       {isLast ? (
         <NextButton disabled={disable} onClick={handleLastClick}>
           설문 제출하기

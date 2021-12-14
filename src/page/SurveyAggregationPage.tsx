@@ -60,6 +60,7 @@ export default function SurveyAggregationPage(): JSX.Element {
   };
 
   const observer = new IntersectionObserver(callback, options);
+
   useEffect(() => {
     if (ref.current) {
       observer.observe(ref.current);
@@ -82,6 +83,7 @@ export default function SurveyAggregationPage(): JSX.Element {
       });
     }
   };
+
   const onDeleteClick = async () => {
     const token = sessionStorage.getItem('jwt');
     axios.defaults.baseURL = process.env.REACT_APP_API_URL;
@@ -99,6 +101,10 @@ export default function SurveyAggregationPage(): JSX.Element {
       setClose(false);
     }
   }, [isPopupOpen, isPopupClose]);
+
+  useEffect(() => {
+    if (getSurveyList.state === 'hasError') replace('/*');
+  }, [getSurveyList]);
 
   return (
     <>

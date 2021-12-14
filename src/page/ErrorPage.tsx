@@ -6,6 +6,7 @@ export default function ErrorPage(): JSX.Element {
 
   return (
     <StyledComplete>
+      <img src="./img/ErrorImg.png" />
       <h1>일시적인 오류입니다.</h1>
       <span>잠시 후 다시 시도해 주세요!</span>
       <HomeButton
@@ -36,6 +37,10 @@ const StyledComplete = styled.section`
   height: 100%;
   flex-direction: column;
   padding: 0 1.6rem;
+  img {
+    width: 8.2rem;
+    margin-bottom: 2.8rem;
+  }
 
   h1 {
     font-weight: ${({ theme }) => theme.fontWeight.medium};

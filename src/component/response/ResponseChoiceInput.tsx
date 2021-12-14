@@ -64,10 +64,7 @@ export default function ResponseChoiceInput({
     <StyledTextInput>
       <ResponseChoiceList {...{ questionChoice, setChoice, selectedChoice }} />
       <div className="button_wrapper">
-        <ResponseNextButton
-          disable={selectedChoice === ''}
-          {...{ handleNextClick, isLast }}
-        />
+        <ResponseNextButton {...{ handleNextClick, isLast }} />
       </div>
     </StyledTextInput>
   );

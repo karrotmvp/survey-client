@@ -86,7 +86,9 @@ export default function SurveyHome(): ReactElement {
 
   useEffect(() => {
     (async () => {
-      if (sessionStorage.getItem('jwt')) return;
+      if (sessionStorage.getItem('jwt')) {
+        return;
+      }
       const id = await getBizId();
       setCode(id);
       fa.setUserId(id);
