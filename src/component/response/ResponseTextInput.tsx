@@ -67,10 +67,7 @@ export default function ResponseTextInput({
         row={1}
       />
 
-      <ResponseNextButton
-        disable={text === ''}
-        {...{ handleNextClick, isLast }}
-      />
+      <ResponseNextButton {...{ handleNextClick, isLast }} />
     </StyledTextInput>
   );
 }

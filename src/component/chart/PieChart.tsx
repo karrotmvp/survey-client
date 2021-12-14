@@ -47,7 +47,6 @@ export default function AggregationPieChart({
     const cos = Math.cos(-RADIAN * midAngle);
     const ex = cx + outerRadius * 1.2 * cos;
     const ey = cy + outerRadius * 1.2 * sin;
-    const textAnchor = cos >= 0 ? 'start' : 'end';
 
     return (
       <g>
@@ -75,9 +74,9 @@ export default function AggregationPieChart({
             x="0.603516"
             y="0"
             filterUnits="userSpaceOnUse"
-            color-interpolation-filters="sRGB"
+            colorInterpolationFilters="sRGB"
           >
-            <feFlood flood-opacity="0" result="BackgroundImageFix" />
+            <feFlood floodOpacity="0" result="BackgroundImageFix" />
             <feColorMatrix
               in="SourceAlpha"
               type="matrix"
@@ -110,9 +109,8 @@ export default function AggregationPieChart({
           fontSize="16px"
           x={ex}
           y={ey + 6}
-          textAnchor={textAnchor}
+          textAnchor={'middle'}
           fill={fill}
-          text-anchor="middle"
         >{`${Math.floor(percent * 100)} %`}</text>
       </g>
     );

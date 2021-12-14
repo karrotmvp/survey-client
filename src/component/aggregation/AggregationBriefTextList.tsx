@@ -21,25 +21,28 @@ export default function AggregationBriefTextList({
   const fa = useAnalytics();
   return (
     <TextList showAll={showAll}>
-      {answers.map(({ responseId, value }, idx) => (
-        <TextItem
-          key={responseId}
-          onClick={() => {
-            setResponseId(idx);
-            if (setTabKey) {
-              fa.logEvent('surveybreif_textList_click');
-              setTabKey('individual');
-            }
-            if (showAll) {
-              fa.logEvent('showall_textList_click');
-              pop().send(idx);
-            }
-          }}
-        >
-          <span className="answers_text_title">{`익명 ${idx + 1}`}</span>
-          <span className="answers_text_subtitle">{value}</span>
-        </TextItem>
-      ))}
+      {answers.map(({ responseId, value }, idx) => {
+        const resValue = value === '' ? '답변 없음' : value;
+        return (
+          <TextItem
+            key={responseId}
+            onClick={() => {
+              setResponseId(idx);
+              if (setTabKey) {
+                fa.logEvent('surveybreif_textList_click');
+                setTabKey('individual');
+              }
+              if (showAll) {
+                fa.logEvent('showall_textList_click');
+                pop().send(idx);
+              }
+            }}
+          >
+            <span className="answers_text_title">{`익명 ${idx + 1}`}</span>
+            <span className="answers_text_subtitle">{resValue}</span>
+          </TextItem>
+        );
+      })}
     </TextList>
   );
 }
