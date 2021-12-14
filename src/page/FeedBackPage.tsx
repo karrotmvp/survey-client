@@ -1,14 +1,12 @@
 import { ChangeEvent, MouseEvent, useState } from 'react';
 
 import styled from '@emotion/styled';
+import { useNavigator } from '@karrotframe/navigator';
 import { useRecoilState } from 'recoil';
 
 import AlertTostModal from '@component/common/modal/TostModal';
-import { ReactComponent as LogoIcon } from '@config/icon/mudda_orange.svg';
 import { useAnalytics } from '@src/analytics/faContext';
-import mini from '@src/api/mini';
 import { questionFeedBack } from '@src/atom/questionAtom';
-import Modal from '@src/component/common/modal/Modal';
 import NavBar from '@src/component/common/navbar/NavBar';
 import { contents } from '@src/config/const/const';
 import useSubmit from '@src/hook/useSubmit';
@@ -16,9 +14,10 @@ import useSubmit from '@src/hook/useSubmit';
 export default function FeedBackPage(): JSX.Element {
   const [feedback, setFeedback] = useRecoilState(questionFeedBack);
   const [isToastOpen, setToastOpen] = useState(false);
-  const [isPopup, setPopup] = useState(false);
+  const { replace } = useNavigator();
   const fa = useAnalytics();
   const post = useSubmit('/feedbacks');
+
   const handleChange = (e: ChangeEvent) => {
     setFeedback({
       question: contents.text.feedback.SUBTITLE,
@@ -30,7 +29,11 @@ export default function FeedBackPage(): JSX.Element {
     if (e.currentTarget.ariaDisabled !== 'true') {
       fa.logEvent('feedback_complete_button_active_click');
       post(feedback);
-      setPopup(true);
+      setFeedback({
+        question: contents.text.feedback.SUBTITLE,
+        answer: '',
+      });
+      replace('/feedback/complete');
     } else {
       fa.logEvent('feedback_complete_button_disable_click');
       setToastOpen(true);
@@ -41,7 +44,7 @@ export default function FeedBackPage(): JSX.Element {
     <>
       <NavBar
         type="BACK"
-        title="무따 서비스 피드백"
+        title="피드백"
         appendRight={
           <CompleteButton
             aria-disabled={!feedback.answer}
@@ -53,9 +56,7 @@ export default function FeedBackPage(): JSX.Element {
       />
       <StyledFeedBackPage>
         <FeedbackTitle>무따는 더 좋은 설문 서비스가</FeedbackTitle>
-        <FeedbackTitle>
-          되고 싶어요 <LogoIcon />
-        </FeedbackTitle>
+        <FeedbackTitle>되고 싶어요🔥</FeedbackTitle>
         <FeedbackSubtitle>{contents.text.feedback.SUBTITLE}</FeedbackSubtitle>
         <StyledTitleInput
           value={feedback.answer}
@@ -68,20 +69,6 @@ export default function FeedBackPage(): JSX.Element {
           time={3000}
           {...{ isToastOpen, setToastOpen }}
         />
-
-        {isPopup && (
-          <Modal setPopup={setPopup}>
-            <ConfirmModal>소중한 의견 남겨 주셔서 감사합니다.</ConfirmModal>
-
-            <ConfirmButton
-              onClick={() => {
-                mini.close();
-              }}
-            >
-              종료
-            </ConfirmButton>
-          </Modal>
-        )}
       </StyledFeedBackPage>
     </>
   );
@@ -97,14 +84,11 @@ const StyledFeedBackPage = styled.section`
 `;
 
 const FeedbackTitle = styled.h1`
-  font-family: ${({ theme }) => theme.fontFamily.title};
   font-style: normal;
-  font-weight: bold;
+  font-weight: ${({ theme }) => theme.fontWeight.medium};
   font-size: 2.2rem;
-  line-height: 120%;
-  color: #fe7e35;
+  color: #141414;
   line-height: 140%;
-  white-space: pre-wrap;
   display: flex;
   align-items: center;
 `;
@@ -127,6 +111,8 @@ const FeedbackSubtitle = styled.h4`
   line-height: 140%;
   margin-top: 1.6rem;
   margin-bottom: 1.6rem;
+  color: #4b4b4b;
+  width: 28rem;
 `;
 
 const StyledTitleInput = styled.textarea`
@@ -145,35 +131,4 @@ const StyledTitleInput = styled.textarea`
   ::placeholder {
     color: ${({ theme }) => theme.color.neutralBlack.placeholder};
   }
-`;
-
-const ConfirmModal = styled.div`
-  width: 100%;
-  font-size: 16px;
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 150%;
-  text-align: center;
-  color: #242424;
-  padding: 0 24px;
-  height: 124px;
-  align-items: center;
-  display: flex;
-  justify-content: center;
-`;
-
-const ConfirmButton = styled.button`
-  font-weight: 600;
-  font-size: 14px;
-  line-height: 140%;
-  width: 100%;
-  height: 52px;
-  background-color: #ffff;
-  color: #141414;
-  border-top: 1px solid #e8e8e8;
-  :focus {
-    background-color: #f4f5f6;
-  }
-  border-bottom-right-radius: 12px;
-  border-bottom-left-radius: 12px;
 `;

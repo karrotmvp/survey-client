@@ -105,15 +105,15 @@ export default function QuestionCardList({
       </QuestionButtons>
       )
       <QuestionBottomBar isFocus={isFocus}>
-        <span>설문 예시가 떠오르지 않나요?</span>
+        <span>질문이 생각나지 않는다면?</span>
         <ExampleButton
           type="button"
           onClick={() => {
             fa.logEvent('question_example_button_click');
-            push('/guide');
+            push('/example');
           }}
         >
-          설문 예시 보기
+          질문 예시 보기
         </ExampleButton>
       </QuestionBottomBar>
     </>
