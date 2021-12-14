@@ -71,8 +71,9 @@ export default function useLoadableGet<T>(
       }
     } catch (error) {
       // eslint-disable-next-line no-console
-      console.error(error);
+
       dispatch({ type: 'FETCH_FAILURE', payload: null });
+      throw new Error('error!');
     }
   };
   useEffect(() => {

@@ -9,20 +9,25 @@ import 'react-loading-skeleton/dist/skeleton.css';
 
 import fa from './analytics/analytics';
 import { AnalyticsContext } from './analytics/faContext';
+import ErrorBoundary from './component/common/ErrorBoundary';
 import global from './config/style/global';
 import theme from './config/style/theme';
+import ErrorPage from './page/ErrorPage';
 import Router from './router/Router';
 
 function App(): JSX.Element {
   return (
-    <AnalyticsContext.Provider value={fa}>
-      <ThemeProvider theme={theme}>
-        <RecoilRoot>
-          <Global styles={global} />
-          <Router />
-        </RecoilRoot>
-      </ThemeProvider>
-    </AnalyticsContext.Provider>
+    <ErrorBoundary fallback={<ErrorPage />}>
+      <AnalyticsContext.Provider value={fa}>
+        <ThemeProvider theme={theme}>
+          <RecoilRoot>
+            <Global styles={global} />
+
+            <Router />
+          </RecoilRoot>
+        </ThemeProvider>
+      </AnalyticsContext.Provider>
+    </ErrorBoundary>
   );
 }
 

@@ -9,8 +9,6 @@ const useMiniAuth = (
 ): (() => Promise<string | undefined>) => {
   const getCodeAsync = useCallback(() => {
     const urlSearchParams = new URLSearchParams(window.location.search);
-    // eslint-disable-next-line no-alert
-    console.log(urlSearchParams.has('code'), window.location.search);
     if (urlSearchParams.has('code')) {
       if (onClose) {
         onClose();
@@ -34,7 +32,6 @@ const useMiniBizAuth = (
     const isPreload = urlSearchParams.get('preload');
 
     if (isPreload) {
-      console.log(isPreload, urlSearchParams.has('code'), 'in');
       return Promise.resolve<string>('');
     }
 

@@ -1,17 +1,24 @@
 import { Navigator, Screen, INavigatorTheme } from '@karrotframe/navigator';
 
 import QuestionPage from '@page/QuestionPage';
+import ErrorBoundary from '@src/component/common/ErrorBoundary';
+// import ErrorBoundary from '@src/component/common/ErrorBoundary';
 import AnswerComplete from '@src/page/AnswerComplete';
 import AnswerDetailPage from '@src/page/AnswerDetailPage';
 import AnswerHome from '@src/page/AnswerHome';
 import EndPage from '@src/page/EndPage';
+import ErrorNoSurveyPage from '@src/page/ErrorNoSurveyPage';
+import ErrorPage from '@src/page/ErrorPage';
+// import ErrorPage from '@src/page/ErrorPage';
+// import ErrorPage from '@src/page/ErrorPage';
+import ExamplePage from '@src/page/ExamplePage';
+import FeedbackCompletePage from '@src/page/FeedbackCompletePage';
 import FeedBackPage from '@src/page/FeedBackPage';
 import GuidePage from '@src/page/GuidePage';
 // import HomePage from '@src/page/HomePage';
 import ShowAllPage from '@src/page/ShowAllPage';
 import SurveyAggregationPage from '@src/page/SurveyAggregationPage';
 import SurveyHome from '@src/page/SurveyHome';
-import TargetPage from '@src/page/TargetPage';
 
 export default function Router(): JSX.Element {
   const checkMobileType = (): INavigatorTheme => {
@@ -31,38 +38,62 @@ export default function Router(): JSX.Element {
       <Screen path="/">
         <SurveyHome />
       </Screen>
+      <Screen path="/404">
+        <ErrorNoSurveyPage />
+      </Screen>
+
+      <Screen path="/example">
+        <ExamplePage />
+      </Screen>
+
       <Screen path="/guide">
         <GuidePage />
       </Screen>
+
+      <Screen path="/feedback/complete">
+        <FeedbackCompletePage />
+      </Screen>
+
       <Screen path="/feedback">
         <FeedBackPage />
       </Screen>
+
       <Screen path="/survey/aggregation/:surveyId/:questionNumber">
         <ShowAllPage />
       </Screen>
+
       <Screen path="/survey/aggregation/:surveyId">
         <SurveyAggregationPage />
       </Screen>
+
       <Screen path="/survey/aggregation">
         <SurveyHome />
       </Screen>
-      <Screen path="/survey/create/target">
-        <TargetPage />
-      </Screen>
+
       <Screen path="/survey/create/question">
         <QuestionPage />
       </Screen>
+
       <Screen path="/survey/create/complete">
         <EndPage />
       </Screen>
+
       <Screen path="/survey/:surveyId/complete">
         <AnswerComplete />
       </Screen>
+
       <Screen path="/survey/:surveyId">
-        <AnswerHome />
+        <ErrorBoundary fallback={<ErrorNoSurveyPage />}>
+          <AnswerHome />
+        </ErrorBoundary>
       </Screen>
+
       <Screen path="/survey/:surveyId/:questionTypes">
         <AnswerDetailPage />
+      </Screen>
+
+      <Screen path="/*">
+        <ErrorPage />
       </Screen>
     </Navigator>
   );
