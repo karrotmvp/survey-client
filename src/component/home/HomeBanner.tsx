@@ -5,11 +5,6 @@ const StyledHomeBanner = styled.div`
   font-weight: 700;
 `;
 
-// const StyledHighlight = styled.span`
-//   color: ${({ theme }) => theme.color.primaryOrange};
-//   font-family: ${({ theme }) => theme.fontFamily.title};
-//   font-weight: 700;
-// `;
 const StyledText = styled.h1`
   font-size: 2.2rem;
   font-weight: 400;
