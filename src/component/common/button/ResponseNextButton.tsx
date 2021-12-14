@@ -31,13 +31,15 @@ const NextButton = styled.button`
 type ResponseNextButton = {
   isLast: boolean;
   disable?: boolean;
-  handleNextClick: (e: React.MouseEvent) => void;
+  handleNextClick: (e: React.MouseEvent) => boolean;
 };
 
 type responsePostBodyType = {
   surveyId: number;
   answers: { questionId: number; value: string }[];
 };
+
+// 리팩토링 필요
 
 export default function ResponseNextButton({
   isLast,
@@ -52,42 +54,42 @@ export default function ResponseNextButton({
   const { push } = useNavigator();
   const responseState = useRecoilValue(responseListAtom);
   const question = useRecoilValue(questionListAtom);
-  const [isSubmit, setSubmit] = useState(false);
   const query = useQueryParams<{ ref?: string }>();
   const ref = query.ref || 'app';
+
   const [isToastOpen, setToastOpen] = useState(false);
   const answerCheck = responseState.every(({ value }) => value === '');
+
   const handleLastClick = (e: React.MouseEvent) => {
     fa.logEvent(`response_question_complete_button_click`, {
       surveyId,
       ref,
     });
+
     fa.logEvent(`${surveyId}_response_question_complete_button_click`, { ref });
     handleNextClick(e);
-    setSubmit(true);
   };
 
   useEffect(() => {
-    if (isSubmit && responseState.length === question.length) {
-      const answers = question.map(({ questionId }, idx) => ({
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        questionId: questionId!,
-        value: responseState[idx].value,
-      }));
-
-      setSubmit(false);
+    if (responseState.length === question.length) {
       if (!answerCheck) {
+        const answers = question.map(({ questionId }, idx) => ({
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          questionId: questionId!,
+          value: responseState[idx].value,
+        }));
+
         responsePost({
           surveyId: +surveyId,
           answers,
         });
+
         push(`/survey/${surveyId}/complete?ref=${ref}`);
       } else {
         setToastOpen(true);
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isSubmit, responseState, answerCheck]);
+  }, [responseState, answerCheck]);
 
   return (
     <>

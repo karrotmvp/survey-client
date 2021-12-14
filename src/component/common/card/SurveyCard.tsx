@@ -20,6 +20,7 @@ import {
 import mini from '@src/api/mini';
 import { surveyItemType } from '@src/page/SurveyHome';
 
+import Modal from '../modal/Modal';
 import UpDownModal from '../modal/UpDownModal';
 
 const StyledSurveyCard = styled.li`
@@ -74,20 +75,28 @@ export default function SurveyCard({
   };
   const [isPopupOpen, setPopup] = useState(false);
   const [isPopupClose, setClose] = useState(false);
+  const [isModalPopup, setModalPopup] = useState(false);
   const [trigger, setTrigger] = useRecoilState(surveyListTrigger);
   const url = useRecoilValueLoadable(getBriefUrls);
   const userData = useRecoilValueLoadable(getBizProfile);
   const setSurveyId = useSetRecoilState(surveyIdAtom);
 
-  const onDeleteClick = async () => {
+  const onModalDeleteClick = async () => {
     const token = sessionStorage.getItem('jwt');
     axios.defaults.baseURL = process.env.REACT_APP_API_URL;
     const Authorization = 'X-AUTH-TOKEN';
     if (token) axios.defaults.headers.common[Authorization] = token;
 
     await axios.delete(`mongo/surveys/${surveyId}`);
+    fa.logEvent('surveyList_modal_delete_button_confirm');
     setTrigger(trigger + 1);
     setClose(true);
+  };
+
+  const onDeleteClick = () => {
+    fa.logEvent('surveyList_delete_button_click');
+    setClose(true);
+    setModalPopup(true);
   };
 
   const onShareClick = () => {
@@ -143,6 +152,28 @@ export default function SurveyCard({
           </StyledMoreModal>
         </UpDownModal>
       )}
+      {isModalPopup && (
+        <Modal setPopup={setModalPopup}>
+          <ConfirmModal>
+            설문을 삭제하면
+            <br />
+            더 이상 답변을 받을 수 없어요.
+            <br />
+            삭제하시겠어요?
+          </ConfirmModal>
+          <div>
+            <CancelButton
+              onClick={() => {
+                setModalPopup(false);
+                fa.logEvent('surveyList_modal_delete_button_cancel');
+              }}
+            >
+              취소
+            </CancelButton>
+            <ConfirmButton onClick={onModalDeleteClick}>삭제</ConfirmButton>
+          </div>
+        </Modal>
+      )}
     </>
   );
 }
@@ -161,4 +192,50 @@ const StyledMoreModal = styled.ul`
       background-color: #c9c9c9;
     }
   }
+`;
+
+const ConfirmModal = styled.div`
+  width: 100%;
+  font-size: 16px;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 150%;
+  text-align: center;
+  color: #242424;
+  padding: 0 24px;
+  height: 124px;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+`;
+
+const CancelButton = styled.button`
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 140%;
+  width: 50%;
+  height: 51px;
+  background-color: #ffff;
+  color: #141414;
+  border-top: 1px solid #e8e8e8;
+  border-right: 1px solid #e8e8e8;
+  :focus {
+    background-color: #f4f5f6;
+  }
+  border-bottom-left-radius: 12px;
+`;
+
+const ConfirmButton = styled.button`
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 140%;
+  width: 50%;
+  height: 52px;
+  background-color: #ffff;
+  color: #ff0000;
+  border-top: 1px solid #e8e8e8;
+  :focus {
+    background-color: #f4f5f6;
+  }
+  border-bottom-right-radius: 12px;
 `;
