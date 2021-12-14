@@ -44,6 +44,7 @@ export default function ResponseChoiceInput({
 
   const handleNextClick = () => {
     setResponse({ value: selectedChoice });
+    return true;
   };
   const history = useHistory();
 

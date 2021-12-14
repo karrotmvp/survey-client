@@ -41,6 +41,7 @@ export default function ResponseTextInput({
 
   const handleNextClick = () => {
     setResponse({ value: text });
+    return true;
   };
   const history = useHistory();
 
