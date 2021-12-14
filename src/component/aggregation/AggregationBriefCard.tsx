@@ -2,29 +2,22 @@ import styled from '@emotion/styled';
 import { useNavigator } from '@karrotframe/navigator';
 
 import { useAnalytics } from '@src/analytics/faContext';
+import { questionTypes } from '@src/config/const/const';
 
-import { aggregationCardType } from './AggregationBrief';
+import {
+  choiceAggregationCardType,
+  textAggregationCardType,
+} from './AggregationBrief';
 import AggregationBriefChoice from './AggregationBriefChoice';
 import AggregationBriefTextList from './AggregationBriefTextList';
 
-export type answerTextType = {
-  value: string;
-  responseId: number;
-};
-
-export type answerChoiceType = {
-  value: string;
-  count: number;
-};
-
 export default function AggregationBriefCard({
-  question,
-  questionType,
-  answers,
+  aggregationData,
   showAll,
   setTabKey,
   order,
-}: aggregationCardType & {
+}: {
+  aggregationData: textAggregationCardType | choiceAggregationCardType;
   showAll?: boolean;
   setTabKey?: React.Dispatch<React.SetStateAction<string>>;
   order: number;
@@ -35,6 +28,7 @@ export default function AggregationBriefCard({
   const handleClick = async () => {
     const surveyId = window.location.hash.split('/')[3].split('?')[0];
     fa.logEvent('surveyAggregation_showallbutton_click');
+
     const res = await push<number>(`survey/aggregation/${surveyId}/${order}`);
 
     if (res && setTabKey) {
@@ -45,19 +39,21 @@ export default function AggregationBriefCard({
   return (
     <StyledAggregationCard>
       <h3 className="aggregation_card_title">질문 {order + 1}</h3>
-      <span className="aggregation_card_text">{question}</span>
-      {questionType === 2 ? (
+      <span className="aggregation_card_text">{aggregationData.question}</span>
+      {aggregationData.questionType === questionTypes.TEXTTYPE && (
         <AggregationBriefTextList
           setTabKey={setTabKey}
-          answers={answers.map(ans => ans as answerTextType)}
+          answers={aggregationData.answers}
           showAll={showAll}
-        />
-      ) : (
-        <AggregationBriefChoice
-          showAll={showAll}
-          answers={answers.map(ans => ans as answerChoiceType)}
         />
       )}
+      {aggregationData.questionType === questionTypes.CHOICETYPE && (
+        <AggregationBriefChoice
+          showAll={showAll}
+          answers={aggregationData.answers}
+        />
+      )}
+
       {!showAll && (
         <ShowAllButton onClick={handleClick}>전체 보기</ShowAllButton>
       )}

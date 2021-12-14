@@ -41,6 +41,7 @@ function AggregationTabs({
   if (individual) {
     setResponseId(+individual);
   }
+
   return (
     <TabsWrapper>
       <Tabs

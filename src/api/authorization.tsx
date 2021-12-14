@@ -50,15 +50,17 @@ type userType = {
     followersCount: number;
   };
 };
-const getBizprofile = selector({
-  key: 'getBizprofile',
+// 선언적으로 할수있다.
+// 명령형으로 짜는 것 은 유지보수에 안좋다
+const getBizProfile = selector({
+  key: 'getBizProfile',
   get: async ({ get }) => {
     const jwt = await get(authorizationBizSelector);
     const token = jwt.data;
     axios.defaults.baseURL = process.env.REACT_APP_API_URL;
 
     const Authorization = 'X-AUTH-TOKEN';
-    if (!token) return '';
+    if (!token) throw new Error();
     axios.defaults.headers.common[Authorization] = token;
     try {
       const data: AxiosResponse<userType> = await axios.get<userType>(
@@ -230,6 +232,6 @@ export {
   bizCodeAtom,
   codeAtom,
   authorizationSelector,
-  getBizprofile,
+  getBizProfile,
   getAggregationBrief,
 };
