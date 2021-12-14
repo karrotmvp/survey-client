@@ -1,24 +1,27 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import styled from '@emotion/styled';
-import { useParams } from '@karrotframe/navigator';
+import { useNavigator, useParams } from '@karrotframe/navigator';
+import axios from 'axios';
 import {
   useRecoilState,
   useRecoilValueLoadable,
   useSetRecoilState,
 } from 'recoil';
 
-import { ReactComponent as ShareIcon } from '@config/icon/share_black.svg';
+import { ReactComponent as TrailingIcon } from '@config/icon/trailing.svg';
 import { useAnalytics } from '@src/analytics/faContext';
 import {
-  getBizprofile,
+  getBizProfile,
   getBizSurveyList,
   getBriefUrls,
   surveyIdAtom,
+  surveyListTrigger,
 } from '@src/api/authorization';
 import mini from '@src/api/mini';
 import { TitleViewAtom } from '@src/atom/responseAtom';
 import MemoAggregationTabs from '@src/component/aggregation/AggregationTabs';
+import UpDownModal from '@src/component/common/modal/UpDownModal';
 import ScrollNavBar from '@src/component/common/navbar/ScrollNavBar';
 import { targetList } from '@src/config/const/const';
 
@@ -30,9 +33,13 @@ export default function SurveyAggregationPage(): JSX.Element {
   const setSurveyId = useSetRecoilState(surveyIdAtom);
   const getSurveyList = useRecoilValueLoadable(getBizSurveyList);
   const url = useRecoilValueLoadable(getBriefUrls);
-  const userData = useRecoilValueLoadable(getBizprofile);
+  const userData = useRecoilValueLoadable(getBizProfile);
   const ref = useRef<HTMLDivElement>(null);
   const [isTitleView, setTitleView] = useRecoilState(TitleViewAtom);
+  const [isPopupOpen, setPopup] = useState(false);
+  const [isPopupClose, setClose] = useState(false);
+  const [trigger, setTrigger] = useRecoilState(surveyListTrigger);
+  const { replace } = useNavigator();
 
   setSurveyId(surveyId);
 
@@ -62,6 +69,7 @@ export default function SurveyAggregationPage(): JSX.Element {
 
   const handleShareClick = () => {
     fa.logEvent('aggregation_share_button_click');
+    setClose(true);
     if (
       url.state === 'hasValue' &&
       url.contents &&
@@ -74,6 +82,23 @@ export default function SurveyAggregationPage(): JSX.Element {
       });
     }
   };
+  const onDeleteClick = async () => {
+    const token = sessionStorage.getItem('jwt');
+    axios.defaults.baseURL = process.env.REACT_APP_API_URL;
+    const Authorization = 'X-AUTH-TOKEN';
+    if (token) axios.defaults.headers.common[Authorization] = token;
+
+    await axios.delete(`mongo/surveys/${surveyId}`);
+    setTrigger(trigger + 1);
+    setClose(true);
+    replace('/');
+  };
+
+  useEffect(() => {
+    if (!isPopupOpen && isPopupClose) {
+      setClose(false);
+    }
+  }, [isPopupOpen, isPopupClose]);
 
   return (
     <>
@@ -85,9 +110,22 @@ export default function SurveyAggregationPage(): JSX.Element {
             : undefined
         }
         titleAppear={!isTitleView}
-        appendRight={<ShareIcon onClick={handleShareClick} />}
+        appendRight={
+          <TrailingIcon
+            onClick={() => {
+              setPopup(true);
+            }}
+          />
+        }
       />
-
+      {isPopupOpen && (
+        <UpDownModal setPopup={setPopup} rect isClose={isPopupClose}>
+          <StyledMoreModal>
+            <button onClick={handleShareClick}>설문 공유</button>
+            <button onClick={onDeleteClick}>설문 삭제</button>
+          </StyledMoreModal>
+        </UpDownModal>
+      )}
       <Section>
         <StyledSurveyTitleCard ref={ref}>
           <SurveyTitle>
@@ -140,4 +178,20 @@ const Section = styled.section`
   position: relative;
   height: 100vh;
   overflow: scroll;
+`;
+
+const StyledMoreModal = styled.ul`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  button {
+    width: 100%;
+    font-weight: ${({ theme }) => theme.fontWeight.regular};
+    font-size: 1.6rem;
+    padding: 1.6rem;
+    text-align: center;
+    :focus {
+      background-color: #c9c9c9;
+    }
+  }
 `;
