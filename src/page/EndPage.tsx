@@ -1,21 +1,16 @@
-import { useEffect } from 'react';
-
 import styled from '@emotion/styled';
 import { useNavigator } from '@karrotframe/navigator';
-import { useHistory } from 'react-router-dom';
 import { useRecoilValueLoadable } from 'recoil';
 
 import { ReactComponent as ShareIcon } from '@config/icon/share.svg';
 import { useAnalytics } from '@src/analytics/faContext';
-import { getBizprofile, getBriefUrls } from '@src/api/authorization';
+import { getBizProfile, getBriefUrls } from '@src/api/authorization';
 import mini from '@src/api/mini';
 import NavBar from '@src/component/common/navbar/NavBar';
 import { useShowEvent } from '@src/hook/useShowEvent';
 
-// import useLoadableGet from '@src/hook/useLoadableGet';
-
 const StyledEndPage = styled.section`
-  background-color: #f2f2f2;
+  background-color: #ffffff;
   width: 100%;
   height: 100vh;
   padding: 7.7rem 1.6rem 1.6rem 1.6rem;
@@ -75,19 +70,6 @@ const FeedBackButton = styled.button`
   border-radius: 8px;
 `;
 
-// const ShareButton = styled.button`
-//   color: ${({ theme }) => theme.color.primaryOrange};
-//   font-size: 1.6rem;
-//   font-weight: ${({ theme }) => theme.fontWeight.regular};
-//   padding: 0.4rem;
-//   background-color: transparent;
-//   display: flex;
-//   align-items: center;
-//   svg {
-//     margin-right: 0.4rem;
-//   }
-// `;
-
 const CompleteImg = styled.img`
   width: 100%;
 `;
@@ -95,9 +77,8 @@ const CompleteImg = styled.img`
 export default function EndPage(): JSX.Element {
   const { replace } = useNavigator();
   const fa = useAnalytics();
-  const history = useHistory();
   const url = useRecoilValueLoadable(getBriefUrls);
-  const userData = useRecoilValueLoadable(getBizprofile);
+  const userData = useRecoilValueLoadable(getBizProfile);
   const goFeedBack = () => {
     fa.logEvent('complete_gofeedback_button_click');
     replace('/feedback');
@@ -118,19 +99,14 @@ export default function EndPage(): JSX.Element {
     }
   };
 
-  // const closeMini = () => {
-  //   fa.logEvent('complete_like_button_click');
-  //   mini.close();
-  // };
-
-  useEffect(
-    () => () => {
-      if (history.action === 'POP') {
-        history.go(-4);
-      }
-    },
-    [history],
-  );
+  // useEffect(
+  //   () => () => {
+  //     if (history.action === 'POP') {
+  //       history.go(-4);
+  //     }
+  //   },
+  //   [history],
+  // );
 
   return (
     <>

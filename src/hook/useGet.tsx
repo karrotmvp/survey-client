@@ -1,16 +1,18 @@
 import { useCallback } from 'react';
 
+import { useNavigator } from '@karrotframe/navigator';
 import axios from 'axios';
 
 type fetchType<T> = {
   data: T;
-  status: string;
+  status: number;
   message: string;
 };
 export default function useGet<T>(
   initialUrl: string,
   nonToken?: boolean,
 ): () => Promise<T | undefined> {
+  const { replace } = useNavigator();
   const fetchData = useCallback(async () => {
     const token = sessionStorage.getItem('jwt');
     if (!token && !nonToken) return Promise.resolve(undefined);
@@ -20,9 +22,18 @@ export default function useGet<T>(
       if (token) axios.defaults.headers.common[Authorization] = token;
     }
     if (!initialUrl) throw new Error(`Error: URL IS NULL`);
-    const res = await axios.get<fetchType<T>>(initialUrl);
-    if (res.status !== 200) throw new Error(`Error`);
-    return res.data.data;
+    try {
+      const res = await axios.get<fetchType<T>>(initialUrl);
+
+      return res.data.data;
+    } catch (e) {
+      if (axios.isAxiosError(e)) {
+        if (e.request.status === 404) {
+          replace('/404');
+        }
+      }
+      return Promise.resolve(undefined);
+    }
   }, [initialUrl]);
 
   return fetchData;
