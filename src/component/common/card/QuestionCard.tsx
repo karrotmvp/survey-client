@@ -130,6 +130,7 @@ export default function QuestionCard({
           ) : (
             <ChoiceInputFormList
               {...{
+                watch,
                 errors,
                 register,
                 control,
