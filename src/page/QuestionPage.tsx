@@ -112,15 +112,7 @@ export default function QuestionPage(): JSX.Element {
     },
   });
   useShowEvent('survey_create_question_show');
-  // const TargetChangeModal = styled.div`
-  //   padding: 2rem 1.6rem 2.8rem 1.6rem;
-  //   .target_change_title {
-  //     font-size: 1.6rem;
-  //     font-weight: ${({ theme }) => theme.fontWeight.regular};
-  //     text-align: center;
-  //     margin-bottom: 2.4rem;
-  //   }
-  // `;
+
   const questionList = watch('questions');
   const titleWatch = watch('title');
   const isTitleModalOpen = useRecoilValue(questionTitleModalOpen);
@@ -147,22 +139,6 @@ export default function QuestionPage(): JSX.Element {
     }
   };
 
-  // const TargetModalButton = styled.button`
-  //   width: 100%;
-  //   display: flex;
-  //   justify-content: space-between;
-  //   padding: 2.4rem 1.6rem;
-  //   .target_title {
-  //     font-size: 1.5rem;
-  //     line-height: 100%;
-  //     color: ${({ theme }) => theme.color.neutralBlack.main};
-  //     font-weight: ${({ theme }) => theme.fontWeight.regular};
-  //   }
-  //   background-color: transparent;
-  //   border-bottom: 1px solid #f4f4f4;
-  //   margin-top: 5.6rem;
-  // `;
-
   return (
     <>
       <NavBar
@@ -180,17 +156,6 @@ export default function QuestionPage(): JSX.Element {
           </CompleteButton>
         }
       />
-      {/* <TargetModalButton
-        onClick={() => {
-          fa.logEvent('question_target_change_click');
-          setTargetPopup(true);
-        }}
-      >
-        <h3 className="target_title">
-          {targetList[targetIndex - 1].title} 대상
-        </h3>
-        <ExpandIcon />
-      </TargetModalButton> */}
 
       <StyledForm id="submitForm" onSubmit={handleSubmit(onSubmit)}>
         <QuestionCardList
@@ -205,14 +170,6 @@ export default function QuestionPage(): JSX.Element {
         />
       </StyledForm>
 
-      {/* {isTargetPopup && (
-        <Modal setPopup={setTargetPopup} close>
-          <TargetChangeModal>
-            <h1 className="target_change_title">설문 대상 선택</h1>
-            <TargetList isKing={true} brief />
-          </TargetChangeModal>
-        </Modal>
-      )} */}
       {isPopup && (
         <Modal setPopup={setPopup}>
           <ConfirmModal>

@@ -1,31 +1,50 @@
 import { FormEvent, forwardRef } from 'react';
 
 import styled from '@emotion/styled';
-import { UseFormRegister } from 'react-hook-form';
+import { UseFormRegister, UseFormWatch } from 'react-hook-form';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 
 import { ReactComponent as ChoiceCircleIcon } from '@config/icon/choiceCircle.svg';
 import { ReactComponent as DeleteIcon } from '@config/icon/delete.svg';
 import { ReactComponent as WarningIcon } from '@config/icon/warning.svg';
 import { focusAtom, questionValidationAtom } from '@src/atom/questionAtom';
-import { submitType } from '@src/page/QuestionPage';
+import { errorsType, submitType } from '@src/page/QuestionPage';
 
 type questionChoiceType = {
   index: number;
   warning?: boolean;
   register: UseFormRegister<submitType>;
+  watch: UseFormWatch<submitType>;
   onInput: (e: FormEvent) => void;
   choiceRef: (el: HTMLTextAreaElement | null) => void;
   remove: (index?: number | number[] | undefined) => void;
   questionIndex: number;
+  errors: errorsType;
 };
 
 const ChoiceInputForm = forwardRef<HTMLTextAreaElement, questionChoiceType>(
-  ({ index, onInput, remove, register, warning, choiceRef, questionIndex }) => {
+  ({
+    watch,
+    index,
+    onInput,
+    remove,
+    register,
+    warning,
+    choiceRef,
+    questionIndex,
+    errors,
+  }) => {
     const [isFocus, setFocus] = useRecoilState(focusAtom);
+    const choiceValue = watch(`questions.${questionIndex}.choices`);
     const { ref, ...rest } = register(
       `questions.${questionIndex}.choices.${index}.value`,
-      { required: true },
+      {
+        required: true,
+        validate: value =>
+          !choiceValue?.some(
+            (postValue, idx) => idx !== index && postValue.value === value,
+          ),
+      },
     );
     const setQuestionValidation = useSetRecoilState(questionValidationAtom);
 
@@ -59,10 +78,18 @@ const ChoiceInputForm = forwardRef<HTMLTextAreaElement, questionChoiceType>(
             }}
             onBlur={() => setFocus(false)}
           />
-          {warning && (
+          {errors.questions?.[questionIndex]?.choices?.[index]?.value?.type ===
+            'required' && (
             <ErrorText>
               <WarningIcon style={{ marginRight: '0.4rem' }} />
               답변을 입력해주세요
+            </ErrorText>
+          )}
+          {errors.questions?.[questionIndex]?.choices?.[index]?.value?.type ===
+            'validate' && (
+            <ErrorText>
+              <WarningIcon style={{ marginRight: '0.4rem' }} />
+              선택지는 중복이 불가능합니다
             </ErrorText>
           )}
         </div>
