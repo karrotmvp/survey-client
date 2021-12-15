@@ -10,9 +10,7 @@ import { useRecoilValue } from 'recoil';
 
 import AlertToastModal from '@component/common/modal/TostModal';
 import { useAnalytics } from '@src/analytics/faContext';
-import { questionListAtom } from '@src/atom/questionAtom';
 import { responseListAtom } from '@src/atom/responseAtom';
-import useSubmit from '@src/hook/useSubmit';
 
 const NextButton = styled.button`
   width: 100%;
@@ -34,11 +32,6 @@ type ResponseNextButton = {
   handleNextClick: (e: React.MouseEvent) => boolean;
 };
 
-type responsePostBodyType = {
-  surveyId: number;
-  answers: { questionId: number; value: string }[];
-};
-
 // 리팩토링 필요
 
 export default function ResponseNextButton({
@@ -47,13 +40,11 @@ export default function ResponseNextButton({
   disable,
 }: ResponseNextButton): JSX.Element {
   const { surveyId } =
-    useParams<{ surveyId?: string; questionNumber?: string }>();
+    useParams<{ surveyId?: string; questionTypes?: string }>();
   if (!surveyId) throw new Error('questionNumber or surveyId none');
   const fa = useAnalytics();
-  const responsePost = useSubmit<responsePostBodyType>('/mongo/responses');
   const { push } = useNavigator();
   const responseState = useRecoilValue(responseListAtom);
-  const question = useRecoilValue(questionListAtom);
   const query = useQueryParams<{ ref?: string }>();
   const ref = query.ref || 'app';
 
@@ -68,28 +59,16 @@ export default function ResponseNextButton({
 
     fa.logEvent(`${surveyId}_response_question_complete_button_click`, { ref });
     handleNextClick(e);
+    push(`/survey/${surveyId}/complete?ref=${ref}`);
   };
 
   useEffect(() => {
-    if (responseState.length === question.length) {
-      if (!answerCheck) {
-        const answers = question.map(({ questionId }, idx) => ({
-          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-          questionId: questionId!,
-          value: responseState[idx].value,
-        }));
-
-        responsePost({
-          surveyId: +surveyId,
-          answers,
-        });
-
-        push(`/survey/${surveyId}/complete?ref=${ref}`);
-      } else {
-        setToastOpen(true);
-      }
+    if (!answerCheck) {
+      push(`/survey/${surveyId}/complete?ref=${ref}`);
+    } else {
+      setToastOpen(true);
     }
-  }, [responseState, answerCheck]);
+  }, [answerCheck]);
 
   return (
     <>
