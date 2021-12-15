@@ -76,13 +76,20 @@ export default function AnswerHome(): JSX.Element {
     const { questions } = res;
     setQuestion(questions);
 
-    fa.logEvent(`response_login_button_click`, { surveyId, ref });
-    fa.logEvent(`${surveyId}_response_login_button_click`, { ref });
     push(`/survey/${surveyId}/1?ref=${ref}`);
   }
 
   const click = () => {
-    if (jwt.state === 'hasValue') {
+    fa.logEvent(`response_login_button_click`, { surveyId, ref });
+    fa.logEvent(`${surveyId}_response_login_button_click`, { ref });
+    if (!sessionStorage.getItem('jwt')) {
+      (async function getCode() {
+        const resCode = await auth();
+        if (resCode) {
+          setCode(resCode);
+        }
+      })();
+    } else {
       getResponseHomeData();
     }
   };
@@ -100,14 +107,14 @@ export default function AnswerHome(): JSX.Element {
   }, [briefData]);
 
   useEffect(() => {
+    if (jwt.state === 'hasValue' && jwt.contents) {
+      getResponseHomeData();
+    }
+  }, [jwt]);
+
+  useEffect(() => {
     fa.setUserId(uuidv4());
     fa.setUserProperties({ ref, surveyId });
-    (async function getCode() {
-      const resCode = await auth();
-      if (resCode) {
-        setCode(resCode);
-      }
-    })();
   }, []);
 
   const IsCoverImgUrls =
@@ -122,7 +129,7 @@ export default function AnswerHome(): JSX.Element {
           type="CLOSE"
           transparent
           title={IsCoverImgUrls ? '' : `${briefData.bizProfile.name} 설문`}
-          white={IsCoverImgUrls}
+          white={Boolean(IsCoverImgUrls)}
         />
       )}
       <StyledHomePage>
