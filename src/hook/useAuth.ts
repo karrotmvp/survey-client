@@ -17,7 +17,21 @@ const useMiniAuth = (
     }
 
     return new Promise<string>((resolve, reject) => {
-      resolve('general');
+      mini.startPreset({
+        preset: process.env.REACT_APP_PRESET || '',
+        params: {
+          appId,
+        },
+        onSuccess(result: { code: string }) {
+          if (result && result.code) {
+            resolve(result.code);
+          }
+        },
+        onFailure() {
+          reject(new Error('fail'));
+        },
+        onClose,
+      });
     });
   }, [appId, onClose]);
   return getCodeAsync;
