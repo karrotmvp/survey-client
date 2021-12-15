@@ -33,14 +33,14 @@ const StyledGuideImg = styled.img`
 export default function GuidePage(): JSX.Element {
   const { _si } = useQueryParams<{ _si: string }>();
 
-  const { replace } = useNavigator();
+  const { push } = useNavigator();
   return (
     <StyledGuidePage>
       <NavBar type={_si === '0' ? 'CLOSE' : 'BACK'} transparent white />
       <StyledGuideImg src="./img/guideImg.png" />
       <button
         onClick={() => {
-          replace('/example');
+          push('/example');
         }}
       >
         예시 보러가기 <ArrowIcon />
