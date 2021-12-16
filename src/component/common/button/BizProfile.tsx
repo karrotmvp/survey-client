@@ -21,6 +21,8 @@ const StyledBizProfile = styled.div<{ coverImageUrls?: boolean }>`
     color: ${({ coverImageUrls }) => (coverImageUrls ? '#fff' : '#141414')};
     .biz_profile_subtitle {
       color: ${({ coverImageUrls }) => (coverImageUrls ? '#fff' : '#707070')};
+      font-weight: ${({ coverImageUrls, theme }) =>
+        coverImageUrls ? theme.fontWeight.medium : theme.fontWeight.regular};
     }
   }
 `;
@@ -29,7 +31,7 @@ const Dot = styled.div`
   width: 2px;
   height: 2px;
   border-radius: 50%;
-  margin: 0 0.8rem;
+  margin: 0 0.6rem;
 `;
 
 const BizProfileTitle = styled.h3`
@@ -45,7 +47,6 @@ const BizProfileTitle = styled.h3`
 const BizProfileSubtitle = styled.h3`
   font-size: 1.4rem;
   line-height: 100%;
-  font-weight: ${({ theme }) => theme.fontWeight.regular};
 `;
 const BizProfileImg = styled.img`
   width: 6.4rem;
@@ -94,7 +95,7 @@ export default function BizProfile({
           <Dot /> {bizCategory}
         </BizProfileTitle>
         <BizProfileSubtitle className="biz_profile_subtitle">
-          {name}
+          {name} 사장님
         </BizProfileSubtitle>
       </div>
     </StyledBizProfile>

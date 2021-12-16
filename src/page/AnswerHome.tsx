@@ -291,7 +291,7 @@ const SurveyTitle = styled.h1`
   font-size: ${({ theme }) => theme.fontSize.XXL};
   line-height: 140%;
   margin: 0.8rem 0;
-  font-weight: 600;
+  font-weight: ${({ theme }) => theme.fontWeight.medium};
   text-align: center;
   word-break: keep-all;
   padding: 0 1.4rem;
