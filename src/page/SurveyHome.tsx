@@ -288,6 +288,7 @@ const settings: Settings = {
   arrows: false,
   swipe: true,
   autoplay: true,
+  autoplaySpeed: 4000,
 };
 
 const Logo = styled(LogoIcon)`
