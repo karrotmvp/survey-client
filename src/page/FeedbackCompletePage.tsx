@@ -9,6 +9,7 @@ export default function FeedbackCompletePage(): JSX.Element {
   return (
     <StyledFeedbackComplete>
       <NavBar type="BACK" />
+      <img src="./img/happyMudda.png" />
       <h1>의견을 남겨주셔서 감사해요!</h1>
       <span>더 좋은 서비스가 되기 위해 노력할게요🔥</span>
       <FeedbackButton
@@ -39,6 +40,10 @@ const StyledFeedbackComplete = styled.section`
   height: 100%;
   flex-direction: column;
   padding: 0 1.6rem;
+  img {
+    width: 8.2rem;
+    margin-bottom: 2.8rem;
+  }
   h1 {
     font-weight: ${({ theme }) => theme.fontWeight.medium};
     font-size: 1.8rem;
