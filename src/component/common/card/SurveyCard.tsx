@@ -51,6 +51,10 @@ const StyledSurveyCard = styled.li<{ isLast: boolean }>`
 `;
 
 const SurveyCardTitle = styled.span`
+  width: calc(100% - 4.2rem);
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
   font-size: 1.6rem;
   font-weight: ${({ theme }) => theme.fontWeight.regular};
 `;
