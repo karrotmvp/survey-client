@@ -19,6 +19,9 @@ const StyledBizProfile = styled.div<{ coverImageUrls?: boolean }>`
   .biz_profile_left_text {
     margin-left: 1.6rem;
     color: ${({ coverImageUrls }) => (coverImageUrls ? '#fff' : '#141414')};
+    .biz_profile_subtitle {
+      color: ${({ coverImageUrls }) => (coverImageUrls ? '#fff' : '#707070')};
+    }
   }
 `;
 const Dot = styled.div`
@@ -42,7 +45,7 @@ const BizProfileTitle = styled.h3`
 const BizProfileSubtitle = styled.h3`
   font-size: 1.4rem;
   line-height: 100%;
-  font-weight: ${({ theme }) => theme.fontWeight.medium};
+  font-weight: ${({ theme }) => theme.fontWeight.regular};
 `;
 const BizProfileImg = styled.img`
   width: 6.4rem;
@@ -90,7 +93,9 @@ export default function BizProfile({
           }`}{' '}
           <Dot /> {bizCategory}
         </BizProfileTitle>
-        <BizProfileSubtitle>{name}</BizProfileSubtitle>
+        <BizProfileSubtitle className="biz_profile_subtitle">
+          {name}
+        </BizProfileSubtitle>
       </div>
     </StyledBizProfile>
   );
