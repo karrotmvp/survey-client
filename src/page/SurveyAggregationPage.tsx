@@ -160,7 +160,9 @@ export default function SurveyAggregationPage(): JSX.Element {
         <UpDownModal setPopup={setPopup} rect isClose={isPopupClose}>
           <StyledMoreModal>
             <button onClick={handleShareClick}>설문 공유</button>
-            <button onClick={onDeleteClick}>설문 삭제</button>
+            <button className="delete" onClick={onDeleteClick}>
+              설문 삭제
+            </button>
           </StyledMoreModal>
         </UpDownModal>
       )}
@@ -231,6 +233,9 @@ const StyledMoreModal = styled.ul`
     :focus {
       background-color: #c9c9c9;
     }
+  }
+  .delete {
+    color: #ff0000;
   }
 `;
 
