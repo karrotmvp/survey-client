@@ -9,8 +9,6 @@ const useMiniAuth = (
 ): (() => Promise<string | undefined>) => {
   const getCodeAsync = useCallback(() => {
     const urlSearchParams = new URLSearchParams(window.location.search);
-    // eslint-disable-next-line no-alert
-    console.log(urlSearchParams.has('code'), window.location.search);
     if (urlSearchParams.has('code')) {
       if (onClose) {
         onClose();
@@ -19,7 +17,21 @@ const useMiniAuth = (
     }
 
     return new Promise<string>((resolve, reject) => {
-      resolve('general');
+      mini.startPreset({
+        preset: process.env.REACT_APP_PRESET || '',
+        params: {
+          appId,
+        },
+        onSuccess(result: { code: string }) {
+          if (result && result.code) {
+            resolve(result.code);
+          }
+        },
+        onFailure() {
+          reject(new Error('fail'));
+        },
+        onClose,
+      });
     });
   }, [appId, onClose]);
   return getCodeAsync;
@@ -34,7 +46,6 @@ const useMiniBizAuth = (
     const isPreload = urlSearchParams.get('preload');
 
     if (isPreload) {
-      console.log(isPreload, urlSearchParams.has('code'), 'in');
       return Promise.resolve<string>('');
     }
 

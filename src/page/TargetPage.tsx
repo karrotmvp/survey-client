@@ -8,14 +8,14 @@ import { useRecoilValue, useRecoilValueLoadable } from 'recoil';
 // import { useHistory } from 'react-router-dom';
 
 import NavBar from '@component/common/navbar/NavBar';
-import { getBizprofile } from '@src/api/authorization';
+import { getBizProfile } from '@src/api/authorization';
 import { questionTarget } from '@src/atom/questionAtom';
 import Modal from '@src/component/common/modal/Modal';
 import TargetList from '@src/component/common/target/TargetList';
 
 export default function TargetPage(): JSX.Element {
   const [isPopup, setPopup] = useState(false);
-  const userData = useRecoilValueLoadable(getBizprofile);
+  const userData = useRecoilValueLoadable(getBizProfile);
   const { push } = useNavigator();
   const target = useRecoilValue(questionTarget);
   const isKing =

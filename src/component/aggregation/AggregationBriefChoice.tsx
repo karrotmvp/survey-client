@@ -11,17 +11,21 @@ export default function AggregationBriefChoice({
   answers: answerChoiceType[];
   showAll?: boolean;
 }): JSX.Element {
-  answers.sort((a, b) => b.count - a.count);
+  const filterAnswers = answers.map(({ value, count }) => ({
+    value: value === '' ? '미선택' : value,
+    count,
+  }));
 
-  const data = answers.map(({ value, count }) => ({
+  const data = filterAnswers.map(({ value, count }) => ({
     name: value,
     value: count,
   }));
 
+  data.sort((a, b) => b.value - a.value);
   return (
     <div>
-      <AggregationPieChart data={data} COLORS={COLORS} />
-      <ChartLegendList answers={answers} showAll={showAll} />
+      <AggregationPieChart data={data} COLORS={COLORS} key={answers[0].value} />
+      <ChartLegendList answers={filterAnswers} showAll={showAll} />
     </div>
   );
 }

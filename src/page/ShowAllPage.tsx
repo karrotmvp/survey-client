@@ -17,9 +17,7 @@ export default function ShowAllPage(): JSX.Element {
   const question = useRecoilValueLoadable(getAggregationBrief);
 
   useEffect(() => {
-    if (
-      question.contents.questionAggregations[+questionNumber].questionType === 2
-    ) {
+    if (question.contents[+questionNumber].questionType === 2) {
       fa.logEvent('survey_showAllText_show');
     } else {
       fa.logEvent('survey_showAllChoice_show');
@@ -42,7 +40,7 @@ export default function ShowAllPage(): JSX.Element {
             <AggregationBriefCard
               showAll
               order={+questionNumber}
-              {...question.contents[+questionNumber]}
+              aggregationData={question.contents[+questionNumber]}
             />
           </div>{' '}
         </>

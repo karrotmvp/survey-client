@@ -1,7 +1,12 @@
 import { FormEvent, MouseEvent, useRef, useState } from 'react';
 
 import styled from '@emotion/styled';
-import { Control, useFieldArray, UseFormRegister } from 'react-hook-form';
+import {
+  Control,
+  useFieldArray,
+  UseFormRegister,
+  UseFormWatch,
+} from 'react-hook-form';
 
 import AlertToastModal from '@component/common/modal/TostModal';
 import { ReactComponent as ChoiceCircleIcon } from '@config/icon/choiceCircle.svg';
@@ -15,11 +20,13 @@ export default function ChoiceInputFormList({
   register,
   questionIndex,
   errors,
+  watch,
 }: {
   control: Control<submitType>;
   register: UseFormRegister<submitType>;
   questionIndex: number;
   errors: errorsType;
+  watch: UseFormWatch<submitType>;
 }): JSX.Element {
   const elRefs = useRef<HTMLTextAreaElement[]>([]);
   const [isToastOpen, setToastOpen] = useState(false);
@@ -61,7 +68,6 @@ export default function ChoiceInputFormList({
       fa.logEvent('question_choice_add_button_active_click');
     }
   };
-
   return (
     <StyledQuestionChoiceList>
       <AlertToastModal
@@ -76,7 +82,15 @@ export default function ChoiceInputFormList({
           warning={Boolean(
             errors.questions?.[questionIndex]?.choices?.[index]?.value,
           )}
-          {...{ onInput, register, questionIndex, remove, index }}
+          {...{
+            errors,
+            watch,
+            onInput,
+            register,
+            questionIndex,
+            remove,
+            index,
+          }}
         />
       ))}
       <div className="choice_add_button">

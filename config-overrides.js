@@ -2,7 +2,13 @@
 const path = require('path');
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const { override, addWebpackAlias } = require('customize-cra');
+const {
+  override,
+  addWebpackAlias,
+  // addWebpackPlugin,
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+} = require('customize-cra');
+// const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 
 module.exports = override(
   addWebpackAlias({
@@ -15,4 +21,5 @@ module.exports = override(
     '@router': path.resolve(__dirname, 'src/router'),
     '@hook': path.resolve(__dirname, 'src/hook'),
   }),
+  // addWebpackPlugin(new BundleAnalyzerPlugin()),
 );

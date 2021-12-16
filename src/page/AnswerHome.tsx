@@ -12,7 +12,6 @@ import { useSetRecoilState } from 'recoil';
 import { v4 as uuidv4 } from 'uuid';
 
 import LoginButton from '@component/common/button/LogInButton';
-import AlertTostModal from '@component/common/modal/TostModal';
 import NavBar from '@component/common/navbar/NavBar';
 import { useMiniAuth } from '@hook/useAuth';
 import { useAnalytics } from '@src/analytics/faContext';
@@ -25,12 +24,6 @@ import BizProfile, {
 import useGet from '@src/hook/useGet';
 import useLogin from '@src/hook/useLogin';
 import { useResponseShowEvent } from '@src/hook/useShowEvent';
-
-// const questionCategories = [
-//   '의견을 알려주세요',
-//   '메뉴 추천받아요',
-//   '퀴즈 풀어봐요',
-// ];
 
 export type questionDataType = {
   surveyId?: number;
@@ -60,15 +53,16 @@ export default function AnswerHome(): JSX.Element {
   const ref = query.ref || 'app';
 
   const jwt = useLogin(authorizationSelector);
-  const [isToastOpen, setToastOpen] = useState(false);
   const [briefData, setBrief] = useState<surveyBriefType | null>(null);
   const setCode = useSetRecoilState(codeAtom);
   const setBizUser = useSetRecoilState(responseUserAtom);
   const setQuestion = useSetRecoilState(questionListAtom);
+
   const fa = useAnalytics();
 
-  const getSurveyData = useGet<questionDataType>(`mongo/surveys/${surveyId}`);
+  const auth = useMiniAuth(process.env.REACT_APP_APP_ID || '');
 
+  const getSurveyData = useGet<questionDataType>(`mongo/surveys/${surveyId}`);
   const getSurveyBrief = useGet<surveyBriefType>(
     `/mongo/surveys/brief/${surveyId}`,
     true,
@@ -76,21 +70,26 @@ export default function AnswerHome(): JSX.Element {
 
   useResponseShowEvent('response_onboard_show', surveyId, ref);
 
-  const auth = useMiniAuth(process.env.REACT_APP_APP_ID || '');
-
   async function getResponseHomeData() {
     const res = await getSurveyData();
     if (!res) return;
     const { questions } = res;
     setQuestion(questions);
-    setToastOpen(false);
-    fa.logEvent(`response_login_button_click`, { surveyId, ref });
-    fa.logEvent(`${surveyId}_response_login_button_click`, { ref });
+
     push(`/survey/${surveyId}/1?ref=${ref}`);
   }
 
   const click = () => {
-    if (jwt.state === 'hasValue') {
+    fa.logEvent(`response_login_button_click`, { surveyId, ref });
+    fa.logEvent(`${surveyId}_response_login_button_click`, { ref });
+    if (!sessionStorage.getItem('jwt')) {
+      (async function getCode() {
+        const resCode = await auth();
+        if (resCode) {
+          setCode(resCode);
+        }
+      })();
+    } else {
       getResponseHomeData();
     }
   };
@@ -108,15 +107,16 @@ export default function AnswerHome(): JSX.Element {
   }, [briefData]);
 
   useEffect(() => {
+    if (jwt.state === 'hasValue' && jwt.contents) {
+      getResponseHomeData();
+    }
+  }, [jwt]);
+
+  useEffect(() => {
     fa.setUserId(uuidv4());
     fa.setUserProperties({ ref, surveyId });
-    (async function getCode() {
-      const resCode = await auth();
-      if (resCode) {
-        setCode(resCode);
-      }
-    })();
   }, []);
+
   const IsCoverImgUrls =
     briefData && briefData.bizProfile
       ? Boolean(briefData.bizProfile.coverImageUrls)
@@ -128,7 +128,7 @@ export default function AnswerHome(): JSX.Element {
           type="CLOSE"
           transparent
           title={IsCoverImgUrls ? '' : `${briefData.bizProfile.name} 설문`}
-          white={IsCoverImgUrls}
+          white={Boolean(IsCoverImgUrls)}
         />
       )}
       <StyledHomePage>
@@ -165,13 +165,6 @@ export default function AnswerHome(): JSX.Element {
           <SurveySubtitle>
             설문을 작성하시면 매장을 개선하는데 큰 도움이 돼요
           </SurveySubtitle>
-
-          <AlertTostModal
-            text={'이미 답변한 설문입니다'}
-            bottom={'9rem'}
-            {...{ isToastOpen, setToastOpen }}
-            time={3000}
-          />
 
           <LoginButton onClick={click} text={'설문 답변하기'} />
         </div>

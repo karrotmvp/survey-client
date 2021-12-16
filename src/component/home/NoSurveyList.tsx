@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 import { ReactComponent as PlusIcon } from '@config/icon/plus.svg';
 
 export default function NoSurveyList({
-  handleCreateClick,
+  handleCreateClick, // onMakeSurvey()
 }: {
   handleCreateClick: () => void;
 }): JSX.Element {

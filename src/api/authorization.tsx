@@ -50,15 +50,25 @@ type userType = {
     followersCount: number;
   };
 };
-const getBizprofile = selector({
-  key: 'getBizprofile',
+// 선언적으로 할수있다.
+// 명령형으로 짜는 것 은 유지보수에 안좋다
+const getBizProfile = selector({
+  key: 'getBizProfile',
   get: async ({ get }) => {
+    axios.defaults.baseURL = process.env.REACT_APP_API_URL;
+    const sessionJWT = sessionStorage.getItem('jwt');
+    const Authorization = 'X-AUTH-TOKEN';
+
     const jwt = await get(authorizationBizSelector);
     const token = jwt.data;
+
     axios.defaults.baseURL = process.env.REACT_APP_API_URL;
 
-    const Authorization = 'X-AUTH-TOKEN';
-    if (!token) return '';
+    if (!token && !sessionJWT) throw new Error('JWT is none');
+    if (sessionJWT) {
+      axios.defaults.headers.common[Authorization] = sessionJWT;
+    } else axios.defaults.headers.common[Authorization] = token;
+    if (!token) throw new Error('토큰이 없습니다.');
     axios.defaults.headers.common[Authorization] = token;
     try {
       const data: AxiosResponse<userType> = await axios.get<userType>(
@@ -83,13 +93,18 @@ const getSurveyList = selector({
   key: 'getSurveyList',
   get: async ({ get }) => {
     get(surveyListTrigger);
+    const sessionJWT = sessionStorage.getItem('jwt');
+    const Authorization = 'X-AUTH-TOKEN';
+
     const jwt = await get(authorizationBizSelector);
     const token = jwt.data;
+
     axios.defaults.baseURL = process.env.REACT_APP_API_URL;
 
-    const Authorization = 'X-AUTH-TOKEN';
-    if (!token) return;
-    axios.defaults.headers.common[Authorization] = token;
+    if (!token && !sessionJWT) throw new Error('JWT is none');
+    if (sessionJWT) {
+      axios.defaults.headers.common[Authorization] = sessionJWT;
+    } else axios.defaults.headers.common[Authorization] = token;
     try {
       const data: AxiosResponse<{ data: surveyItemType[] }> = await axios.get<{
         data: surveyItemType[];
@@ -112,14 +127,22 @@ const surveyIdAtom = atom({
 const getBizSurveyList = selector({
   key: 'getBizSurveyList',
   get: async ({ get }) => {
-    const jwt = await get(authorizationBizSelector);
     const surveyId = get(surveyIdAtom);
+
+    axios.defaults.baseURL = process.env.REACT_APP_API_URL;
+    const sessionJWT = sessionStorage.getItem('jwt');
+    const Authorization = 'X-AUTH-TOKEN';
+
+    const jwt = await get(authorizationBizSelector);
     const token = jwt.data;
+
     axios.defaults.baseURL = process.env.REACT_APP_API_URL;
 
-    const Authorization = 'X-AUTH-TOKEN';
-    if (!token) return '';
-    axios.defaults.headers.common[Authorization] = token;
+    if (!token && !sessionJWT) throw new Error('JWT is none');
+    if (sessionJWT) {
+      axios.defaults.headers.common[Authorization] = sessionJWT;
+    } else axios.defaults.headers.common[Authorization] = token;
+
     try {
       const data: AxiosResponse<{ data: questionDataType }> = await axios.get<{
         data: questionDataType;
@@ -128,7 +151,7 @@ const getBizSurveyList = selector({
       return data.data.data;
     } catch (e) {
       // eslint-disable-next-line no-console
-      console.error(e);
+      throw new Error('에러');
       return '';
     }
   },
@@ -143,12 +166,21 @@ const getBriefUrls = selector({
   key: 'getBriefUrls',
   // eslint-disable-next-line consistent-return
   get: async ({ get }) => {
-    const jwt = await get(authorizationBizSelector);
     const surveyId = get(surveyIdAtom);
+
+    axios.defaults.baseURL = process.env.REACT_APP_API_URL;
+    const sessionJWT = sessionStorage.getItem('jwt');
+    const Authorization = 'X-AUTH-TOKEN';
+
+    const jwt = await get(authorizationBizSelector);
     const token = jwt.data;
+
     axios.defaults.baseURL = process.env.REACT_APP_API_URL;
 
-    const Authorization = 'X-AUTH-TOKEN';
+    if (!token && !sessionJWT) throw new Error('JWT is none');
+    if (sessionJWT) {
+      axios.defaults.headers.common[Authorization] = sessionJWT;
+    } else axios.defaults.headers.common[Authorization] = token;
     if (!token) return;
     if (!surveyId) return;
     axios.defaults.headers.common[Authorization] = token;
@@ -169,14 +201,22 @@ const getBriefUrls = selector({
 const getAggregationBrief = selector({
   key: 'getAggregationBrief',
   get: async ({ get }) => {
-    const jwt = await get(authorizationBizSelector);
     const surveyId = get(surveyIdAtom);
+
+    axios.defaults.baseURL = process.env.REACT_APP_API_URL;
+    const sessionJWT = sessionStorage.getItem('jwt');
+    const Authorization = 'X-AUTH-TOKEN';
+
+    const jwt = await get(authorizationBizSelector);
     const token = jwt.data;
+
     axios.defaults.baseURL = process.env.REACT_APP_API_URL;
 
-    const Authorization = 'X-AUTH-TOKEN';
-    if (!token) return '';
-    axios.defaults.headers.common[Authorization] = token;
+    if (!token && !sessionJWT) throw new Error('JWT is none');
+    if (sessionJWT) {
+      axios.defaults.headers.common[Authorization] = sessionJWT;
+    } else axios.defaults.headers.common[Authorization] = token;
+
     try {
       const data: AxiosResponse<{ data: aggregationBriefType }> =
         await axios.get<{
@@ -230,6 +270,6 @@ export {
   bizCodeAtom,
   codeAtom,
   authorizationSelector,
-  getBizprofile,
+  getBizProfile,
   getAggregationBrief,
 };

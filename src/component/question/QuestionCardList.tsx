@@ -1,4 +1,4 @@
-import { MouseEvent, useEffect, useState } from 'react';
+import { MouseEvent, useState } from 'react';
 
 import styled from '@emotion/styled';
 import { useNavigator } from '@karrotframe/navigator';
@@ -39,7 +39,6 @@ export default function QuestionCardList({
   errors,
 }: questionCardListType): JSX.Element {
   const [isContentToastOpen, setContentToastOpen] = useState(false);
-  const [isToastOpen, setToastOpen] = useState(false);
 
   const { fields, append, remove } = useFieldArray({
     control,
@@ -53,39 +52,20 @@ export default function QuestionCardList({
     fa.logEvent('question_add_button_click');
     if ((e.currentTarget as HTMLButtonElement).ariaDisabled === 'true') {
       setContentToastOpen(true);
-    } else if (questionList.length < 3) {
-      append(
-        {
-          text: '',
-          questionType: 3,
-          choices: [{ value: '' }, { value: '' }],
-        },
-        // { shouldFocus: false },
-      );
     }
+    append(
+      {
+        text: '',
+        questionType: 3,
+        choices: [{ value: '' }, { value: '' }],
+      },
+      // { shouldFocus: false },
+    );
   };
-
-  useEffect(() => {
-    if (questionList.length === 3) {
-      setToastOpen(true);
-    }
-  }, [questionList.length]);
-
-  useEffect(() => {
-    setTimeout(() => {
-      setToastOpen(true);
-    }, 1000);
-  }, []);
 
   return (
     <>
-      <QuestionTitleCard {...{ append, register, watch }} />
-      <AlertToastModal
-        text={'질문은 3개 이하까지 만들 수 있어요'}
-        time={3000}
-        bottom="3rem"
-        {...{ isToastOpen, setToastOpen }}
-      />
+      <QuestionTitleCard {...{ errors, append, register, watch }} />
       <AlertToastModal
         text={'내용을 모두 입력하세요'}
         time={3000}
@@ -112,7 +92,7 @@ export default function QuestionCardList({
           ))}
       </StyledQuestionCardList>
       <QuestionButtons>
-        {fields.length > 0 && fields.length < 3 && (
+        {fields.length > 0 && (
           <AddQuestionButton
             type="button"
             className="complete"
@@ -124,20 +104,18 @@ export default function QuestionCardList({
         )}
       </QuestionButtons>
       )
-      {fields.length > 0 && (
-        <QuestionBottomBar isFocus={isFocus}>
-          <span>설문 예시가 떠오르지 않나요?</span>
-          <ExampleButton
-            type="button"
-            onClick={() => {
-              fa.logEvent('question_example_button_click');
-              push('/guide');
-            }}
-          >
-            설문 예시 보기
-          </ExampleButton>
-        </QuestionBottomBar>
-      )}
+      <QuestionBottomBar isFocus={isFocus}>
+        <span>질문이 생각나지 않는다면?</span>
+        <ExampleButton
+          type="button"
+          onClick={() => {
+            fa.logEvent('question_example_button_click');
+            push('/example');
+          }}
+        >
+          질문 예시 보기
+        </ExampleButton>
+      </QuestionBottomBar>
     </>
   );
 }

@@ -31,6 +31,10 @@ const CompleteButton = styled.button`
   &[aria-disabled='true'] {
     color: #c9c9c9;
   }
+
+  :disabled {
+    color: #c9c9c9;
+  }
 `;
 
 export type questionCardType = {
@@ -99,6 +103,7 @@ export default function QuestionPage(): JSX.Element {
     watch,
     unregister,
     clearErrors,
+    setError,
     formState: { errors },
   } = useForm<submitType>({
     defaultValues: {
@@ -107,48 +112,32 @@ export default function QuestionPage(): JSX.Element {
     },
   });
   useShowEvent('survey_create_question_show');
-  // const TargetChangeModal = styled.div`
-  //   padding: 2rem 1.6rem 2.8rem 1.6rem;
-  //   .target_change_title {
-  //     font-size: 1.6rem;
-  //     font-weight: ${({ theme }) => theme.fontWeight.regular};
-  //     text-align: center;
-  //     margin-bottom: 2.4rem;
-  //   }
-  // `;
+
   const questionList = watch('questions');
+  const titleWatch = watch('title');
   const isTitleModalOpen = useRecoilValue(questionTitleModalOpen);
 
   const onSubmit = ({ title, questions }: submitType) => {
     fa.logEvent('question_complete_button_active_click');
-    setSubmitData({
-      title,
-      target: targetIndex,
-      questions: questions.map(res => {
-        if (res.questionType === 2) {
-          return { text: res.text, questionType: res.questionType };
-        }
-        return res;
-      }),
-    });
-    setPopup(true);
+    if (title === '') {
+      setError('title', {
+        type: 'manual',
+        message: '제목을 입력해주세요',
+      });
+    } else {
+      setSubmitData({
+        title,
+        target: targetIndex,
+        questions: questions.map(res => {
+          if (res.questionType === 2) {
+            return { text: res.text, questionType: res.questionType };
+          }
+          return res;
+        }),
+      });
+      setPopup(true);
+    }
   };
-
-  // const TargetModalButton = styled.button`
-  //   width: 100%;
-  //   display: flex;
-  //   justify-content: space-between;
-  //   padding: 2.4rem 1.6rem;
-  //   .target_title {
-  //     font-size: 1.5rem;
-  //     line-height: 100%;
-  //     color: ${({ theme }) => theme.color.neutralBlack.main};
-  //     font-weight: ${({ theme }) => theme.fontWeight.regular};
-  //   }
-  //   background-color: transparent;
-  //   border-bottom: 1px solid #f4f4f4;
-  //   margin-top: 5.6rem;
-  // `;
 
   return (
     <>
@@ -159,7 +148,7 @@ export default function QuestionPage(): JSX.Element {
         disappear={isTitleModalOpen}
         appendRight={
           <CompleteButton
-            aria-disabled={!questionCheck(questionList)}
+            aria-disabled={!questionCheck(questionList) || titleWatch === ''}
             form="submitForm"
             type="submit"
           >
@@ -167,17 +156,6 @@ export default function QuestionPage(): JSX.Element {
           </CompleteButton>
         }
       />
-      {/* <TargetModalButton
-        onClick={() => {
-          fa.logEvent('question_target_change_click');
-          setTargetPopup(true);
-        }}
-      >
-        <h3 className="target_title">
-          {targetList[targetIndex - 1].title} 대상
-        </h3>
-        <ExpandIcon />
-      </TargetModalButton> */}
 
       <StyledForm id="submitForm" onSubmit={handleSubmit(onSubmit)}>
         <QuestionCardList
@@ -192,14 +170,6 @@ export default function QuestionPage(): JSX.Element {
         />
       </StyledForm>
 
-      {/* {isTargetPopup && (
-        <Modal setPopup={setTargetPopup} close>
-          <TargetChangeModal>
-            <h1 className="target_change_title">설문 대상 선택</h1>
-            <TargetList isKing={true} brief />
-          </TargetChangeModal>
-        </Modal>
-      )} */}
       {isPopup && (
         <Modal setPopup={setPopup}>
           <ConfirmModal>

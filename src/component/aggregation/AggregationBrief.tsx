@@ -5,37 +5,60 @@ import { TitleViewAtom } from '@src/atom/responseAtom';
 
 import AggregationBriefCard from './AggregationBriefCard';
 
-export type answersType = {
-  [key: string]: string | number;
+export type answersChoiceType = {
+  count: number;
+  value: string;
 };
 
-export type aggregationCardType = {
-  answers: answersType[];
+export type answersTextType = {
+  responseId: number;
+  value: string;
+};
+
+export type textAggregationCardType = {
+  answers: answersTextType[];
   question: string;
-  questionType: 2 | 3;
+  questionType: 2;
 };
 
-export type aggregationBriefType = aggregationCardType[];
+export type choiceAggregationCardType = {
+  answers: answersChoiceType[];
+  question: string;
+  questionType: 3;
+};
+
+export type aggregationBriefType = (
+  | textAggregationCardType
+  | choiceAggregationCardType
+)[];
 
 export default function AggregationBrief({
   questionAggregations,
   setTabKey,
 }: {
-  questionAggregations: aggregationCardType[];
+  questionAggregations: aggregationBriefType;
   setTabKey: React.Dispatch<React.SetStateAction<string>>;
 }): JSX.Element {
   const isTitleView = useRecoilValue(TitleViewAtom);
+
   return (
     <StyledAggregationBrief isTitleView={isTitleView}>
       {questionAggregations &&
-        questionAggregations.map((data, idx) => (
-          <AggregationBriefCard
-            setTabKey={setTabKey}
-            key={idx}
-            order={idx}
-            {...data}
-          />
-        ))}
+        questionAggregations.map(
+          (
+            aggregationData:
+              | textAggregationCardType
+              | choiceAggregationCardType,
+            idx,
+          ) => (
+            <AggregationBriefCard
+              setTabKey={setTabKey}
+              key={idx}
+              order={idx}
+              aggregationData={aggregationData}
+            />
+          ),
+        )}
     </StyledAggregationBrief>
   );
 }
