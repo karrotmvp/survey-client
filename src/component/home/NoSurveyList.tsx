@@ -37,7 +37,6 @@ const StyleNoSurvey = styled.div`
     font-weight: ${({ theme }) => theme.fontWeight.regular};
     display: block;
     margin-bottom: 2.4rem;
-    mar
   }
   .no_survey_create_button {
     width: 27.6rem;

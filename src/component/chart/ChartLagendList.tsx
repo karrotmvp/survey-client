@@ -3,13 +3,13 @@ import styled from '@emotion/styled';
 
 import { COLORS } from '@src/config/const/const';
 
-import { answersChoiceType } from '../aggregation/AggregationBrief';
+import { answerChoiceType } from '../aggregation/AggregationBriefCard';
 
 export default function ChartLegendList({
   answers,
   showAll,
 }: {
-  answers: answersChoiceType[];
+  answers: answerChoiceType[];
   showAll?: boolean;
 }): JSX.Element {
   const sum = answers.reduce((acc, cur) => {

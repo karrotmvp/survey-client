@@ -11,6 +11,16 @@ import {
 import AggregationBriefChoice from './AggregationBriefChoice';
 import AggregationBriefTextList from './AggregationBriefTextList';
 
+export type answerTextType = {
+  value: string;
+  responseId: number;
+};
+
+export type answerChoiceType = {
+  value: string;
+  count: number;
+};
+
 export default function AggregationBriefCard({
   aggregationData,
   showAll,

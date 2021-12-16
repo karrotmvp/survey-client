@@ -5,14 +5,14 @@ import { useSetRecoilState } from 'recoil';
 import { useAnalytics } from '@src/analytics/faContext';
 import { responseIndividualAtom } from '@src/atom/responseAtom';
 
-import { answersTextType } from './AggregationBrief';
+import { answerTextType } from './AggregationBriefCard';
 
 export default function AggregationBriefTextList({
   answers,
   showAll,
   setTabKey,
 }: {
-  answers: answersTextType[];
+  answers: answerTextType[];
   showAll?: boolean;
   setTabKey?: React.Dispatch<React.SetStateAction<string>>;
 }): JSX.Element {

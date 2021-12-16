@@ -121,7 +121,6 @@ export default function AnswerHome(): JSX.Element {
     briefData && briefData.bizProfile
       ? Boolean(briefData.bizProfile.coverImageUrls)
       : false;
-
   return (
     <>
       {briefData && (
