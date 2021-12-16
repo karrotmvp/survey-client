@@ -23,12 +23,13 @@ import { surveyItemType } from '@src/page/SurveyHome';
 import Modal from '../modal/Modal';
 import UpDownModal from '../modal/UpDownModal';
 
-const StyledSurveyCard = styled.li`
+const StyledSurveyCard = styled.li<{ isLast: boolean }>`
   display: flex;
   flex-direction: column;
   width: 100%;
   padding: 2.2rem 1.6rem;
-  border-bottom: 1px solid #f4f4f4;
+  border-bottom: ${({ isLast }) =>
+    isLast ? '1px solid transparent' : '1px solid #f4f4f4'};
   .survey_card_column {
     display: flex;
     justify-content: space-between;
@@ -66,6 +67,7 @@ export default function SurveyCard({
   surveyId,
   target,
   title,
+  isLast,
 }: surveyItemType): JSX.Element {
   const { push } = useNavigator();
   const fa = useAnalytics();
@@ -123,6 +125,7 @@ export default function SurveyCard({
   return (
     <>
       <StyledSurveyCard
+        isLast={isLast}
         onClick={() => {
           fa.logEvent('surveyList_click');
           push(`/survey/aggregation/${surveyId}`);
@@ -148,7 +151,9 @@ export default function SurveyCard({
         <UpDownModal setPopup={setPopup} rect isClose={isPopupClose}>
           <StyledMoreModal>
             <button onClick={onShareClick}>설문 공유</button>
-            <button onClick={onDeleteClick}>설문 삭제</button>
+            <button className="delete" onClick={onDeleteClick}>
+              설문 삭제
+            </button>
           </StyledMoreModal>
         </UpDownModal>
       )}
@@ -182,6 +187,7 @@ const StyledMoreModal = styled.ul`
   width: 100%;
   display: flex;
   flex-direction: column;
+
   button {
     width: 100%;
     font-weight: ${({ theme }) => theme.fontWeight.regular};
@@ -191,6 +197,9 @@ const StyledMoreModal = styled.ul`
     :focus {
       background-color: #c9c9c9;
     }
+  }
+  .delete {
+    color: #ff0000;
   }
 `;
 
