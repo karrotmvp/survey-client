@@ -100,6 +100,12 @@ const global = css`
   textarea {
     -webkit-appearance: none;
     -webkit-border-radius: 0;
+    text-decoration: none !important;
+  }
+
+  textarea:focus {
+    outline: none;
+    text-decoration: none !important;
   }
 `;
 

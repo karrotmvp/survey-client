@@ -269,7 +269,7 @@ const NextButton = styled.button`
   height: 5.6rem;
   width: 100%;
   font-size: 1.7rem;
-  font-weight: ${({ theme }) => theme.fontWeight.bold};
+  font-weight: ${({ theme }) => theme.fontWeight.medium};
   display: flex;
   align-items: center;
   justify-content: center;

@@ -17,7 +17,7 @@ const NextButton = styled.button`
   background-color: ${({ theme }) => theme.color.primaryOrange};
   color: #fff;
   font-size: 1.4rem;
-  font-weight: 400;
+  font-weight: ${({ theme }) => theme.fontWeight.medium};
   padding: 1.6rem 0;
   border-radius: 8px;
   margin-top: 0.8rem;

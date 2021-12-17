@@ -1,7 +1,10 @@
+import { useState } from 'react';
+
 import styled from '@emotion/styled';
 import { useNavigator } from '@karrotframe/navigator';
 import { useRecoilValueLoadable } from 'recoil';
 
+import { ReactComponent as ClearIcon } from '@config/icon/clear.svg';
 import { ReactComponent as ShareIcon } from '@config/icon/share.svg';
 import { useAnalytics } from '@src/analytics/faContext';
 import { getBizProfile, getBriefUrls } from '@src/api/authorization';
@@ -11,6 +14,9 @@ import { useShowEvent } from '@src/hook/useShowEvent';
 
 const StyledEndPage = styled.section`
   background-color: #ffffff;
+  section {
+    position: relative;
+  }
   width: 100%;
   height: 100vh;
   padding: 7.7rem 1.6rem 1.6rem 1.6rem;
@@ -25,8 +31,8 @@ const EndTitle = styled.h1`
   color: ${({ theme }) => theme.color.primaryOrange};
   text-align: center;
   line-height: 140%;
-  margin-bottom: 2rem;
-  margin-top: 5.6rem;
+  margin-bottom: 1.2rem;
+  margin-top: 2.8rem;
 `;
 
 const EndText = styled.span`
@@ -84,8 +90,13 @@ export default function EndPage(): JSX.Element {
     replace('/feedback');
   };
   useShowEvent('complete_survey_show');
+  const [isTooltip, setTooltip] = useState(
+    Boolean(localStorage.getItem('share_toolpit')),
+  );
+
   const handleShareClick = () => {
     fa.logEvent('complete_share_button_click');
+    tooltipClose();
     if (
       url.state === 'hasValue' &&
       url.contents &&
@@ -107,6 +118,10 @@ export default function EndPage(): JSX.Element {
   //   },
   //   [history],
   // );
+  const tooltipClose = () => {
+    setTooltip(true);
+    localStorage.setItem('share_toolpit', 'true');
+  };
 
   return (
     <>
@@ -122,6 +137,12 @@ export default function EndPage(): JSX.Element {
           </EndText>
         </section>
         <section>
+          {!isTooltip && (
+            <ToolTip>
+              설문 링크를 바로 공유해보세요!
+              <ClearIcon onClick={tooltipClose} />
+            </ToolTip>
+          )}
           <EndButton onClick={handleShareClick}>
             <ShareIcon />
             공유하기
@@ -134,3 +155,43 @@ export default function EndPage(): JSX.Element {
     </>
   );
 }
+
+const ToolTip = styled.div`
+  position: absolute;
+  box-sizing: border-box;
+  padding: 1.1rem 3.4rem 1.1rem 1.4rem;
+  background: ${({ theme }) => theme.color.neutralBlack.main};
+  border-radius: 0.8rem;
+  top: -5.8rem;
+  left: 0rem;
+  svg {
+    position: absolute;
+    right: 1.4rem;
+    width: 16px;
+    height: 16px;
+    margin-left: 0.8rem;
+  }
+  font-size: 1.3rem;
+  line-height: 2rem;
+  font-weight: ${({ theme }) => theme.fontWeight.regular};
+  color: #fff;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  &:after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 10%;
+    width: 0;
+    height: 0;
+    border: 0.7rem solid transparent;
+    border-top-color: ${({ theme }) => theme.color.neutralBlack.main};
+    border-bottom: 0;
+    margin-left: -0.7rem;
+    margin-bottom: -0.7rem;
+  }
+  filter: drop-shadow(0px 0px 4px rgba(27, 27, 27, 0.08))
+    drop-shadow(0px 6px 12px rgba(27, 27, 27, 0.1));
+`;

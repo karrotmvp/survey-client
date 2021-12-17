@@ -14,7 +14,7 @@ const StyledBizProfile = styled.div<{ coverImageUrls?: boolean }>`
   display: flex;
 
   ${({ coverImageUrls }) =>
-    coverImageUrls ? '' : 'border: 1px solid #f4f4f4; margin-top: 5.6rem;'};
+    coverImageUrls ? '' : 'border-top: 1px solid #f4f4f4; margin-top: 5.6rem;'};
 
   .biz_profile_left_text {
     margin-left: 1.6rem;
@@ -85,19 +85,28 @@ export default function BizProfile({
   };
   const shortenRegin = region.split(' ');
   return (
-    <StyledBizProfile coverImageUrls={Boolean(coverImageUrls)}>
-      <BizProfileImg src={imageUrl} onClick={handleClickProfile} />
-      <div className="biz_profile_left_text">
-        <BizProfileTitle>
-          {`${shortenRegin[shortenRegin.length - 2]} ${
-            shortenRegin[shortenRegin.length - 1]
-          }`}{' '}
-          <Dot /> {bizCategory}
-        </BizProfileTitle>
-        <BizProfileSubtitle className="biz_profile_subtitle">
-          {name} 사장님
-        </BizProfileSubtitle>
-      </div>
-    </StyledBizProfile>
+    <>
+      <StyledBizProfile coverImageUrls={Boolean(coverImageUrls)}>
+        <BizProfileImg src={imageUrl} onClick={handleClickProfile} />
+        <div className="biz_profile_left_text">
+          <BizProfileTitle>
+            {`${shortenRegin[shortenRegin.length - 2]} ${
+              shortenRegin[shortenRegin.length - 1]
+            }`}{' '}
+            <Dot /> {bizCategory}
+          </BizProfileTitle>
+          <BizProfileSubtitle className="biz_profile_subtitle">
+            {name} 사장님
+          </BizProfileSubtitle>
+        </div>
+      </StyledBizProfile>
+      {coverImageUrls ? <></> : <StyledDiv />}
+    </>
   );
 }
+
+const StyledDiv = styled.div`
+  width: calc(100% - (1.6rem * 2));
+  height: 1px;
+  background: #f4f4f4;
+`;

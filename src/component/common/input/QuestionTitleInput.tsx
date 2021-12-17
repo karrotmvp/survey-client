@@ -10,7 +10,7 @@ const StyledTitleInput = styled.textarea<{
   warning: boolean | undefined;
 }>`
   width: 100%;
-  overflow: hidden;
+  overflow: scroll;
   border-width: 0 0 1px 0;
   border-style: solid;
   border-radius: 4px 4px 0px 0px;
@@ -96,6 +96,7 @@ export default function QuestionTitleInput({
       data-list={questionIndex}
       onChange={onChange}
       value={value}
+      ref={ref}
     ></StyledTitleInput>
   );
 }

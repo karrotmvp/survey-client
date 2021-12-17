@@ -149,12 +149,11 @@ export default function AnswerDetailPage(): JSX.Element {
             </span>
           </StyledQuestionDetailTitle>
 
-          {questionLength !== 1 && (
-            <QuestionDot
-              questionNumber={questionLength}
-              number={+questionNumber}
-            />
-          )}
+          <QuestionDot
+            questionNumber={questionLength}
+            number={+questionNumber}
+          />
+
           <StyledAnswerTitle>
             {questions[+questionNumber - 1].text}
           </StyledAnswerTitle>
@@ -191,8 +190,8 @@ const NextButton = styled.button`
   width: 100%;
   background-color: ${({ theme }) => theme.color.primaryOrange};
   color: #fff;
-  font-size: 1.4rem;
-  font-weight: 400;
+  font-size: 1.6rem;
+  font-weight: ${({ theme }) => theme.fontWeight.medium};
   padding: 1.6rem 0;
   border-radius: 8px;
   margin-top: 0.8rem;
