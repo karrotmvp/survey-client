@@ -5,21 +5,26 @@ import { ReactComponent as ArrowRight } from '@config/icon/arrow_right.svg';
 import NavBar from '@src/component/common/navbar/NavBar';
 
 const StyledGuidePage = styled.section`
-  position: relative;
   height: 100vh;
-  button {
-    position: absolute;
-    background: transparent;
-    padding: 1rem;
-    top: 85%;
-    left: 50%;
-    z-index: 999;
-    transform: translate(-50%, 0);
-    display: flex;
-    align-items: center;
-    font-size: 1.3rem;
-    font-weight: ${({ theme }) => theme.fontWeight.regular};
-    color: ${({ theme }) => theme.color.neutralBlack.text};
+  overflow: scroll;
+  .guide_wrapper {
+    position: relative;
+    button {
+      border: 1px solid #707070;
+      border-radius: 8px;
+      position: absolute;
+      background: transparent;
+      padding: 1rem 3.4rem;
+      top: 29%;
+      left: 50%;
+      z-index: 999;
+      transform: translate(-50%, 0);
+      display: flex;
+      align-items: center;
+      font-size: 1.3rem;
+      font-weight: ${({ theme }) => theme.fontWeight.regular};
+      color: ${({ theme }) => theme.color.neutralBlack.text};
+    }
   }
 `;
 
@@ -37,15 +42,17 @@ export default function GuidePage(): JSX.Element {
   const { push } = useNavigator();
   return (
     <StyledGuidePage>
-      <NavBar type={_si === '0' ? 'CLOSE' : 'BACK'} transparent white />
-      <StyledGuideImg src="./img/guideImg.png" />
-      <button
-        onClick={() => {
-          push('/example');
-        }}
-      >
-        예시 보러가기 <ArrowIcon />
-      </button>
+      <div className="guide_wrapper">
+        <NavBar type={_si === '0' ? 'CLOSE' : 'BACK'} transparent white />
+        <StyledGuideImg src="./img/guideImg.png" />
+        <button
+          onClick={() => {
+            push('/example');
+          }}
+        >
+          예시 보러가기 <ArrowIcon />
+        </button>
+      </div>
     </StyledGuidePage>
   );
 }

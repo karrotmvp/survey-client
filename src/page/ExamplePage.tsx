@@ -3,7 +3,10 @@ import { useQueryParams } from '@karrotframe/navigator';
 
 import NavBar from '@src/component/common/navbar/NavBar';
 
-const StyledGuidePage = styled.section``;
+const StyledGuidePage = styled.section`
+  height: 100vh;
+  overflow: scroll;
+`;
 
 const StyledGuideImg = styled.img`
   width: 100%;
