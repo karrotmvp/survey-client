@@ -212,7 +212,7 @@ export default function SurveyHome(): ReactElement {
               imgWidth={142 / 328}
             />
           </GuideModal>
-          <NextButton onClick={handleCloseModalClick}>네! 알겠어요</NextButton>
+          <NextButton onClick={handleCloseModalClick}>네, 알겠어요</NextButton>
         </UpDownModal>
       )}
     </div>

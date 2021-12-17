@@ -6,30 +6,32 @@ type QuestionType = {
 };
 
 const StyledQuestionDot = styled.div`
-  height: 100%;
-  align-items: flex-end;
-  display: flex;
-  padding-bottom: 8px;
+  width: 100%;
+  height: 0.4rem;
+  border-radius: 2px;
+  background-color: ${({ theme }) => theme.color.neutralBlack.tag};
+  position: relative;
+  margin: 1.2rem 0;
 `;
 
-const Dot = styled.div<{ active?: boolean }>`
-  width: 0.6rem;
-  height: 0.6rem;
-  border-radius: 50%;
+const ProgressBar = styled.div<{ percent: number }>`
+  width: ${({ percent }) => `${percent}%`};
+  height: 0.4rem;
+  border-radius: 2px;
   background-color: ${({ theme }) => theme.color.primaryOrange};
-  margin: 0 3px;
-  opacity: ${({ active }) => (active ? '1' : '0.4')};
+  position: absolute;
+  top: 0;
+  left: 0;
 `;
 
 export default function QuestionDot({
   number,
   questionNumber,
 }: QuestionType): JSX.Element {
-  const arr = new Array(questionNumber).fill(0);
   if (questionNumber === 1) return <></>;
   return (
     <StyledQuestionDot>
-      {arr.map((res, idx) => (idx < number ? <Dot active /> : <Dot />))}
+      <ProgressBar percent={(number / questionNumber) * 100} />
     </StyledQuestionDot>
   );
 }

@@ -1,7 +1,7 @@
 import { ChangeEvent, MouseEvent, useState } from 'react';
 
 import styled from '@emotion/styled';
-import { useNavigator } from '@karrotframe/navigator';
+import { useNavigator, useQueryParams } from '@karrotframe/navigator';
 import { useRecoilState } from 'recoil';
 
 import AlertTostModal from '@component/common/modal/TostModal';
@@ -15,6 +15,9 @@ export default function FeedBackPage(): JSX.Element {
   const [feedback, setFeedback] = useRecoilState(questionFeedBack);
   const [isToastOpen, setToastOpen] = useState(false);
   const { replace } = useNavigator();
+  const query = useQueryParams<{ ref?: string }>();
+  const ref = query.ref || 'app';
+
   const fa = useAnalytics();
   const post = useSubmit('/feedbacks');
 
@@ -33,7 +36,7 @@ export default function FeedBackPage(): JSX.Element {
         question: contents.text.feedback.SUBTITLE,
         answer: '',
       });
-      replace('/feedback/complete');
+      replace(`/feedback/complete?ref=${ref}`);
     } else {
       fa.logEvent('feedback_complete_button_disable_click');
       setToastOpen(true);

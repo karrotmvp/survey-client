@@ -1,10 +1,13 @@
 import styled from '@emotion/styled';
-import { useNavigator } from '@karrotframe/navigator';
+import { useNavigator, useQueryParams } from '@karrotframe/navigator';
 
+import mini from '@src/api/mini';
 import NavBar from '@src/component/common/navbar/NavBar';
 
 export default function FeedbackCompletePage(): JSX.Element {
   const { replace } = useNavigator();
+  const query = useQueryParams<{ ref?: string }>();
+  const ref = query.ref || 'app';
 
   return (
     <StyledFeedbackComplete>
@@ -12,13 +15,23 @@ export default function FeedbackCompletePage(): JSX.Element {
       <img src="./img/happyMudda.png" />
       <h1>의견을 남겨주셔서 감사해요!</h1>
       <span>더 좋은 서비스가 되기 위해 노력할게요🔥</span>
-      <FeedbackButton
-        onClick={() => {
-          replace('/');
-        }}
-      >
-        홈으로 돌아가기
-      </FeedbackButton>
+      {ref === 'url' ? (
+        <FeedbackButton
+          onClick={() => {
+            mini.close();
+          }}
+        >
+          닫기
+        </FeedbackButton>
+      ) : (
+        <FeedbackButton
+          onClick={() => {
+            replace('/');
+          }}
+        >
+          홈으로 돌아가기
+        </FeedbackButton>
+      )}
     </StyledFeedbackComplete>
   );
 }

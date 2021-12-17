@@ -294,7 +294,7 @@ const SurveyTitle = styled.h1`
   font-weight: ${({ theme }) => theme.fontWeight.medium};
   text-align: center;
   word-break: keep-all;
-  padding: 0 1.4rem;
+  padding: 0 5.6rem;
   margin-top: 3.6rem;
 `;
 

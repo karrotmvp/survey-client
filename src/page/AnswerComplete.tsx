@@ -84,7 +84,7 @@ export default function AnswerComplete(): JSX.Element {
 }
 
 const StyledAnswerComplete = styled.section`
-  background-color: #fff2eb;
+  background-color: #ffff;
   height: 100vh;
   padding: 8rem 1.6rem 1.6rem 1.6rem;
   display: flex;

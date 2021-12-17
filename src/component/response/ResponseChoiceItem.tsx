@@ -1,32 +1,52 @@
 import styled from '@emotion/styled';
 
-import { ReactComponent as CheckIcon } from '@config/icon/check.svg';
+const RadioButton = styled.input`
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  background: url('./../../img/radio_unchecked.png') center center / cover
+    no-repeat;
+  &:checked {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 100%;
+    background: url('./../../img/radio_checked.png') center center / cover
+      no-repeat;
+  }
+`;
 
 const StyledResponseChoice = styled.li`
-  padding: 0.8rem 1.6rem;
+  padding: 1rem 1.4rem;
   width: 100%;
   background: #f4f5f6;
   border-radius: 25.5px;
   color: #141414;
   border: 1px solid #f4f5f6;
   transition: 0.2s;
-  font-size: 1.6rem;
-  svg {
-    opacity: 0.3;
-    margin-left: 1.4rem;
+  font-size: 1.5rem;
+  span {
+    margin-left: 0.8rem;
   }
+
+  .choice_circle_Icon {
+    align-items: center;
+    display: flex;
+    width: 2rem;
+    height: 2rem;
+    svg {
+      width: 2rem;
+    }
+    margin-right: 0.8rem;
+  }
+
   &[aria-checked='true'] {
     border: 1px solid #fe7e35;
     background: #fff2eb;
-    font-weight: 700;
+    font-weight: ${({ theme }) => theme.fontWeight.medium};
     color: ${({ theme }) => theme.color.primaryOrange};
-    svg {
-      opacity: 1;
-    }
   }
 
   display: flex;
-  justify-content: space-between;
   align-items: center;
 `;
 
@@ -49,10 +69,8 @@ export default function ResponseChoiceItem({
       data-list={value}
       onClick={handleClick}
     >
+      <RadioButton type="radio" checked={selectedChoice === value} />
       <span>{value}</span>
-      <div>
-        <CheckIcon className="checkIcon" />
-      </div>
     </StyledResponseChoice>
   );
 }

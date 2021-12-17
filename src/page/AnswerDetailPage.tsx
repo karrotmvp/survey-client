@@ -142,17 +142,19 @@ export default function AnswerDetailPage(): JSX.Element {
       <NavBar type="BACK" title="설문 답변" />
       <StyledResponsePage>
         <div>
-          <div className="response_title">
-            <StyledQuestionDetailTitle>
-              질문 {questionNumber}
-            </StyledQuestionDetailTitle>
-            {questionLength !== 1 && (
-              <QuestionDot
-                questionNumber={questionLength}
-                number={+questionNumber}
-              />
-            )}
-          </div>
+          <StyledQuestionDetailTitle>
+            <h3>질문 {questionNumber}</h3>
+            <span>
+              {questionNumber}/{questionLength}
+            </span>
+          </StyledQuestionDetailTitle>
+
+          {questionLength !== 1 && (
+            <QuestionDot
+              questionNumber={questionLength}
+              number={+questionNumber}
+            />
+          )}
           <StyledAnswerTitle>
             {questions[+questionNumber - 1].text}
           </StyledAnswerTitle>
@@ -207,31 +209,35 @@ const StyledResponsePage = styled.section`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  .response_title {
-    display: flex;
-    align-items: center;
-  }
+
   .button_wrapper {
     background-color: #fff;
     padding-top: 1.6rem;
   }
 `;
 
-const StyledQuestionDetailTitle = styled.h3`
-  color: ${({ theme }) => theme.color.primaryOrange};
-  font-weight: 700;
-  font-size: 1.8rem;
-  line-height: 100%;
-  margin-right: 0.8rem;
-  font-family: ${({ theme }) => theme.fontFamily.title};
-  margin-bottom: 0.8rem;
+const StyledQuestionDetailTitle = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  h3 {
+    color: ${({ theme }) => theme.color.primaryOrange};
+    font-weight: ${({ theme }) => theme.fontWeight.bold};
+    font-size: 1.8rem;
+    line-height: 100%;
+  }
+  span {
+    font-size: 1.4rem;
+    font-weight: ${({ theme }) => theme.fontWeight.regular};
+    color: ${({ theme }) => theme.color.neutralBlack.placeholder};
+  }
 `;
 
 const StyledAnswerTitle = styled.h3`
   color: #141414;
-  font-weight: 600;
-  margin-right: 0.5rem;
-  font-size: 1.8rem;
+  font-weight: ${({ theme }) => theme.fontWeight.regular};
+  font-size: 1.6rem;
   line-height: 140%;
+  min-height: 8rem;
   margin-bottom: 2.6rem;
 `;
