@@ -24,7 +24,6 @@ import MemoAggregationTabs from '@src/component/aggregation/AggregationTabs';
 import Modal from '@src/component/common/modal/Modal';
 import UpDownModal from '@src/component/common/modal/UpDownModal';
 import ScrollNavBar from '@src/component/common/navbar/ScrollNavBar';
-import { targetList } from '@src/config/const/const';
 
 export default function SurveyAggregationPage(): JSX.Element {
   const { surveyId } =
@@ -176,7 +175,7 @@ export default function SurveyAggregationPage(): JSX.Element {
           <span>
             {getSurveyList.state === 'hasValue' &&
               getSurveyList.contents !== '' &&
-              `${targetList[getSurveyList.contents.target - 1].title} · ${
+              `만든 날짜 ${
                 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
                 convertDate(getSurveyList.contents.createdAt!)
               }`}

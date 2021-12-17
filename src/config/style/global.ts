@@ -98,12 +98,14 @@ const global = css`
   }
 
   textarea {
-    -webkit-appearance: none;
+    appearance: none !important;
     -webkit-border-radius: 0;
     text-decoration: none !important;
   }
 
   textarea:focus {
+    appearance: none;
+    -webkit-appearance: none;
     outline: none;
     text-decoration: none !important;
   }
