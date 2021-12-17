@@ -6,11 +6,12 @@ import NavBar from '@src/component/common/navbar/NavBar';
 
 const StyledGuidePage = styled.section`
   position: relative;
+  height: 100vh;
   button {
     position: absolute;
     background: transparent;
     padding: 1rem;
-    top: 29%;
+    top: 85%;
     left: 50%;
     z-index: 999;
     transform: translate(-50%, 0);
