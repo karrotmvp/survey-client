@@ -22,6 +22,10 @@ type questionChoiceType = {
   errors: errorsType;
 };
 
+const Space = styled.div`
+  width: 3.2rem;
+`;
+
 const ChoiceInputForm = forwardRef<HTMLTextAreaElement, questionChoiceType>(
   ({
     watch,
@@ -93,12 +97,14 @@ const ChoiceInputForm = forwardRef<HTMLTextAreaElement, questionChoiceType>(
             </ErrorText>
           )}
         </div>
-        {index > 1 && (
+        {index > 1 ? (
           <DeleteIcon
             style={{ marginLeft: '0.8rem' }}
             onClick={onDelete}
             data-list={index}
           />
+        ) : (
+          <Space />
         )}
       </StyledQuestionChoice>
     );
