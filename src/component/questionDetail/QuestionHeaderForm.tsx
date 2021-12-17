@@ -109,7 +109,7 @@ export default function QuestionHeaderForm({
           <NavToggle
             toggleRef={ref}
             navList={questionTypeString}
-            position={{ top: '5.5rem', left: '0' }}
+            position={{ top: '3.5rem', left: '0' }}
             onClick={handleToggleList}
           />
         </>

@@ -52,15 +52,16 @@ export default function QuestionCardList({
     fa.logEvent('question_add_button_click');
     if ((e.currentTarget as HTMLButtonElement).ariaDisabled === 'true') {
       setContentToastOpen(true);
+    } else {
+      append(
+        {
+          text: '',
+          questionType: 3,
+          choices: [{ value: '' }, { value: '' }],
+        },
+        // { shouldFocus: false },
+      );
     }
-    append(
-      {
-        text: '',
-        questionType: 3,
-        choices: [{ value: '' }, { value: '' }],
-      },
-      // { shouldFocus: false },
-    );
   };
 
   return (
