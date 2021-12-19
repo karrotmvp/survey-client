@@ -22,6 +22,7 @@ export default function AggregationBriefChoice({
   }));
 
   data.sort((a, b) => b.value - a.value);
+  filterAnswers.sort((a, b) => b.count - a.count);
   return (
     <div>
       <AggregationPieChart data={data} COLORS={COLORS} key={answers[0].value} />
