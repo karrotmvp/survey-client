@@ -8,7 +8,7 @@ import ResponseChoiceList from './ResponseChoiceList';
 
 const StyledTextInput = styled.section`
   display: flex;
-  height: calc(100vh - 25.6rem);
+  height: 40vh;
   flex-direction: column;
   justify-content: space-between;
   .button_wrapper {

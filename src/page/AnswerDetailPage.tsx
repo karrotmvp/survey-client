@@ -131,7 +131,7 @@ export default function AnswerDetailPage(): JSX.Element {
   }, [history]);
 
   return (
-    <>
+    <StyleDiv>
       <AlertToastModal
         text={'하나 이상의 질문에 답해주세요!'}
         time={3000}
@@ -182,9 +182,13 @@ export default function AnswerDetailPage(): JSX.Element {
           )}
         </div>
       </StyledResponsePage>
-    </>
+    </StyleDiv>
   );
 }
+
+const StyleDiv = styled.div`
+  height: 100vh;
+`;
 
 const NextButton = styled.button`
   width: 100%;
