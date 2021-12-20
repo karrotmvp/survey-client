@@ -8,7 +8,8 @@ import ResponseChoiceList from './ResponseChoiceList';
 
 const StyledTextInput = styled.section`
   display: flex;
-  height: 40vh;
+  height: max-content;
+  overflow: scroll;
   flex-direction: column;
   justify-content: space-between;
   .button_wrapper {
