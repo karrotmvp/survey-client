@@ -16,6 +16,20 @@ const StyledTextInput = styled.section`
     background-color: #fff;
     padding-top: 1.6rem;
   }
+  ::-webkit-scrollbar {
+    position: absolute;
+    left: 0;
+    width: 6px;
+    background-color: transparent;
+  }
+  ::-webkit-scrollbar-track {
+    background-color: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    height: 5%;
+    background-color: #c9c9c9;
+    border-radius: 13px;
+  }
 `;
 
 export default function ResponseChoiceInput({
