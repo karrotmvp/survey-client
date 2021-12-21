@@ -45,6 +45,7 @@ export default function MVPresultPage(): JSX.Element {
   const [trigger, setTrigger] = useRecoilState(surveyListTrigger);
   const { replace } = useNavigator();
   const [code, setCode] = useRecoilState(bizCodeAtom);
+  // eslint-disable-next-line no-console
   console.log(code);
   setSurveyId(surveyId);
   useLogin(authorizationBizSelector);
