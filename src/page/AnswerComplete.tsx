@@ -43,15 +43,17 @@ export default function AnswerComplete(): JSX.Element {
   }, [history]);
 
   const handleVisitBizProfile = () => {
-    if (!bizProfile?.profileUrl) {
-      return;
-    }
+    // if (!bizProfile?.profileUrl) {
+    //   return;
+    // }
     fa.logEvent(`response_complete_bizprofile_click`, {
       surveyId,
       ref,
     });
     fa.logEvent(`${surveyId}_response_complete_bizprofile_click`, { ref });
-    window.location.href = bizProfile.profileUrl;
+    // window.location.href = bizProfile.profileUrl;
+
+    push(`/survey/aggregation/${surveyId}`);
   };
 
   return (
@@ -68,7 +70,7 @@ export default function AnswerComplete(): JSX.Element {
 
       <div className="answer_complete_page">
         <LoginButton
-          text="사장님 비즈프로필 방문하기"
+          text="답변 결과 보러가기"
           onClick={handleVisitBizProfile}
         />
         <BizProfileVisit
