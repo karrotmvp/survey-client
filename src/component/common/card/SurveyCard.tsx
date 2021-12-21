@@ -21,6 +21,7 @@ import mini from '@src/api/mini';
 import { surveyItemType } from '@src/page/SurveyHome';
 
 import Modal from '../modal/Modal';
+import ModalPortals from '../modal/ModalPotal';
 import UpDownModal from '../modal/UpDownModal';
 
 const StyledSurveyCard = styled.li<{ isLast: boolean }>`
@@ -152,14 +153,16 @@ export default function SurveyCard({
         )}
       </StyledSurveyCard>
       {isPopupOpen && (
-        <UpDownModal setPopup={setPopup} rect isClose={isPopupClose}>
-          <StyledMoreModal>
-            <button onClick={onShareClick}>설문 공유</button>
-            <button className="delete" onClick={onDeleteClick}>
-              설문 삭제
-            </button>
-          </StyledMoreModal>
-        </UpDownModal>
+        <ModalPortals>
+          <UpDownModal setPopup={setPopup} rect isClose={isPopupClose}>
+            <StyledMoreModal>
+              <button onClick={onShareClick}>설문 공유</button>
+              <button className="delete" onClick={onDeleteClick}>
+                설문 삭제
+              </button>
+            </StyledMoreModal>
+          </UpDownModal>
+        </ModalPortals>
       )}
       {isModalPopup && (
         <Modal setPopup={setModalPopup}>
