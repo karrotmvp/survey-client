@@ -45,8 +45,14 @@ export default function AggregationPieChart({
     } = props;
     const sin = Math.sin(-RADIAN * midAngle);
     const cos = Math.cos(-RADIAN * midAngle);
-    const ex = cx + outerRadius * 1.2 * cos;
-    const ey = cy + outerRadius * 1.2 * sin;
+    const ex =
+      Math.floor(percent * 100) > 10
+        ? cx + outerRadius * 1.2 * cos
+        : cx + outerRadius * 1.3 * cos;
+    const ey =
+      Math.floor(percent * 100) > 10
+        ? cy + outerRadius * 1.2 * sin
+        : cy + outerRadius * 1.3 * sin;
 
     return (
       <g>
@@ -63,7 +69,7 @@ export default function AggregationPieChart({
         <circle
           cx={ex}
           cy={ey}
-          r="30"
+          r={Math.floor(percent * 100) > 10 ? 30 : 16}
           fill="white"
           filter="url(#filter0_d_2058_15704)"
         />
@@ -106,9 +112,9 @@ export default function AggregationPieChart({
 
         <text
           fontWeight="900"
-          fontSize="16px"
+          fontSize={Math.floor(percent * 100) > 10 ? '16px' : '12px'}
           x={ex}
-          y={ey + 6}
+          y={ey + 3}
           textAnchor={'middle'}
           fill={fill}
         >{`${Math.floor(percent * 100)} %`}</text>
