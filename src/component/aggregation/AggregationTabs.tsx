@@ -43,7 +43,6 @@ function AggregationTabs({
   if (individual) {
     setResponseId(+individual);
   }
-  console.log(answerBrief);
 
   return (
     <TabsWrapper>
