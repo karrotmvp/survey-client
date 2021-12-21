@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 import styled from '@emotion/styled';
 import { useNavigator } from '@karrotframe/navigator';
-import { FieldError, useForm } from 'react-hook-form';
+import { FieldError, FormProvider, useForm } from 'react-hook-form';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 
 import NavBar from '@component/common/navbar/NavBar';
@@ -95,32 +95,31 @@ export default function QuestionPage(): JSX.Element {
   const submit = useSubmitReturn<number>('/mongo/surveys');
   const [trigger, setTrigger] = useRecoilState(surveyListTrigger);
   const fa = useAnalytics();
-  const {
-    handleSubmit,
-    register,
-    control,
-    setValue,
-    watch,
-    unregister,
-    clearErrors,
-    setError,
-    formState: { errors },
-  } = useForm<submitType>({
+  const methods = useForm<submitType>({
     defaultValues: {
       title: '',
       questions: [],
     },
   });
+
+  // handleSubmit,
+  // register,
+  // control,
+  // setValue,
+  // watch,
+  // unregister,
+  // clearErrors,
+  // setError,
+  // formState: { errors },
   useShowEvent('survey_create_question_show');
 
-  const questionList = watch('questions');
-  const titleWatch = watch('title');
+  const questionList = methods.watch('questions');
+  const titleWatch = methods.watch('title');
   const isTitleModalOpen = useRecoilValue(questionTitleModalOpen);
-
   const onSubmit = ({ title, questions }: submitType) => {
     fa.logEvent('question_complete_button_active_click');
     if (title === '') {
-      setError('title', {
+      methods.setError('title', {
         type: 'manual',
         message: '제목을 입력해주세요',
       });
@@ -156,20 +155,11 @@ export default function QuestionPage(): JSX.Element {
           </CompleteButton>
         }
       />
-
-      <StyledForm id="submitForm" onSubmit={handleSubmit(onSubmit)}>
-        <QuestionCardList
-          {...{
-            register,
-            control,
-            setValue,
-            watch,
-            unregister,
-            errors,
-          }}
-        />
-      </StyledForm>
-
+      <FormProvider {...methods}>
+        <StyledForm id="submitForm" onSubmit={methods.handleSubmit(onSubmit)}>
+          <QuestionCardList />
+        </StyledForm>
+      </FormProvider>
       {isPopup && (
         <Modal setPopup={setPopup}>
           <ConfirmModal>
@@ -182,7 +172,7 @@ export default function QuestionPage(): JSX.Element {
           <div>
             <CancelButton
               onClick={() => {
-                clearErrors('questions');
+                methods.clearErrors('questions');
                 setPopup(false);
                 fa.logEvent('question_modal_complete_button_cancel');
               }}

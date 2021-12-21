@@ -2,14 +2,7 @@ import { MouseEvent, useState } from 'react';
 
 import styled from '@emotion/styled';
 import { useNavigator } from '@karrotframe/navigator';
-import {
-  Control,
-  useFieldArray,
-  UseFormRegister,
-  UseFormSetValue,
-  UseFormUnregister,
-  UseFormWatch,
-} from 'react-hook-form';
+import { useFieldArray, useFormContext } from 'react-hook-form';
 import { useRecoilValue } from 'recoil';
 
 import QuestionCard from '@component/common/card/QuestionCard';
@@ -17,27 +10,24 @@ import AlertToastModal from '@component/common/modal/TostModal';
 import { ReactComponent as PlusIcon } from '@config/icon/plus.svg';
 import { useAnalytics } from '@src/analytics/faContext';
 import { focusAtom } from '@src/atom/questionAtom';
-import { errorsType, questionCheck, submitType } from '@src/page/QuestionPage';
+import { questionCheck, submitType } from '@src/page/QuestionPage';
 
 import QuestionTitleCard from '../common/card/QuestionTitleCard';
 
-type questionCardListType = {
-  register: UseFormRegister<submitType>;
-  control: Control<submitType>;
-  setValue: UseFormSetValue<submitType>;
-  watch: UseFormWatch<submitType>;
-  unregister: UseFormUnregister<submitType>;
-  errors: errorsType;
-};
+// type questionCardListType = {
+//   register: UseFormRegister<submitType>;
+//   control: Control<submitType>;
+//   setValue: UseFormSetValue<submitType>;
+//   watch: UseFormWatch<submitType>;
+//   unregister: UseFormUnregister<submitType>;
+//   errors: errorsType;
+// };
 
-export default function QuestionCardList({
-  register,
-  control,
-  setValue,
-  watch,
-  unregister,
-  errors,
-}: questionCardListType): JSX.Element {
+export default function QuestionCardList(): JSX.Element {
+  const { register, control, formState, watch } = useFormContext<submitType>();
+
+  const { errors } = formState;
+
   const [isContentToastOpen, setContentToastOpen] = useState(false);
 
   const { fields, append, remove } = useFieldArray({
@@ -77,19 +67,7 @@ export default function QuestionCardList({
       <StyledQuestionCardList>
         {fields &&
           fields.map(({ id }, questionIndex) => (
-            <QuestionCard
-              key={id}
-              {...{
-                register,
-                control,
-                setValue,
-                watch,
-                remove,
-                unregister,
-                errors,
-                questionIndex,
-              }}
-            />
+            <QuestionCard {...{ questionIndex, remove }} key={id} />
           ))}
       </StyledQuestionCardList>
       <QuestionButtons>

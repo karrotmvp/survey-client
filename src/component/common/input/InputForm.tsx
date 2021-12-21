@@ -1,4 +1,10 @@
-import { ChangeEvent, FocusEvent, useCallback, useEffect, useRef } from 'react';
+import React, {
+  ChangeEvent,
+  FocusEvent,
+  useCallback,
+  useEffect,
+  useRef,
+} from 'react';
 
 import styled from '@emotion/styled';
 import {
@@ -58,7 +64,7 @@ export type RegisterOptions = Partial<{
   pattern: ValidationRule<RegExp>;
 }>;
 
-export default function InputForm({
+function InputForm({
   path,
   placeholder,
   row,
@@ -131,3 +137,7 @@ export default function InputForm({
     ></StyledTitleInput>
   );
 }
+
+const MemoInputForm = React.memo(InputForm);
+
+export default MemoInputForm;

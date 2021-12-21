@@ -1,13 +1,7 @@
 import { ChangeEvent, FocusEvent } from 'react';
 
 import styled from '@emotion/styled';
-import {
-  Control,
-  UseFormRegister,
-  UseFormSetValue,
-  UseFormUnregister,
-  UseFormWatch,
-} from 'react-hook-form';
+import { useFormContext } from 'react-hook-form';
 import { useSetRecoilState } from 'recoil';
 
 import { contents } from '@config/const/const';
@@ -15,18 +9,12 @@ import { ReactComponent as WarningIcon } from '@config/icon/warning.svg';
 import { focusAtom } from '@src/atom/questionAtom';
 import ChoiceInputFormList from '@src/component/questionDetail/ChoiceInputFormList';
 import QuestionHeaderForm from '@src/component/questionDetail/QuestionHeaderForm';
-import { errorsType, submitType } from '@src/page/QuestionPage';
+import { submitType } from '@src/page/QuestionPage';
 
-import InputForm from '../input/InputForm';
+import MemoInputForm from '../input/InputForm';
 
 export type formConfigType = {
-  watch: UseFormWatch<submitType>;
-  setValue: UseFormSetValue<submitType>;
-  register: UseFormRegister<submitType>;
-  control: Control<submitType>;
   remove: (index?: number | number[] | undefined) => void;
-  unregister: UseFormUnregister<submitType>;
-  errors: errorsType;
 };
 
 type QuestionCardType = {
@@ -73,14 +61,10 @@ const ErrorText = styled.h6`
 
 export default function QuestionCard({
   questionIndex,
-  watch,
-  setValue,
   remove,
-  register,
-  unregister,
-  control,
-  errors,
 }: QuestionCardType): JSX.Element {
+  const { register, control, formState, watch, setValue, unregister } =
+    useFormContext<submitType>();
   const questionType = watch(`questions.${questionIndex}.questionType`);
   const setFocus = useSetRecoilState(focusAtom);
 
@@ -88,6 +72,7 @@ export default function QuestionCard({
     setFocus(true);
   };
 
+  const { errors } = formState;
   const handleBlur = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setFocus(false);
   };
@@ -105,8 +90,7 @@ export default function QuestionCard({
             unregister,
           }}
         />
-
-        <InputForm
+        <MemoInputForm
           register={register}
           path={`questions.${questionIndex}.text`}
           placeholder={contents.placeholder.TEXT}
