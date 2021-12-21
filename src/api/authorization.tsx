@@ -3,6 +3,7 @@ import axios, { AxiosResponse } from 'axios';
 import { atom, selector } from 'recoil';
 
 import { aggregationBriefType } from '@src/component/aggregation/AggregationBrief';
+import { answerBriefType } from '@src/component/aggregation/AggregationTabs';
 import { questionDataType } from '@src/page/AnswerHome';
 import { surveyItemType } from '@src/page/SurveyHome';
 
@@ -74,6 +75,39 @@ const getBizProfile = selector({
       const data: AxiosResponse<userType> = await axios.get<userType>(
         `/members/me`,
       );
+
+      return data.data.data;
+    } catch (e) {
+      // eslint-disable-next-line no-console
+      console.error(e);
+      return '';
+    }
+  },
+});
+
+const getBrief = selector({
+  key: 'getBrief',
+  get: async ({ get }) => {
+    const surveyId = get(surveyIdAtom);
+    axios.defaults.baseURL = process.env.REACT_APP_API_URL;
+    const sessionJWT = sessionStorage.getItem('jwt');
+    const Authorization = 'X-AUTH-TOKEN';
+
+    const jwt = await get(authorizationBizSelector);
+    const token = jwt.data;
+
+    axios.defaults.baseURL = process.env.REACT_APP_API_URL;
+
+    if (!token && !sessionJWT) throw new Error('JWT is none');
+    if (sessionJWT) {
+      axios.defaults.headers.common[Authorization] = sessionJWT;
+    } else axios.defaults.headers.common[Authorization] = token;
+    if (!token) throw new Error('토큰이 없습니다.');
+    axios.defaults.headers.common[Authorization] = token;
+    try {
+      const data: AxiosResponse<{ data: answerBriefType }> = await axios.get<{
+        data: answerBriefType;
+      }>(`/mongo/surveys/${surveyId}/responses/brief`);
 
       return data.data.data;
     } catch (e) {
@@ -261,6 +295,7 @@ const authorizationSelector = selector({
 });
 
 export {
+  getBrief,
   getSurveyList,
   surveyListTrigger,
   getBriefUrls,

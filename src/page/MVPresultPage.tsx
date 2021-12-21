@@ -45,10 +45,10 @@ export default function MVPresultPage(): JSX.Element {
   const [trigger, setTrigger] = useRecoilState(surveyListTrigger);
   const { replace } = useNavigator();
   const [code, setCode] = useRecoilState(bizCodeAtom);
+  const jwt = useLogin(authorizationBizSelector);
   // eslint-disable-next-line no-console
-  console.log(code);
+  console.log(code, jwt);
   setSurveyId(surveyId);
-  useLogin(authorizationBizSelector);
 
   const options = {
     root: document.querySelector('#root'),
@@ -69,11 +69,12 @@ export default function MVPresultPage(): JSX.Element {
   const observer = new IntersectionObserver(callback, options);
 
   useEffect(() => {
+    setCode('1271155');
     if (ref.current) {
       observer.observe(ref.current);
     }
     fa.logEvent('surveyAggregation_show');
-  }, []);
+  }, [jwt]);
 
   const handleShareClick = () => {
     fa.logEvent('aggregation_share_button_click');
@@ -119,15 +120,6 @@ export default function MVPresultPage(): JSX.Element {
   useEffect(() => {
     if (getSurveyList.state === 'hasError') replace('/*');
   }, [getSurveyList]);
-
-  useEffect(() => {
-    (async () => {
-      if (sessionStorage.getItem('jwt')) {
-        return;
-      }
-      setCode('1271155');
-    })();
-  }, []);
 
   return (
     <>

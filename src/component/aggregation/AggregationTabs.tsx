@@ -6,16 +6,20 @@ import { Tabs } from '@karrotframe/tabs';
 import { Loadable, useRecoilValueLoadable, useSetRecoilState } from 'recoil';
 
 import { useAnalytics } from '@src/analytics/faContext';
-import { getBizSurveyList, surveyIdAtom } from '@src/api/authorization';
+import {
+  getBizSurveyList,
+  getBrief,
+  surveyIdAtom,
+} from '@src/api/authorization';
 import { responseIndividualAtom } from '@src/atom/responseAtom';
-import useLoadableGet, { StateType } from '@src/hook/useLoadableGet';
+// import  { StateType } from '@src/hook/useLoadableGet';
 import { questionDataType } from '@src/page/AnswerHome';
 
 import LoadingCard from '../common/card/LoadingCard';
 import MemoAggregationAnswer from './AggregationAnswer';
 import AggregationCardList from './AggregationCardList';
 
-type answerBriefType = {
+export type answerBriefType = {
   count: number;
   responseIds: number[];
 };
@@ -32,15 +36,14 @@ function AggregationTabs({
   const getSurveyList = useRecoilValueLoadable(getBizSurveyList);
   const initialTab = individual ? 'tab_2' : 'tab_1';
   const [activeTabKey, setActiveTabKey] = useState<string>(initialTab);
-  const answerBrief = useLoadableGet<answerBriefType>(
-    `/mongo/surveys/${surveyId}/responses/brief`,
-  );
+  const answerBrief = useRecoilValueLoadable(getBrief);
   const setResponseId = useSetRecoilState(responseIndividualAtom);
   const fa = useAnalytics();
   setSurveyId(surveyId);
   if (individual) {
     setResponseId(+individual);
   }
+  console.log(answerBrief);
 
   return (
     <TabsWrapper>
@@ -65,9 +68,9 @@ function AggregationTabs({
               <>
                 <AnswerTab aria-checked={activeTabKey === 'tab_2'}>
                   답변
-                  {answerBrief.data ? (
+                  {answerBrief.state === 'hasValue' && answerBrief.contents ? (
                     <AnswerNumber aria-checked={activeTabKey === 'tab_2'}>
-                      {answerBrief.data.count}
+                      {answerBrief.contents.count}
                     </AnswerNumber>
                   ) : (
                     <></>
@@ -100,11 +103,11 @@ const WithQuestionTab = (getSurveyList: Loadable<'' | questionDataType>) => {
 };
 
 const WithAnswerTab = (
-  answerBrief: StateType<answerBriefType>,
+  answerBrief: Loadable<answerBriefType | ''>,
   handleShareClick: () => void,
 ) => {
-  if (answerBrief.isSuccess && answerBrief.data !== undefined) {
-    const { responseIds } = answerBrief.data;
+  if (answerBrief.state === 'hasValue' && answerBrief.contents !== '') {
+    const { responseIds } = answerBrief.contents;
     if (responseIds.length === 0)
       return () => (
         <StyleNoAnswer>
