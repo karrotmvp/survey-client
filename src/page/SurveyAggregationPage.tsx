@@ -9,7 +9,7 @@ import {
   useSetRecoilState,
 } from 'recoil';
 
-import { ReactComponent as TrailingIcon } from '@config/icon/trailing.svg';
+// import { ReactComponent as TrailingIcon } from '@config/icon/trailing.svg';
 import { useAnalytics } from '@src/analytics/faContext';
 import {
   getBizProfile,
@@ -124,13 +124,13 @@ export default function SurveyAggregationPage(): JSX.Element {
             : undefined
         }
         titleAppear={!isTitleView}
-        appendRight={
-          <TrailingIcon
-            onClick={() => {
-              setPopup(true);
-            }}
-          />
-        }
+        // appendRight={
+        // <TrailingIcon
+        //   onClick={() => {
+        //     setPopup(true);
+        //   }}
+        // />
+        // }
       />
       {isModalPopup && (
         <Modal setPopup={setModalPopup}>
