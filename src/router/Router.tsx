@@ -15,6 +15,7 @@ import ExamplePage from '@src/page/ExamplePage';
 import FeedbackCompletePage from '@src/page/FeedbackCompletePage';
 import FeedBackPage from '@src/page/FeedBackPage';
 import GuidePage from '@src/page/GuidePage';
+import MVPresultPage from '@src/page/MVPresultPage';
 // import HomePage from '@src/page/HomePage';
 import ShowAllPage from '@src/page/ShowAllPage';
 import SurveyAggregationPage from '@src/page/SurveyAggregationPage';
@@ -56,6 +57,9 @@ export default function Router(): JSX.Element {
 
       <Screen path="/feedback">
         <FeedBackPage />
+      </Screen>
+      <Screen path="/survey/MVP/:surveyId">
+        <MVPresultPage />
       </Screen>
 
       <Screen path="/survey/aggregation/:surveyId/:questionNumber">
