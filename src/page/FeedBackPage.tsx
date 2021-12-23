@@ -47,7 +47,7 @@ export default function FeedBackPage(): JSX.Element {
     <>
       <NavBar
         type="BACK"
-        title="피드백"
+        title="데이터 받기"
         appendRight={
           <CompleteButton
             aria-disabled={!feedback.answer}
@@ -58,9 +58,17 @@ export default function FeedBackPage(): JSX.Element {
         }
       />
       <StyledFeedBackPage>
-        <FeedbackTitle>무따는 더 좋은 설문 서비스가</FeedbackTitle>
-        <FeedbackTitle>되고 싶어요🔥</FeedbackTitle>
-        <FeedbackSubtitle>{contents.text.feedback.SUBTITLE}</FeedbackSubtitle>
+        <FeedbackTitle>
+          무따 서비스를 통해 설문을 <br /> 만들어주셔서 감사해요.🥺
+        </FeedbackTitle>
+
+        <FeedbackSubtitle>
+          {' '}
+          아쉽게도 무따 서비스가 12월 24일 기준으로 종료돼요. <br /> <br />{' '}
+          {contents.text.feedback.SUBTITLE}
+          <br /> <br /> 그 동안 이용해주셔서 감사해요. 더 나은 서비스로
+          만나뵐게요!
+        </FeedbackSubtitle>
         <StyledTitleInput
           value={feedback.answer}
           onChange={handleChange}
@@ -115,7 +123,6 @@ const FeedbackSubtitle = styled.h4`
   margin-top: 1.6rem;
   margin-bottom: 1.6rem;
   color: #4b4b4b;
-  width: 28rem;
 `;
 
 const StyledTitleInput = styled.textarea`
@@ -124,7 +131,7 @@ const StyledTitleInput = styled.textarea`
   resize: none;
   outline: none;
   width: 100%;
-  height: 40%;
+  height: 20%;
   background: #f4f5f6;
   border: 1px solid #c9c9c9;
   box-sizing: border-box;

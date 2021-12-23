@@ -146,12 +146,11 @@ export default function SurveyHome(): ReactElement {
             }}
           >
             <h1 className="survey_home_title">
-              무따 서비스 피드백을
-              <br />
-              남겨주시면 큰 도움이 돼요 <Logo />
+              무따가 곧 종료돼요.
+              <br /> 종료 전 데이터를 받으시겠어요?
             </h1>
             <span>
-              무따 피드백 보기 <ArrowRight />
+              데이터 받기 <ArrowRight />
             </span>
           </FeedbackBanner>
         </CoverSlider>
