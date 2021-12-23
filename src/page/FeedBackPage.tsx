@@ -73,7 +73,7 @@ export default function FeedBackPage(): JSX.Element {
   return (
     <>
       <NavBar
-        type="BACK"
+        type={ref === 'chat' ? 'CLOSE' : 'BACK'}
         title="데이터 받기"
         appendRight={
           <CompleteButton
