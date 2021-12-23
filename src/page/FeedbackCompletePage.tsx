@@ -11,11 +11,11 @@ export default function FeedbackCompletePage(): JSX.Element {
 
   return (
     <StyledFeedbackComplete>
-      <NavBar type="BACK" />
+      <NavBar type={ref === 'chat' ? 'CLOSE' : 'BACK'} />
       <img src="./img/happyMudda.png" />
       <h1>의견을 남겨주셔서 감사해요!</h1>
       <span>더 좋은 서비스가 되기 위해 노력할게요🔥</span>
-      {ref === 'url' ? (
+      {ref === 'url' || ref === 'chat' ? (
         <FeedbackButton
           onClick={() => {
             mini.close();

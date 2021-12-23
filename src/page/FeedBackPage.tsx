@@ -1,4 +1,4 @@
-import { ChangeEvent, MouseEvent, useState } from 'react';
+import { ChangeEvent, MouseEvent, useEffect, useState } from 'react';
 
 import styled from '@emotion/styled';
 import { useNavigator, useQueryParams } from '@karrotframe/navigator';
@@ -6,9 +6,13 @@ import { useRecoilState } from 'recoil';
 
 import AlertTostModal from '@component/common/modal/TostModal';
 import { useAnalytics } from '@src/analytics/faContext';
+import { authorizationBizSelector, bizCodeAtom } from '@src/api/authorization';
+import mini from '@src/api/mini';
 import { questionFeedBack } from '@src/atom/questionAtom';
 import NavBar from '@src/component/common/navbar/NavBar';
 import { contents } from '@src/config/const/const';
+import { useMiniBizAuth } from '@src/hook/useAuth';
+import useLogin from '@src/hook/useLogin';
 import useSubmit from '@src/hook/useSubmit';
 
 export default function FeedBackPage(): JSX.Element {
@@ -17,9 +21,16 @@ export default function FeedBackPage(): JSX.Element {
   const { replace } = useNavigator();
   const query = useQueryParams<{ ref?: string }>();
   const ref = query.ref || 'app';
-
+  const onClose = () => {
+    setClose(true);
+  };
+  const [close, setClose] = useState(false);
   const fa = useAnalytics();
   const post = useSubmit('/feedbacks');
+  const getBizId = useMiniBizAuth(process.env.REACT_APP_APP_ID || '', onClose);
+
+  useLogin(authorizationBizSelector);
+  const [code, setCode] = useRecoilState(bizCodeAtom);
 
   const handleChange = (e: ChangeEvent) => {
     setFeedback({
@@ -42,6 +53,22 @@ export default function FeedBackPage(): JSX.Element {
       setToastOpen(true);
     }
   };
+
+  useEffect(() => {
+    if (close && code === '') {
+      mini.close();
+    }
+  }, [close, code]);
+
+  useEffect(() => {
+    (async () => {
+      if (sessionStorage.getItem('jwt') || ref !== 'chat') {
+        return;
+      }
+      const id = await getBizId();
+      setCode(id);
+    })();
+  }, []);
 
   return (
     <>
